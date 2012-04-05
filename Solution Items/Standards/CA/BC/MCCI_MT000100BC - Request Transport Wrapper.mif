@@ -1,0 +1,853 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2010 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                 conformanceLevel="RealmExtension"
+                 schemaVersion="2.1.3"
+                 packageKind="id"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="Request Transport Wrapper"
+                 isSerializable="true"
+                 name="000100">
+   <mif:packageLocation realmNamespace="BC" artifact="MT" root="DEFN" section="IM" subSection="MC"
+                        domain="CI"
+                        id="000100"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform">
+         <mif:renderingNotes>Saved in XML file by RMIM Designer in Visio at 2010-12-20T16:07:07
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+ Fix Names Transform: $Id: FixMifNames.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+  Base transform: $Id: ConvertBase.xsl 8360 2009-10-26 06:00:22Z woody_beeler $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8398 2010-10-12 01:52:15Z lloyd_mckenzie $</mif:renderingNotes>
+      </mif:renderingInformation>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2010">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <xhtml:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <xhtml:a href="http://www.hl7.org">http://www.hl7.org</xhtml:a>
+            </xhtml:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="12.275" height="6.492"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="5B43FDAB-F2C5-6E35-3654-72A5479D7124">
+         <mif:graphElement shapeId="Sheet.87">
+            <mif:position x="0.576" y="0.979"/>
+            <mif:size width="1.969" height="0.500"/>
+            <mif:anchorage connectToShapeId="Sheet.87">
+               <mif:position x="1.483" y="1.479"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.326">
+                     <mif:position x="1.637" y="2.320"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="DA726728-D40C-60ED-50AD-7F955E949369" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.6" shapeTemplate="Role" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="8.101" y="4.482"/>
+            <mif:size width="1.269" height="0.500"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="394504BB-3CC4-F008-76FF-51A1892062EF" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.79" shapeTemplate="Act" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="4.008" y="4.891"/>
+            <mif:size width="1.263" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="77EB3104-1CDA-C374-2BDD-98B5A04660BE" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.98" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="8.257" y="2.832"/>
+            <mif:size width="1.818" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="33E4DF98-A600-C6F4-DADA-824E006E2DE2" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.326" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="0.005" y="2.320"/>
+            <mif:size width="3.265" height="1.912"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="B3908207-76CC-783C-1D73-36BC5A8AC365" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.84" shapeTemplate="Entity" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="8.176" y="5.732"/>
+            <mif:size width="1.860" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="D7FE3A41-0515-DD30-AF3D-F840FF79B4D8" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.24" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="4.483" y="3.099"/>
+            <mif:size width="1.861" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="B27076FC-0FE9-007C-501E-1D71EBD95E2F" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.20" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="4.453" y="2.191"/>
+            <mif:size width="1.861" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="08624822-4F76-F713-78CA-58B39788545A">
+         <mif:graphElement connectToShapeId="Sheet.6">
+            <mif:position x="9.243" y="4.932"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.84">
+                  <mif:position x="9.571" y="5.732"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="7ABF3236-E016-9C80-C5C2-6424EAEE8110">
+         <mif:graphElement connectToShapeId="Sheet.98">
+            <mif:position x="9.621" y="3.582"/>
+            <mif:graphEdge>
+               <mif:anchor connectToShapeId="Sheet.6">
+                  <mif:position x="9.243" y="4.532"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="55E8C8F3-0D7A-DE52-6D91-0903240ACA32">
+         <mif:graphElement connectToShapeId="Sheet.326" shapeId="Sheet.27">
+            <mif:position x="3.270" y="4.232"/>
+            <mif:graphEdge>
+               <mif:waypoint x="3.196" y="4.232"/>
+               <mif:waypoint x="2.531" y="4.232"/>
+               <mif:anchor connectToShapeId="Sheet.79">
+                  <mif:position x="4.008" y="5.266"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="6B27420F-A408-B3AF-5988-9EF6B4F63D00">
+         <mif:graphElement connectToShapeId="Sheet.326" shapeId="Sheet.48">
+            <mif:position x="3.270" y="3.276"/>
+            <mif:graphEdge>
+               <mif:waypoint x="3.876" y="3.276"/>
+               <mif:waypoint x="3.876" y="3.286"/>
+               <mif:anchor connectToShapeId="Sheet.24">
+                  <mif:position x="4.483" y="3.286"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="44A4AB80-6A7D-7C93-28A0-C909B8602031">
+         <mif:graphElement connectToShapeId="Sheet.326" shapeId="Sheet.34">
+            <mif:position x="3.270" y="2.798"/>
+            <mif:graphEdge>
+               <mif:waypoint x="3.861" y="2.798"/>
+               <mif:waypoint x="3.861" y="2.566"/>
+               <mif:anchor connectToShapeId="Sheet.20">
+                  <mif:position x="4.453" y="2.566"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="9DB501B7-A7B7-6AB7-92CA-D1C58EC33927">
+         <mif:graphElement connectToShapeId="Sheet.24" shapeId="Sheet.68">
+            <mif:position x="6.343" y="3.474"/>
+            <mif:graphEdge>
+               <mif:waypoint x="5.386" y="3.474"/>
+               <mif:waypoint x="5.386" y="3.553"/>
+               <mif:anchor connectToShapeId="Sheet.98">
+                  <mif:position x="8.257" y="3.395"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+      <mif:association semanticLinkId="E0B775F3-594A-F4BC-2CCC-9ADC6EF46D66">
+         <mif:graphElement connectToShapeId="Sheet.20" shapeId="Sheet.58">
+            <mif:position x="6.313" y="2.566"/>
+            <mif:graphEdge>
+               <mif:waypoint x="5.341" y="2.566"/>
+               <mif:waypoint x="5.341" y="2.111"/>
+               <mif:anchor connectToShapeId="Sheet.98">
+                  <mif:position x="8.257" y="3.020"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0233R1"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="BC" artifact="RM" root="DEFN" section="IM" subSection="MC"
+                             domain="CI"
+                             id="000100"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel realmNamespace="BC" artifact="HD" root="DEFN" section="IM" subSection="MC"
+                             domain="CI"
+                             id="000100"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="1062-20101110"/>
+   <mif:importedCommonModelElementPackage realmNamespace="BC" artifact="IFC" root="DEFN" version="1.11.1"/>
+   <mif:entryPoint graphicLinkId="5B43FDAB-F2C5-6E35-3654-72A5479D7124" id="MCCI_MT000100BC"
+                   name="Request Transport Wrapper"
+                   className="Message">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text/>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="DA726728-D40C-60ED-50AD-7F955E949369" name="Agent"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Agent"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Agent"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text/>
+               </mif:definition>
+               <mif:usageNotes>
+                  <mif:text>
+                     <xhtml:p>PM - Changed cardinality from (0..1) to (1..1) (for both associations)</xhtml:p>
+                  </mif:text>
+               </mif:usageNotes>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="AGNT"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text/>
+                  </mif:definition>
+                  <mif:usageNotes>
+                     <mif:text>
+                        <xhtml:p>BC 19-nov-10: added fixed value not previously included in CRS specification</xhtml:p>
+                     </mif:text>
+                  </mif:usageNotes>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Agent" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Agent" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="RoleClass" code="AGNT"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:templateParameter graphicLinkId="394504BB-3CC4-F008-76FF-51A1892062EF" name="ControlActEvent">
+         <mif:businessName name="*Transmitted Content"/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ControlAct"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ControlActEvent"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ControlActEvent"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <xhtml:p>The content of the message.</xhtml:p>
+                  </mif:text>
+               </mif:definition>
+               <mif:rationale>
+                  <mif:text>
+                     <xhtml:p>Carries the information intended to be conveyed to the receiving application</xhtml:p>
+                  </mif:text>
+               </mif:rationale>
+            </mif:documentation>
+         </mif:annotations>
+      </mif:templateParameter>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="77EB3104-1CDA-C374-2BDD-98B5A04660BE" name="Device"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Device"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Device"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Device"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="DEV"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text/>
+                  </mif:definition>
+                  <mif:usageNotes>
+                     <mif:text>
+                        <xhtml:p>bc 19-nov-10: added fixed value not previously included in CRS specification.</xhtml:p>
+                     </mif:text>
+                  </mif:usageNotes>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Device" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="EntityClass" code="DEV"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="INSTANCE"
+                        isImmutable="true">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text/>
+                  </mif:definition>
+                  <mif:usageNotes>
+                     <mif:text>
+                        <xhtml:p>bc 19-nov-10: added fixed value not previously included in CRS specification.</xhtml:p>
+                     </mif:text>
+                  </mif:usageNotes>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Device" attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="EntityDeterminer" code="INSTANCE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="Application Identifier"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Device" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Device" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Device" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="33E4DF98-A600-C6F4-DADA-824E006E2DE2" name="Message"
+                 isAbstract="false">
+         <mif:businessName name="HL7 Message"/>
+         <mif:derivedFrom staticModelDerivationId="1" className="Message"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Message"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Message"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <xhtml:p>The root class of all messages.</xhtml:p>
+                  </mif:text>
+               </mif:definition>
+               <mif:rationale>
+                  <mif:text>
+                     <xhtml:p>Conveys information about the interaction and how it is to be processed</xhtml:p>
+                  </mif:text>
+               </mif:rationale>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="id" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="A:Message Identifier"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <xhtml:p>A unique identifier for the message.</xhtml:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <xhtml:p>Allows detection of duplicate messages, and allows tying acknowledgments to the message they are acknowledging. The attribute is therefore mandatory.</xhtml:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Message" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Message" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Message" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute name="creationTime" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="G:Message Timestamp"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <xhtml:p>Indicates the time this particular message instance was constructed.</xhtml:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <xhtml:p>Allows identification of how current the information in a message is. Also provides a baseline for identifying the time-zone of other times within the message. As a result, the attribute is mandatory.</xhtml:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Message" attributeName="creationTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Message" attributeName="creationTime"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Message" attributeName="creationTime"/>
+            <mif:type name="TS"/>
+         </mif:attribute>
+         <mif:attribute name="versionCode" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        defaultValue="V3PR1"
+                        isImmutable="false">
+            <mif:businessName name="C: HL7 Standard Version"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <xhtml:p>Indicates the version of the messaging standard being referenced.</xhtml:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:usageNotes>
+                     <mif:text>
+                        <xhtml:p>PW - Changed cardinality from (0..1) to (1..1). Default value in @code is V3PR1</xhtml:p>
+                     </mif:text>
+                  </mif:usageNotes>
+                  <mif:rationale>
+                     <mif:text>
+                        <xhtml:p>Needed to know how to validate message definition, CMET definition, vocabulary and other information and is therefore mandatory.</xhtml:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Message" attributeName="versionCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Message" attributeName="versionCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Message" attributeName="versionCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="HL7StandardVersionCode" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="interactionId" sortKey="4" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="B:Interaction Type"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <xhtml:p>Indicates the interaction conveyed by this message.</xhtml:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <xhtml:p>Identifies what the receiving application should do, and how the message should be validated. The attribute is therefore mandatory.</xhtml:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Message" attributeName="interactionId"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Message" attributeName="interactionId"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Message" attributeName="interactionId"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute name="processingCode" sortKey="5" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="DB:Processing Code"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <xhtml:p>Indicates whether this message is intended to be processed as production, test or debug message.</xhtml:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <xhtml:p>Indicates how the message should be handled and is therefore mandatory.</xhtml:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Message" attributeName="processingCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Message" attributeName="processingCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Message" attributeName="processingCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ProcessingID"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="processingModeCode" sortKey="6" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="Processing Mode"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <xhtml:p>This attribute defines whether the message is being sent in current processing, archive mode, initial load mode, restore from archive mode</xhtml:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <xhtml:p>Describes the mode of processing. For example current processing, archive mode, initial load mode, restore from archive mode.</xhtml:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Message"
+                             attributeName="processingModeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Message"
+                             attributeName="processingModeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Message"
+                             attributeName="processingModeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ProcessingMode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="acceptAckCode" sortKey="7" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="E:Desired Acknowledgment Type"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <xhtml:p>Indicates how the message is expected to be acknowledged.</xhtml:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:usageNotes>
+                     <mif:text>
+                        <xhtml:p>When using SOAP, this attribute MUST be set to NE (Never). (Accept acknowledgements are handled via the transport protocol, not HL7.)</xhtml:p>
+                     </mif:text>
+                  </mif:usageNotes>
+                  <mif:rationale>
+                     <mif:text>
+                        <xhtml:p>Provides support for immediate, deferred and polling mode and distinguishes which mode is desired. The attribute is therefore mandatory.</xhtml:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Message" attributeName="acceptAckCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Message" attributeName="acceptAckCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Message" attributeName="acceptAckCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="AcknowledgementCondition"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="B3908207-76CC-783C-1D73-36BC5A8AC365" name="Organization"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Organization"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Organization"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Organization"/>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="ORG"
+                        isImmutable="true">
+            <mif:historyItem dateTime="2010-12-20">
+               <mif:description>bc 19-nov-10: added fixed value of ORG, not previously shown in published specification.</mif:description>
+            </mif:historyItem>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text/>
+                  </mif:definition>
+               </mif:documentation>
+               <mif:appInfo>
+                  <mif:openIssue>
+                     <mif:text>
+                        <xhtml:p>bc 22-nov-10: confirm production version uses same fixed value of ORG</xhtml:p>
+                     </mif:text>
+                  </mif:openIssue>
+               </mif:appInfo>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Organization" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Organization" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Organization" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="EntityClass" code="ORG"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="INSTANCE"
+                        isImmutable="true">
+            <mif:historyItem dateTime="2010-12-20">
+               <mif:description>bc 19-nov-10: added fixed value not previously shown in CRS specification.</mif:description>
+            </mif:historyItem>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text/>
+                  </mif:definition>
+               </mif:documentation>
+               <mif:appInfo>
+                  <mif:openIssue>
+                     <mif:text>
+                        <xhtml:p>bc 22-nov-10: confirm production system uses fixed value of INSTANCE</xhtml:p>
+                     </mif:text>
+                  </mif:openIssue>
+               </mif:appInfo>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Organization"
+                             attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Organization"
+                             attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Organization"
+                             attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="EntityDeterminer" code="INSTANCE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="Organization Identifier"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <xhtml:p>organization unique identifier.</xhtml:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <xhtml:p>The identifier is the only non-structural attribute in this class and is therefore mandatory.</xhtml:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Organization" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Organization" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Organization" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="D7FE3A41-0515-DD30-AF3D-F840FF79B4D8" name="Receiver"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="CommunicationFunction"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Receiver"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Receiver"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="RCV"
+                        isImmutable="true">
+            <mif:historyItem dateTime="2010-12-20">
+               <mif:description>bc 19-nov-10: added fixed value, not previously declared in CRS specification.</mif:description>
+            </mif:historyItem>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text/>
+                  </mif:definition>
+               </mif:documentation>
+               <mif:appInfo>
+                  <mif:openIssue>
+                     <mif:text>
+                        <xhtml:p>bc 22-nov-10: confirm production system uses fixed code of RCV</xhtml:p>
+                     </mif:text>
+                  </mif:openIssue>
+               </mif:appInfo>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="CommunicationFunction"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Receiver" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Receiver" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="CommunicationFunctionType" code="RCV"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="B27076FC-0FE9-007C-501E-1D71EBD95E2F" name="Sender"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="CommunicationFunction"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Sender"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Sender"/>
+         <mif:attribute name="typeCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="SND"
+                        isImmutable="true">
+            <mif:historyItem dateTime="2010-12-20">
+               <mif:description>bc 19-nov-10: added fixed value not previously declared in CRS specification.</mif:description>
+            </mif:historyItem>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text/>
+                  </mif:definition>
+               </mif:documentation>
+               <mif:appInfo>
+                  <mif:openIssue>
+                     <mif:text>
+                        <xhtml:p>bc 22-nov-10: confirm production system uses fixed code of SND</xhtml:p>
+                     </mif:text>
+                  </mif:openIssue>
+               </mif:appInfo>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="CommunicationFunction"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Sender" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Sender" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="CommunicationFunctionType" code="SND"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="08624822-4F76-F713-78CA-58B39788545A" sortKey="11">
+      <mif:traversableConnection name="agentOrganization" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="Organization">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Agent"
+                          associationEndName="agentOrganization"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Agent"
+                          associationEndName="agentOrganization"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Agent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="playedRole"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="7ABF3236-E016-9C80-C5C2-6424EAEE8110" sortKey="8">
+      <mif:traversableConnection name="agent" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="BAAAAD____"
+                                 participantClassName="Agent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity" associationEndName="scopedRole"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Device" associationEndName="agent"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Device" associationEndName="agent"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Device">
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="55E8C8F3-0D7A-DE52-6D91-0903240ACA32" sortKey="0">
+      <mif:traversableConnection name="controlActEvent" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="false"
+                                 sortKey="Z"
+                                 participantClassName="ControlActEvent">
+         <mif:derivedFrom staticModelDerivationId="1" className="Message" associationEndName="controlAct"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Message"
+                          associationEndName="controlActEvent"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Message"
+                          associationEndName="controlActEvent"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Message">
+         <mif:derivedFrom staticModelDerivationId="1" className="ControlAct" associationEndName="payload"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="6B27420F-A408-B3AF-5988-9EF6B4F63D00" sortKey="1">
+      <mif:traversableConnection name="receiver" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="AZ"
+                                 participantClassName="Receiver">
+         <mif:derivedFrom staticModelDerivationId="1" className="Transmission"
+                          associationEndName="communicationFunction"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Message" associationEndName="receiver"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Message" associationEndName="receiver"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Message">
+         <mif:derivedFrom staticModelDerivationId="1" className="CommunicationFunction"
+                          associationEndName="transmission"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="44A4AB80-6A7D-7C93-28A0-C909B8602031" sortKey="2">
+      <mif:traversableConnection name="sender" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="AZ"
+                                 participantClassName="Sender">
+         <mif:derivedFrom staticModelDerivationId="1" className="Transmission"
+                          associationEndName="communicationFunction"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Message" associationEndName="sender"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Message" associationEndName="sender"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Message">
+         <mif:derivedFrom staticModelDerivationId="1" className="CommunicationFunction"
+                          associationEndName="transmission"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="9DB501B7-A7B7-6AB7-92CA-D1C58EC33927" sortKey="5">
+      <mif:traversableConnection name="device" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="ZZ"
+                                 participantClassName="Device">
+         <mif:derivedFrom staticModelDerivationId="1" className="CommunicationFunction"
+                          associationEndName="entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Receiver" associationEndName="device"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Receiver" associationEndName="device"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Receiver">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"
+                          associationEndName="communicationFunction"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+   <mif:association graphicLinkId="E0B775F3-594A-F4BC-2CCC-9ADC6EF46D66" sortKey="10">
+      <mif:traversableConnection name="device" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="ZZ"
+                                 participantClassName="Device">
+         <mif:derivedFrom staticModelDerivationId="1" className="CommunicationFunction"
+                          associationEndName="entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Sender" associationEndName="device"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Sender" associationEndName="device"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Sender">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"
+                          associationEndName="communicationFunction"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

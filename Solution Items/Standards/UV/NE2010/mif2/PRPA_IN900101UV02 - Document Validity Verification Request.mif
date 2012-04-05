@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="900101"
+                 title="Identity Document Event Request Verify Validity">
+   <mif:businessName name="Document Validity Verification Request"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="PA" artifact="IN"
+                        realmNamespace="UV"
+                        version="02"
+                        id="900101"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>A user <mif:b>initiates a request</mif:b> to an identification document registry to verify the validity of an identification document.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PA" artifact="TE"
+                             realmNamespace="UV"
+                             version="02"
+                             id="900101"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="AM" subSection="PR" domain="PA"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="02"
+                             id="900101"
+                             traversalName="verficationRequest"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>If a Verification Request Fulfiller application role accepts a request to verify the validity of a document it must respond back with the identifier of the request and the result of the verification</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="AM" subSection="PR" domain="PA" artifact="IN"
+                             realmNamespace="UV"
+                             version="02"
+                             id="900102"/>
+      <mif:invokeTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PA" artifact="TE"
+                              realmNamespace="UV"
+                              version="02"
+                              id="900102"/>
+   </mif:receiverResponsibilities>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>If a Verification Request Fulfiller application role rejects a request to verify the validity of a document then it must respond back with the identifier of the request and the reason(s) it was rejected</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="AM" subSection="PR" domain="PA" artifact="IN"
+                             realmNamespace="UV"
+                             version="02"
+                             id="900103"/>
+      <mif:invokeTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PA" artifact="TE"
+                              realmNamespace="UV"
+                              version="02"
+                              id="900103"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

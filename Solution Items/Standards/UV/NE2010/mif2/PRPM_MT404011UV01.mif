@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2010 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.6"
+                 representationKind="flat"
+                 isSerializable="true"
+                 packageKind="id"
+                 name="404011">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="AM" subSection="PR"
+                        domain="PM"
+                        version="01"/>
+   <mif:header>
+      <mif:renderingInformation application="RoseTree 4.2.7">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl 8360 2009-10-26 06:00:22Z woody_beeler $
+  Base transform: $Id: ConvertBase.xsl 8360 2009-10-26 06:00:22Z woody_beeler $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl 7375 2009-01-26 19:26:53Z wbeeler $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+ Fix Names Transform: $Id: FixMifNames.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+  Base transform: $Id: ConvertBase.xsl 8360 2009-10-26 06:00:22Z woody_beeler $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $</mif:renderingNotes>
+      </mif:renderingInformation>
+      <mif:legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2008">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0229R1"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="AM" subSection="PR"
+                             domain="PM"
+                             version="01"
+                             id="404000"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="4">
+      <mif:targetStaticModel realmNamespace="UV" artifact="HD" root="DEFN" section="AM" subSection="PR"
+                             domain="PM"
+                             version="01"
+                             id="404010"/>
+   </mif:derivedFrom>
+   <mif:entryPoint name="AssignedOrganization" useKind="SemanticPayload"
+                   className="AssignedOrganization">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>
+                  <mif:p>Entry point for messages to activate an organization in an Organization Registry.</mif:p>
+               </mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class name="AssignedOrganization" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="RoleHeir"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="AssignedOrganization"/>
+         <mif:derivedFrom staticModelDerivationId="4" className="AssignedOrganization"/>
+         <mif:annotations/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="AssignedOrganization"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="4" className="AssignedOrganization"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="RoleClassAssignedEntity" rootCode="ASSIGNED" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="*"
+                        isMandatory="false"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="AssignedOrganization" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="4" className="AssignedOrganization" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>Role in organization</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="AssignedOrganization"
+                             attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="4" className="AssignedOrganization"
+                             attributeName="code"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="AssignedRoleType"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="4" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        conformance="NP"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="AssignedOrganization"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="4" className="AssignedOrganization"
+                             attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="certificateText" sortKey="5" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        conformance="NP"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="certificateText"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="AssignedOrganization"
+                             attributeName="certificateText"/>
+            <mif:derivedFrom staticModelDerivationId="4" className="AssignedOrganization"
+                             attributeName="certificateText"/>
+            <mif:type name="ED"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef name="E_OrganizationUniversal" cmetName="E_OrganizationUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Organization"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_OrganizationUniversal"/>
+         <mif:derivedFrom staticModelDerivationId="4" className="E_OrganizationUniversal"/>
+         <mif:annotations/>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="PrincipalChoiceList" isAbstract="true">
+         <mif:derivedFrom staticModelDerivationId="1" className="Entity"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PrincipalChoiceList"/>
+         <mif:derivedFrom staticModelDerivationId="4" className="PrincipalChoiceList"/>
+         <mif:annotations/>
+         <mif:childClass sortKey="1" name="PrincipalOrganization"/>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="PrincipalOrganization" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Organization"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PrincipalOrganization"/>
+         <mif:derivedFrom staticModelDerivationId="4" className="PrincipalOrganization"/>
+         <mif:annotations/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="NP">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Entity" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PrincipalOrganization"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="4" className="PrincipalOrganization"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="EntityClassOrganization" rootCode="ORG" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="determinerCode" sortKey="2" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="NP">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Entity" attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PrincipalOrganization"
+                             attributeName="determinerCode"/>
+            <mif:derivedFrom staticModelDerivationId="4" className="PrincipalOrganization"
+                             attributeName="determinerCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="EntityDeterminerSpecific" rootCode="INSTANCE" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="name" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        conformance="NP"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Entity" attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PrincipalOrganization"
+                             attributeName="name"/>
+            <mif:derivedFrom staticModelDerivationId="4" className="PrincipalOrganization"
+                             attributeName="name"/>
+            <mif:type name="BAG">
+               <mif:argumentDatatype name="ON"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="assignedPrincipalChoiceList" minimumMultiplicity="0"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="NP"
+                                 sortKey="AZ"
+                                 participantClassName="PrincipalChoiceList">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Role"
+                          associationEndName="assignedPrincipalChoiceList"/>
+         <mif:derivedFrom staticModelDerivationId="4" className="Role"
+                          associationEndName="assignedPrincipalChoiceList"/>
+         <mif:choiceItem className="PrincipalOrganization" traversalName="assignedPrincipalOrganization"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AssignedOrganization"/>
+   </mif:association>
+   <mif:association sortKey="2">
+      <mif:traversableConnection name="representedOrganization" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="NP"
+                                 sortKey="BZ"
+                                 participantClassName="E_OrganizationUniversal">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="scoper"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Role"
+                          associationEndName="representedOrganization"/>
+         <mif:derivedFrom staticModelDerivationId="4" className="Role"
+                          associationEndName="representedOrganization"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="AssignedOrganization"/>
+   </mif:association>
+</mif:staticModel>

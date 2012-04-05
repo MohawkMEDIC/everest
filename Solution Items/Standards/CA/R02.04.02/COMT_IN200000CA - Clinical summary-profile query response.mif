@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.3" name="200000"
+                 title="Cross-domain Query Query Response List">
+   <mif:businessName name="Clinical summary/profile query response"/>
+   <mif:packageLocation root="DEFN" section="IM" subSection="CO" domain="MT" artifact="IN"
+                        realmNamespace="CA"
+                        id="200000"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Return the 'summary' versions of all demographics, medications, allergies, medical conditions, lab tests, observations, procedures, encounters, referrals and other clinical data.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="RE" domain="PC" artifact="TE"
+                             realmNamespace="CA"
+                             id="000097"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="CA"
+                        id="002300">
+      <mif:parameterModel parameterName="ControlActEvent" root="DEFN" section="IM" subSection="QU"
+                          domain="QI"
+                          artifact="MT"
+                          realmNamespace="CA"
+                          id="120006"
+                          traversalName="controlActEvent">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="IM" subSection="CO" domain="MT"
+                             artifact="MT"
+                             realmNamespace="CA"
+                             id="111111"
+                             traversalName="summary">
+            <mif:specialization className="RenderedContent" traversalName="renderedContent1"/>
+            <mif:specialization className="SHR" traversalName="sHR1">
+               <mif:choiceItem className="A_PatientProfileCareComp" traversalName="patientCareProvisionEvent1"/>
+               <mif:choiceItem className="A_PatientProfileProcedure" traversalName="procedureEvent1"/>
+               <mif:choiceItem className="A_PatientProfileAllergy" traversalName="intoleranceCondition1"/>
+               <mif:choiceItem className="A_PatientProfileCoded" traversalName="commonObservationEvent1"/>
+               <mif:choiceItem className="A_PatientProfileMeasured" traversalName="commonObservationEvent2"/>
+               <mif:choiceItem className="A_PatientProfileReport" traversalName="document1"/>
+               <mif:choiceItem className="A_PatientProfileDischarge" traversalName="document2"/>
+               <mif:choiceItem className="A_PatientProfileReferral" traversalName="document3"/>
+               <mif:choiceItem className="A_PatientProfileReaction" traversalName="reactionObservationEvent1"/>
+               <mif:choiceItem className="A_PatientProfileHealthCondition" traversalName="conditionEvent1"/>
+            </mif:specialization>
+            <mif:specialization className="Pharmacy" traversalName="pharmacy1">
+               <mif:choiceItem className="A_PatientProfileDrugRx" traversalName="combinedMedicationRequest1"/>
+               <mif:choiceItem className="A_PatientProfileDeviceRx" traversalName="devicePrescription1"/>
+               <mif:choiceItem className="A_PatientProfileOtherMed" traversalName="otherMedication1"/>
+            </mif:specialization>
+            <mif:specialization className="Lab" traversalName="lab">
+               <mif:choiceItem className="A_PatientProfileLabOrder" traversalName="requestChoice1">
+                  <mif:choiceItem className="PlacerGroup" traversalName="placerGroup1"/>
+                  <mif:choiceItem className="BatteryRequest" traversalName="batteryRequest1"/>
+                  <mif:choiceItem className="ObservationRequest" traversalName="observationRequest1"/>
+               </mif:choiceItem>
+               <mif:choiceItem className="A_PatientProfileLabResult"
+                               traversalName="resultInstancePayloadChoice">
+                  <mif:choiceItem className="ResultChoice" traversalName="resultChoice1">
+                     <mif:choiceItem className="ObservationReport" traversalName="observationReport1"/>
+                     <mif:choiceItem className="BatteryEvent" traversalName="batteryEvent1"/>
+                     <mif:choiceItem className="ObservationEvent" traversalName="observationEvent1"/>
+                  </mif:choiceItem>
+                  <mif:choiceItem className="ObservationReport" traversalName="observationReport2"/>
+                  <mif:choiceItem className="ObservationChoice" traversalName="observationChoice">
+                     <mif:choiceItem className="ObservationReport" traversalName="observationReport3"/>
+                     <mif:choiceItem className="BatteryEvent" traversalName="batteryEvent2"/>
+                     <mif:choiceItem className="SectionLevelObservationEvent"
+                                     traversalName="sectionLevelObservationEvent"/>
+                  </mif:choiceItem>
+               </mif:choiceItem>
+            </mif:specialization>
+            <mif:specialization className="A_PatientProfileImmunization" traversalName="immunization"/>
+         </mif:parameterModel>
+         <mif:parameterModel parameterName="ParameterList" root="DEFN" section="HM" subSection="RE"
+                             domain="PC"
+                             artifact="MT"
+                             realmNamespace="CA"
+                             id="000008"
+                             traversalName="parameterList"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

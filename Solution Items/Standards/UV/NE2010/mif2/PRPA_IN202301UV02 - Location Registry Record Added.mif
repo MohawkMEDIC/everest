@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="202301"
+                 title="Service Delivery Location Event Activate Notification">
+   <mif:businessName name="Location Registry Record Added"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="PA" artifact="IN"
+                        realmNamespace="UV"
+                        version="02"
+                        id="202301"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>A service delivery location registry sends this <mif:b>notification</mif:b> after <mif:b>adding</mif:b> a record to the registry. This interaction replaces the New Service Delivery Location Added interaction (MFPA_IN202001UV01) from DSTU 1.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PA" artifact="TE"
+                             realmNamespace="UV"
+                             version="02"
+                             id="202301"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MF"
+                          domain="MI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700701"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="RegisteredRole" root="DEFN" section="AM" subSection="PR"
+                             domain="PA"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="02"
+                             id="202301"
+                             traversalName="serviceDeliveryLocation"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

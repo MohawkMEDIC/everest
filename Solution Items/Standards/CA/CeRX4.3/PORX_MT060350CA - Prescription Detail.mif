@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2011 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="RealmExtension"
+                 schemaVersion="2.1.3"
+                 packageKind="realmNamespace"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="Prescription Detail"
+                 isSerializable="true"
+                 name="CA">
+   <mif:packageLocation realmNamespace="CA" artifact="MT" root="DEFN" section="HM" subSection="PO"
+                        domain="RX"
+                        id="060350"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2011">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <p xmlns="http://www.w3.org/1999/xhtml">This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <a href="http://www.hl7.org">http://www.hl7.org</a>
+				        </p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="3.248" height="1.776"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="1566521F-A34D-3BC5-0165-C6229D17D796">
+         <mif:graphElement shapeId="Sheet.1">
+            <mif:position x="0.028" y="-0.063"/>
+            <mif:size width="1.311" height="0.453"/>
+            <mif:anchorage connectToShapeId="Sheet.1">
+               <mif:position x="1.338" y="0.910"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.8">
+                     <mif:position x="1.885" y="0.888"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="968F4793-B9B5-8DAB-DB67-92F132B80E9C" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.16" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.010" y="1.013"/>
+            <mif:size width="1.103" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="EC99D7D5-2E35-EDF6-6706-0025A33B7EA0" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.10" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="2.010" y="0.260"/>
+            <mif:size width="1.103" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="5002AB4D-5022-CB51-A74E-CA3B7C60BA6C" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.8" shapeTemplate="Choice" isWidthAutoSize="true"
+                           isHeightAutoSize="true"
+                           nodeOrientation="Portrait">
+            <mif:position x="1.885" y="0.010"/>
+            <mif:size width="1.353" height="1.756"/>
+         </mif:graphElement>
+      </mif:class>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0226"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage realmNamespace="UV" artifact="VO" root="DEFN" version="822-20090227"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="1566521F-A34D-3BC5-0165-C6229D17D796" id="PORX_MT060350CA"
+                   name="Prescription Detail"
+                   className="Prescription">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>
+                  <html:p xmlns:html="http://www.w3.org/1999/xhtml">Description</html:p>
+               </mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="968F4793-B9B5-8DAB-DB67-92F132B80E9C"
+                                 name="A_PrescriptionDeviceDetail"
+                                 cmetName="A_PrescriptionDeviceDetail">
+         <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="EC99D7D5-2E35-EDF6-6706-0025A33B7EA0"
+                                 name="A_PrescriptionDrugDetail"
+                                 cmetName="A_PrescriptionDrugDetail">
+         <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="5002AB4D-5022-CB51-A74E-CA3B7C60BA6C" name="Prescription"
+                 isAbstract="true">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:childClass graphicLinkId="C16D2B1A-88AC-E4BD-C43A-293042639F18" sortKey="001"
+                         name="A_PrescriptionDrugDetail"/>
+         <mif:childClass graphicLinkId="FF169EE3-701B-9F78-A829-737E101DEF2D" sortKey="002"
+                         name="A_PrescriptionDeviceDetail"/>
+      </mif:class>
+   </mif:containedClass>
+</mif:staticModel>

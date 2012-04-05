@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="000042"
+                 title="Procedure Event Query Response Professional Service">
+   <mif:businessName name="Patient professional services query response"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="RE" domain="PC" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000042"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Returns detailed information about some or all professional services delivered to a patient.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="RE" domain="PC" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="000042"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000300">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="QU"
+                          domain="QI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="120001"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="RE" domain="PC"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="610002"
+                             traversalName="procedureEvent"/>
+         <mif:parameterModel parameterName="ParameterList" root="DEFN" section="HM" subSection="RE"
+                             domain="PC"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="610004"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

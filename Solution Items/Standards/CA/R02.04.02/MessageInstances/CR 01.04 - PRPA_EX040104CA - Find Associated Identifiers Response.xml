@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><PRPA_IN101106CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/PRPA_IN101106CA.xsd">
+   <realmCode code="CA"/>
+   <id root="4C4DC02B-C145-97BB-852B-28F7F08CFA08"/>
+   <creationTime value="20090917161300.843-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="PRPA_IN101106CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://120.120.120.120"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.0.3" extension="DIS01"/>
+         <name>Good Health Clinic</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </sender>
+   <acknowledgement>
+      <typeCode code="AA"/>
+      <targetMessage>
+         <id root="181E8214-5529-E518-A9B1-75AA6DFFD03D"/>
+      </targetMessage>
+   </acknowledgement>
+   <controlActEvent classCode="CACT" moodCode="EVN">
+      <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.1" extension="80209036"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="PRPA_TE101106CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090917161259.843-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <subject contextConductionInd="false" contextControlCode="ON" typeCode="SUBJ">
+         <registrationEvent classCode="REG" moodCode="EVN">
+            <statusCode code="active"/>
+            <subject typeCode="SBJ" contextControlCode="AN">
+               <identifiedEntity classCode="IDENT">
+                  <id displayable="true" extension="444114567" root="2.16.840.1.113883.4.57"/>
+                  <statusCode code="active"/>
+                  <effectiveTime>
+                     <low value="20090917"/>
+                  </effectiveTime>
+                  <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+                  <identifiedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <asOtherIDs classCode="IDENT">
+                        <id displayable="true" extension="12345" root="2.16.840.1.113883.4.50"/>
+                        <code code="JHN" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                        <assigningIdOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <id use="BUS" root="1.2.3.5"/>
+                           <name>British Columbia Ministry of Health</name>
+                        </assigningIdOrganization>
+                     </asOtherIDs>
+                     <asOtherIDs classCode="IDENT">
+                        <id displayable="true" extension="ABCDE" root="2.16.840.1.113883.4.12"/>
+                        <code code="JHN" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                        <assigningIdOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <id use="BUS" root="1.2.3.6"/>
+                           <name>Manitoba Ministry of Health</name>
+                        </assigningIdOrganization>
+                     </asOtherIDs>
+                  </identifiedPerson>
+               </identifiedEntity>
+            </subject>
+            <custodian contextControlCode="AP" typeCode="CST">
+               <assignedDevice classCode="ASSIGNED">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.77.18"/>
+                  <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                     <name>Client Registry</name>
+                  </assignedRepository>
+                  <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                     <name>Saskatchewan</name>
+                  </representedRepositoryJurisdiction>
+               </assignedDevice>
+            </custodian>
+         </registrationEvent>
+      </subject>
+      <queryAck>
+         <queryId root="4398AA39-4E86-E797-7CD8-46547C825FE6"/>
+         <queryResponseCode code="OK"/>
+         <resultTotalQuantity value="1"/>
+         <resultCurrentQuantity value="1"/>
+         <resultRemainingQuantity value="1"/>
+      </queryAck>
+      <queryByParameter>
+         <queryId root="4398AA39-4E86-E797-7CD8-46547C825FE6"/>
+         <parameterList>
+            <clientIDBus>
+               <value use="BUS" extension="444114567" root="2.16.840.1.113883.4.57"/>
+            </clientIDBus>
+         </parameterList>
+      </queryByParameter>
+   </controlActEvent>
+</PRPA_IN101106CA>

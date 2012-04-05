@@ -1,0 +1,50 @@
+﻿MARC-HI Everest Framework November 2009 CTP Release Notes
+---------------------------------------------------------
+
+Welcome to the MARC-HI Everest Framework November 2009 Community Technology Preview. This release represents the first official release of the MARC-HI Everest Framework. 
+
+This release of the Framework is intended to:
+
+	- Give POS (Point of Service) vendors an opportunity to evaluate the suitability of the Everest Framework in their applications
+	- Allow developers to review the MARC-HI Everest Framework to determine is suitability as an HL7v3 Messaging API
+	- Provide advanced learning opportunities for developers whom wish to integrate HL7v3 into their applications at a future date.
+
+Included Technologies
+---------------------
+
+The November 2009 Community Technology Preview (CTP) contains the following Everest concepts and technologies:
+
+	- Connector Infrastructure
+		> Windows Communications Foundation (WCF)
+			* Server Connector (Standalone & IIS)
+			* Client Connector
+		> Microsoft Message Queueing
+			* Publishing
+		> File
+			* File Publishing
+			* File Listening
+	- Formatter Infrastructure
+		> XML ITS 1.0
+		> XML Data Types R1
+	- Structures
+		> HL7v3 Data Types (v1.0)
+		> pCS Standards (v2.04.1)
+	- GPMR v0.7
+
+Known Issues
+------------
+
+There are several known issues with the MARC-HI Everest Framework.
+
+	- The following instances will not serialize properly
+		- FICR_IN610102CA
+		- PORX_IN010380CA
+		- PORX_IN010420CA
+		- PORX_IN010650CA
+	  This is due to some improperly referenced CMETs in the MIF files
+	- No Support for POLB domain. This is due to improperly referenced CMETs in the MIF Files
+	- There are 40 of the 132 Infoway Samples bundled with the 2.04.1 release that will not completely validate. These are the known problems:
+		- Improper codes are selected (when a code value is set bound to a valueset and CNE is used)
+		- Missing mandatory negationInd on instances (mostly in the REPC domain)
+		- Type not available for the POLB samples
+	- File Listen Connector on MessageAvailable handler does not get fired when large amounts of files (> 20) are dumped into a directory.

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1" name="002210"
+                 title="Care Transfer Request Revise">
+   <mif:businessName name="Notify Revise Care Transfer Request"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="RE" domain="PC" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="002210"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text/>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="RE" domain="PC" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="002200"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="RE" domain="PC"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="002000"
+                             traversalName="careProvisionRequest"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

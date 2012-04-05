@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" isSerializable="true" name="020020" packageKind="id" representationKind="flat" schemaVersion="2.0">
+   <packageLocation artifact="MT" domain="MT" realmNamespace="UV" root="DEFN" section="IM" subSection="QU" version="01"/>
+   <header>
+      <renderingInformation application="RoseTree 4.2.7">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl,v 1.15 2007/10/19 05:55:13 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl,v 1.4 2007/03/20 02:48:49 wbeeler Exp $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl,v 1.5 2007/03/20 02:48:50 wbeeler Exp $
+ Fix Names Transform: $Id: FixMifNames.xsl,v 1.8 2007/03/20 02:48:49 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $</mif:renderingNotes>
+      </renderingInformation>
+      <legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2008">
+         <notation>All rights reserved.</notation>
+      </legalese>
+   </header>
+   <derivedFrom staticModelDerivationId="1">
+      <targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <targetStaticModel artifact="RM" domain="MT" id="020020" realmNamespace="UV" root="DEFN" section="IM" subSection="QU"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <targetStaticModel artifact="HD" domain="MT" id="020020" realmNamespace="UV" root="DEFN" section="IM" subSection="QU" version="01"/>
+   </derivedFrom>
+   <entryPoint className="QueryByParameterPayload" name="Unknown" useKind="SemanticPayload">
+      <annotations>
+         
+      <documentation><description>
+            <text>
+               <xhtml:p>Description: This RMIM defines content to query messages to the Act Reference Registry.</xhtml:p>
+            </text>
+         </description></documentation></annotations>
+   </entryPoint>
+   <containedClass>
+      <class isAbstract="false" name="ActId">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="ActId" staticModelDerivationId="2"/>
+         <derivedFrom className="ActId" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="*" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Act.Ids of one specific known Act in the Registry</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="ActId" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="ActId" staticModelDerivationId="3"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute defaultValue="Act.ID" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="semanticsText" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="semanticsText" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="semanticsText" className="ActId" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="semanticsText" className="ActId" staticModelDerivationId="3"/>
+            <type name="ST"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="AuthorId">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="AuthorId" staticModelDerivationId="2"/>
+         <derivedFrom className="AuthorId" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="*" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Person or Organizational Identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="AuthorId" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="AuthorId" staticModelDerivationId="3"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute defaultValue="author.Entity.ID" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="semanticsText" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="semanticsText" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="semanticsText" className="AuthorId" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="semanticsText" className="AuthorId" staticModelDerivationId="3"/>
+            <type name="ST"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="AuthorRoleCode">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="AuthorRoleCode" staticModelDerivationId="2"/>
+         <derivedFrom className="AuthorRoleCode" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="AuthorRoleCode" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="AuthorRoleCode" staticModelDerivationId="3"/>
+            <type name="CD"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="RoleCode"/></supplierVocabulary>
+         </attribute>
+         <attribute defaultValue="author.RoleCode" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="semanticsText" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="semanticsText" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="semanticsText" className="AuthorRoleCode" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="semanticsText" className="AuthorRoleCode" staticModelDerivationId="3"/>
+            <type name="ST"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="EffectiveTime">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="EffectiveTime" staticModelDerivationId="2"/>
+         <derivedFrom className="EffectiveTime" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="EffectiveTime" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="EffectiveTime" staticModelDerivationId="3"/>
+            <type name="IVL">
+               <argumentDatatype name="TS"/>
+            </type>
+         </attribute>
+         <attribute defaultValue="EffectiveTime" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="semanticsText" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="semanticsText" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="semanticsText" className="EffectiveTime" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="semanticsText" className="EffectiveTime" staticModelDerivationId="3"/>
+            <type name="ST"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="PatientId">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="PatientId" staticModelDerivationId="2"/>
+         <derivedFrom className="PatientId" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="*" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Patient Identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="PatientId" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="PatientId" staticModelDerivationId="3"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute defaultValue="recordTarget.Patient.ID" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="semanticsText" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="semanticsText" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="semanticsText" className="PatientId" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="semanticsText" className="PatientId" staticModelDerivationId="3"/>
+            <type name="ST"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="QueryByParameterPayload">
+         <derivedFrom className="QueryByParameter" staticModelDerivationId="1"/>
+         <derivedFrom className="QueryByParameterPayload" staticModelDerivationId="2"/>
+         <derivedFrom className="QueryByParameterPayload" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="queryId" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="queryId" className="QueryEvent" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="queryId" className="QueryByParameterPayload" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="queryId" className="QueryByParameterPayload" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="statusCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="statusCode" className="QueryEvent" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="statusCode" className="QueryByParameterPayload" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="statusCode" className="QueryByParameterPayload" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="QueryStatusCode"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="modifyCode" sortKey="3">
+            <annotations/>
+            <derivedFrom attributeName="modifyCode" className="QuerySpec" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="modifyCode" className="QueryByParameterPayload" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="modifyCode" className="QueryByParameterPayload" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ModifyIndicator"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="responseElementGroupId" sortKey="4">
+            <annotations/>
+            <derivedFrom attributeName="responseElementGroupId" className="QuerySpec" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="responseElementGroupId" className="QueryByParameterPayload" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="responseElementGroupId" className="QueryByParameterPayload" staticModelDerivationId="3"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="responseModalityCode" sortKey="5">
+            <annotations/>
+            <derivedFrom attributeName="responseModalityCode" className="QuerySpec" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="responseModalityCode" className="QueryByParameterPayload" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="responseModalityCode" className="QueryByParameterPayload" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ResponseModality"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="responsePriorityCode" sortKey="6">
+            <annotations/>
+            <derivedFrom attributeName="responsePriorityCode" className="QuerySpec" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="responsePriorityCode" className="QueryByParameterPayload" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="responsePriorityCode" className="QueryByParameterPayload" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="QueryPriority"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="initialQuantity" sortKey="7">
+            <annotations/>
+            <derivedFrom attributeName="initialQuantity" className="QuerySpec" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="initialQuantity" className="QueryByParameterPayload" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="initialQuantity" className="QueryByParameterPayload" staticModelDerivationId="3"/>
+            <type name="INT"/>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="initialQuantityCode" sortKey="8">
+            <annotations/>
+            <derivedFrom attributeName="initialQuantityCode" className="QuerySpec" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="initialQuantityCode" className="QueryByParameterPayload" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="initialQuantityCode" className="QueryByParameterPayload" staticModelDerivationId="3"/>
+            <type name="CE"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="QueryRequestLimit"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="RegistrationprocessActCode">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="RegistrationprocessActCode" staticModelDerivationId="2"/>
+         <derivedFrom className="RegistrationprocessActCode" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="RegistrationprocessActCode" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="RegistrationprocessActCode" staticModelDerivationId="3"/>
+            <type name="CD"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActRegistryCode"/></supplierVocabulary>
+         </attribute>
+         <attribute defaultValue="Registrationprocess.ActRegistryCode" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="semanticsText" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="semanticsText" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="semanticsText" className="RegistrationprocessActCode" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="semanticsText" className="RegistrationprocessActCode" staticModelDerivationId="3"/>
+            <type name="ST"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="SortControl">
+         <derivedFrom className="SortControl" staticModelDerivationId="1"/>
+         <derivedFrom className="SortControl" staticModelDerivationId="2"/>
+         <derivedFrom className="SortControl" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="sequenceNumber" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="sequenceNumber" className="SortControl" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="sequenceNumber" className="SortControl" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="sequenceNumber" className="SortControl" staticModelDerivationId="3"/>
+            <type name="INT"/>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="elementName" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="elementName" className="SortControl" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="elementName" className="SortControl" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="elementName" className="SortControl" staticModelDerivationId="3"/>
+            <type name="SC"/>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="directionCode" sortKey="3">
+            <annotations/>
+            <derivedFrom attributeName="directionCode" className="SortControl" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="directionCode" className="SortControl" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="directionCode" className="SortControl" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="Sequencing"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="StatusCodeParam">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="StatusCodeParam" staticModelDerivationId="2"/>
+         <derivedFrom className="StatusCodeParam" staticModelDerivationId="3"/>
+         <annotations>
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>If one of multiple status codes is to be selected, they are all included in the set.</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="*" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="StatusCodeParam" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="StatusCodeParam" staticModelDerivationId="3"/>
+            <type name="SET">
+               <argumentDatatype name="CS"/>
+            </type>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActStatus"/></supplierVocabulary>
+         </attribute>
+         <attribute defaultValue="StatusCode" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="semanticsText" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="semanticsText" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="semanticsText" className="StatusCodeParam" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="semanticsText" className="StatusCodeParam" staticModelDerivationId="3"/>
+            <type name="ST"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="actId" participantClassName="ActId" sortKey="Z">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="actId" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="actId" className="QueryByParameter" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="QueryByParameterPayload"/></association>
+   <association sortKey="2">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="authorId" participantClassName="AuthorId" sortKey="Z">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="authorId" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="authorId" className="QueryByParameter" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="QueryByParameterPayload"/></association>
+   <association sortKey="3">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="authorRoleCode" participantClassName="AuthorRoleCode" sortKey="Z">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="authorRoleCode" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="authorRoleCode" className="QueryByParameter" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="QueryByParameterPayload"/></association>
+   <association sortKey="4">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="effectiveTime" participantClassName="EffectiveTime" sortKey="Z">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="effectiveTime" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="effectiveTime" className="QueryByParameter" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="QueryByParameterPayload"/></association>
+   <association sortKey="5">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="patientId" participantClassName="PatientId" sortKey="Z">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="patientId" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="patientId" className="QueryByParameter" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="QueryByParameterPayload"/></association>
+   <association sortKey="6">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="registrationprocessActCode" participantClassName="RegistrationprocessActCode" sortKey="Z">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="registrationprocessActCode" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="registrationprocessActCode" className="QueryByParameter" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="QueryByParameterPayload"/></association>
+   <association sortKey="7">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="sortControl" participantClassName="SortControl" sortKey="Z">
+            <annotations/>
+            <derivedFrom associationEndName="sortControl" className="QuerySpec" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="sortControl" className="QuerySpec" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="sortControl" className="QuerySpec" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="QueryByParameterPayload"/></association>
+   <association sortKey="8">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="statusCodeParam" participantClassName="StatusCodeParam" sortKey="Z">
+            <annotations>
+                     
+                  <documentation><designComments>
+                        <text>
+                           <xhtml:p>If one of multiple status codes is to be selected, they are all included in the set.</xhtml:p>
+                        </text>
+                     </designComments></documentation></annotations>
+            <derivedFrom associationEndName="parameter" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="statusCodeParam" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="statusCodeParam" className="QueryByParameter" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="QueryByParameterPayload"/></association>
+</mif:staticModel>

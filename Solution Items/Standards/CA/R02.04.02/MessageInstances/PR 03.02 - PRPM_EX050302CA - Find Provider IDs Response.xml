@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><PRPM_IN306051CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/PRPM_IN306051CA.xsd">
+   <realmCode code="CA"/>
+   <id root="A1E688EC-3EFE-8A84-1513-56BCFAA4B27F"/>
+   <creationTime value="20090913213900.703-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="PRPM_IN306051CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://120.120.120.120"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.0.3" extension="DIS01"/>
+         <name>Good Health Clinic</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </sender>
+   <acknowledgement>
+      <typeCode code="AA"/>
+      <targetMessage>
+         <id root="C26CCDC0-9C6C-8026-E13D-A00C1EC2BE95"/>
+      </targetMessage>
+   </acknowledgement>
+   <controlActEvent classCode="CACT" moodCode="EVN">
+      <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.1" extension="57199175648"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="PRPM_TE306041CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090913213900.703-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <subject contextConductionInd="false" contextControlCode="ON" typeCode="SUBJ">
+         <registrationEvent classCode="REG" moodCode="EVN">
+            <statusCode code="active"/>
+            <subject typeCode="SBJ" contextControlCode="AN">
+               <healthCareProvider classCode="PROV">
+                  <id displayable="true" extension="1324356" root="2.16.840.1.113883.19.4.208"/>
+                  <code code="MD" codeSystem="2.16.840.1.113883.2.20.5.3"/>
+                  <name use="L">
+                     <prefix>Dr.</prefix>
+                     <given>Brian</given>
+                     <family>Bonesworth</family>
+                  </name>
+                  <healthCarePrincipalPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L">
+                        <prefix>Dr.</prefix>
+                        <given>Brian</given>
+                        <family>Bonesworth</family>
+                     </name>
+                  </healthCarePrincipalPerson>
+                  <issuingOrganization classCode="ORG" determinerCode="INSTANCE">
+                     <id root="B54A953C-9F1D-4385-A12A-C8FF7656027D" use="BUS"/>
+                     <name>Saskatchewan College of Physician &amp; Surgeons</name>
+                  </issuingOrganization>
+               </healthCareProvider>
+            </subject>
+            <custodian contextControlCode="AP" typeCode="CST">
+               <assignedDevice classCode="ASSIGNED">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.77.18"/>
+                  <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                     <name>Client Registry</name>
+                  </assignedRepository>
+                  <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                     <name>Saskatchewan</name>
+                  </representedRepositoryJurisdiction>
+               </assignedDevice>
+            </custodian>
+         </registrationEvent>
+      </subject>
+      <queryAck>
+         <queryId root="A111FBAD-95BC-C59C-38A0-932916B9F0B9"/>
+         <queryResponseCode code="OK"/>
+         <resultTotalQuantity value="1"/>
+         <resultCurrentQuantity value="1"/>
+         <resultRemainingQuantity value="0"/>
+      </queryAck>
+      <queryByParameter>
+         <queryId root="A111FBAD-95BC-C59C-38A0-932916B9F0B9"/>
+         <parameterList>
+            <administrativeGender>
+               <value code="M" codeSystem="2.16.840.1.113883.5.1"/>
+            </administrativeGender>
+            <assignedRoleType>
+               <value code="SP" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+            </assignedRoleType>
+            <jurisdiction>
+               <value code="SK" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+            </jurisdiction>
+            <providerID>
+               <value displayable="true" extension="1324356" root="2.16.840.1.113883.19.4.208"/>
+            </providerID>
+         </parameterList>
+      </queryByParameter>
+   </controlActEvent>
+</PRPM_IN306051CA>

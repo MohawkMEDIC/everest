@@ -1,0 +1,1205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2010 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.6"
+                 representationKind="flat"
+                 isSerializable="true"
+                 packageKind="id"
+                 name="020101">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="AM" subSection="FI"
+                        domain="AB"
+                        version="02"/>
+   <mif:header>
+      <mif:renderingInformation application="RoseTree 4.2.7">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl 8360 2009-10-26 06:00:22Z woody_beeler $
+  Base transform: $Id: ConvertBase.xsl 8360 2009-10-26 06:00:22Z woody_beeler $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl 7375 2009-01-26 19:26:53Z wbeeler $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+ Fix Names Transform: $Id: FixMifNames.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+  Base transform: $Id: ConvertBase.xsl 8360 2009-10-26 06:00:22Z woody_beeler $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $</mif:renderingNotes>
+      </mif:renderingInformation>
+      <mif:legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2008">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:designComments>
+            <mif:text>
+               <mif:p>The Patient Billing Post informer notifies the Patient Billing Post Tracker that the posting of a financial transaction to the Patient Billing Account is completed.</mif:p>
+            </mif:text>
+         </mif:designComments>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0229R1"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="AM" subSection="FI"
+                             domain="AB"
+                             version="02"
+                             id="020000"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel realmNamespace="UV" artifact="HD" root="DEFN" section="AM" subSection="FI"
+                             domain="AB"
+                             version="02"
+                             id="020100"/>
+   </mif:derivedFrom>
+   <mif:entryPoint name="FinancialTransaction" useKind="SemanticPayload"
+                   className="FinancialTransaction">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>
+                  <mif:p>Entry point for post financial transaction messages.</mif:p>
+               </mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:commonModelElementRef name="A_AccountPayorUniversal" cmetName="A_AccountPayorUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Account"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_AccountPayorUniversal"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="A_AccountPayorUniversal"/>
+         <mif:annotations/>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef name="A_BillableUniversal" cmetName="A_BillableUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActHeir"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_BillableUniversal"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="A_BillableUniversal"/>
+         <mif:annotations/>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef name="A_EncounterUniversal" cmetName="A_EncounterUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="PatientEncounter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="A_EncounterUniversal"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="A_EncounterUniversal"/>
+         <mif:annotations/>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="Account" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Account"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Account"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Account"/>
+         <mif:annotations/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassAccount" rootCode="ACCT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodEventOccurrence" rootCode="EVN" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>bank account, transit number, etc.</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="code"/>
+            <mif:type name="CD"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ActAccountCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="title" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="title"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="title"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="title"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+         <mif:attribute name="statusCode" sortKey="6" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="statusCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="statusCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="statusCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ActStatus"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="7" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>e.g.expiry date on credit card</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="balanceAmt" sortKey="8" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Account" attributeName="balanceAmt"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="balanceAmt"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="balanceAmt"/>
+            <mif:type name="MO"/>
+         </mif:attribute>
+         <mif:attribute name="currencyCode" sortKey="9" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Account" attributeName="currencyCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account" attributeName="currencyCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account" attributeName="currencyCode"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="Currency"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="interestRateQuantity" sortKey="10" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Account"
+                             attributeName="interestRateQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account"
+                             attributeName="interestRateQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account"
+                             attributeName="interestRateQuantity"/>
+            <mif:type name="RTO">
+               <mif:argumentDatatype name="MO"/>
+               <mif:argumentDatatype name="PQ"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="allowedBalanceQuantity" sortKey="11" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Account"
+                             attributeName="allowedBalanceQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Account"
+                             attributeName="allowedBalanceQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Account"
+                             attributeName="allowedBalanceQuantity"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="MO"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="Component" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Component"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Component"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>Used to reference sub-accounts</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Component" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Component" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipHasComponent" rootCode="COMP" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="Credit" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Credit"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Credit"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>Used to indicate which org should be charged for a particular transaction (e.g. employer) when that org is different than the insurance company.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Credit" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Credit" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipHasCredit" rootCode="CREDIT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef name="E_PersonUniversal" cmetName="E_PersonUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Person"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="E_PersonUniversal"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="E_PersonUniversal"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>Guarantor is scoped by the patient. Patient is also the subject of the account.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="FinancialTransaction" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="FinancialTransaction"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>To add to the balance of a patient billing account, the ActFinancialTransactionCode should be "CHRG" with a positive amount. To reduce this balance, the code would be "REV", again with a positive amount.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+            <mif:appInfo>
+               <mif:formalConstraint>
+                  <mif:text>
+                     <mif:p>Amount must be &gt;=0</mif:p>
+                  </mif:text>
+               </mif:formalConstraint>
+               <mif:formalConstraint>
+                  <mif:text>
+                     <mif:p>Amount must be &gt;=0</mif:p>
+                  </mif:text>
+               </mif:formalConstraint>
+            </mif:appInfo>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="FinancialTransaction"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassFinancialTransaction" rootCode="XACT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="FinancialTransaction"
+                             attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodEventOccurrence" rootCode="EVN" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="FinancialTransaction" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>type of transaction e.g. a charge, reversal, or payment</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="code"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="FinancialTransaction"
+                             attributeName="code"/>
+            <mif:type name="CD"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ActFinancialTransactionCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="5" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>transaction post date</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="FinancialTransaction"
+                             attributeName="effectiveTime"/>
+            <mif:type name="GTS"/>
+         </mif:attribute>
+         <mif:attribute name="amt" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction"
+                             attributeName="amt"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransaction"
+                             attributeName="amt"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="FinancialTransaction"
+                             attributeName="amt"/>
+            <mif:type name="MO"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="FinancialTransactionReason" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransactionReason"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="FinancialTransactionReason"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>Allows for posting 1 charge for multiple services</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="FinancialTransactionReason"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="FinancialTransactionReason"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipReason" rootCode="RSON" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="InvoiceElement" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElement"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>The service information (e.g. what was performed) is noted in A_Billable. The price of a service is noted in InvoiceElement. What is posted or charged is noted in FinancialTransaction. Where it was posted to is noted in Account.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElement"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassInvoiceElement" rootCode="INVE" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElement" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodEventOccurrence" rootCode="EVN" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElement" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="4" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>date that the invoice element is effective</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"
+                             attributeName="effectiveTime"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElement"
+                             attributeName="effectiveTime"/>
+            <mif:type name="TS"/>
+         </mif:attribute>
+         <mif:attribute name="unitQuantity" sortKey="5" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"
+                             attributeName="unitQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"
+                             attributeName="unitQuantity"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElement"
+                             attributeName="unitQuantity"/>
+            <mif:type name="RTO">
+               <mif:argumentDatatype name="PQ"/>
+               <mif:argumentDatatype name="PQ"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="unitPriceAmt" sortKey="6" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"
+                             attributeName="unitPriceAmt"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"
+                             attributeName="unitPriceAmt"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElement"
+                             attributeName="unitPriceAmt"/>
+            <mif:type name="RTO">
+               <mif:argumentDatatype name="MO"/>
+               <mif:argumentDatatype name="PQ"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="netAmt" sortKey="7" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>amount of the invoice element = unit quantity * unit price amount</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement" attributeName="netAmt"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement" attributeName="netAmt"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElement" attributeName="netAmt"/>
+            <mif:type name="MO"/>
+         </mif:attribute>
+         <mif:attribute name="factorNumber" sortKey="8" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"
+                             attributeName="factorNumber"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"
+                             attributeName="factorNumber"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElement"
+                             attributeName="factorNumber"/>
+            <mif:type name="REAL"/>
+         </mif:attribute>
+         <mif:attribute name="pointsNumber" sortKey="9" minimumMultiplicity="0" maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="InvoiceElement"
+                             attributeName="pointsNumber"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElement"
+                             attributeName="pointsNumber"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElement"
+                             attributeName="pointsNumber"/>
+            <mif:type name="REAL"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="InvoiceElementReason" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElementReason"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElementReason"/>
+         <mif:annotations/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="InvoiceElementReason"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="InvoiceElementReason"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipReason" rootCode="RSON" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="PatientRole" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Patient"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PatientRole"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PatientRole"/>
+         <mif:annotations/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PatientRole" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PatientRole" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="RoleClassPatient" rootCode="PAT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="2" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>patient identifier</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PatientRole" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PatientRole" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="confidentialityCode" sortKey="3" minimumMultiplicity="0"
+                        maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Role"
+                             attributeName="confidentialityCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PatientRole"
+                             attributeName="confidentialityCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PatientRole"
+                             attributeName="confidentialityCode"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="CE"/>
+            </mif:type>
+            <mif:vocabulary>
+               <mif:conceptDomain name="Confidentiality"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="veryImportantPersonCode" sortKey="4" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Patient"
+                             attributeName="veryImportantPersonCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PatientRole"
+                             attributeName="veryImportantPersonCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PatientRole"
+                             attributeName="veryImportantPersonCode"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="PatientImportance"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="PertinentInformation" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PertinentInformation"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PertinentInformation"/>
+         <mif:annotations/>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PertinentInformation"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PertinentInformation"
+                             attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipPertains" rootCode="PERT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="Posting" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Posting"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Posting"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>In reality, the financial transaction is either a credit or a debit to the account. In this case, only 1 is specified per financial transaction</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Posting" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Posting" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name=""/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="Reference" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Reference"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Reference"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>To reference a transaction that is being reversed.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                             attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Reference" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Reference" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActRelationshipRefersTo" rootCode="REFR" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="ReferencedFinancialTransaction" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="FinancialTransaction"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ReferencedFinancialTransaction"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ReferencedFinancialTransaction"/>
+         <mif:annotations/>
+         <mif:attribute name="classCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ReferencedFinancialTransaction"
+                             attributeName="classCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ReferencedFinancialTransaction"
+                             attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActClassFinancialTransaction" rootCode="XACT" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ReferencedFinancialTransaction"
+                             attributeName="moodCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ReferencedFinancialTransaction"
+                             attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ActMoodEventOccurrence" rootCode="EVN" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="0" maximumMultiplicity="*"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ReferencedFinancialTransaction"
+                             attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ReferencedFinancialTransaction"
+                             attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="Subject" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Subject"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Subject"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>The named party for the account. For a patient billing account, this is the patient</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="typeCode" sortKey="1" isImmutable="true" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="Participation" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="Subject" attributeName="typeCode"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="Subject" attributeName="typeCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:valueSet name="ParticipationTargetSubject" rootCode="SBJ" codingStrength="CNE"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association sortKey="2">
+      <mif:traversableConnection name="component" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="BE________"
+                                 participantClassName="Component">
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>Used to reference sub-accounts</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Act" associationEndName="component"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Act" associationEndName="component"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Account"/>
+   </mif:association>
+   <mif:association sortKey="3">
+      <mif:traversableConnection name="pertainsTo" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="CD________"
+                                 participantClassName="PertinentInformation">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="inboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Act" associationEndName="pertainsTo"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Act" associationEndName="pertainsTo"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Account"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="subject" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="AAA_______"
+                                 participantClassName="Subject">
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>The named party for the account. For a patient billing account, this is the patient</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:derivedFrom staticModelDerivationId="1" className="Act" associationEndName="participation"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Act" associationEndName="subject"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Act" associationEndName="subject"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Account"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="account" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="Account">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ActRelationship"
+                          associationEndName="account"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ActRelationship"
+                          associationEndName="account"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Component"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="account" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="A_AccountPayorUniversal">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ActRelationship"
+                          associationEndName="accountPayor"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ActRelationship"
+                          associationEndName="accountPayor"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Credit"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="credit" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BDOAA_____"
+                                 participantClassName="Credit">
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>Used to indicate which org should be charged for a particular transaction (e.g. employer) when that org is different than the insurance company.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Act" associationEndName="credit"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Act" associationEndName="credit"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="FinancialTransaction"/>
+   </mif:association>
+   <mif:association sortKey="2">
+      <mif:traversableConnection name="reason" minimumMultiplicity="1" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="BCA_______"
+                                 participantClassName="FinancialTransactionReason">
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>Allows for posting 1 charge for multiple services</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Act" associationEndName="reason"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Act" associationEndName="reason"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="FinancialTransaction"/>
+   </mif:association>
+   <mif:association sortKey="4">
+      <mif:traversableConnection name="reference" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BDK_______"
+                                 participantClassName="Reference">
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>To reference a transaction that is being reversed.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Act" associationEndName="reference"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Act" associationEndName="reference"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="FinancialTransaction"/>
+   </mif:association>
+   <mif:association sortKey="3">
+      <mif:traversableConnection name="sourceOf" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="Posting">
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>In reality, the financial transaction is either a credit or a debit to the account. In this case, only 1 is specified per financial transaction</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Act" associationEndName="posting"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Act" associationEndName="posting"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="FinancialTransaction"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="invoiceElement" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="InvoiceElement">
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>The service information (e.g. what was performed) is noted in A_Billable. The price of a service is noted in InvoiceElement. What is posted or charged is noted in FinancialTransaction. Where it was posted to is noted in Account.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ActRelationship"
+                          associationEndName="invoiceElement"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ActRelationship"
+                          associationEndName="invoiceElement"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="FinancialTransactionReason"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="reason" minimumMultiplicity="0" maximumMultiplicity="*"
+                                 isMandatory="false"
+                                 sortKey="BCA_______"
+                                 participantClassName="InvoiceElementReason">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"
+                          associationEndName="outboundRelationship"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Act" associationEndName="reason"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Act" associationEndName="reason"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="InvoiceElement"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="billableActChoice" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="A_BillableUniversal">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ActRelationship"
+                          associationEndName="billable"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ActRelationship"
+                          associationEndName="billable"/>
+         <mif:choiceItem className="BillableClinicalService" traversalName="billableClinicalService"/>
+         <mif:choiceItem className="BillableClinicalProduct" traversalName="billableClinicalProduct"/>
+         <mif:choiceItem className="SupplyEvent" traversalName="supplyEvent1"/>
+         <mif:choiceItem className="AccomodationSupplied" traversalName="accomodationSupplied"/>
+         <mif:choiceItem className="SupplyEvent" traversalName="supplyEvent2"/>
+         <mif:choiceItem className="OralHealthService" traversalName="oralHealthService"/>
+         <mif:choiceItem className="CrossReference" traversalName="crossReference"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="InvoiceElementReason"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="patientPerson" minimumMultiplicity="0" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="E_PersonUniversal">
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>Guarantor is scoped by the patient. Patient is also the subject of the account.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:derivedFrom staticModelDerivationId="1" className="Role" associationEndName="player"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Role" associationEndName="patientPerson"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Role" associationEndName="patientPerson"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PatientRole"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="encounter" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="AZ"
+                                 participantClassName="A_EncounterUniversal">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="source"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ActRelationship"
+                          associationEndName="encounter"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ActRelationship"
+                          associationEndName="encounter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="PertinentInformation"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="account" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="Account">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ActRelationship"
+                          associationEndName="account"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ActRelationship"
+                          associationEndName="account"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Posting"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="referencedFinancialTransaction" minimumMultiplicity="1"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="ReferencedFinancialTransaction">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ActRelationship"
+                          associationEndName="target"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ActRelationship"
+                          associationEndName="referencedFinancialTransaction"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ActRelationship"
+                          associationEndName="referencedFinancialTransaction"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Reference"/>
+   </mif:association>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="patientRole" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="BZ"
+                                 participantClassName="PatientRole">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="Participation" associationEndName="role"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="Participation"
+                          associationEndName="patientRole"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="Participation"
+                          associationEndName="patientRole"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="Subject"/>
+   </mif:association>
+</mif:staticModel>

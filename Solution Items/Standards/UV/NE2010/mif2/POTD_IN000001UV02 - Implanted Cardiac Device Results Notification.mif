@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="000001"
+                 title="Implantable Cardiac Device Event Complete Notification">
+   <mif:businessName name="Implanted Cardiac Device Results Notification"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="TD" artifact="IN"
+                        realmNamespace="UV"
+                        version="02"
+                        id="000001"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>This interaction is used by the Implanted Device interrogation system to notify the receiving clinical information system of the observation results from the interrogation.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="TD" artifact="TE"
+                             realmNamespace="UV"
+                             version="02"
+                             id="000001"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="TD"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="02"
+                             id="000001"
+                             traversalName="observation"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason/>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="PO" domain="TD" artifact="IN"
+                             realmNamespace="UV"
+                             version="02"
+                             id="000001"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="PO" domain="TD" artifact="TE"
+                              realmNamespace="UV"
+                              version="02"
+                              id="000001"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

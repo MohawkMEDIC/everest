@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="011070"
+                 title="Medication Order Order Activate Fulfillment Request">
+   <mif:businessName name="Medication Order Fulfillment Request"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="RX" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="011070"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Requests that the specified facility dispense the medication prescription transmitted by this interaction. This may be the interaction between a provider and a pharmacy or between a repository and a pharmacy.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="RX" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="010770"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="RX"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="010120"
+                             traversalName="combinedMedicationRequest"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

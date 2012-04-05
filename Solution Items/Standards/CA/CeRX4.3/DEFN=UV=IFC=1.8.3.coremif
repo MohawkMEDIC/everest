@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:staticModelInterfacePackage xmlns:mif="urn:hl7-org:v3/mif2" name="CMETinfo" packageKind="name"
+                                 schemaVersion="2.1.3">
+   <mif:packageLocation root="DEFN" artifact="IFC" realmNamespace="UV" version="1.8.3"/>
+   <mif:header>
+      <mif:renderingInformation application="v3-generator"/>
+   </mif:header>
+   <mif:commonModelElementDefinition name="A_PrescriptionDrugDetail" attributionLevel="drugDetail" entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="SBADM" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A drug prescription with details</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="HM" subSection="PO" domain="RX" artifact="MT"
+                            realmNamespace="CA"
+                            id="060340"/>
+      <mif:entryClass name="CombinedMedicationRequest"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="A_PrescriptionDeviceDetail" attributionLevel="deviceDetail"
+                                     entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="SBADM" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A device prescription with details</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="HM" subSection="PO" domain="RX" artifact="MT"
+                            realmNamespace="CA"
+                            id="060040"/>
+      <mif:entryClass name="DeviceRequest"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="A_PrescriptionDrugSummary" attributionLevel="drugSummary" entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="SBADM" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A drug prescription summary</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="HM" subSection="PO" domain="RX" artifact="MT"
+                            realmNamespace="CA"
+                            id="030040"/>
+      <mif:entryClass name="CombinedMedicationRequest"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="A_PrescriptionDeviceSummary" attributionLevel="deviceSummary"
+                                     entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="SBADM" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A device prescription summary</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="HM" subSection="PO" domain="RX" artifact="MT"
+                            realmNamespace="CA"
+                            id="060060"/>
+      <mif:entryClass name="DevicePrescription"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="A_AnnotationUniversal" attributionLevel="universal" entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="ACT" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Allows notes to be attached to clinical objects</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="120600"/>
+      <mif:entryClass name="Annotation"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="A_ConsentEventBasic" attributionLevel="basic" entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="CONS" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Identifies consent associated with a particular action</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="470000"/>
+      <mif:entryClass name="ConsentEvent"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="A_IndicationBasicBasic" attributionLevel="basic" entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="OBS" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>An indication for clinical intervention</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="HM" subSection="PO" domain="RX" artifact="MT"
+                            realmNamespace="CA"
+                            id="980050"/>
+      <mif:entryClass name="Indications">
+         <mif:class name="ObservationDiagnosis"/>
+         <mif:class name="ObservationSymptom"/>
+         <mif:class name="OtherIndication"/>
+      </mif:entryClass>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="A_IssueEventManaged" attributionLevel="managed" entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="ALRT" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A warning or error being overridden</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="HM" subSection="PO" domain="RX" artifact="MT"
+                            realmNamespace="CA"
+                            id="980010"/>
+      <mif:entryClass name="DetectedIssueEvent"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="A_IssueEventDetected" attributionLevel="detected" entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="ALRT" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A warning or error</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="HM" subSection="PO" domain="RX" artifact="MT"
+                            realmNamespace="CA"
+                            id="980020"/>
+      <mif:entryClass name="DetectedIssueEvent"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="A_IssueEventReported" attributionLevel="reported" entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="ALRT" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A warning or error</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="HM" subSection="PO" domain="RX" artifact="MT"
+                            realmNamespace="CA"
+                            id="980030"/>
+      <mif:entryClass name="DetectedIssueEvent"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="A_SubstanceAdministrationRequestDosage" attributionLevel="dosage"
+                                     entryKind="Act">
+      <mif:definingVocabulary>
+         <mif:code code="SBADM" codeSystem="2.16.840.1.113883.5.6"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Used to express drug dosage instructions at a (relatively) detailed level</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="HM" subSection="PO" domain="RX" artifact="MT"
+                            realmNamespace="CA"
+                            id="980040"/>
+      <mif:entryClass name="DosageInstruction"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_AssignedDeviceIdentified-confirmable"
+                                     attributionLevel="identified-confirmable"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="ASSIGNED" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>An application identified by an identifier and name</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="090302"/>
+      <mif:entryClass name="AssignedDevice"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_AssignedPersonInformational" attributionLevel="informational"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="ASSIGNED" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A healthcare provider with basic information for identification and recognition</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="090107"/>
+      <mif:entryClass name="AssignedPerson"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_ManufacturedDeviceIdentified-informational"
+                                     attributionLevel="identified-informational"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="MANU" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A clinical device</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="141007"/>
+      <mif:entryClass name="ManufacturedProduct"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_MedicationOrderable" attributionLevel="orderable"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="MED" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A medication identified at it's orderable level</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="220100"/>
+      <mif:entryClass name="Medication"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_MedicationOrderable-response" attributionLevel="orderable-response"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="MED" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A medication identified at it's orderable response level</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="220110"/>
+      <mif:entryClass name="Medication"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_MedicationAdministrable" attributionLevel="administrable"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="MED" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A medication identified at it's dispensable or administrable level</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="220200"/>
+      <mif:entryClass name="Medication"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_MedicationAdministrable-response"
+                                     attributionLevel="administrable-response"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="MED" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A medication identified at it's dispensable or administrable response level</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="220210"/>
+      <mif:entryClass name="Medication"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_PatientAnimalContact" attributionLevel="contact"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="PAT" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A patient with sufficient information to verify their identity</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="050303"/>
+      <mif:entryClass name="Patient"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_PatientPersonIdentified-confirmable"
+                                     attributionLevel="identified-confirmable"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="PAT" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A patient with minimal information required on a summary</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="050202"/>
+      <mif:entryClass name="Patient"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_PatientPersonContact" attributionLevel="contact"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="PAT" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>A patient with sufficient information to verify their identity</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="050203"/>
+      <mif:entryClass name="Patient"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_ResponsiblePartyContact" attributionLevel="contact"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="AGNT" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Provides enough information to contact a person or organization. </mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="040205"/>
+      <mif:entryClass name="ResponsibleParty"/>
+   </mif:commonModelElementDefinition>
+   <mif:commonModelElementDefinition name="R_ServiceDeliveryLocationContact" attributionLevel="contact"
+                                     entryKind="RolePerformedOnly">
+      <mif:definingVocabulary>
+         <mif:code code="SDLOC" codeSystem="2.16.840.1.113883.5.110"/>
+      </mif:definingVocabulary>
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>Used to define a service delivery location with contact information</mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+      <mif:boundStaticModel root="DEFN" section="IM" subSection="CO" domain="CT" artifact="MT"
+                            realmNamespace="CA"
+                            id="240003"/>
+      <mif:entryClass name="ServiceDeliveryLocation"/>
+   </mif:commonModelElementDefinition>
+</mif:staticModelInterfacePackage>

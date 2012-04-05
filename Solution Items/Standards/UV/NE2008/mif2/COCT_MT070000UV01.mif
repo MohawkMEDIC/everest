@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" isAbstract="false" isSerializable="true" name="01" packageKind="version" representationKind="flat" schemaVersion="2.0" xsi:schemaLocation="">
+   <mif:packageLocation artifact="MT" domain="CT" id="070000" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2008"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0" y="0"/>
+         <mif:size height="287" width="540"/>
+      </mif:graphElement>
+   <entryPoint name="R_LocationLocatedEntity universal"><mif:graphElement containerDiagramName="Main" shapeId="Sheet.349">
+            <mif:position x="303" y="0"/>
+            <mif:size height="94" width="234"/>
+            <mif:anchorage connectToShapeId="Sheet.349">
+               <mif:position x="303" y="53"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.109">
+                     <mif:position x="175" y="72"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement></entryPoint><class className="E_PlaceUniversal" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.1" shapeTemplate="CMET">
+               <mif:position x="265" y="226"/>
+               <mif:size height="60" width="96"/>
+            </mif:graphElement></class><class className="LocatedEntity" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.109" shapeTemplate="Role">
+               <mif:position x="29" y="2"/>
+               <mif:size height="100" width="146"/>
+            </mif:graphElement></class><association className="E_PlaceUniversal" relationshipName="location"><mif:graphElement connectToShapeId="Sheet.109" containerDiagramName="Main">
+                     <mif:position x="160" y="92"/>
+                     <mif:graphEdge>
+                        <mif:anchor connectToShapeId="Sheet.1">
+                           <mif:position x="265" y="256"/>
+                        </mif:anchor>
+                     </mif:graphEdge>
+                  </mif:graphElement></association></mif:graphicRepresentation>
+   <derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel artifact="RM" domain="CT" id="070000" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel artifact="HD" domain="CT" id="070000" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   </derivedFrom>
+   <entryPoint className="LocatedEntity" id="COCT_MT070000UV01" isAbstract="false" name="R_LocationLocatedEntity universal">
+      <mif:annotations>
+         
+      <documentation><mif:description>
+            <mif:text>15 Mar 2004 CMET used to identify the physical presence of an entity (e.g. location of a device). Allows for nested-definitions of locations (e.g. place within a place within a place).</mif:text>
+         </mif:description></documentation></mif:annotations>
+      
+   </entryPoint>
+   <containedClass>
+      <mif:commonModelElementRef name="E_PlaceUniversal">
+         <derivedFrom className="Place" staticModelDerivationId="1"/>
+         <derivedFrom className="E_PlaceUniversal" staticModelDerivationId="2"/>
+         <derivedFrom className="E_PlaceUniversal" staticModelDerivationId="3"/>
+         <supplierVocabulary><vocabularyDomain xmlns="" name="EntityClass"/></supplierVocabulary>
+         
+         <cmet name="COCT_MT710000UV01"/>
+      </mif:commonModelElementRef>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="LocatedEntity">
+         <derivedFrom className="Role" staticModelDerivationId="1"/>
+         <derivedFrom className="LocatedEntity" staticModelDerivationId="2"/>
+         <derivedFrom className="LocatedEntity" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="LocatedEntity" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="LocatedEntity" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="LOCE" codeSystemName="RoleClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="id" sortKey="2">
+            <derivedFrom attributeName="id" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="LocatedEntity" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="LocatedEntity" staticModelDerivationId="3"/>
+            <mif:type name="SET">
+               <argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="addr" sortKey="3">
+            <derivedFrom attributeName="addr" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="addr" className="LocatedEntity" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="addr" className="LocatedEntity" staticModelDerivationId="3"/>
+            <mif:type name="BAG">
+               <argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="telecom" sortKey="4">
+            <derivedFrom attributeName="telecom" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="telecom" className="LocatedEntity" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="telecom" className="LocatedEntity" staticModelDerivationId="3"/>
+            <mif:type name="BAG">
+               <argumentDatatype name="TEL"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="statusCode" sortKey="5">
+            <derivedFrom attributeName="statusCode" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="statusCode" className="LocatedEntity" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="statusCode" className="LocatedEntity" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="RoleStatus"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="effectiveTime" sortKey="6">
+            <derivedFrom attributeName="effectiveTime" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="effectiveTime" className="LocatedEntity" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="effectiveTime" className="LocatedEntity" staticModelDerivationId="3"/>
+            <mif:type name="IVL">
+               <argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <association sortKey="0">
+      
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="location" participantClassName="E_PlaceUniversal" sortKey="BZ">
+            <derivedFrom associationEndName="scoper" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="location" className="LocatedEntity" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="location" className="LocatedEntity" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="LocatedEntity">
+            <derivedFrom associationEndName="scopedRole" className="Entity" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+</mif:staticModel>

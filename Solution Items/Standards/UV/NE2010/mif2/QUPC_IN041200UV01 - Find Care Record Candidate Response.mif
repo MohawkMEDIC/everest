@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="041200"
+                 title="Query Care Record Event Find Candidate Query Response">
+   <mif:businessName name="Find Care Record Candidate Response"/>
+   <mif:packageLocation root="DEFN" section="IM" subSection="QU" domain="PC" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="041200"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>A response to a query to find candidate Care Records that match the query criteria. A list of summarized Care Records are returned in this response.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="IM" subSection="QU" domain="PC" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="041200"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000300">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MF"
+                          domain="MI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700712"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="RegisteredAct" root="DEFN" section="HM" subSection="RE"
+                             domain="PC"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="004005"
+                             traversalName="careProvisionEvent"/>
+         <mif:parameterModel parameterName="QueryByParameter" root="DEFN" section="IM" subSection="QU"
+                             domain="PC"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="040100"
+                             traversalName="parameterList"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

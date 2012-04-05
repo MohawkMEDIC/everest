@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" isAbstract="false" isSerializable="true" name="02" packageKind="version" representationKind="flat" schemaVersion="2.0" xsi:schemaLocation="">
+   <mif:packageLocation artifact="MT" domain="PA" id="900103" realmNamespace="UV" root="DEFN" section="AM" subSection="PR" version="02"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2008"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0" y="0"/>
+         <mif:size height="1056" width="816"/>
+      </mif:graphElement>
+   <entryPoint name="Document Validity Verification Request Rejected"><mif:graphElement containerDiagramName="Main" shapeId="Sheet.5">
+            <mif:position x="251" y="382"/>
+            <mif:size height="69" width="316"/>
+            <mif:anchorage connectToShapeId="Sheet.5">
+               <mif:position x="410" y="451"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.1">
+                     <mif:position x="408" y="532"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement></entryPoint><class className="ValidityVerfication" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.1" shapeTemplate="Act">
+               <mif:position x="345" y="532"/>
+               <mif:size height="72" width="124"/>
+            </mif:graphElement></class></mif:graphicRepresentation>
+   <derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel artifact="RM" domain="PA" id="900103" realmNamespace="UV" root="DEFN" section="AM" subSection="PR" version="02"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel artifact="HD" domain="PA" id="900103" realmNamespace="UV" root="DEFN" section="AM" subSection="PR" version="02"/>
+   </derivedFrom>
+   <entryPoint className="ValidityVerfication" id="PRPA_MT900103UV02" isAbstract="false" name="Document Validity Verification Request Rejected">
+      <mif:annotations>
+         
+      <documentation><mif:description>
+            <mif:text>This RMIM identifies the document validity verification request that has been rejected by the filler. The reason(s) for the rejection can be found in the message wrappers.</mif:text>
+         </mif:description></documentation></mif:annotations>
+      
+   </entryPoint>
+   <containedClass>
+      <mif:class isAbstract="false" name="ValidityVerfication">
+         <derivedFrom className="Observation" staticModelDerivationId="1"/>
+         <derivedFrom className="ValidityVerfication" staticModelDerivationId="2"/>
+         <derivedFrom className="ValidityVerfication" staticModelDerivationId="3"/>
+         
+         <mif:annotations>
+            
+         <documentation><mif:definition>
+               <mif:text>
+                  <xhtml:p>An act identifying a request for verification</xhtml:p>
+               </mif:text>
+            </mif:definition></documentation></mif:annotations>
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="ValidityVerfication" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="ValidityVerfication" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="VERIF" codeSystemName="ActClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2"><enumerationValues>RQO</enumerationValues>
+            <derivedFrom attributeName="moodCode" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="ValidityVerfication" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="ValidityVerfication" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="RQO" codeSystemName="ActMood"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="id" sortKey="3">
+            <mif:annotations>
+               
+            <documentation><mif:definition>
+                  <mif:text>
+                     <xhtml:p>Identifier for the verification request</xhtml:p>
+                  </mif:text>
+               </mif:definition></documentation></mif:annotations>
+            <derivedFrom attributeName="id" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="ValidityVerfication" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="ValidityVerfication" staticModelDerivationId="3"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+</mif:staticModel>

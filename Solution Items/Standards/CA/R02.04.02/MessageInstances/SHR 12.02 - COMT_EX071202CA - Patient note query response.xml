@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><COMT_IN300202CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/COMT_IN300202CA.xsd">
+   <realmCode code="CA"/>
+   <id root="2709DF27-79B2-50BC-76BD-ECD87D334CDA"/>
+   <creationTime value="20090915225028.328-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="COMT_IN300202CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://120.120.120.120"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.0.3" extension="DIS01"/>
+         <name>Good Health Clinic</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </sender>
+   <acknowledgement>
+      <typeCode code="AA"/>
+      <targetMessage>
+         <id root="3FB06A5E-60BF-B530-C60A-574997BCBF97"/>
+      </targetMessage>
+   </acknowledgement>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.1" extension="485308755065"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="COMT_TE300202CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090915225027.328-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <family>Nuclear</family>
+                  <given>John</given>
+                  <prefix>Mr.</prefix>
+                  <suffix>II</suffix>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19480712"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <annotation classCode="ACT" moodCode="EVN">
+            <id root="E5A79A69-CB82-4EF8-9C8F-6A74AAEA1DDA" use="BUS"/>
+            <code code="ANNLAB" codeSystem="2.16.840.1.113883.5.4"/>
+            <text>Lab requisitions usually don't end up at the lab. Patient needs to be prompted/reminded to go to the lab when requested.</text>
+            <statusCode code="completed"/>
+            <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+            <author typeCode="AUT">
+               <time value="20090113110251-0500"/>
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity>
+            </author>
+            <location typeCode="LOC">
+               <serviceDeliveryLocation classCode="SDLOC">
+                  <id displayable="true" extension="7-865733-2" root="2.16.840.1.113883.19.3.291.3"/>
+                  <code code="OF" codeSystem="2.16.840.1.113883.5.111"/>
+                  <addr use="PHYS">1001 Village Avenue<delimiter/>
+                     <city>Ann Arbor</city>
+                     <state>MI</state>
+                     <postalCode>99999</postalCode>
+                  </addr>
+                  <telecom use="WP" value="tel:+1-555-555-4001"/>
+                  <location classCode="PLC" determinerCode="INSTANCE">
+                     <name>Community Urgent Care</name>
+                  </location>
+               </serviceDeliveryLocation>
+            </location>
+         </annotation>
+      </subject>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <annotation classCode="ACT" moodCode="EVN">
+            <id root="E5A79A69-CB82-4EF8-9C8F-6A74AAEA1DDA" use="BUS"/>
+            <code code="ANNMED" codeSystem="2.16.840.1.113883.5.4"/>
+            <text>Patient is unable to swallow tablets of any significant size</text>
+            <statusCode code="completed"/>
+            <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+            <author typeCode="AUT">
+               <time value="20090113110251-0500"/>
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity>
+            </author>
+            <location typeCode="LOC">
+               <serviceDeliveryLocation classCode="SDLOC">
+                  <id displayable="true" extension="7-865733-2" root="2.16.840.1.113883.19.3.291.3"/>
+                  <code code="OF" codeSystem="2.16.840.1.113883.5.111"/>
+                  <addr use="PHYS">1001 Village Avenue<delimiter/>
+                     <city>Ann Arbor</city>
+                     <state>MI</state>
+                     <postalCode>99999</postalCode>
+                  </addr>
+                  <telecom use="WP" value="tel:+1-555-555-4001"/>
+                  <location classCode="PLC" determinerCode="INSTANCE">
+                     <name>Community Urgent Care</name>
+                  </location>
+               </serviceDeliveryLocation>
+            </location>
+         </annotation>
+      </subject>
+      <queryAck>
+         <queryId root="C30CFEA4-4F19-A2A5-E14B-669F703DDCC2"/>
+         <queryResponseCode code="NF"/>
+         <resultTotalQuantity value="0"/>
+         <resultCurrentQuantity value="0"/>
+         <resultRemainingQuantity value="0"/>
+      </queryAck>
+      <queryByParameter>
+         <queryId root="C30CFEA4-4F19-A2A5-E14B-669F703DDCC2"/>
+         <parameterList>
+            <patientNoteCategoryCode>
+               <value code="ANNMED" codeSystem="2.16.840.1.113883.5.4"/>
+            </patientNoteCategoryCode>
+         </parameterList>
+      </queryByParameter>
+   </controlActEvent>
+</COMT_IN300202CA>

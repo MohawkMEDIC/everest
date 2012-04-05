@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{62C136F4-941F-40C3-840A-9C9F2084385F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MohawkCollege.EHR.gpmr.Pipeline.Compiler</RootNamespace>
+    <AssemblyName>MohawkCollege.EHR.gpmr.Pipeline.Compiler</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MohawkCollege.EHR.gpmr.Pipeline.Compiler.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\MohawkCollege.EHR.gpmr.Pipeline.Compiler.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TFS Build - Check-in|AnyCPU' ">
+    <OutputPath>bin\TFS Build - Check-in\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TFS Build - Nightly|AnyCPU' ">
+    <OutputPath>bin\TFS Build - Nightly\</OutputPath>
+    <DocumentationFile>bin\TFS Build - Nightly\MohawkCollege.EHR.gpmr.Pipeline.Compiler.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ICompiler.cs" />
+    <Compile Include="IModelElementCompiler.cs" />
+    <Compile Include="IPackageCompiler.cs" />
+    <Compile Include="Mif20\Compilers\InteractionCompiler.cs" />
+    <Compile Include="Mif20\Compilers\RepositoryCompiler.cs" />
+    <Compile Include="Mif20\Compilers\SerializedStaticModelCompiler.cs" />
+    <Compile Include="Mif20\Compilers\StaticInterfaceCompiler.cs" />
+    <Compile Include="Mif20\Compilers\StaticModelCompiler.cs" />
+    <Compile Include="Mif20\Compilers\StaticModelInterfaceCompiler.cs" />
+    <Compile Include="Mif20\Compilers\VocabularyModelCompiler.cs" />
+    <Compile Include="Mif20\Parsers\ClassParser.cs" />
+    <Compile Include="Mif20\Parsers\CommonTypeReferenceParser.cs" />
+    <Compile Include="Mif20\Parsers\DocumentationParser.cs" />
+    <Compile Include="Mif20\Parsers\EnumerationParser.cs" />
+    <Compile Include="Mif20\Parsers\PackageParser.cs" />
+    <Compile Include="Mif20\Parsers\PropertyParser.cs" />
+    <Compile Include="Mif20\Parsers\StateMachineParser.cs" />
+    <Compile Include="Mif20\Parsers\SubsystemParser.cs" />
+    <Compile Include="Mif20\Parsers\TypeParameterParser.cs" />
+    <Compile Include="Mif20\Parsers\TypeReferenceParser.cs" />
+    <Compile Include="MifCompiler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MohawkCollege.EHR.HL7v3.MIF.MIF20\MohawkCollege.EHR.HL7v3.MIF.MIF20.csproj">
+      <Project>{010ED4F3-6714-4B52-8561-85F31889B5F8}</Project>
+      <Name>MohawkCollege.EHR.HL7v3.MIF.MIF20</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.COR\MohawkCollege.EHR.gpmr.COR.csproj">
+      <Project>{6C99D22F-AD3D-4532-9441-C0E616C87261}</Project>
+      <Name>MohawkCollege.EHR.gpmr.COR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.Pipeline\MohawkCollege.EHR.gpmr.Pipeline.csproj">
+      <Project>{3EABF240-372F-4805-BFBF-133E65B8EC71}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

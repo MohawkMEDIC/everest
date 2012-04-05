@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="201311"
+                 title="Patient Livingsubject Event Activate Request">
+   <mif:businessName name="Patient Registry Add Request"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="PA" artifact="IN"
+                        realmNamespace="UV"
+                        version="02"
+                        id="201311"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>A user <mif:b>initiates a request</mif:b> to <mif:b>add </mif:b>a record to a patient registry.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PA" artifact="TE"
+                             realmNamespace="UV"
+                             version="02"
+                             id="201311"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MF"
+                          domain="MI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700721"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="RegisteredRole" root="DEFN" section="AM" subSection="PR"
+                             domain="PA"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="02"
+                             id="201301"
+                             traversalName="patient"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>A Request Fufiller application role is responsible for informing a requesting application role if its activation request is accepted</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="AM" subSection="PR" domain="PA" artifact="IN"
+                             realmNamespace="UV"
+                             version="02"
+                             id="201312"/>
+      <mif:invokeTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PA" artifact="TE"
+                              realmNamespace="UV"
+                              version="02"
+                              id="201312"/>
+   </mif:receiverResponsibilities>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>A Request Fufiller application role is responsible for informing a requesting application role if its activation request is rejected and why</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="AM" subSection="PR" domain="PA" artifact="IN"
+                             realmNamespace="UV"
+                             version="02"
+                             id="201313"/>
+      <mif:invokeTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PA" artifact="TE"
+                              realmNamespace="UV"
+                              version="02"
+                              id="201313"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

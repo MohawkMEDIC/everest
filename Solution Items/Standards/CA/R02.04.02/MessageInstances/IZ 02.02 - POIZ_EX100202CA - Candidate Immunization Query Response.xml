@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><POIZ_IN021020CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/POIZ_IN021020CA.xsd">
+   <realmCode code="CA"/>
+   <id root="339B0981-4926-AA3A-DA11-4A02DB6708A9"/>
+   <creationTime value="20090916220351.031-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="POIZ_IN021020CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://120.120.120.120"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.0.3" extension="DIS01"/>
+         <name>Good Health Clinic</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </sender>
+   <acknowledgement>
+      <typeCode code="AA"/>
+      <targetMessage>
+         <id root="17773E24-8126-168F-9575-6B1023BE9D71"/>
+      </targetMessage>
+   </acknowledgement>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.1" extension="02478287700"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="POIZ_TE021020UV"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090916220349.031-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <immunization classCode="SBADM" moodCode="EVN" negationInd="false">
+            <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="111116" root="2.55.444.1.113883.5.1053"/>
+            <code code="IMMUNIZ" codeSystem="2.16.840.1.113883.5.4"/>
+            <statusCode code="completed"/>
+            <effectiveTime xsi:type="TS" specializationType="TS.DATE" value="20090911"/>
+            <uncertaintyCode code="N" codeSystem="2.16.840.1.113883.5.1053"/>
+            <subject contextControlCode="OP" typeCode="SBJ">
+               <patient classCode="PAT">
+                  <id displayable="true" root="2.16.840.1.113883.4.20" extension="688112888"/>
+                  <addr use="H PST PHYS">2222 Home Street<delimiter/>
+                     <city>Edmonton</city>
+                     <delimiter>,</delimiter>
+                     <state code="CA-AB" codeSystem="2.16.840.1.113883.5.28">Alberta</state>
+                     <delimiter/>
+                     <country code="CAN" codeSystem="2.16.840.1.113883.5.28">Canada</country>
+                     <postalCode>T5K 2B9</postalCode>
+                  </addr>
+                  <telecom use="H" specializationType="TEL.PHONE" value="tel:+1-780-555-1234"/>
+                  <patientPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" specializationType="PN.BASIC">
+                        <family>King</family>
+                        <given>Pauline</given>
+                     </name>
+                     <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="F"/>
+                     <birthTime value="20020912"/>
+                  </patientPerson>
+               </patient>
+            </subject>
+            <consumable contextControlCode="OP" typeCode="CSM">
+               <administerableMedicine classCode="ADMM">
+                  <administerableVaccine classCode="MMAT" determinerCode="KIND">
+                     <code code="61153008" codeSystem="2.16.840.1.113883.6.96"/>
+                     <name>Priorix MMR</name>
+                     <formCode code="APPFUL" codeSystem="2.16.840.1.113883.5.85"/>
+                     <lotNumberText>456BCD</lotNumberText>
+                     <expirationTime xsi:type="IVL_TS">
+                        <high specializationType="TS.FULLDATE" value="20100911"/>
+                     </expirationTime>
+                     <asManufacturedProduct classCode="MANU">
+                        <manufacturer classCode="ORG" determinerCode="INSTANCE">
+                           <name>GlaxoSmithKline Inc</name>
+                        </manufacturer>
+                     </asManufacturedProduct>
+                     <ingredients classCode="INGR">
+                        <ingredient classCode="MMAT" determinerCode="INSTANCE">
+                           <code code="121030007" codeSystem="2.16.840.1.113883.6.96" originalText="Measles Antigen"/>
+                           <asHealthChart classCode="HLTHCHRT">
+                              <subjectOf1 typeCode="SBJ">
+                                 <antigenValidity classCode="OBS" moodCode="EVN">
+                                    <code code="OBSANTV" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                                    <value value="true"/>
+                                 </antigenValidity>
+                              </subjectOf1>
+                              <subjectOf2 typeCode="SBJ">
+                                 <antigenCount classCode="OBS" moodCode="EVN">
+                                    <code code="OBSANTC" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                                    <value value="1"/>
+                                 </antigenCount>
+                              </subjectOf2>
+                           </asHealthChart>
+                        </ingredient>
+                     </ingredients>
+                     <ingredients classCode="INGR">
+                        <ingredient classCode="MMAT" determinerCode="INSTANCE">
+                           <code code="121087003" codeSystem="2.16.840.1.113883.6.96" originalText="Mumps Antigen"/>
+                           <asHealthChart classCode="HLTHCHRT">
+                              <subjectOf1 typeCode="SBJ">
+                                 <antigenValidity classCode="OBS" moodCode="EVN">
+                                    <code code="OBSANTV" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                                    <value value="true"/>
+                                 </antigenValidity>
+                              </subjectOf1>
+                              <subjectOf2 typeCode="SBJ">
+                                 <antigenCount classCode="OBS" moodCode="EVN">
+                                    <code code="OBSANTC" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                                    <value value="1"/>
+                                 </antigenCount>
+                              </subjectOf2>
+                           </asHealthChart>
+                        </ingredient>
+                     </ingredients>
+                     <ingredients classCode="INGR">
+                        <ingredient classCode="MMAT" determinerCode="INSTANCE">
+                           <code code="120998006" codeSystem="2.16.840.1.113883.6.96" originalText="Rubella Antigen"/>
+                           <asHealthChart classCode="HLTHCHRT">
+                              <subjectOf1 typeCode="SBJ">
+                                 <antigenValidity classCode="OBS" moodCode="EVN">
+                                    <code code="OBSANTV" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                                    <value value="true"/>
+                                 </antigenValidity>
+                              </subjectOf1>
+                              <subjectOf2 typeCode="SBJ">
+                                 <antigenCount classCode="OBS" moodCode="EVN">
+                                    <code code="OBSANTC" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                                    <value value="1"/>
+                                 </antigenCount>
+                              </subjectOf2>
+                           </asHealthChart>
+                        </ingredient>
+                     </ingredients>
+                  </administerableVaccine>
+               </administerableMedicine>
+            </consumable>
+         </immunization>
+      </subject>
+      <queryAck>
+         <queryId root="F90F6639-F66E-369A-B78E-9D6C6382CAA5"/>
+         <queryResponseCode code="NF"/>
+         <resultTotalQuantity value="0"/>
+         <resultCurrentQuantity value="0"/>
+         <resultRemainingQuantity value="0"/>
+      </queryAck>
+      <queryByParameter>
+         <queryId root="F90F6639-F66E-369A-B78E-9D6C6382CAA5"/>
+         <parameterList>
+            <immunizationPeriod>
+               <value xsi:type="IVL_TS">
+                  <low specializationType="TS.FULLDATE" value="20070101"/>
+                  <high specializationType="TS.FULLDATE" value="20091231"/>
+               </value>
+            </immunizationPeriod>
+            <patientBirthDate>
+               <value xsi:type="IVL_TS">
+                  <low specializationType="TS.FULLDATE" value="20020912"/>
+                  <high specializationType="TS.FULLDATE" value="20020912"/>
+               </value>
+            </patientBirthDate>
+            <patientGender>
+               <value code="F" codeSystem="2.16.840.1.113883.5.1"/>
+            </patientGender>
+            <patientID>
+               <value xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="202020" root="2.16.840.1.113883.4.20"/>
+            </patientID>
+            <patientName>
+               <value xsi:type="PN" specializationType="PN.BASIC" use="L">
+                  <given>Pauline</given>
+                  <family>King</family>
+               </value>
+            </patientName>
+         </parameterList>
+      </queryByParameter>
+   </controlActEvent>
+</POIZ_IN021020CA>

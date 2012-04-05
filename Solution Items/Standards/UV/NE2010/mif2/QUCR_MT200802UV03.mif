@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*******************************************************************************
+ * Copyright (c) 2010 Health Level Seven, Inc.
+ * All rights reserved. This file and the model designs it contains 
+ * are made available under terms of a proprietary license implicitly 
+ * established by the terms expressed in the Bylaws of Health 
+ * Level Seven, Inc. (HL7), in combination with the agreements under 
+ * which individual and organizational memberships are established with HL7.
+ * Links to the HL7 Bylaws may be found at http://www.hl7.org 
+ *******************************************************************************/ 
+				--><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="International"
+                 schemaVersion="2.1.6"
+                 representationKind="flat"
+                 isSerializable="true"
+                 packageKind="id"
+                 name="200802">
+   <mif:packageLocation realmNamespace="UV" artifact="MT" root="DEFN" section="IM" subSection="QU"
+                        domain="CR"
+                        version="03"/>
+   <mif:header>
+      <mif:renderingInformation application="RoseTree 4.2.34">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl 8360 2009-10-26 06:00:22Z woody_beeler $
+  Base transform: $Id: ConvertBase.xsl 8360 2009-10-26 06:00:22Z woody_beeler $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl 7375 2009-01-26 19:26:53Z wbeeler $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+ Fix Names Transform: $Id: FixMifNames.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $
+  Base transform: $Id: ConvertBase.xsl 8360 2009-10-26 06:00:22Z woody_beeler $
+  Package Id Conversion: $Id: TransformPackageIds.xsl 8355 2009-10-07 03:16:34Z lloyd_mckenzie $</mif:renderingNotes>
+      </mif:renderingInformation>
+      <mif:legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2009">
+         <mif:notation>All rights reserved.</mif:notation>
+         <mif:licenseTerms>
+            <mif:p>This file and the model designs it contains are made available under terms of a proprietary license implicitly established by the terms expressed in the Bylaws of Health Level Seven, Inc. (HL7), in combination with the agreements under which individual and organizational memberships are established with HL7.
+					Links to the HL7 Bylaws may be found at <mif:a href="http://www.hl7.org">http://www.hl7.org</mif:a>
+				        </mif:p>
+         </mif:licenseTerms>
+      </mif:legalese>
+   </mif:header>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0229R1"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel realmNamespace="UV" artifact="RM" root="DEFN" section="IM" subSection="QU"
+                             domain="CR"
+                             version="03"
+                             id="200000"/>
+   </mif:derivedFrom>
+   <mif:derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel realmNamespace="UV" artifact="HD" root="DEFN" section="IM" subSection="QU"
+                             domain="CR"
+                             version="03"
+                             id="200800"/>
+   </mif:derivedFrom>
+   <mif:entryPoint name="ParameterList" useKind="SemanticPayload" className="ParameterList">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>
+                  <mif:p>Entry point for eligibility query request message</mif:p>
+               </mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class name="CarrierRole.id" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CarrierRole.id"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="CarrierRole.id"/>
+         <mif:annotations/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>Carrier ID</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CarrierRole.id" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="CarrierRole.id" attributeName="value"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="CoveredPartyAsPatient.Id" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CoveredPartyAsPatient.Id"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="CoveredPartyAsPatient.Id"/>
+         <mif:annotations/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>e.g. Personal Health Number, policy id + member number</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredPartyAsPatient.Id"
+                             attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="CoveredPartyAsPatient.Id"
+                             attributeName="value"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="CoveredPartyAsPatientPerson.AdministrativeGender" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2"
+                          className="CoveredPartyAsPatientPerson.AdministrativeGender"/>
+         <mif:derivedFrom staticModelDerivationId="3"
+                          className="CoveredPartyAsPatientPerson.AdministrativeGender"/>
+         <mif:annotations/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>Patient.gender</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2"
+                             className="CoveredPartyAsPatientPerson.AdministrativeGender"
+                             attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3"
+                             className="CoveredPartyAsPatientPerson.AdministrativeGender"
+                             attributeName="value"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="AdministrativeGender"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="CoveredPartyAsPatientPerson.BirthTime" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CoveredPartyAsPatientPerson.BirthTime"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="CoveredPartyAsPatientPerson.BirthTime"/>
+         <mif:annotations/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredPartyAsPatientPerson.BirthTime"
+                             attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="CoveredPartyAsPatientPerson.BirthTime"
+                             attributeName="value"/>
+            <mif:type name="TS"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="CoveredPartyAsPatientPerson.Name" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CoveredPartyAsPatientPerson.Name"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="CoveredPartyAsPatientPerson.Name"/>
+         <mif:annotations/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredPartyAsPatientPerson.Name"
+                             attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="CoveredPartyAsPatientPerson.Name"
+                             attributeName="value"/>
+            <mif:type name="PN"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="CoveredPartyAsPatientRole.Code" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="CoveredPartyAsPatientRole.Code"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="CoveredPartyAsPatientRole.Code"/>
+         <mif:annotations/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>Relationship to Policy Holder</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="CoveredPartyAsPatientRole.Code"
+                             attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="CoveredPartyAsPatientRole.Code"
+                             attributeName="value"/>
+            <mif:type name="CS"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="HealthCareProvider.Id" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="HealthCareProvider.Id"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="HealthCareProvider.Id"/>
+         <mif:annotations/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>provider.ProviderNum</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="HealthCareProvider.Id"
+                             attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="HealthCareProvider.Id"
+                             attributeName="value"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="ParameterList" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ParameterList"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ParameterList"/>
+         <mif:annotations/>
+         <mif:attribute name="id" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>Query Identifier</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Parameter" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ParameterList" attributeName="id"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ParameterList" attributeName="id"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="PolicyOrAccount.Id" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrAccount.Id"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="PolicyOrAccount.Id"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>This parameter may not be present if the requestor does not know the policy id (e.g. WCB claim #). The association is required, so a NullFlavor is required to indicate why the policy number is not present in the query request. In the absence of policy id, then the name, date of birth and relationship code are required.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>Policy identifiers, including plan, group as required</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="PolicyOrAccount.Id"
+                             attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="PolicyOrAccount.Id"
+                             attributeName="value"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class name="ServiceDate" isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ServiceDate"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ServiceDate"/>
+         <mif:annotations/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        isMandatory="true"
+                        conformance="R"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:designComments>
+                     <mif:text>
+                        <mif:p>Service date</mif:p>
+                     </mif:text>
+                  </mif:designComments>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="2" className="ServiceDate" attributeName="value"/>
+            <mif:derivedFrom staticModelDerivationId="3" className="ServiceDate" attributeName="value"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association sortKey="1">
+      <mif:traversableConnection name="carrierRole.id" minimumMultiplicity="1" maximumMultiplicity="*"
+                                 isMandatory="true"
+                                 conformance="R"
+                                 sortKey="Z ZZ"
+                                 participantClassName="CarrierRole.id">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ParameterList"
+                          associationEndName="carrierRole.id"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ParameterList"
+                          associationEndName="carrierRole.id"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList"/>
+   </mif:association>
+   <mif:association sortKey="2">
+      <mif:traversableConnection name="coveredPartyAsPatient.Id" minimumMultiplicity="0" maximumMultiplicity="2"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="Z ZZ"
+                                 participantClassName="CoveredPartyAsPatient.Id">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ParameterList"
+                          associationEndName="coveredPartyAsPatient.Id"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ParameterList"
+                          associationEndName="coveredPartyAsPatient.Id"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList"/>
+   </mif:association>
+   <mif:association sortKey="3">
+      <mif:traversableConnection name="coveredPartyAsPatientPerson.AdministrativeGender" minimumMultiplicity="0"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="Z ZZ"
+                                 participantClassName="CoveredPartyAsPatientPerson.AdministrativeGender">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ParameterList"
+                          associationEndName="coveredPartyAsPatientPerson.AdministrativeGender"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ParameterList"
+                          associationEndName="coveredPartyAsPatientPerson.AdministrativeGender"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList"/>
+   </mif:association>
+   <mif:association sortKey="4">
+      <mif:traversableConnection name="coveredPartyAsPatientPerson.BirthTime" minimumMultiplicity="0"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="Z ZZ"
+                                 participantClassName="CoveredPartyAsPatientPerson.BirthTime">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ParameterList"
+                          associationEndName="coveredPartyAsPatientPerson.BirthTime"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ParameterList"
+                          associationEndName="coveredPartyAsPatientPerson.BirthTime"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList"/>
+   </mif:association>
+   <mif:association sortKey="5">
+      <mif:traversableConnection name="coveredPartyAsPatientPerson.Name" minimumMultiplicity="1"
+                                 maximumMultiplicity="2"
+                                 isMandatory="true"
+                                 conformance="R"
+                                 sortKey="Z ZZ"
+                                 participantClassName="CoveredPartyAsPatientPerson.Name">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ParameterList"
+                          associationEndName="coveredPartyAsPatientPerson.Name"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ParameterList"
+                          associationEndName="coveredPartyAsPatientPerson.Name"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList"/>
+   </mif:association>
+   <mif:association sortKey="6">
+      <mif:traversableConnection name="coveredPartyAsPatientRole.Code" minimumMultiplicity="0"
+                                 maximumMultiplicity="1"
+                                 isMandatory="false"
+                                 sortKey="Z ZZ"
+                                 participantClassName="CoveredPartyAsPatientRole.Code">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ParameterList"
+                          associationEndName="coveredPartyAsPatientRole.Code"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ParameterList"
+                          associationEndName="coveredPartyAsPatientRole.Code"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList"/>
+   </mif:association>
+   <mif:association sortKey="7">
+      <mif:traversableConnection name="healthCareProvider.Id" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="true"
+                                 conformance="R"
+                                 sortKey="Z ZZ"
+                                 participantClassName="HealthCareProvider.Id">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ParameterList"
+                          associationEndName="healthCareProvider.Id"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ParameterList"
+                          associationEndName="healthCareProvider.Id"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList"/>
+   </mif:association>
+   <mif:association sortKey="8">
+      <mif:traversableConnection name="policyOrAccount.Id" minimumMultiplicity="0" maximumMultiplicity="2"
+                                 isMandatory="false"
+                                 conformance="R"
+                                 sortKey="Z ZZ"
+                                 participantClassName="PolicyOrAccount.Id">
+         <mif:annotations>
+            <mif:documentation>
+               <mif:designComments>
+                  <mif:text>
+                     <mif:p>This parameter may not be present if the requestor does not know the policy id (e.g. WCB claim #). The association is required, so a NullFlavor is required to indicate why the policy number is not present in the query request. In the absence of policy id, then the name, date of birth and relationship code are required.</mif:p>
+                  </mif:text>
+               </mif:designComments>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ParameterList"
+                          associationEndName="policyOrAccount.Id"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ParameterList"
+                          associationEndName="policyOrAccount.Id"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList"/>
+   </mif:association>
+   <mif:association sortKey="9">
+      <mif:traversableConnection name="serviceDate" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 isMandatory="true"
+                                 conformance="R"
+                                 sortKey="Z ZZ"
+                                 participantClassName="ServiceDate">
+         <mif:annotations/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+         <mif:derivedFrom staticModelDerivationId="2" className="ParameterList"
+                          associationEndName="serviceDate"/>
+         <mif:derivedFrom staticModelDerivationId="3" className="ParameterList"
+                          associationEndName="serviceDate"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList"/>
+   </mif:association>
+</mif:staticModel>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="RealmExtension"
+                 schemaVersion="2.1.3"
+                 packageKind="realmNamespace"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="Billable Pharmacy universal"
+                 isSerializable="true"
+                 name="CA">
+   <mif:packageLocation realmNamespace="CA" artifact="MT" root="DEFN" section="IM" subSection="CO"
+                        domain="CT"
+                        id="280001"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="11.000" height="8.500"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="18EEC5E3-8EDF-6CCE-F77D-AC62ABB4272F">
+         <mif:graphElement shapeId="Sheet.44">
+            <mif:position x="0.672" y="4.918"/>
+            <mif:size width="1.928" height="0.719"/>
+            <mif:anchorage connectToShapeId="Sheet.44">
+               <mif:position x="2.600" y="4.100"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.59">
+                     <mif:position x="3.845" y="3.079"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="6D73FE09-78D8-C3B6-C5C5-AB40E994012C" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.59" shapeTemplate="Choice" isWidthAutoSize="true"
+                           isHeightAutoSize="true"
+                           nodeOrientation="Portrait">
+            <mif:position x="3.845" y="0.950"/>
+            <mif:size width="2.084" height="4.258"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="97904E6E-ADF9-4BFD-E5CA-6E75FD09EFBE" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.25" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.970" y="1.953"/>
+            <mif:size width="1.525" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="2049CAAE-AD50-3E96-D1D6-5F95F44703F5" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.7" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.970" y="1.200"/>
+            <mif:size width="1.501" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="D3CB04A0-000C-81F4-D7C1-CEE472BFDF24" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.13" shapeTemplate="CMET" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.970" y="2.706"/>
+            <mif:size width="1.735" height="0.628"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="1974557A-3A06-607A-8796-12464F328455" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.29" shapeTemplate="Act" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.970" y="4.211"/>
+            <mif:size width="1.834" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage root="DEFN" artifact="VO" realmNamespace="UV" version="586-20081030"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="18EEC5E3-8EDF-6CCE-F77D-AC62ABB4272F" id="COCT_MT280001CA"
+                   name="Billable Pharmacy universal"
+                   className="A_BillableActChoice">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>
+                  <html:p xmlns:html="http://www.w3.org/1999/xhtml">Clinical content for services performed and/or delivered to support invoicing (billing)</html:p>
+               </mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="6D73FE09-78D8-C3B6-C5C5-AB40E994012C" name="A_BillableActChoice"
+                 isAbstract="true">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:childClass graphicLinkId="EC46E7FD-CD52-B948-84A7-A83B59A62359" sortKey="001"
+                         name="A_BillableClinicalServiceUniversal"/>
+         <mif:childClass graphicLinkId="C8B5B883-EECF-F14B-E6F3-A1E8D98CE501" sortKey="002"
+                         name="A_BillableClinicalProductUniversal"/>
+         <mif:childClass graphicLinkId="B8CD2532-0130-8977-917A-075BC218500E" sortKey="003"
+                         name="A_BillablePharmacyDispenseUniversal"/>
+         <mif:childClass graphicLinkId="321A2855-7833-5AF7-1EA8-EE33ACF05D73" sortKey="004"
+                         name="CrossReference"/>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="97904E6E-ADF9-4BFD-E5CA-6E75FD09EFBE"
+                                 name="A_BillableClinicalProductUniversal"
+                                 cmetName="A_BillableClinicalProductUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="2049CAAE-AD50-3E96-D1D6-5F95F44703F5"
+                                 name="A_BillableClinicalServiceUniversal"
+                                 cmetName="A_BillableClinicalServiceUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:commonModelElementRef graphicLinkId="D3CB04A0-000C-81F4-D7C1-CEE472BFDF24"
+                                 name="A_BillablePharmacyDispenseUniversal"
+                                 cmetName="A_BillablePharmacyDispenseUniversal">
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:definingVocabulary>
+            <mif:conceptDomain name="ActClass"/>
+         </mif:definingVocabulary>
+      </mif:commonModelElementRef>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="1974557A-3A06-607A-8796-12464F328455" name="CrossReference"
+                 isAbstract="false">
+         <mif:businessName name="Previous Billable Act Cross Reference"/>
+         <mif:derivedFrom staticModelDerivationId="1" className="Act"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Used to reference a previous act (e.g. billable act) by including its Act.id. May only be used to reference a billable act in the SAME message, not for past messages (this would require adjudicators to keep a lot of history).</html:p>
+                  </mif:text>
+               </mif:definition>
+               <mif:usageNotes>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Used to reference a previous act (e.g. billable act) by including its Act.id. May only be used to reference a billable act in the SAME message, not for past messages (this would require adjudicators to keep a lot of history).</html:p>
+                  </mif:text>
+               </mif:usageNotes>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="ACT"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="ActClass" code="ACT"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="EVN"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="ActMood" code="EVN"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="&#xA;) (Act.id."/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Act.id. referencing a previous act (e.g. billable act) in the SAME message,</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:usageNotes>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Used to reference a previous act (e.g. billable act) by including its Act.id. May only be used to reference a billable act in the SAME message, not for past messages (this would require adjudicators to keep a lot of history).</html:p>
+                     </mif:text>
+                  </mif:usageNotes>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="Act" attributeName="id"/>
+            <mif:type name="SET">
+               <mif:argumentDatatype name="II.BUS"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+</mif:staticModel>

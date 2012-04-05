@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1" name="000009"
+                 title="Generic Message Transmission Request Message Local Rqst Message W/ Application Ack (immed) Can Handle App Response">
+   <mif:businessName name="Send Req Msg w/ App Ack (Immed) can handle App Rsp"/>
+   <mif:packageLocation root="DEFN" section="IM" subSection="MC" domain="CI" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000009"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Send Request Message w/ Application Ack (Immed) can handle App Response. Note: This interaction is for communication illustration purposes only. Refer to domain defined interactions which will indicate the appropriate transmission wrapper.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="IM" subSection="MC" domain="CI" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="000001"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100"/>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <html:text xmlns:html="http://www.w3.org/1999/xhtml">  
+                  <html:p>Application Response Request is required by Communication Role.</html:p>  
+               </html:text>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="IM" subSection="MC" domain="CI" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="000010"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

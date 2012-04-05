@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="801007"
+                 title="Rtls Event Notification Observe Patient Location">
+   <mif:businessName name="Patient Tracking Tag Location Updated"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="RG" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="801007"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>This notification is sent from a real time location tracking system to convey that a tracked patient has moved to a different location. Locally defined business rules determine which locations are of interest and how long the tracked resource needs to be in that location to trigger this interaction. IdTag Person NonPersonLivingSubject LivingSubjectChoice Patient</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="RG" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="801007"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="AM" subSection="PR" domain="RG"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="801002"
+                             traversalName="positionObservationEvent"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

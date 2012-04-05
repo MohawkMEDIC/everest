@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.3" name="000003"
+                 title="Query Infrastructure Event">
+   <mif:businessName name="Query Continuation"/>
+   <mif:packageLocation root="DEFN" section="IM" subSection="QU" domain="QI" artifact="IN"
+                        realmNamespace="CA"
+                        id="000003"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Message to indicate to the query responder to send the next set of responses; continue the query.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="IM" subSection="MC" domain="CI" artifact="TE"
+                             realmNamespace="CA"
+                             version="01"
+                             id="000003"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="CA"
+                        id="002100">
+      <mif:parameterModel parameterName="ControlActEvent" root="DEFN" section="IM" subSection="QU"
+                          domain="QI"
+                          artifact="MT"
+                          realmNamespace="CA"
+                          id="000001"
+                          traversalName="controlActEvent"/>
+   </mif:argumentMessage>
+</mif:interaction>

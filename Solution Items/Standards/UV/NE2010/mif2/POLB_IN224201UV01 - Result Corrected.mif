@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="224201"
+                 title="Result Event Corrected">
+   <mif:businessName name="Result Corrected"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="LB" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="224201"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>This interaction is a Result Corrected. This interaction is used when the filler must correct (i.e., change) results that were previously reported as completed. The state change is completed for this order.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="LB" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="004201"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="LB"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="004000"
+                             traversalName="observationEventChoice">
+            <mif:specialization className="ObservationReport" traversalName="observationReport"/>
+            <mif:specialization className="ObservationBattery" traversalName="observationBattery"/>
+            <mif:specialization className="SpecimenObservationCluster"
+                                traversalName="specimenObservationCluster"/>
+            <mif:specialization className="ObservationEvent" traversalName="observationEvent"/>
+         </mif:parameterModel>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

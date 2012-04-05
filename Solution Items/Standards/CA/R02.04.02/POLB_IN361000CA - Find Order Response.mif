@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.3" name="361000"
+                 title="Order Query Request Query Response">
+   <mif:businessName name="Find Order Response"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="LB" artifact="IN"
+                        realmNamespace="CA"
+                        id="361000"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>This interaction is used in response to a lab order query.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="LB" artifact="TE"
+                             realmNamespace="CA"
+                             id="301001"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="CA"
+                        id="002300">
+      <mif:parameterModel parameterName="ControlActEvent" root="DEFN" section="IM" subSection="QU"
+                          domain="QI"
+                          artifact="MT"
+                          realmNamespace="CA"
+                          id="120006"
+                          traversalName="controlActEvent">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="LB"
+                             artifact="MT"
+                             realmNamespace="CA"
+                             id="001999"
+                             traversalName="requestChoice">
+            <mif:specialization className="PlacerGroup" traversalName="placerGroup"/>
+            <mif:specialization className="BatteryRequest" traversalName="batteryRequest"/>
+            <mif:specialization className="ObservationRequest" traversalName="observationRequest"/>
+         </mif:parameterModel>
+         <mif:parameterModel parameterName="ParameterList" root="DEFN" section="HM" subSection="PO"
+                             domain="LB"
+                             artifact="MT"
+                             realmNamespace="CA"
+                             id="330000"
+                             traversalName="parameterList"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

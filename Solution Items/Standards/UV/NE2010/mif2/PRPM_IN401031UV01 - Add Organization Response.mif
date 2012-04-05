@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="401031"
+                 title="Organization Event Create Confirmation">
+   <mif:businessName name="Add Organization Response"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="PM" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="401031"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>This interaction is used to confirm the receipt of the Add Organization Request (PRPM_IN401030) interaction and contains the appropriate identifiers assigned by the organization registry system.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PM" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="401011"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000300">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MF"
+                          domain="MI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700721"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="RegisteredRole" root="DEFN" section="AM" subSection="PR"
+                             domain="PM"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="409000"
+                             traversalName="roleChoice">
+            <mif:specialization className="AssignedEntity" traversalName="assignedEntity"/>
+         </mif:parameterModel>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

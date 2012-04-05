@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="100002"
+                 title="Polling Message Transmission Definition Message Remote Polling Send Poll Message Payload">
+   <mif:businessName name="Send Poll Message Payload"/>
+   <mif:packageLocation root="DEFN" section="IM" subSection="MC" domain="CI" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="100002"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Sends next message in HL7 message queue. Note: This interaction is for communication illustration purposes only. Refer to domain defined interactions which will indicate the appropriate transmission wrapper.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="IM" subSection="MC" domain="CI" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="100002"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="100300"/>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>If acknowledging message received and no more polling is required.</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="IM" subSection="MC" domain="CI" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="100003"/>
+   </mif:receiverResponsibilities>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>If acknowledging message received and an additional poll request for next queued message is wanted.</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="IM" subSection="MC" domain="CI" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="100004"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

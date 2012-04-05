@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1" name="410201"
+                 title="Coverage Extension Event Activate Notification Initial/Complete Generic">
+   <mif:businessName name="Cov Ext Init Results, Init/Comp, Gen"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="FI" domain="CR" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="410201"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>The sender sends a Coverage Extension Results message containing the inital Coverage Extension Results for Generic services and/or products. Completed results will follow at a later point in time (e.g. next day). Coverage Extension Results indicate whether the service and/or product has been included in a patient's insurance policy.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="FI" domain="CR" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="410102"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000300">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="AM" subSection="FI" domain="CR"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="410101"
+                             traversalName="paymentIntent"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

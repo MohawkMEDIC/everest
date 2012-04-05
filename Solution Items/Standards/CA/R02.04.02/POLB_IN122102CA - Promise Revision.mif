@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.3" name="122102"
+                 title="Placer Order Promise Revise Request">
+   <mif:businessName name="Promise Revision"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="LB" artifact="IN"
+                        realmNamespace="CA"
+                        id="122102"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>This interaction is a Promise Revision Response. This interaction is used when a filler communicates a response to revise an order fulfillment request. This is the fillers promise to fulfill the order. There is an expectation that once the filler issues the promise revision response, the filler will fulfill the order with a subsequent result complete interaction.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="LB" artifact="TE"
+                             realmNamespace="CA"
+                             id="002101"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="CA"
+                        id="002100">
+      <mif:parameterModel parameterName="ControlActEvent" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="CA"
+                          id="700210"
+                          traversalName="controlActEvent">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="LB"
+                             artifact="MT"
+                             realmNamespace="CA"
+                             id="002000"
+                             traversalName="promiseChoice">
+            <mif:specialization className="PromiseGroup" traversalName="promiseGroup"/>
+            <mif:specialization className="BatteryPromise" traversalName="batteryPromise"/>
+            <mif:specialization className="ObservationPromise" traversalName="observationPromise"/>
+         </mif:parameterModel>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason/>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="PO" domain="LB" artifact="IN"
+                             realmNamespace="CA"
+                             id="121000"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="PO" domain="LB" artifact="TE"
+                              realmNamespace="CA"
+                              id="001001"/>
+   </mif:receiverResponsibilities>
+   <mif:receiverResponsibilities>
+      <mif:reason/>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="PO" domain="LB" artifact="IN"
+                             realmNamespace="CA"
+                             id="121001"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="PO" domain="LB" artifact="TE"
+                              realmNamespace="CA"
+                              id="001003"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

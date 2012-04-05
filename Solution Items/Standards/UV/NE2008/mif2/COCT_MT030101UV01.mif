@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" isAbstract="false" isSerializable="true" name="01" packageKind="version" representationKind="flat" schemaVersion="2.0" xsi:schemaLocation="">
+   <mif:packageLocation artifact="MT" domain="CT" id="030101" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2008"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0" y="0"/>
+         <mif:size height="100" width="627"/>
+      </mif:graphElement>
+   <entryPoint name="E_NonPersonLivingSubject Identified"><mif:graphElement containerDiagramName="Main" shapeId="Sheet.553">
+            <mif:position x="378" y="-221"/>
+            <mif:size height="94" width="245"/>
+            <mif:anchorage connectToShapeId="Sheet.553">
+               <mif:position x="378" y="78"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.560">
+                     <mif:position x="170" y="22"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement></entryPoint><class className="NonPersonLivingSubject" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.560" shapeTemplate="Entity">
+               <mif:position x="0" y="0"/>
+               <mif:size height="87" width="169"/>
+            </mif:graphElement></class></mif:graphicRepresentation>
+   <derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel artifact="RM" domain="CT" id="030101" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel artifact="HD" domain="CT" id="030101" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   </derivedFrom>
+   <entryPoint className="NonPersonLivingSubject" id="COCT_MT030101UV01" isAbstract="false" name="E_NonPersonLivingSubject Identified">
+      <mif:annotations>
+         
+      <documentation><mif:description>
+            <mif:text>15 Mar 2004 CMET used to specify information for a particular person or non-person living subject such as veterinary subject, plant, etc. </mif:text>
+         </mif:description></documentation></mif:annotations>
+      
+   </entryPoint>
+   <containedClass>
+      <mif:class isAbstract="false" name="NonPersonLivingSubject">
+         <derivedFrom className="NonPersonLivingSubject" staticModelDerivationId="1"/>
+         <derivedFrom className="NonPersonLivingSubject" staticModelDerivationId="2"/>
+         <derivedFrom className="NonPersonLivingSubject" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="NonPersonLivingSubject" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="NonPersonLivingSubject" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="NonPersonLivingSubject" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="NLIV" codeSystemName="EntityClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="determinerCode" sortKey="2">
+            <derivedFrom attributeName="determinerCode" className="NonPersonLivingSubject" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="determinerCode" className="NonPersonLivingSubject" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="determinerCode" className="NonPersonLivingSubject" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="INSTANCE" codeSystemName="EntityDeterminer"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="*" minimumMultiplicity="1" name="id" sortKey="3">
+            <derivedFrom attributeName="id" className="NonPersonLivingSubject" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="NonPersonLivingSubject" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="NonPersonLivingSubject" staticModelDerivationId="3"/>
+            <mif:type name="SET">
+               <argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="quantity" sortKey="4">
+            <derivedFrom attributeName="quantity" className="NonPersonLivingSubject" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="quantity" className="NonPersonLivingSubject" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="quantity" className="NonPersonLivingSubject" staticModelDerivationId="3"/>
+            <mif:type name="PQ"/>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="name" sortKey="5">
+            <derivedFrom attributeName="name" className="NonPersonLivingSubject" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="name" className="NonPersonLivingSubject" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="name" className="NonPersonLivingSubject" staticModelDerivationId="3"/>
+            <mif:type name="SET">
+               <argumentDatatype name="EN"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+</mif:staticModel>

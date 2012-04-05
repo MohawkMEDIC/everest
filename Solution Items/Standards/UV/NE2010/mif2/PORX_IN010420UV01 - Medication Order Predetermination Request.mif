@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="010420"
+                 title="Medication Order Order Create Request">
+   <mif:businessName name="Medication Order Predetermination Request"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="RX" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="010420"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Requests the proposed medication order be reviewed and any detected issues be identified. This is not a request for order fulfillment.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="RX" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="010720"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="RX"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="010120"
+                             traversalName="combinedMedicationRequest"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>Medication Prescription problems found</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="PO" domain="RX" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="010630"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="PO" domain="RX" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="010690"/>
+   </mif:receiverResponsibilities>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>No medication prescription problems found</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="PO" domain="RX" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="010640"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="PO" domain="RX" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="010670"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

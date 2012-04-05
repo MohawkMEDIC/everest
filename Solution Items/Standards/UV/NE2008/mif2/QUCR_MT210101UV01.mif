@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" isSerializable="true" name="210101" packageKind="id" representationKind="flat" schemaVersion="2.0">
+   <packageLocation artifact="MT" domain="CR" realmNamespace="UV" root="DEFN" section="IM" subSection="QU" version="01"/>
+   <header>
+      <renderingInformation application="RoseTree 4.2.7">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl,v 1.15 2007/10/19 05:55:13 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl,v 1.4 2007/03/20 02:48:49 wbeeler Exp $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl,v 1.5 2007/03/20 02:48:50 wbeeler Exp $
+ Fix Names Transform: $Id: FixMifNames.xsl,v 1.8 2007/03/20 02:48:49 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $</mif:renderingNotes>
+      </renderingInformation>
+      <legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2008">
+         <notation>All rights reserved.</notation>
+      </legalese>
+   </header>
+   <derivedFrom staticModelDerivationId="1">
+      <targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <targetStaticModel artifact="RM" domain="CR" id="210000" realmNamespace="UV" root="DEFN" section="IM" subSection="QU"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <targetStaticModel artifact="HD" domain="CR" id="210100" realmNamespace="UV" root="DEFN" section="IM" subSection="QU" version="01"/>
+   </derivedFrom>
+   <entryPoint className="PolicyOrAccount" name="Unknown" useKind="SemanticPayload">
+      <annotations>
+         
+      <documentation><description>
+            <text>
+               <xhtml:p>Entry point for eligibility query results message.</xhtml:p>
+            </text>
+         </description></documentation></annotations>
+   </entryPoint>
+   <containedClass>
+      <class isAbstract="false" name="CarrierRole">
+         <derivedFrom className="RoleHeir" staticModelDerivationId="1"/>
+         <derivedFrom className="CarrierRole" staticModelDerivationId="2"/>
+         <derivedFrom className="CarrierRole" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="CarrierRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="CarrierRole" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="RoleClass"/><code code="UNDWRT"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="id" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="id" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="CarrierRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="CarrierRole" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="PolicyOrAccount">
+         <derivedFrom className="FinancialContract" staticModelDerivationId="1"/>
+         <derivedFrom className="PolicyOrAccount" staticModelDerivationId="2"/>
+         <derivedFrom className="PolicyOrAccount" staticModelDerivationId="3"/>
+         <annotations>
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>For ELIGIBILITY, yes/no is derived from the use cases below, based on the requested date and policy: [1] NO: If policy exists, but no longer in effect:. . . . negationInd = F statusCode = completed, aborted effectiveTime = time policy was in effect reasonCode = reasons why policy was terminated [2] YES: If policy exists and in effect:. . . . . . . . . . . .negationInd = F statusCode = active effectiveTime = time policy in effect reasonCode = null [3] NO: If policy exists, but is in effect in the future:.negationInd = F statusCode = new effectiveTime = time policy will be in effect reasonCode = null [4] NO: If policy does not exist:. . . . . . . . . . . . . . . . negationInd = T statusCode = null effectiveTime = null reasonCode = [optional] other policies that may be known id: = Coverage Identifier, extension = Policy.Plan.Group.Contract. Division.Section.Version (or similar). Carrier noted in author participation, and may not be same namespace as OID of id</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="PolicyOrAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="PolicyOrAccount" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActClass"/><code code="COV"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="PolicyOrAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="PolicyOrAccount" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActMood"/><code code="EVN"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="id" sortKey="3">
+            <annotations/>
+            <derivedFrom attributeName="id" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="PolicyOrAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="PolicyOrAccount" staticModelDerivationId="3"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="code" sortKey="4">
+            <annotations/>
+            <derivedFrom attributeName="code" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="PolicyOrAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="PolicyOrAccount" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActInsurancePolicyCode"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="negationInd" sortKey="5">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>used to indicate presence of a policy for eligibility - mandatory in eligibility message</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="negationInd" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="negationInd" className="PolicyOrAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="negationInd" className="PolicyOrAccount" staticModelDerivationId="3"/>
+            <type name="BL"/>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="statusCode" sortKey="6">
+            <annotations/>
+            <derivedFrom attributeName="statusCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="statusCode" className="PolicyOrAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="statusCode" className="PolicyOrAccount" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActStatus"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="effectiveTime" sortKey="7">
+            <annotations/>
+            <derivedFrom attributeName="effectiveTime" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="effectiveTime" className="PolicyOrAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="effectiveTime" className="PolicyOrAccount" staticModelDerivationId="3"/>
+            <type name="IVL">
+               <argumentDatatype name="TS"/>
+            </type>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="reasonCode" sortKey="8">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>For example, reasons why policy was terminated, other policies</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="reasonCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="reasonCode" className="PolicyOrAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="reasonCode" className="PolicyOrAccount" staticModelDerivationId="3"/>
+            <type name="SET">
+               <argumentDatatype name="CE"/>
+            </type>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActInEligibilityReason"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="PolicyUnderwriter">
+         <derivedFrom className="Participation" staticModelDerivationId="1"/>
+         <derivedFrom className="PolicyUnderwriter" staticModelDerivationId="2"/>
+         <derivedFrom className="PolicyUnderwriter" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="PolicyUnderwriter" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="PolicyUnderwriter" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ParticipationType"/><code code="AUT"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <association sortKey="1">
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="author" participantClassName="PolicyUnderwriter" sortKey="AEA_______">
+            <annotations/>
+            <derivedFrom associationEndName="participation" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="author" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="author" className="Act" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="PolicyOrAccount"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="carrierRole" participantClassName="CarrierRole" sortKey="BZ">
+            <annotations/>
+            <derivedFrom associationEndName="role" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="carrierRole" className="Participation" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="carrierRole" className="Participation" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="PolicyUnderwriter"/></association>
+</mif:staticModel>

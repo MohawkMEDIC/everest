@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.3" name="000004"
+                 title="Adverse Reaction Event Complete Request">
+   <mif:businessName name="Record adverse reaction request"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="RE" domain="PC" artifact="IN"
+                        realmNamespace="CA"
+                        id="000004"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Requests that information about an adverse reaction be recorded against a patient's record.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="RE" domain="PC" artifact="TE"
+                             realmNamespace="CA"
+                             id="000014"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="CA"
+                        id="002100">
+      <mif:parameterModel parameterName="ControlActEvent" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="CA"
+                          id="700210"
+                          traversalName="controlActEvent">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="RE" domain="PC"
+                             artifact="MT"
+                             realmNamespace="CA"
+                             id="000002"
+                             traversalName="reactionObservationEvent"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason/>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="RE" domain="PC" artifact="IN"
+                             realmNamespace="CA"
+                             id="000005"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="RE" domain="PC" artifact="TE"
+                              realmNamespace="CA"
+                              id="000015"/>
+   </mif:receiverResponsibilities>
+   <mif:receiverResponsibilities>
+      <mif:reason/>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="RE" domain="PC" artifact="IN"
+                             realmNamespace="CA"
+                             id="000006"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?><POLB_IN124200CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/POLB_IN124200CA.xsd"><!--
+    - Note: This is an example instance.  In a real instance the following differences would apply
+    -     1. There would be no schema declaration.  (Receivers will validate against their own schemas)
+    -     2. Example OIDs would be replaced by real OIDs
+    -     3. Processing mode would be Production, not Debug
+    -     4. Data would be real values :>
+  --><realmCode code="CA"/>
+   <id root="C3249F76-E57D-99CD-350A-08549A4714D7"/>
+   <creationTime value="20090913230422.875-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="POLB_IN124200CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://120.120.122.101"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.3031.27.7.0.4" extension="LAB02"/>
+         <name>Good Testing Laboratory</name>
+      </device>
+   </sender>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.3031.27.7.1" extension="18778268861"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="POLB_TE004200CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090913230422.875-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <family>Nuclear</family>
+                  <given>John</given>
+                  <prefix>Mr.</prefix>
+                  <suffix>II</suffix>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19480712"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <author typeCode="AUT" contextControlCode="AP">
+         <time value="20090913230422.875-0700"/>
+         <assignedEntity1 classCode="ASSIGNED">
+            <id xsi:type="II" specializationType="II.PUBLIC" extension="998977" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+            <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+               <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                  <given>Leroy</given>
+                  <given qualifier="IN">L</given>
+                  <family>Labtech</family>
+               </name>
+            </assignedPerson>
+         </assignedEntity1>
+      </author>
+      <location typeCode="LOC" contextControlCode="AP">
+         <serviceDeliveryLocation classCode="SDLOC">
+            <id xsi:type="II" specializationType="II.PUBLIC" extension="8-66733-1" displayable="true" root="2.16.840.1.113883.19.3.291.3"/>
+            <location classCode="PLC" determinerCode="INSTANCE">
+               <name>Good Health Clinic</name>
+            </location>
+         </serviceDeliveryLocation>
+      </location>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <observationReport1 moodCode="EVN" classCode="ACT">
+            <id xsi:type="II" specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.207.15.2.6" extension="4QC0IVM0EBIZ"/>
+            <code codeSystem="2.16.840.1.113883.5.4" nullFlavor="NI"/>
+            <title>Basic Result - Glucose</title>
+            <statusCode code="completed"/>
+            <effectiveTime xsi:type="TS" specializationType="TS.FULLDATETIME" value="20090915024922-0700"/>
+            <confidentialityCode codeSystem="2.16.840.1.113883.5.25" code="N"/>
+            <inFulfillmentOf contextControlCode="AP" typeCode="FLFS" contextConductionInd="false">
+               <placerGroup moodCode="RQO" classCode="ACT">
+                  <id xsi:type="II" specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.207.15.2.5" extension="4ZGOIVVDZ0T"/>
+                  <verifier contextControlCode="OP" typeCode="VRF">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" extension="876456" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <given>Nina</given>
+                              <given qualifier="IN">N</given>
+                              <family>Nurse</family>
+                           </name>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </verifier>
+                  <component4 contextControlCode="AP" typeCode="COMP" contextConductionInd="true">
+                     <observationRequest classCode="OBS" moodCode="RQO">
+                        <id xsi:type="II" specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.207.15.2.5" extension="E597I"/>
+                        <code codeSystem="2.16.840.1.113883.6.1" code="15974-8"/>
+                        <statusCode code="active"/>
+                        <priorityCode codeSystem="2.16.840.1.113883.5.7" code="R"/>
+                        <verifier contextControlCode="OP" typeCode="VRF">
+                           <assignedEntity classCode="ASSIGNED">
+                              <id xsi:type="II" specializationType="II.PUBLIC" extension="876456" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                              <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                                 <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                                    <given>Nina</given>
+                                    <given qualifier="IN">N</given>
+                                    <family>Nurse</family>
+                                 </name>
+                              </assignedPerson>
+                           </assignedEntity>
+                        </verifier>
+                        <subjectOf1 contextControlCode="AN" typeCode="SUBJ" contextConductionInd="true">
+                           <annotation moodCode="EVN" classCode="ACT">
+                              <text xsi:type="ST" specializationType="ST.LANG" language="en">This is the third glucose test for this patient this month.</text>
+                              <statusCode code="completed"/>
+                              <author typeCode="AUT">
+                                 <time xsi:type="TS" specializationType="TS.FULLDATETIME" value="20110820230422.875-0700"/>
+                                 <assignedEntity1 classCode="ASSIGNED">
+                                    <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+                                    <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                                       <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                                          <prefix>Dr.</prefix>
+                                          <given>Fay</given>
+                                          <given qualifier="IN">F</given>
+                                          <family>Family</family>
+                                       </name>
+                                       <asHealthCareProvider classCode="PROV">
+                                          <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+                                       </asHealthCareProvider>
+                                    </assignedPerson>
+                                 </assignedEntity1>
+                              </author>
+                           </annotation>
+                        </subjectOf1>
+                        <subjectOf2 contextControlCode="AN" typeCode="SUBJ" contextConductionInd="true">
+                           <controlActEvent moodCode="EVN" classCode="CACT">
+                              <id xsi:type="II" specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.207.15.2.1" extension="38211432670"/>
+                              <code codeSystem="2.16.840.1.113883.1.18" code="POLB_TE001100CA"/>
+                              <statusCode code="completed"/>
+                              <effectiveTime xsi:type="IVL_TS" specializationType="IVL_TS.FULLDATE">
+                                 <low value="20090913"/>
+                              </effectiveTime>
+                              <reasonCode codeSystem="2.16.840.1.113883.5.8" code="NWINFO"/>
+                              <author contextControlCode="AP" typeCode="AUT">
+                                 <time xsi:type="TS" specializationType="TS.FULLDATETIME" value="20090913230322.875-0700"/>
+                                 <assignedEntity1 classCode="ASSIGNED">
+                                    <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                                    <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                                    <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                                       <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                                          <prefix>Dr.</prefix>
+                                          <given>Irving</given>
+                                          <given qualifier="IN">I</given>
+                                          <family>Intern</family>
+                                       </name>
+                                       <asHealthCareProvider classCode="PROV">
+                                          <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                                       </asHealthCareProvider>
+                                    </assignedPerson>
+                                 </assignedEntity1>
+                              </author>
+                           </controlActEvent>
+                        </subjectOf2>
+                     </observationRequest>
+                  </component4>
+                  <component4 contextControlCode="AP" typeCode="COMP" contextConductionInd="true">
+                     <observationRequest classCode="OBS" moodCode="RQO">
+                        <id xsi:type="II" specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.207.15.2.5" extension="RRR5HG8F"/>
+                        <code codeSystem="2.16.840.1.113883.6.1" code="2164-2"/>
+                        <statusCode code="active"/>
+                        <priorityCode codeSystem="2.16.840.1.113883.5.7" code="R"/>
+                        <verifier contextControlCode="OP" typeCode="VRF">
+                           <assignedEntity classCode="ASSIGNED">
+                              <id xsi:type="II" specializationType="II.PUBLIC" extension="876456" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                              <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                                 <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                                    <given>Nina</given>
+                                    <given qualifier="IN">N</given>
+                                    <family>Nurse</family>
+                                 </name>
+                              </assignedPerson>
+                           </assignedEntity>
+                        </verifier>
+                     </observationRequest>
+                  </component4>
+                  <componentOf2 contextControlCode="ON" typeCode="COMP" contextConductionInd="false">
+                     <patientCareProvisionEvent moodCode="EVN" classCode="PCPR">
+                        <id xsi:type="II" use="BUS" specializationType="II.BUS" root="2.16.840.1.113883.19.3.207.15.2.13" extension="T6W6ZP4"/>
+                        <code codeSystem="2.16.840.1.113883.5.4" code="AMB"/>
+                        <effectiveTime xsi:type="IVL_TS" specializationType="IVL_TS.DATETIME">
+                           <high value="20090914"/>
+                        </effectiveTime>
+                        <admitter typeCode="ADM">
+                           <assignedEntity1 classCode="ASSIGNED">
+                              <id xsi:type="II" specializationType="II.PUBLIC" extension="8767876" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                              <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                                 <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                                    <prefix>Dr.</prefix>
+                                    <given>Peter</given>
+                                    <given qualifier="IN">P</given>
+                                    <family>Physician</family>
+                                 </name>
+                                 <asHealthCareProvider classCode="PROV">
+                                    <id xsi:type="II" specializationType="II.PUBLIC" extension="3005099" displayable="true" root="2.16.840.1.113883.4.41"/>
+                                 </asHealthCareProvider>
+                              </assignedPerson>
+                           </assignedEntity1>
+                        </admitter>
+                        <attender typeCode="ATND">
+                           <assignedEntity1 classCode="ASSIGNED">
+                              <id xsi:type="II" specializationType="II.PUBLIC" extension="8767876" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                              <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                                 <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                                    <prefix>Dr.</prefix>
+                                    <given>Peter</given>
+                                    <given qualifier="IN">P</given>
+                                    <family>Physician</family>
+                                 </name>
+                                 <asHealthCareProvider classCode="PROV">
+                                    <id xsi:type="II" specializationType="II.PUBLIC" extension="3005099" displayable="true" root="2.16.840.1.113883.4.41"/>
+                                 </asHealthCareProvider>
+                              </assignedPerson>
+                           </assignedEntity1>
+                        </attender>
+                        <location typeCode="LOC">
+                           <serviceDeliveryLocation classCode="SDLOC">
+                              <code codeSystem="2.16.840.1.113883.5.111" code="DX"/>
+                           </serviceDeliveryLocation>
+                        </location>
+                     </patientCareProvisionEvent>
+                  </componentOf2>
+               </placerGroup>
+            </inFulfillmentOf>
+            <component1 contextControlCode="AP" typeCode="COMP" contextConductionInd="true">
+               <observationEvent classCode="OBS" moodCode="EVN">
+                  <id xsi:type="II" specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.207.15.2.6" extension="SW8C3YHG"/>
+                  <code codeSystem="2.16.840.1.113883.6.1" code="15974-8"/>
+                  <statusCode code="completed"/>
+                  <effectiveTime xsi:type="IVL_TS" specializationType="IVL_TS.FULLDATETIME">
+                     <low specializationType="TS.FULLDATETIME" value="20090915024922-0700"/>
+                     <high specializationType="TS.FULLDATETIME" value="20090915024922-0700"/>
+                  </effectiveTime>
+                  <confidentialityCode codeSystem="2.16.840.1.113883.5.25" code="N"/>
+                  <value xsi:type="PQ" specializationType="PQ.LAB" value="2.7" unit="mmol/L"/>
+                  <interpretationCode codeSystem="2.16.840.1.113883.5.83" code="L"/>
+                  <methodCode nullFlavor="NA" codeSystem="2.16.840.1.113883.5.84"/>
+                  <specimen contextControlCode="OP" typeCode="SPC">
+                     <specimen classCode="SPEC">
+                        <id xsi:type="II" use="BUS" specializationType="II.BUS" root="2.16.840.1.113883.19.3.207.15.2.12" extension="XYWHCQ28"/>
+                        <code codeSystem="2.16.840.1.113883.5.111" code="P"/>
+                        <playingMaterial determinerCode="INSTANCE" classCode="MAT">
+                           <code codeSystem="2.16.840.1.113883.6.96" code="87612001"/>
+                           <desc>Blood in a vial</desc>
+                        </playingMaterial>
+                     </specimen>
+                  </specimen>
+                  <performer contextControlCode="OP" typeCode="PRF">
+                     <assignedEntity2 classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" extension="998977" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <given>Leroy</given>
+                              <given qualifier="IN">L</given>
+                              <family>Labtech</family>
+                           </name>
+                        </assignedPerson>
+                     </assignedEntity2>
+                  </performer>
+                  <subjectOf2 contextControlCode="AN" typeCode="SUBJ" contextConductionInd="true">
+                     <annotation moodCode="EVN" classCode="ACT">
+                        <text xsi:type="ST" specializationType="ST.LANG" language="en">This is the third glucose test for this patient this month.</text>
+                        <statusCode code="completed"/>
+                        <author typeCode="AUT">
+                           <time xsi:type="TS" specializationType="TS.FULLDATETIME" value="20110820230422.875-0700"/>
+                           <assignedEntity1 classCode="ASSIGNED">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+                              <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                                 <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                                    <prefix>Dr.</prefix>
+                                    <given>Fay</given>
+                                    <given qualifier="IN">F</given>
+                                    <family>Family</family>
+                                 </name>
+                                 <asHealthCareProvider classCode="PROV">
+                                    <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+                                 </asHealthCareProvider>
+                              </assignedPerson>
+                           </assignedEntity1>
+                        </author>
+                     </annotation>
+                  </subjectOf2>
+                  <subjectOf3 contextControlCode="AP" typeCode="SUBJ" contextConductionInd="false">
+                     <resultStatusProcessStep moodCode="EVN" classCode="PROC">
+                        <code codeSystem="2.16.840.1.113883.2.20.5.2" code="F"/>
+                        <statusCode code="completed"/>
+                     </resultStatusProcessStep>
+                  </subjectOf3>
+               </observationEvent>
+            </component1>
+            <component1 contextControlCode="AP" typeCode="COMP" contextConductionInd="true">
+               <observationEvent classCode="OBS" moodCode="EVN">
+                  <id xsi:type="II" specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.207.15.2.6" extension="2YIXNS7YBZ3"/>
+                  <code codeSystem="2.16.840.1.113883.6.1" code="2164-2"/>
+                  <statusCode code="completed"/>
+                  <effectiveTime xsi:type="IVL_TS" specializationType="IVL_TS.FULLDATETIME">
+                     <low specializationType="TS.FULLDATETIME" value="20090915024922-0700"/>
+                     <high specializationType="TS.FULLDATETIME" value="20090915024922-0700"/>
+                  </effectiveTime>
+                  <confidentialityCode codeSystem="2.16.840.1.113883.5.25" code="N"/>
+                  <value xsi:type="PQ" specializationType="PQ.LAB" value="1.95" unit="mL/s"/>
+                  <methodCode nullFlavor="NA" codeSystem="2.16.840.1.113883.5.84"/>
+                  <performer contextControlCode="OP" typeCode="PRF">
+                     <assignedEntity2 classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" extension="998977" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <given>Leroy</given>
+                              <given qualifier="IN">L</given>
+                              <family>Labtech</family>
+                           </name>
+                        </assignedPerson>
+                     </assignedEntity2>
+                  </performer>
+                  <derivedFrom contextControlCode="AN" typeCode="DRIV" contextConductionInd="false" inversionInd="false">
+                     <observationEvent moodCode="EVN" classCode="OBS">
+                        <id xsi:type="II" specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.207.15.2.6" extension="2BL82ASITLEX"/>
+                        <code codeSystem="2.16.840.1.113883.6.1" code="14682-9"/>
+                        <statusCode code="completed"/>
+                        <effectiveTime xsi:type="IVL_TS" specializationType="IVL_TS.FULLDATETIME">
+                           <low specializationType="TS.FULLDATETIME" value="20090915025122-0700"/>
+                           <high specializationType="TS.FULLDATETIME" value="20090915025822-0700"/>
+                        </effectiveTime>
+                        <confidentialityCode codeSystem="2.16.840.1.113883.5.25" code="N"/>
+                        <value xsi:type="PQ" specializationType="PQ.LAB" value="95" unit="umol/L"/>
+                        <methodCode nullFlavor="NA" codeSystem="2.16.840.1.113883.5.84"/>
+                     </observationEvent>
+                  </derivedFrom>
+                  <derivedFrom contextControlCode="AN" typeCode="DRIV" contextConductionInd="false" inversionInd="false">
+                     <observationEvent moodCode="EVN" classCode="OBS">
+                        <id xsi:type="II" specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.207.15.2.6" extension="ZNQODLBW"/>
+                        <code codeSystem="2.16.840.1.113883.6.1" code="14684-5"/>
+                        <statusCode code="completed"/>
+                        <effectiveTime xsi:type="IVL_TS" specializationType="IVL_TS.FULLDATETIME">
+                           <low specializationType="TS.FULLDATETIME" value="20090915025122-0700"/>
+                           <high specializationType="TS.FULLDATETIME" value="20090915025822-0700"/>
+                        </effectiveTime>
+                        <confidentialityCode codeSystem="2.16.840.1.113883.5.25" code="N"/>
+                        <value xsi:type="PQ" specializationType="PQ.LAB" value="9.2" unit="mmol/d"/>
+                        <methodCode nullFlavor="NA" codeSystem="2.16.840.1.113883.5.84"/>
+                     </observationEvent>
+                  </derivedFrom>
+                  <pertinentInformation2 contextControlCode="AN" typeCode="PERT" contextConductionInd="true">
+                     <supportingClinicalObservationEvent moodCode="EVN" classCode="OBS">
+                        <code codeSystem="2.16.840.1.113883.6.96" code="27113001"/>
+                        <value xsi:type="PQ" specializationType="PQ.LAB" value="75" unit="kg"/>
+                     </supportingClinicalObservationEvent>
+                  </pertinentInformation2>
+                  <subjectOf3 contextControlCode="AP" typeCode="SUBJ" contextConductionInd="false">
+                     <resultStatusProcessStep moodCode="EVN" classCode="PROC">
+                        <code codeSystem="2.16.840.1.113883.2.20.5.2" code="F"/>
+                        <statusCode code="completed"/>
+                     </resultStatusProcessStep>
+                  </subjectOf3>
+               </observationEvent>
+            </component1>
+            <component3 contextControlCode="AN" typeCode="COMP" contextConductionInd="true">
+               <reportableTestIndicator moodCode="EVN" classCode="OBS">
+                  <code codeSystem="2.16.840.1.113883.5.83" code="PH"/>
+                  <value value="false"/>
+               </reportableTestIndicator>
+            </component3>
+         </observationReport1>
+      </subject>
+   </controlActEvent>
+</POLB_IN124200CA>

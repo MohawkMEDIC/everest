@@ -1,0 +1,86 @@
+﻿Everest Release Notes – RC1
+===========================
+
+The release candidate of Everest has been hardened and contains several changes to increase the stability and reliability of several Everest components
+
+< Breaking Changes >
+	•	MARC.Everest.DataTypes.SetOperator enumeration now contains a complete set of set operators. All previous operators are kept for compatibility 
+	•	MARC.Everest.DataTypes.II constructors have changed. The following are changes to the constructors: 
+		•	ctor(string, string) - Removed 
+		•	ctor(OID, string) - Added, helps prevent the creation of invalid instance identifiers 
+		•	ctor(GUID) - Added, helps developers easily create a II.TOKEN constructor 
+	•	MARC.Everest.Core.MR2009.D2 now contains classes generated using the Combining optimization found in GPMR 0.9. This means that some class names may have changed since deployment in the JAN 2010 CTP. It also means that cool new features are available 
+	•	MARC.Everest.Core.* namespace is being moved to better reflect the contents of this namespace. The new namespaces will be: 
+		•	MARC.Everest.RMIM.CA.R020400 Replaces MARC.Everest.Core.MR2009 
+		•	MARC.Everest.RMIM.CA.R020402 Replaces MARC.Everest.Core.MR2009.D2 
+		•	MARC.Everest.RMIM.CA.R020403 Replaces MARC.Everest.Core.MR2009.D3
+
+< Changes >
+	•	Changes to the MARC.Everest.DataTypes.TS data-type now make it more accurate in the representation of dates/times within rendered components. The behavior of this has changed as follows: 
+	•	DateValuePrecision if not set by the developer, is automatically set Flavor is set 
+	•	Value now exclusively uses the DateValuePrecision property to format string representations of dates 
+	•	Fixed several bugs found in the MARC.Everest.DataTypes namespace, namely changes associated with casting and validation 
+	•	Updated reference guide with more detail 
+	•	Updated integrated help, more examples and better functionality descriptions 
+	•	Assembly containing the unplanned release R02.04.03 code 
+	•	GPMR 0.9 now included, improvements to GPMR include: 
+	•	Better handling of Vocabulary MIF files 
+	•	Better generation of DEKI WIKI and HTML files 
+	•	Generation of C# RimCollapse properties, means that the --optimize and collapsing algorithms can be used to generate C# classes 
+	•	Generation of XSD for COR based classes and XSLTs to transform to/from collapsed format 
+	•	Generation of XSLT to transform XML messages to/from the RIM representation in XML 
+	•	Generation of the RealizationAttribute in C# classes, makes it possible to programmatically "see" what RIM concept a particular property implements 
+	•	Experimental support for HL7v3 Universal MIFS (see below) 
+	•	MIF version conversion on the pipeline prior to load (see below)
+
+< New Features >
+
+
+Combined Classes
+-=-=-=-=-=-=-=-=
+
+Combined classes were implemented as an experimental feature in GPMR 0.8 (found in CTP JAN 2010), however this functionality was solidified and is now reflected in the MARC.Everest.Core.MR2009.D2 namespace. What does this mean? Well, you can now do this:
+
+REPC_IN000076CA request = receivedMessage.Structure as REPC_IN000076CA; 
+REPC_IN000077CA response = new REPC_IN000077CA(); 
+response.controlActEvent = REPC_IN000077CA.CreateControlActEvent(); // ommitted for space 
+
+// Illustration below shows what combining can do, notice how I can  
+// assign the RecordTarget from the request into the response because 
+// the structure is identical 
+
+response.controlActEvent.RecordTarget = request.controlActEvent.RecordTarget; 
+
+
+Better Result Detail Reporting
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+The result details that are reported from the IResultDetail class now include the location of the result detail. The location element now contains the XPath to the problem element in the instance to help make debugging easier. 
+
+Also, we've added several new types of result details including:
+	•	VocabularyIssueResultDetail - Indicates that an issue related to the codified concepts within a message are invalid 
+	•	FixedValueMisMatchedResultDetail - Indicates that a value supplied "on the wire" is different than the fixed value, and thus, the fixed value is used in place of the wire value 
+	•	NotImplementedElementResultDetail - Indicates that an additional element was found on the wire that the current Everest classed could not interpret.
+
+
+MIF Translation
+-=-=-=-=-=-=-=-
+
+The GPMR MIF loader stage now supports the execution of XSLTs prior to loading MIFs from disk. This makes it possible for GPMR to support multiple versions of MIF (from 2.0 up) so long as they can be converted to the internal MIF structures GPMR expects (MIF 2.1.3).
+XSLTs are now found in the XSL directory of the GPMR install directory.
+
+
+Universal Support (Experimental)
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Several enhancements have been made to the GPMR rendering pipeline in order to support some of the nuances of the Universal MIF files distributed as part of the Normative Edition 2008. This support is Experimental and not all rendering pipelines support the Universal MIFs distributed by HL7.
+
+Note, when running GPMR against MIFs distributed by HL7 it is recommended to remove the *_HD* MIF files from the MIF2 directory. Although processing of HD MIFs is supported by GPMR, several of the derivation supplier models cannot be found (this causes a plethora of warnings in GPMR).
+
+
+MIF 1.x Support Dropped
+-=-=-=-=-=-=-=-=-=-=-=-
+
+The complexity of supporting MIF 1.x within the GPMR codebase compared to the value it adds made this decision. As of Release Candidate 1 for Everest, MIF 1.x files are no longer supported.
+While it is possible to use the conversion capabilities of GPMR 0.9 to up-convert static model MIFs to 2.x, several other types of MIFs (namely the DMIFs) can't be processed in this manner.
+

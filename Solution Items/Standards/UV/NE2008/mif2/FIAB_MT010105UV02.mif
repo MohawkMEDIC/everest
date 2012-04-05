@@ -1,0 +1,1012 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" isSerializable="true" name="010105" packageKind="id" representationKind="flat" schemaVersion="2.0">
+   <packageLocation artifact="MT" domain="AB" realmNamespace="UV" root="DEFN" section="AM" subSection="FI" version="02"/>
+   <header>
+      <renderingInformation application="RoseTree 4.2.7">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl,v 1.15 2007/10/19 05:55:13 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl,v 1.4 2007/03/20 02:48:49 wbeeler Exp $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl,v 1.5 2007/03/20 02:48:50 wbeeler Exp $
+ Fix Names Transform: $Id: FixMifNames.xsl,v 1.8 2007/03/20 02:48:49 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $</mif:renderingNotes>
+      </renderingInformation>
+      <legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2008">
+         <notation>All rights reserved.</notation>
+      </legalese>
+   </header>
+   <derivedFrom staticModelDerivationId="1">
+      <targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <targetStaticModel artifact="RM" domain="AB" id="010000" realmNamespace="UV" root="DEFN" section="AM" subSection="FI"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="7">
+      <targetStaticModel artifact="HD" domain="AB" id="010100" realmNamespace="UV" root="DEFN" section="AM" subSection="FI" version="02"/>
+   </derivedFrom>
+   <entryPoint className="Account" name="Unknown" useKind="SemanticPayload">
+      <annotations>
+         
+      <documentation><description>
+            <text>
+               <xhtml:p>Entry point for account management messages</xhtml:p>
+            </text>
+         </description></documentation></annotations>
+   </entryPoint>
+   <containedClass>
+      <commonModelElementRef isAbstract="false" name="A_EncounterUniversal">
+         <derivedFrom className="PatientEncounter" staticModelDerivationId="1"/>
+         <derivedFrom className="A_EncounterUniversal" staticModelDerivationId="2"/>
+         <derivedFrom className="A_EncounterUniversal" staticModelDerivationId="7"/>
+         <annotations/>
+      </commonModelElementRef>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Account">
+         <derivedFrom className="Account" staticModelDerivationId="1"/>
+         <derivedFrom className="Account" staticModelDerivationId="2"/>
+         <derivedFrom className="Account" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="Account" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="Account" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActClass"/><code code="ACCT"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="Account" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="Account" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActMood"/><code code="EVN"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="1" name="id" sortKey="3">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>bank account, transit number, etc.</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="id" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="Account" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="Account" staticModelDerivationId="7"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="code" sortKey="4">
+            <annotations/>
+            <derivedFrom attributeName="code" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="Account" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="Account" staticModelDerivationId="7"/>
+            <type name="CD"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActAccountCode"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="title" sortKey="5">
+            <annotations/>
+            <derivedFrom attributeName="title" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="title" className="Account" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="title" className="Account" staticModelDerivationId="7"/>
+            <type name="ST"/>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="statusCode" sortKey="6">
+            <annotations/>
+            <derivedFrom attributeName="statusCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="statusCode" className="Account" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="statusCode" className="Account" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActStatus"/><code code="obsolete"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="balanceAmt" sortKey="7">
+            <annotations/>
+            <derivedFrom attributeName="balanceAmt" className="Account" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="balanceAmt" className="Account" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="balanceAmt" className="Account" staticModelDerivationId="7"/>
+            <type name="MO"/>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="currencyCode" sortKey="8">
+            <annotations/>
+            <derivedFrom attributeName="currencyCode" className="Account" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="currencyCode" className="Account" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="currencyCode" className="Account" staticModelDerivationId="7"/>
+            <type name="CE"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="Currency"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="interestRateQuantity" sortKey="9">
+            <annotations/>
+            <derivedFrom attributeName="interestRateQuantity" className="Account" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="interestRateQuantity" className="Account" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="interestRateQuantity" className="Account" staticModelDerivationId="7"/>
+            <type name="RTO">
+               <argumentDatatype name="MO"/>
+               <argumentDatatype name="PQ"/>
+            </type>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="allowedBalanceQuantity" sortKey="10">
+            <annotations/>
+            <derivedFrom attributeName="allowedBalanceQuantity" className="Account" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="allowedBalanceQuantity" className="Account" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="allowedBalanceQuantity" className="Account" staticModelDerivationId="7"/>
+            <type name="IVL">
+               <argumentDatatype name="MO"/>
+            </type>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Beneficiary">
+         <derivedFrom className="Participation" staticModelDerivationId="1"/>
+         <derivedFrom className="Beneficiary" staticModelDerivationId="2"/>
+         <derivedFrom className="Beneficiary" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Beneficiary" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Beneficiary" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ParticipationType"/><code code="BEN"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="CarrierOrganization">
+         <derivedFrom className="Organization" staticModelDerivationId="1"/>
+         <derivedFrom className="CarrierOrganization" staticModelDerivationId="2"/>
+         <derivedFrom className="CarrierOrganization" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="CarrierOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="CarrierOrganization" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="EntityClassOrganization"/><code code="ORG"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="determinerCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="determinerCode" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="determinerCode" className="CarrierOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="determinerCode" className="CarrierOrganization" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="EntityDeterminer"/><code code="INSTANCE"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="name" sortKey="3">
+            <annotations/>
+            <derivedFrom attributeName="name" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="name" className="CarrierOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="name" className="CarrierOrganization" staticModelDerivationId="7"/>
+            <type name="EN"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="CarrierRole">
+         <derivedFrom className="RoleHeir" staticModelDerivationId="1"/>
+         <derivedFrom className="CarrierRole" staticModelDerivationId="2"/>
+         <derivedFrom className="CarrierRole" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="CarrierRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="CarrierRole" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="RoleClass"/><code code="UNDWRT"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="id" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="id" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="CarrierRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="CarrierRole" staticModelDerivationId="7"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Component">
+         <derivedFrom className="ActRelationship" staticModelDerivationId="1"/>
+         <derivedFrom className="Component" staticModelDerivationId="2"/>
+         <derivedFrom className="Component" staticModelDerivationId="7"/>
+         <annotations>
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>Used to reference sub-accounts</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Component" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Component" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActRelationshipHasComponent"/><code code="COMP"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Coverage">
+         <derivedFrom className="ActRelationship" staticModelDerivationId="1"/>
+         <derivedFrom className="Coverage" staticModelDerivationId="2"/>
+         <derivedFrom className="Coverage" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Coverage" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Coverage" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActRelationshipType"/><code code="COVBY"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="sequenceNumber" sortKey="2">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>COB Priority</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="sequenceNumber" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="sequenceNumber" className="Coverage" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="sequenceNumber" className="Coverage" staticModelDerivationId="7"/>
+            <type name="INT"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <commonModelElementRef isAbstract="false" name="E_PersonUniversal">
+         <derivedFrom className="Person" staticModelDerivationId="1"/>
+         <derivedFrom className="E_PersonUniversal" staticModelDerivationId="2"/>
+         <derivedFrom className="E_PersonUniversal" staticModelDerivationId="7"/>
+         <annotations>
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>Guarantor is scoped by the patient. Patient is also the subject of the account.</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+      </commonModelElementRef>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="true" name="GuarantorChoice">
+         <derivedFrom className="Entity" staticModelDerivationId="1"/>
+         <derivedFrom className="GuarantorChoice" staticModelDerivationId="2"/>
+         <derivedFrom className="GuarantorChoice" staticModelDerivationId="7"/>
+         <annotations/>
+         <childClass className="GuarantorPerson" sortKey="1"/>
+         <childClass className="GuarantorOrganization" sortKey="2"/>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="GuarantorLanguage">
+         <derivedFrom className="LanguageCommunication" staticModelDerivationId="1"/>
+         <derivedFrom className="GuarantorLanguage" staticModelDerivationId="2"/>
+         <derivedFrom className="GuarantorLanguage" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="languageCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="languageCode" className="LanguageCommunication" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="languageCode" className="GuarantorLanguage" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="languageCode" className="GuarantorLanguage" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="HumanLanguage"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" defaultValue="RWR" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="modeCode" sortKey="2">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Received Written</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="modeCode" className="LanguageCommunication" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="modeCode" className="GuarantorLanguage" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="modeCode" className="GuarantorLanguage" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="LanguageAbilityMode"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="preferenceInd" sortKey="3">
+            <annotations/>
+            <derivedFrom attributeName="preferenceInd" className="LanguageCommunication" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="preferenceInd" className="GuarantorLanguage" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="preferenceInd" className="GuarantorLanguage" staticModelDerivationId="7"/>
+            <type name="BL"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="GuarantorOrganization">
+         <derivedFrom className="Organization" staticModelDerivationId="1"/>
+         <derivedFrom className="GuarantorOrganization" staticModelDerivationId="2"/>
+         <derivedFrom className="GuarantorOrganization" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="GuarantorOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="GuarantorOrganization" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="EntityClassOrganization"/><code code="ORG"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="determinerCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="determinerCode" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="determinerCode" className="GuarantorOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="determinerCode" className="GuarantorOrganization" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="EntityDeterminer"/><code code="INSTANCE"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="id" sortKey="3">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Can be used to supply non-guarantor role ides such as TIN-tax id number</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="id" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="GuarantorOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="GuarantorOrganization" staticModelDerivationId="7"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="code" sortKey="4">
+            <annotations/>
+            <derivedFrom attributeName="code" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="GuarantorOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="GuarantorOrganization" staticModelDerivationId="7"/>
+            <type name="CE"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="EntityCode"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="name" sortKey="5">
+            <annotations/>
+            <derivedFrom attributeName="name" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="name" className="GuarantorOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="name" className="GuarantorOrganization" staticModelDerivationId="7"/>
+            <type name="ON"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="GuarantorPerson">
+         <derivedFrom className="Person" staticModelDerivationId="1"/>
+         <derivedFrom className="GuarantorPerson" staticModelDerivationId="2"/>
+         <derivedFrom className="GuarantorPerson" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="GuarantorPerson" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="GuarantorPerson" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="EntityClass"/><code code="PSN"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="determinerCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="determinerCode" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="determinerCode" className="GuarantorPerson" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="determinerCode" className="GuarantorPerson" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="EntityDeterminer"/><code code="INSTANCE"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="id" sortKey="3">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Can be used to supply non-guarantor role ids such as SSN</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="id" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="GuarantorPerson" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="GuarantorPerson" staticModelDerivationId="7"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="1" name="name" sortKey="4">
+            <annotations/>
+            <derivedFrom attributeName="name" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="name" className="GuarantorPerson" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="name" className="GuarantorPerson" staticModelDerivationId="7"/>
+            <type name="BAG">
+               <argumentDatatype name="PN"/>
+            </type>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="addr" sortKey="5">
+            <annotations/>
+            <derivedFrom attributeName="addr" className="Person" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="addr" className="GuarantorPerson" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="addr" className="GuarantorPerson" staticModelDerivationId="7"/>
+            <type name="AD"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="GuarantorRole">
+         <derivedFrom className="RoleHeir" staticModelDerivationId="1"/>
+         <derivedFrom className="GuarantorRole" staticModelDerivationId="2"/>
+         <derivedFrom className="GuarantorRole" staticModelDerivationId="7"/>
+         <annotations>
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>Guarantor takes financial responsibility over the account</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="GuarantorRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="GuarantorRole" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="RoleClass"/><code code="GUAR"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="id" sortKey="2">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Guarantor identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="id" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="GuarantorRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="GuarantorRole" staticModelDerivationId="7"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute isImmutable="true" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="negationInd" sortKey="3">
+            <annotations/>
+            <derivedFrom attributeName="negationInd" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="negationInd" className="GuarantorRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="negationInd" className="GuarantorRole" staticModelDerivationId="7"/>
+            <type name="BL"/>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="addr" sortKey="4">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Can be used to indicate where to mail the statement</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="addr" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="addr" className="GuarantorRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="addr" className="GuarantorRole" staticModelDerivationId="7"/>
+            <type name="AD"/>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="telecom" sortKey="5">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Can be used to indicate where to call regarding the statement</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="telecom" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="telecom" className="GuarantorRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="telecom" className="GuarantorRole" staticModelDerivationId="7"/>
+            <type name="TEL"/>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="statusCode" sortKey="6">
+            <annotations/>
+            <derivedFrom attributeName="statusCode" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="statusCode" className="GuarantorRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="statusCode" className="GuarantorRole" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="RoleStatus"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="effectiveTime" sortKey="7">
+            <annotations/>
+            <derivedFrom attributeName="effectiveTime" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="effectiveTime" className="GuarantorRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="effectiveTime" className="GuarantorRole" staticModelDerivationId="7"/>
+            <type name="IVL">
+               <argumentDatatype name="TS"/>
+            </type>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Holder">
+         <derivedFrom className="Participation" staticModelDerivationId="1"/>
+         <derivedFrom className="Holder" staticModelDerivationId="2"/>
+         <derivedFrom className="Holder" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Holder" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Holder" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ParticipationType"/><code code="HLD"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="InsurancePolicy">
+         <derivedFrom className="FinancialContract" staticModelDerivationId="1"/>
+         <derivedFrom className="InsurancePolicy" staticModelDerivationId="2"/>
+         <derivedFrom className="InsurancePolicy" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="InsurancePolicy" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="InsurancePolicy" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActClass"/><code code="COV"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="InsurancePolicy" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="InsurancePolicy" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActMood"/><code code="EVN"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="id" sortKey="3">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Insurance policy identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="id" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="InsurancePolicy" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="InsurancePolicy" staticModelDerivationId="7"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="code" sortKey="4">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Type of insurance policy</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="code" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="InsurancePolicy" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="InsurancePolicy" staticModelDerivationId="7"/>
+            <type name="CD"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActInsurancePolicyCode"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="statusCode" sortKey="5">
+            <annotations/>
+            <derivedFrom attributeName="statusCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="statusCode" className="InsurancePolicy" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="statusCode" className="InsurancePolicy" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActStatus"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="effectiveTime" sortKey="6">
+            <annotations/>
+            <derivedFrom attributeName="effectiveTime" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="effectiveTime" className="InsurancePolicy" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="effectiveTime" className="InsurancePolicy" staticModelDerivationId="7"/>
+            <type name="IVL">
+               <argumentDatatype name="TS"/>
+            </type>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="OldAccount">
+         <derivedFrom className="Account" staticModelDerivationId="1"/>
+         <derivedFrom className="OldAccount" staticModelDerivationId="2"/>
+         <derivedFrom className="OldAccount" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="OldAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="OldAccount" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActClass"/><code code="ACCT"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="OldAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="OldAccount" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActMood"/><code code="EVN"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="id" sortKey="3">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>bank account, transit number, etc.</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="id" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="OldAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="OldAccount" staticModelDerivationId="7"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="statusCode" sortKey="4">
+            <annotations/>
+            <derivedFrom attributeName="statusCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="statusCode" className="OldAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="statusCode" className="OldAccount" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActStatus"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="allowedBalanceQuantity" sortKey="5">
+            <annotations/>
+            <derivedFrom attributeName="allowedBalanceQuantity" className="Account" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="allowedBalanceQuantity" className="OldAccount" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="allowedBalanceQuantity" className="OldAccount" staticModelDerivationId="7"/>
+            <type name="IVL">
+               <argumentDatatype name="MO"/>
+            </type>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="PatientRole">
+         <derivedFrom className="Patient" staticModelDerivationId="1"/>
+         <derivedFrom className="PatientRole" staticModelDerivationId="2"/>
+         <derivedFrom className="PatientRole" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="PatientRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="PatientRole" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="RoleClass"/><code code="PAT"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="id" sortKey="2">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>patient identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="id" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="PatientRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="PatientRole" staticModelDerivationId="7"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="confidentialityCode" sortKey="3">
+            <annotations/>
+            <derivedFrom attributeName="confidentialityCode" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="confidentialityCode" className="PatientRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="confidentialityCode" className="PatientRole" staticModelDerivationId="7"/>
+            <type name="SET">
+               <argumentDatatype name="CE"/>
+            </type>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="Confidentiality"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="veryImportantPersonCode" sortKey="4">
+            <annotations/>
+            <derivedFrom attributeName="veryImportantPersonCode" className="Patient" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="veryImportantPersonCode" className="PatientRole" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="veryImportantPersonCode" className="PatientRole" staticModelDerivationId="7"/>
+            <type name="CE"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="PatientImportance"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="PertinentInformation">
+         <derivedFrom className="ActRelationship" staticModelDerivationId="1"/>
+         <derivedFrom className="PertinentInformation" staticModelDerivationId="2"/>
+         <derivedFrom className="PertinentInformation" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="PertinentInformation" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="PertinentInformation" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActRelationshipPertains"/><code code="PERT"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="PolicyUnderwriter">
+         <derivedFrom className="Participation" staticModelDerivationId="1"/>
+         <derivedFrom className="PolicyUnderwriter" staticModelDerivationId="2"/>
+         <derivedFrom className="PolicyUnderwriter" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="PolicyUnderwriter" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="PolicyUnderwriter" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ParticipationType"/><code code="AUT"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Predecessor">
+         <derivedFrom className="ActRelationship" staticModelDerivationId="1"/>
+         <derivedFrom className="Predecessor" staticModelDerivationId="2"/>
+         <derivedFrom className="Predecessor" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Predecessor" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Predecessor" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActRelationshipType"/><code code="SUCC"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Subject">
+         <derivedFrom className="Participation" staticModelDerivationId="1"/>
+         <derivedFrom className="Subject" staticModelDerivationId="2"/>
+         <derivedFrom className="Subject" staticModelDerivationId="7"/>
+         <annotations>
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>The named party for the account. For a patient billing account, this is the patient</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Subject" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Subject" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ParticipationTargetSubject"/><code code="SBJ"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Subject2">
+         <derivedFrom className="Participation" staticModelDerivationId="1"/>
+         <derivedFrom className="Subject2" staticModelDerivationId="2"/>
+         <derivedFrom className="Subject2" staticModelDerivationId="7"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Subject2" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Subject2" staticModelDerivationId="7"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ParticipationTargetSubject"/><code code="SBJ"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <association sortKey="5">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="component" participantClassName="Component" sortKey="BE________">
+            <annotations>
+                     
+                  <documentation><designComments>
+                        <text>
+                           <xhtml:p>Used to reference sub-accounts</xhtml:p>
+                        </text>
+                     </designComments></documentation></annotations>
+            <derivedFrom associationEndName="outboundRelationship" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="component" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="component" className="Act" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Account"/></association>
+   <association sortKey="4">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="coverage" participantClassName="Coverage" sortKey="BDP_______">
+            <annotations/>
+            <derivedFrom associationEndName="outboundRelationship" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="coverage" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="coverage" className="Act" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Account"/></association>
+   <association sortKey="2">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="holder" participantClassName="Holder" sortKey="ABE_______">
+            <annotations/>
+            <derivedFrom associationEndName="participation" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="holder" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="holder" className="Act" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Account"/></association>
+   <association sortKey="6">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="pertainsTo" participantClassName="PertinentInformation" sortKey="CD________">
+            <annotations/>
+            <derivedFrom associationEndName="inboundRelationship" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="pertainsTo" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="pertainsTo" className="Act" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Account"/></association>
+   <association sortKey="3">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="predecessor" participantClassName="Predecessor" sortKey="BBIA______">
+            <annotations/>
+            <derivedFrom associationEndName="outboundRelationship" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="predecessor" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="predecessor" className="Act" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Account"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="subject" participantClassName="Subject" sortKey="AAA_______">
+            <annotations>
+                     
+                  <documentation><designComments>
+                        <text>
+                           <xhtml:p>The named party for the account. For a patient billing account, this is the patient</xhtml:p>
+                        </text>
+                     </designComments></documentation></annotations>
+            <derivedFrom associationEndName="participation" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="subject" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="subject" className="Act" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Account"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="patientRole" participantClassName="PatientRole" sortKey="BZ">
+            <annotations/>
+            <derivedFrom associationEndName="role" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="patientRole" className="Participation" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="patientRole" className="Participation" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Beneficiary"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="underwritingCarrierOrganization" participantClassName="CarrierOrganization" sortKey="AZ">
+            <annotations/>
+            <derivedFrom associationEndName="player" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="underwritingCarrierOrganization" className="Role" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="underwritingCarrierOrganization" className="Role" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="CarrierRole"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="account" participantClassName="Account" sortKey="BZ">
+            <annotations/>
+            <derivedFrom associationEndName="target" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="account" className="ActRelationship" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="account" className="ActRelationship" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Component"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="insurancePolicy" participantClassName="InsurancePolicy" sortKey="BZ">
+            <annotations/>
+            <derivedFrom associationEndName="target" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="insurancePolicy" className="ActRelationship" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="insurancePolicy" className="ActRelationship" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Coverage"/></association>
+   <association sortKey="2">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="guarantorLanguage" participantClassName="GuarantorLanguage" sortKey="CZ">
+            <annotations/>
+            <derivedFrom associationEndName="languageCommunication" className="Entity" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="guarantorLanguage" className="Entity" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="guarantorLanguage" className="Entity" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="GuarantorChoice"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="guarantorChoice" participantClassName="GuarantorChoice" sortKey="AZ">
+            <annotations/>
+            <derivedFrom associationEndName="player" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="guarantorChoice" className="Role" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="guarantorChoice" className="Role" staticModelDerivationId="7"/>
+            <participantClassSpecialization className="GuarantorPerson" traversalName="guarantorPerson"/>
+            <participantClassSpecialization className="GuarantorOrganization" traversalName="guarantorOrganization"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="GuarantorRole"/></association>
+   <association sortKey="2">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="promisorPerson" participantClassName="E_PersonUniversal" sortKey="BZ">
+            <annotations>
+                                             
+                                          <documentation><designComments>
+                                                <text>
+                                                   <xhtml:p>Guarantor is scoped by the patient. Patient is also the subject of the account.</xhtml:p>
+                                                </text>
+                                             </designComments></documentation></annotations>
+            <derivedFrom associationEndName="scoper" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="promisorPerson" className="Role" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="promisorPerson" className="Role" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="GuarantorRole"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="guarantorRole" participantClassName="GuarantorRole" sortKey="BZ">
+            <annotations>
+                                 
+                              <documentation><designComments>
+                                    <text>
+                                       <xhtml:p>Guarantor takes financial responsibility over the account</xhtml:p>
+                                    </text>
+                                 </designComments></documentation></annotations>
+            <derivedFrom associationEndName="role" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="guarantorRole" className="Participation" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="guarantorRole" className="Participation" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Holder"/></association>
+   <association sortKey="2">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="author" participantClassName="PolicyUnderwriter" sortKey="AEA_______">
+            <annotations/>
+            <derivedFrom associationEndName="participation" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="author" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="author" className="Act" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="InsurancePolicy"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="beneficiary" participantClassName="Beneficiary" sortKey="ABC_______">
+            <annotations/>
+            <derivedFrom associationEndName="participation" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="beneficiary" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="beneficiary" className="Act" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="InsurancePolicy"/></association>
+   <association sortKey="2">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="patientPerson" participantClassName="E_PersonUniversal" sortKey="AZ">
+            <annotations>
+                                             
+                                          <documentation><designComments>
+                                                <text>
+                                                   <xhtml:p>Guarantor is scoped by the patient. Patient is also the subject of the account.</xhtml:p>
+                                                </text>
+                                             </designComments></documentation></annotations>
+            <derivedFrom associationEndName="player" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="patientPerson" className="Role" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="patientPerson" className="Role" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="PatientRole"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="subjectOf" participantClassName="Subject2" sortKey="CAA_______">
+            <annotations/>
+            <derivedFrom associationEndName="participation" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="subjectOf" className="Role" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="subjectOf" className="Role" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="PatientRole"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="encounter" participantClassName="A_EncounterUniversal" sortKey="AZ">
+            <annotations/>
+            <derivedFrom associationEndName="source" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="encounter" className="ActRelationship" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="encounter" className="ActRelationship" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="PertinentInformation"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="carrierRole" participantClassName="CarrierRole" sortKey="BZ">
+            <annotations/>
+            <derivedFrom associationEndName="role" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="carrierRole" className="Participation" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="carrierRole" className="Participation" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="PolicyUnderwriter"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="oldAccount" participantClassName="OldAccount" sortKey="BZ">
+            <annotations/>
+            <derivedFrom associationEndName="target" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="oldAccount" className="ActRelationship" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="oldAccount" className="ActRelationship" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Predecessor"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="patientRole" participantClassName="PatientRole" sortKey="BZ">
+            <annotations/>
+            <derivedFrom associationEndName="role" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="patientRole" className="Participation" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="patientRole" className="Participation" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Subject"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="encounter" participantClassName="A_EncounterUniversal" sortKey="AZ">
+            <annotations/>
+            <derivedFrom associationEndName="act" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="encounter" className="Participation" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="encounter" className="Participation" staticModelDerivationId="7"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Subject2"/></association>
+</mif:staticModel>

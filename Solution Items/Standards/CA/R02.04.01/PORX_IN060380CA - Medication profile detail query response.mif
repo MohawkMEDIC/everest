@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.3" name="060380"
+                 title="Patient-Related Medication Query Query Response Medication Profile Detail">
+   <mif:businessName name="Medication profile detail query response"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="RX" artifact="IN"
+                        realmNamespace="CA"
+                        id="060380"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Returns detailed information about a patient's prescriptions, dispenses and other medications for a specific patient optionally filtered by date.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="RX" artifact="TE"
+                             realmNamespace="CA"
+                             id="060290"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="CA"
+                        id="002300">
+      <mif:parameterModel parameterName="ControlActEvent" root="DEFN" section="IM" subSection="QU"
+                          domain="QI"
+                          artifact="MT"
+                          realmNamespace="CA"
+                          id="120006"
+                          traversalName="controlActEvent">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="RX"
+                             artifact="MT"
+                             realmNamespace="CA"
+                             id="060160"
+                             traversalName="medicationRecord">
+            <mif:specialization className="CombinedMedicationRequest" traversalName="combinedMedicationRequest"/>
+            <mif:specialization className="OtherMedication" traversalName="otherMedication"/>
+         </mif:parameterModel>
+         <mif:parameterModel parameterName="ParameterList" root="DEFN" section="HM" subSection="PO"
+                             domain="RX"
+                             artifact="MT"
+                             realmNamespace="CA"
+                             id="060170"
+                             traversalName="parameterList"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

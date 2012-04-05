@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="RealmExtension"
+                 schemaVersion="2.1.3"
+                 packageKind="realmNamespace"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="Medication Detail Query"
+                 isSerializable="true"
+                 name="CA">
+   <mif:packageLocation realmNamespace="CA" artifact="MT" root="DEFN" section="HM" subSection="PO"
+                        domain="ME"
+                        id="010030"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="9.089" height="0.893"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="EA69EE14-0C93-20DA-62F5-C54C6E49320F">
+         <mif:graphElement shapeId="Sheet.9">
+            <mif:position x="0.028" y="-1.780"/>
+            <mif:size width="1.666" height="0.586"/>
+            <mif:anchorage connectToShapeId="Sheet.9">
+               <mif:position x="1.693" y="0.133"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.5">
+                     <mif:position x="3.066" y="0.508"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="DE6B0ACC-EC3C-A235-ADF3-6579DB9C24B8" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.20" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="6.265" y="0.133"/>
+            <mif:size width="2.643" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="F5ABD852-5F90-1761-CF32-65A59E06E71D" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.5" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.066" y="0.133"/>
+            <mif:size width="1.250" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="2336FB16-3A1C-B8C6-39A0-D8DCA79627E7">
+         <mif:graphElement connectToShapeId="Sheet.5" shapeId="Sheet.50">
+            <mif:position x="4.316" y="0.321"/>
+            <mif:graphEdge>
+               <mif:waypoint x="5.291" y="0.321"/>
+               <mif:anchor connectToShapeId="Sheet.20">
+                  <mif:position x="6.265" y="0.321"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage root="DEFN" artifact="VO" realmNamespace="UV" version="586-20081030"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="EA69EE14-0C93-20DA-62F5-C54C6E49320F" id="POME_MT010030CA"
+                   name="Medication Detail Query"
+                   className="ParameterList">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>
+                  <html:p xmlns:html="http://www.w3.org/1999/xhtml">Entry point for medication query message</html:p>
+               </mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="DE6B0ACC-EC3C-A235-ADF3-6579DB9C24B8" name="DrugCode"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="B:Drug Code"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">An identifier for a specific drug product. Types of drugs identified by drug code include: Manufactured drug, generic formulation, generic, therapeutic class, etc.</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Allows the requester to retrieve detail information about a specific drug product.</html:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="CV"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ClinicalDrug"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="F5ABD852-5F90-1761-CF32-65A59E06E71D" name="ParameterList"
+                 isAbstract="false">
+         <mif:businessName name="Drug Query Parameters"/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Defines the set of parameters that may be used to filter the query response.</html:p>
+                  </mif:text>
+               </mif:definition>
+               <mif:rationale>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Root class for query parameters</html:p>
+                  </mif:text>
+               </mif:rationale>
+            </mif:documentation>
+         </mif:annotations>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="2336FB16-3A1C-B8C6-39A0-D8DCA79627E7" sortKey="0">
+      <mif:traversableConnection name="drugCode" minimumMultiplicity="1" maximumMultiplicity="1" conformance="R"
+                                 isMandatory="true"
+                                 sortKey="Z ZZ"
+                                 participantClassName="DrugCode">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="parameterList"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

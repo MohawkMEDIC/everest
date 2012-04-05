@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" isSerializable="true" name="900001" packageKind="id" representationKind="flat" schemaVersion="2.0">
+   <packageLocation artifact="MT" domain="AI" realmNamespace="UV" root="DEFN" section="IM" subSection="MC" version="01"/>
+   <header>
+      <renderingInformation application="RoseTree 4.2.7">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl,v 1.15 2007/10/19 05:55:13 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl,v 1.4 2007/03/20 02:48:49 wbeeler Exp $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl,v 1.5 2007/03/20 02:48:50 wbeeler Exp $
+ Fix Names Transform: $Id: FixMifNames.xsl,v 1.8 2007/03/20 02:48:49 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $</mif:renderingNotes>
+      </renderingInformation>
+      <legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2008">
+         <notation>All rights reserved.</notation>
+      </legalese>
+   </header>
+   <derivedFrom staticModelDerivationId="1">
+      <targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <targetStaticModel artifact="RM" domain="AI" id="900000" realmNamespace="UV" root="DEFN" section="IM" subSection="MC"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <targetStaticModel artifact="HD" domain="AI" id="900000" realmNamespace="UV" root="DEFN" section="IM" subSection="MC" version="01"/>
+   </derivedFrom>
+   <entryPoint className="DetectedIssueEvent" name="Unknown" useKind="CMET">
+      <annotations>
+         
+      <documentation><description>
+            <text>
+               <xhtml:p>Used to refer to the detected issue in the TriggerEvent Control Act.</xhtml:p>
+            </text>
+         </description></documentation></annotations>
+   </entryPoint>
+   <containedClass>
+      <class isAbstract="false" name="ActOrderRequired">
+         <derivedFrom className="ActHeir" staticModelDerivationId="1"/>
+         <derivedFrom className="ActOrderRequired" staticModelDerivationId="2"/>
+         <derivedFrom className="ActOrderRequired" staticModelDerivationId="3"/>
+         <annotations>
+            
+         <appInfo><mapping sourceName="??">
+               <text>
+                  <xhtml:p>v2.x: Inform Person Indicator v2.x: User Message</xhtml:p>
+               </text>
+            </mapping></appInfo></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="ActOrderRequired" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="ActOrderRequired" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActClassRoot"/><code code="ACT"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="ActOrderRequired" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="ActOrderRequired" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActMood"/><code code="RQO"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="code" sortKey="3">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>e.g. inform patient, phone help desk</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="code" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="ActOrderRequired" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="ActOrderRequired" staticModelDerivationId="3"/>
+            <type name="CE"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActCode"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="effectiveTime" sortKey="4">
+            <annotations/>
+            <derivedFrom attributeName="effectiveTime" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="effectiveTime" className="ActOrderRequired" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="effectiveTime" className="ActOrderRequired" staticModelDerivationId="3"/>
+            <type name="GTS"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="DetectedIssueEvent">
+         <derivedFrom className="Observation" staticModelDerivationId="1"/>
+         <derivedFrom className="DetectedIssueEvent" staticModelDerivationId="2"/>
+         <derivedFrom className="DetectedIssueEvent" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="DetectedIssueEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="DetectedIssueEvent" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActClass"/><code code="ALRT"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="DetectedIssueEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="DetectedIssueEvent" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActMood"/><code code="EVN"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="id" sortKey="3">
+            <annotations/>
+            <derivedFrom attributeName="id" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="DetectedIssueEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="DetectedIssueEvent" staticModelDerivationId="3"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="code" sortKey="4">
+            <annotations/>
+            <derivedFrom attributeName="code" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="DetectedIssueEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="DetectedIssueEvent" staticModelDerivationId="3"/>
+            <type name="CD"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActDetectedIssueCode"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="text" sortKey="5">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>additional information</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="text" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="text" className="DetectedIssueEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="text" className="DetectedIssueEvent" staticModelDerivationId="3"/>
+            <type name="ED"/>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="value" sortKey="6">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>reason</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="DetectedIssueEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="DetectedIssueEvent" staticModelDerivationId="3"/>
+            <type name="ANY"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="DetectedIssueManagement">
+         <derivedFrom className="ActHeir" staticModelDerivationId="1"/>
+         <derivedFrom className="DetectedIssueManagement" staticModelDerivationId="2"/>
+         <derivedFrom className="DetectedIssueManagement" staticModelDerivationId="3"/>
+         <annotations>
+            
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>In DEF mood, contains one of the allowed override codes allowed on subsequent message resubmission In EVN mood, contains one overrid codes used by the sender to manage the issue.</xhtml:p>
+               </text>
+            </designComments></documentation><appInfo><mapping sourceName="??">
+               <text>
+                  <xhtml:p>v2.x: Override Type v2.x: Override Reason</xhtml:p>
+               </text>
+            </mapping></appInfo></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="DetectedIssueManagement" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="DetectedIssueManagement" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActClassRoot"/><code code="ACT"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="DetectedIssueManagement" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="DetectedIssueManagement" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="x_ActMoodDefEvn"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="code" sortKey="3">
+            <annotations/>
+            <derivedFrom attributeName="code" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="DetectedIssueManagement" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="DetectedIssueManagement" staticModelDerivationId="3"/>
+            <type name="CD"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActDetectedIssueManagementCode"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="text" sortKey="4">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>additional information</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="text" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="text" className="DetectedIssueManagement" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="text" className="DetectedIssueManagement" staticModelDerivationId="3"/>
+            <type name="ED"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Requires">
+         <derivedFrom className="ActRelationship" staticModelDerivationId="1"/>
+         <derivedFrom className="Requires" staticModelDerivationId="2"/>
+         <derivedFrom className="Requires" staticModelDerivationId="3"/>
+         <annotations>
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>Communicates required actions of receiving system</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Requires" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Requires" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActRelationshipType"/><code code="TRIG"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="true" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="contextConductionInd" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="contextConductionInd" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="contextConductionInd" className="Requires" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="contextConductionInd" className="Requires" staticModelDerivationId="3"/>
+            <type name="BL"/>
+         </attribute>
+         <attribute isImmutable="true" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="negationInd" sortKey="3">
+            <annotations/>
+            <derivedFrom attributeName="negationInd" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="negationInd" className="Requires" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="negationInd" className="Requires" staticModelDerivationId="3"/>
+            <type name="BL"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Role">
+         <derivedFrom className="RoleHeir" staticModelDerivationId="1"/>
+         <derivedFrom className="Role" staticModelDerivationId="2"/>
+         <derivedFrom className="Role" staticModelDerivationId="3"/>
+         <annotations>
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>Patient, help desk, user, etc.</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="classCode" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="Role" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="Role" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="RoleClassRoot"/><code code="ROL"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="code" sortKey="2">
+            <annotations/>
+            <derivedFrom attributeName="code" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="Role" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="Role" staticModelDerivationId="3"/>
+            <type name="CE"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="RoleCode"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="SourceOf">
+         <derivedFrom className="ActRelationship" staticModelDerivationId="1"/>
+         <derivedFrom className="SourceOf" staticModelDerivationId="2"/>
+         <derivedFrom className="SourceOf" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="SourceOf" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="SourceOf" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActRelationshipMitigates"/><code code="MITGT"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" defaultValue="false" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="contextConductionInd" sortKey="2">
+            <annotations>
+               
+               
+            <appInfo><constraint>
+                  <text>
+                     <xhtml:p>Must be false</xhtml:p>
+                  </text>
+               </constraint><constraint>
+                  <text>
+                     <xhtml:p>Must be false</xhtml:p>
+                  </text>
+               </constraint></appInfo></annotations>
+            <derivedFrom attributeName="contextConductionInd" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="contextConductionInd" className="SourceOf" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="contextConductionInd" className="SourceOf" staticModelDerivationId="3"/>
+            <type name="BL"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Subject">
+         <derivedFrom className="Participation" staticModelDerivationId="1"/>
+         <derivedFrom className="Subject" staticModelDerivationId="2"/>
+         <derivedFrom className="Subject" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Subject" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Subject" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ParticipationTargetSubject"/><code code="SBJ"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="subject" participantClassName="Subject" sortKey="AAA_______">
+            <annotations/>
+            <derivedFrom associationEndName="participation" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="subject" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="subject" className="Act" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ActOrderRequired"/></association>
+   <association sortKey="2">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="mitigatedBy" participantClassName="SourceOf" sortKey="CCAA______">
+            <annotations/>
+            <derivedFrom associationEndName="inboundRelationship" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="mitigatedBy" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="mitigatedBy" className="Act" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="DetectedIssueEvent"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="triggerFor" participantClassName="Requires" sortKey="CCB_______">
+            <annotations>
+                     
+                  <documentation><designComments>
+                        <text>
+                           <xhtml:p>Communicates required actions of receiving system</xhtml:p>
+                        </text>
+                     </designComments></documentation></annotations>
+            <derivedFrom associationEndName="inboundRelationship" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="triggerFor" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="triggerFor" className="Act" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="DetectedIssueEvent"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="actOrderRequired" participantClassName="ActOrderRequired" sortKey="AZ">
+            <annotations>
+                                 
+                              <appInfo><mapping sourceName="??">
+                                    <text>
+                                       <xhtml:p>v2.x: Inform Person Indicator v2.x: User Message</xhtml:p>
+                                    </text>
+                                 </mapping></appInfo></annotations>
+            <derivedFrom associationEndName="source" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="actOrderRequired" className="ActRelationship" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="actOrderRequired" className="ActRelationship" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Requires"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="detectedIssueManagement" participantClassName="DetectedIssueManagement" sortKey="AZ">
+            <annotations>
+                                 
+                                 
+                              <documentation><designComments>
+                                    <text>
+                                       <xhtml:p>In DEF mood, contains one of the allowed override codes allowed on subsequent message resubmission In EVN mood, contains one overrid codes used by the sender to manage the issue.</xhtml:p>
+                                    </text>
+                                 </designComments></documentation><appInfo><mapping sourceName="??">
+                                    <text>
+                                       <xhtml:p>v2.x: Override Type v2.x: Override Reason</xhtml:p>
+                                    </text>
+                                 </mapping></appInfo></annotations>
+            <derivedFrom associationEndName="source" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="mitigatingDetectedIssueManagement" className="ActRelationship" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="mitigatingDetectedIssueManagement" className="ActRelationship" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="SourceOf"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="role" participantClassName="Role" sortKey="BZ">
+            <annotations>
+                                                         
+                                                      <documentation><designComments>
+                                                            <text>
+                                                               <xhtml:p>Patient, help desk, user, etc.</xhtml:p>
+                                                            </text>
+                                                         </designComments></documentation></annotations>
+            <derivedFrom associationEndName="role" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="participant" className="Participation" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="participant" className="Participation" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Subject"/></association>
+</mif:staticModel>

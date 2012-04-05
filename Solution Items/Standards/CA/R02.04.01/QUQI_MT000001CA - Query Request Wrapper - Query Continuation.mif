@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="RealmExtension"
+                 schemaVersion="2.1.3"
+                 packageKind="realmNamespace"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="Query Request Wrapper - Query Continuation"
+                 isSerializable="true"
+                 name="CA">
+   <mif:packageLocation realmNamespace="CA" artifact="MT" root="DEFN" section="IM" subSection="QU"
+                        domain="QI"
+                        id="000001"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="17.000" height="15.000"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="F5F5DA8B-DECA-AFAE-3F4E-3ABE886E11A6">
+         <mif:graphElement shapeId="Sheet.78">
+            <mif:position x="5.205" y="0.547"/>
+            <mif:size width="3.093" height="0.453"/>
+            <mif:anchorage connectToShapeId="Sheet.78">
+               <mif:position x="6.750" y="1.000"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.168">
+                     <mif:position x="6.753" y="2.524"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="89A63C9D-CCC2-5102-49CB-857D69DAB0D0" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.168" shapeTemplate="Act" isWidthAutoSize="true"
+                           isHeightAutoSize="false">
+            <mif:position x="4.919" y="2.524"/>
+            <mif:size width="3.669" height="7.903"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="7D2E268E-DD0B-9792-6426-DD184BBDA061" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.411" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="10.456" y="13.111"/>
+            <mif:size width="3.544" height="0.789"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="794593DE-5203-3AEC-C6CE-1606F918067C">
+         <mif:graphElement connectToShapeId="Sheet.168" shapeId="Sheet.429">
+            <mif:position x="6.019" y="10.428"/>
+            <mif:graphEdge>
+               <mif:waypoint x="6.019" y="9.917"/>
+               <mif:waypoint x="-0.189" y="9.917"/>
+               <mif:anchor connectToShapeId="Sheet.411">
+                  <mif:position x="12.228" y="13.111"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage root="DEFN" artifact="VO" realmNamespace="UV" version="586-20081030"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="F5F5DA8B-DECA-AFAE-3F4E-3ABE886E11A6" id="QUQI_MT000001CA"
+                   name="Query Request Wrapper - Query Continuation"
+                   className="ControlActEvent"/>
+   <mif:containedClass>
+      <mif:class graphicLinkId="89A63C9D-CCC2-5102-49CB-857D69DAB0D0" name="ControlActEvent"
+                 isAbstract="false">
+         <mif:businessName name="Trigger Event"/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ControlAct"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Identifies the action that resulted in this message being sent.</html:p>
+                  </mif:text>
+               </mif:definition>
+               <mif:usageNotes>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">There may be constraints on the usage of the effectiveTime and reasonCode attributes in the definition of the interaction or the trigger events which are conveyed with this wrapper.</html:p>
+                  </mif:text>
+               </mif:usageNotes>
+               <mif:rationale>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Key to understanding what action a message represents.</html:p>
+                  </mif:text>
+               </mif:rationale>
+            </mif:documentation>
+         </mif:annotations>
+         <mif:attribute name="classCode" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="CACT"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ControlAct" attributeName="classCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="ActClass" code="CACT"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="moodCode" sortKey="2" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="EVN"
+                        isImmutable="true">
+            <mif:derivedFrom staticModelDerivationId="1" className="ControlAct" attributeName="moodCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="ActMood" code="EVN"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="id" sortKey="3" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="B:Event Identifier"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">A unique identifier for this particular event assigned by the system in which the event occurred.</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:usageNotes>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Identifier needs to be persisted by receiving applications, except for queries (queries cannot be retracted or undone).</html:p>
+                     </mif:text>
+                  </mif:usageNotes>
+                  <mif:rationale>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Allows the event to be referenced (for undos) and also indicates whether multiple interactions were caused by the same triggering event. Also used for audit purposes.</html:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ControlAct" attributeName="id"/>
+            <mif:type name="II.BUS"/>
+         </mif:attribute>
+         <mif:attribute name="code" sortKey="4" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="A:Event Type"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Identifies the trigger event that occurred.</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">This is mandatory because it is essential to understanding the meaning of the event.</html:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ControlAct" attributeName="code"/>
+            <mif:type name="CV"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="HL7TriggerEventCode"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="statusCode" sortKey="5" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        fixedValue="completed"
+                        isImmutable="false">
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Describes the status of the control act, which is always complete (it happened).</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Required for completeness of specification.</html:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ControlAct" attributeName="statusCode"/>
+            <mif:type name="CS"/>
+            <mif:vocabulary>
+               <mif:code codeSystemName="ActStatus" code="completed"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="effectiveTime" sortKey="6" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="C:Event Effective Period"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Indicates the time the event (e.g. query, change, activation) should begin and occasionally when it should end.</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The time an event becomes effective may differ from the time the event is recorded (i.e. it may be in the future or the past). For events such as 'suspend', an intended end date may also be indicated.</html:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ControlAct"
+                             attributeName="effectiveTime"/>
+            <mif:type name="IVL">
+               <mif:argumentDatatype name="TS.FULLDATEWITHTIME"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute name="reasonCode" sortKey="7" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="E:Event Reason"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Identifies why this specific message interaction (e.g. query, activation request, modification request) occurred.</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:usageNotes>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The domain associated with this attribute will vary for each interaction and will be noted as part of the interaction description.</html:p>
+                     </mif:text>
+                  </mif:usageNotes>
+                  <mif:rationale>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Allows identifying a reason for a specific action, such as 'reason for hold' or 'reason for accessing information'.</html:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ControlAct" attributeName="reasonCode"/>
+            <mif:type name="CV"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ControlActReason"/>
+            </mif:vocabulary>
+         </mif:attribute>
+         <mif:attribute name="languageCode" sortKey="8" minimumMultiplicity="0" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        isImmutable="false">
+            <mif:businessName name="Message Language"/>
+            <mif:derivedFrom staticModelDerivationId="1" className="ControlAct" attributeName="languageCode"/>
+            <mif:type name="CE"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="HumanLanguage"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="7D2E268E-DD0B-9792-6426-DD184BBDA061" name="QueryContinuation"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryContinuation"/>
+         <mif:attribute name="queryId" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="H:Query Identifier"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Unique number for the query to be continued.</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Links to the query for which continuation is desired. Needed to ensure that the query is not re-executed, as the results may have changed. As a result, the attribute is mandatory.</html:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryContinuation"
+                             attributeName="queryId"/>
+            <mif:type name="II.TOKEN"/>
+         </mif:attribute>
+         <mif:attribute name="startResultNumber" sortKey="2" minimumMultiplicity="1"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        maximumLength="6"
+                        isImmutable="false">
+            <mif:businessName name="I:Start Position"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Indicates the record number at which to start the returned result set.</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Indicates what point the query should continue from and is therefore mandatory.</html:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryContinuation"
+                             attributeName="startResultNumber"/>
+            <mif:type name="INT.NONNEG"/>
+         </mif:attribute>
+         <mif:attribute name="continuationQuantity" sortKey="3" minimumMultiplicity="0"
+                        maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="false"
+                        maximumLength="3"
+                        isImmutable="false">
+            <mif:businessName name="J:Query Limit"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Indicates how many records should be returned for this query.</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Allows an application to control the number of returned records. If not specified, the EHR may apply a default limit.</html:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="QueryContinuation"
+                             attributeName="continuationQuantity"/>
+            <mif:type name="INT.POS"/>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="794593DE-5203-3AEC-C6CE-1606F918067C" sortKey="0">
+      <mif:traversableConnection name="queryContinuation" minimumMultiplicity="1" maximumMultiplicity="1"
+                                 conformance="R"
+                                 isMandatory="true"
+                                 sortKey="Z"
+                                 participantClassName="QueryContinuation">
+         <mif:derivedFrom staticModelDerivationId="1" className="ControlAct"
+                          associationEndName="queryEvent"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ControlActEvent">
+         <mif:derivedFrom staticModelDerivationId="1" className="QueryEvent"
+                          associationEndName="controlAct"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

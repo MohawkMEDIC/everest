@@ -1,0 +1,23 @@
+There are some flavors that fundamentally change the output of the datatypes, for example the TS flavours
+dictate the precision of the outputted value. However this is not possible from a class design standpoint
+as a class cannot dictate its precision on the wire. The formatters will have to take care of this
+scenario.
+
+The other problem comes with new flavors that replace old R1 datatypes, for example CV datatype will be 
+replaced with CD.CV . This may cause a problem as the core API library has to provide both a CV
+and CD with CV flavor validation. 
+
+I believe that this will be possible by the following implementation style:
+
+
+[Structure(Name = "CV")]
+public class CV : CS
+{
+}
+
+[Structure(Name = "CD")]
+[FlavorMap(FlavorId = "CV", Type = typeof(CV))] // map CD.CV to CV
+[FlavorMap(FlavorId = "CE", Type = typeof(CE))] // map CD.CE to CE
+public class CD : CV
+{
+}

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" isSerializable="true" name="200802" packageKind="id" representationKind="flat" schemaVersion="2.0">
+   <packageLocation artifact="MT" domain="CR" realmNamespace="UV" root="DEFN" section="IM" subSection="QU" version="03"/>
+   <header>
+      <renderingInformation application="RoseTree 4.2.7">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl,v 1.15 2007/10/19 05:55:13 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl,v 1.4 2007/03/20 02:48:49 wbeeler Exp $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl,v 1.5 2007/03/20 02:48:50 wbeeler Exp $
+ Fix Names Transform: $Id: FixMifNames.xsl,v 1.8 2007/03/20 02:48:49 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $</mif:renderingNotes>
+      </renderingInformation>
+      <legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2008">
+         <notation>All rights reserved.</notation>
+      </legalese>
+   </header>
+   <derivedFrom staticModelDerivationId="1">
+      <targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <targetStaticModel artifact="RM" domain="CR" id="200000" realmNamespace="UV" root="DEFN" section="IM" subSection="QU"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <targetStaticModel artifact="HD" domain="CR" id="200800" realmNamespace="UV" root="DEFN" section="IM" subSection="QU" version="03"/>
+   </derivedFrom>
+   <entryPoint className="ParameterList" name="Unknown" useKind="SemanticPayload">
+      <annotations>
+         
+      <documentation><description>
+            <text>
+               <xhtml:p>Entry point for eligibility query request message</xhtml:p>
+            </text>
+         </description></documentation></annotations>
+   </entryPoint>
+   <containedClass>
+      <class isAbstract="false" name="CarrierRole.id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="CarrierRole.id" staticModelDerivationId="2"/>
+         <derivedFrom className="CarrierRole.id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Carrier ID</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="CarrierRole.id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="CarrierRole.id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="CoveredPartyAsPatient.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="CoveredPartyAsPatient.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="CoveredPartyAsPatient.Id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>e.g. Personal Health Number, policy id + member number</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="CoveredPartyAsPatient.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="CoveredPartyAsPatient.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="CoveredPartyAsPatientPerson.AdministrativeGender">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="CoveredPartyAsPatientPerson.AdministrativeGender" staticModelDerivationId="2"/>
+         <derivedFrom className="CoveredPartyAsPatientPerson.AdministrativeGender" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Patient.gender</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="CoveredPartyAsPatientPerson.AdministrativeGender" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="CoveredPartyAsPatientPerson.AdministrativeGender" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="AdministrativeGender"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="CoveredPartyAsPatientPerson.BirthTime">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="CoveredPartyAsPatientPerson.BirthTime" staticModelDerivationId="2"/>
+         <derivedFrom className="CoveredPartyAsPatientPerson.BirthTime" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="CoveredPartyAsPatientPerson.BirthTime" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="CoveredPartyAsPatientPerson.BirthTime" staticModelDerivationId="3"/>
+            <type name="TS"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="CoveredPartyAsPatientPerson.Name">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="CoveredPartyAsPatientPerson.Name" staticModelDerivationId="2"/>
+         <derivedFrom className="CoveredPartyAsPatientPerson.Name" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="CoveredPartyAsPatientPerson.Name" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="CoveredPartyAsPatientPerson.Name" staticModelDerivationId="3"/>
+            <type name="PN"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="CoveredPartyAsPatientRole.Code">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="CoveredPartyAsPatientRole.Code" staticModelDerivationId="2"/>
+         <derivedFrom className="CoveredPartyAsPatientRole.Code" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Relationship to Policy Holder</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="CoveredPartyAsPatientRole.Code" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="CoveredPartyAsPatientRole.Code" staticModelDerivationId="3"/>
+            <type name="CS"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="HealthCareProvider.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="HealthCareProvider.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="HealthCareProvider.Id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>provider.ProviderNum</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="HealthCareProvider.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="HealthCareProvider.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="ParameterList">
+         <derivedFrom className="ParameterList" staticModelDerivationId="1"/>
+         <derivedFrom className="ParameterList" staticModelDerivationId="2"/>
+         <derivedFrom className="ParameterList" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="id" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Query Identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="id" className="Parameter" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="ParameterList" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="PolicyOrAccount.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="PolicyOrAccount.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="PolicyOrAccount.Id" staticModelDerivationId="3"/>
+         <annotations>
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>This parameter may not be present if the requestor does not know the policy id (e.g. WCB claim #). The association is required, so a NullFlavor is required to indicate why the policy number is not present in the query request. In the absence of policy id, then the name, date of birth and relationship code are required.</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Policy identifiers, including plan, group as required</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="PolicyOrAccount.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="PolicyOrAccount.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="ServiceDate">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="ServiceDate" staticModelDerivationId="2"/>
+         <derivedFrom className="ServiceDate" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Service date</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="ServiceDate" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="ServiceDate" staticModelDerivationId="3"/>
+            <type name="IVL">
+               <argumentDatatype name="TS"/>
+            </type>
+         </attribute>
+      </class>
+   </containedClass>
+   <association sortKey="1">
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="*" minimumMultiplicity="1" name="carrierRole.id" participantClassName="CarrierRole.id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="carrierRole.id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="carrierRole.id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="2">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="2" minimumMultiplicity="0" name="coveredPartyAsPatient.Id" participantClassName="CoveredPartyAsPatient.Id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="coveredPartyAsPatient.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="coveredPartyAsPatient.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="3">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="coveredPartyAsPatientPerson.AdministrativeGender" participantClassName="CoveredPartyAsPatientPerson.AdministrativeGender" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="coveredPartyAsPatientPerson.AdministrativeGender" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="coveredPartyAsPatientPerson.AdministrativeGender" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="4">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="coveredPartyAsPatientPerson.BirthTime" participantClassName="CoveredPartyAsPatientPerson.BirthTime" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="coveredPartyAsPatientPerson.BirthTime" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="coveredPartyAsPatientPerson.BirthTime" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="5">
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="2" minimumMultiplicity="1" name="coveredPartyAsPatientPerson.Name" participantClassName="CoveredPartyAsPatientPerson.Name" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="coveredPartyAsPatientPerson.Name" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="coveredPartyAsPatientPerson.Name" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="6">
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="coveredPartyAsPatientRole.Code" participantClassName="CoveredPartyAsPatientRole.Code" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="coveredPartyAsPatientRole.Code" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="coveredPartyAsPatientRole.Code" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="7">
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="healthCareProvider.Id" participantClassName="HealthCareProvider.Id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="healthCareProvider.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="healthCareProvider.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="8">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="2" minimumMultiplicity="0" name="policyOrAccount.Id" participantClassName="PolicyOrAccount.Id" sortKey="Z ZZ">
+            <annotations>
+                     
+                  <documentation><designComments>
+                        <text>
+                           <xhtml:p>This parameter may not be present if the requestor does not know the policy id (e.g. WCB claim #). The association is required, so a NullFlavor is required to indicate why the policy number is not present in the query request. In the absence of policy id, then the name, date of birth and relationship code are required.</xhtml:p>
+                        </text>
+                     </designComments></documentation></annotations>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="policyOrAccount.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="policyOrAccount.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="9">
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="serviceDate" participantClassName="ServiceDate" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="serviceDate" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="serviceDate" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+</mif:staticModel>

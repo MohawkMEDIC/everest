@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><REPC_IN000045CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/REPC_IN000045CA.xsd">
+   <realmCode code="CA"/>
+   <id root="86C14BC8-488D-2F3C-4E02-DFFFA900458F"/>
+   <creationTime value="20090915224601.406-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="REPC_IN000045CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://120.120.120.120"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.0.3" extension="DIS01"/>
+         <name>Good Health Clinic</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </sender>
+   <acknowledgement>
+      <typeCode code="AA"/>
+      <targetMessage>
+         <id root="E168FF2F-E44F-C691-9E34-CAA62A80542C"/>
+      </targetMessage>
+   </acknowledgement>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.1" extension="794936930068841"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="REPC_TE000044CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090915224600.406-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="444114567"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <prefix>Ms.</prefix>
+                  <given>Nancy</given>
+                  <given qualifier="IN">D</given>
+                  <family>Nuclear</family>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="F"/>
+               <birthTime value="19700512"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <actRequest classCode="ACT" moodCode="RQO">
+            <id specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.297.15.37.17" extension="S6O7XAHY"/>
+            <id specializationType="II.VER" use="VER" root="39514813-5BAB-4F9E-1BC6-A0CA9281D111"/>
+         </actRequest>
+      </subject>
+   </controlActEvent>
+</REPC_IN000045CA>
