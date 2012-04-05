@@ -324,7 +324,7 @@ namespace MARC.Everest.Connectors
             }
             else
             {
-
+                
                 // Fix: EV-876
                 object[] typeMapAttribute = cType.GetCustomAttributes(typeof(TypeMapAttribute), false);
                 if (typeMapAttribute.Length > 0)
