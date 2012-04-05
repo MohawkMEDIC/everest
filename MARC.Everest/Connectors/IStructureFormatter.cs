@@ -38,14 +38,9 @@ namespace MARC.Everest.Connectors
     /// methods like GraphObject and ParseObject
     /// </para>
     /// </remarks>
-    public interface IStructureFormatter : ICloneable
+    public interface IStructureFormatter : ICloneable, IDisposable
     {
-        /// <summary>
-        /// Get the details of the graphing operation
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        [Obsolete("The details array will be removed from future versions of the Everest framework", false)]
-        IResultDetail[] Details { get; }
+ 
 
         /// <summary>
         /// Instances of other IStructureFormatters that provide assistance to the primary formatter
@@ -73,15 +68,6 @@ namespace MARC.Everest.Connectors
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         List<string> HandleStructure { get; }
-
-        /// <summary>
-        /// Graph object <paramref name="o"/> onto stream <paramref name="s"/>
-        /// </summary>
-        /// <param name="s">The stream to graph to</param>
-        /// <param name="o">The object to graph</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o")]
-        [Obsolete("GraphObject will be replaced with the Graph method", false)]
-        ResultCode GraphObject(Stream s, IGraphable o);
 
         /// <summary>
         /// Graphs the object <paramref name="o"/> onto stream <paramref name="s"/> and returns
@@ -139,14 +125,6 @@ namespace MARC.Everest.Connectors
         IFormatterGraphResult Graph(Stream s, IGraphable o);
 
         /// <summary>
-        /// Parse an object from stream <paramref name="s"/>
-        /// </summary>
-        /// <param name="s">The stream to parse</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s")]
-        [Obsolete("ParseObject will be replaced with the Parse method")]
-        IGraphable ParseObject(Stream s);
-
-        /// <summary>
         /// Parses an object from <paramref name="s"/> and returns a <see cref="T:MARC.Everest.Connectors.IFormatterParseResult"/>
         /// structure with additional details
         /// </summary>
@@ -186,5 +164,6 @@ namespace MARC.Everest.Connectors
         /// </code>
         /// </example>
         IFormatterParseResult Parse(Stream s);
+
     }
 }

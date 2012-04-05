@@ -253,7 +253,7 @@ namespace MARC.Everest.Test.DataTypes
             XmlStateWriter writer = new XmlStateWriter(XmlWriter.Create(ms));
             writer.WriteStartElement("ivl", "urn:hl7-org:v3");
             MARC.Everest.Formatters.XML.Datatypes.R1.DatatypeFormatter fmtr = new MARC.Everest.Formatters.XML.Datatypes.R1.DatatypeFormatter();
-            fmtr.GraphObject(writer, intIvl);
+            fmtr.Graph(writer, intIvl);
             writer.Close();
             ms.Seek(0, SeekOrigin.Begin);
             XmlDocument d = new XmlDocument();
@@ -279,7 +279,7 @@ namespace MARC.Everest.Test.DataTypes
 
             // Parse
             MARC.Everest.Formatters.XML.Datatypes.R1.DatatypeFormatter fmtr = new MARC.Everest.Formatters.XML.Datatypes.R1.DatatypeFormatter();
-            IVL<INT> retVal = fmtr.ParseObject(rdr, typeof(IVL<INT>)) as IVL<INT>;
+            IVL<INT> retVal = fmtr.Parse(rdr, typeof(IVL<INT>)).Structure as IVL<INT>;
             Assert.IsTrue(retVal.HighClosed.HasValue);
             Assert.IsTrue(retVal.LowClosed.HasValue);
             Assert.IsFalse(retVal.HighClosed.Value);

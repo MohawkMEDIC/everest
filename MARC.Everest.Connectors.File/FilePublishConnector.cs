@@ -153,6 +153,7 @@ namespace MARC.Everest.Connectors.File
                 Stream s = null;
                 FileSendResult result = new FileSendResult();
                 IGraphable data = (IGraphable)state;
+                IFormatterGraphResult fResult = null;
 
                 try
                 {
@@ -163,7 +164,7 @@ namespace MARC.Everest.Connectors.File
                     //non-conformant message from the publish service. In this model, we graph,
                     //verify and finally commit.
                     MemoryStream ms = new MemoryStream();
-                    var fResult = Formatter.Graph(ms, data);
+                    fResult = Formatter.Graph(ms, data);
                     result.Code = fResult.Code;
                         result.Details = fResult.Details;
                     
@@ -182,7 +183,7 @@ namespace MARC.Everest.Connectors.File
                 {
                     result.Code = ResultCode.Rejected;
                     List<IResultDetail> dtl = new List<IResultDetail>(new IResultDetail[] { new FileResultDetail(ResultDetailType.Error, e.Message, TargetFile, e) });
-                    dtl.AddRange(Formatter.Details ?? new IResultDetail[0]);
+                    dtl.AddRange(fResult.Details ?? new IResultDetail[0]);
                     result.Details = dtl.ToArray();
                 }
                 catch (FormatException e)

@@ -38,12 +38,7 @@ namespace MARC.Everest.Connectors
     /// </remarks>
     public interface IXmlStructureFormatter : IStructureFormatter
     {
-        /// <summary>
-        /// Graph object <paramref name="o"/> onto XML Writer <paramref name="s"/>
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o")]
-        [Obsolete("GraphObject will be replaced with Graph", false)]
-        ResultCode GraphObject(XmlWriter s, IGraphable o);
+
 
         /// <summary>
         /// Graph object <paramref name="o"/> onto XML Writer <paramref name="s"/>
@@ -52,22 +47,6 @@ namespace MARC.Everest.Connectors
         /// <param name="o">The object to be graphed</param>
         /// <returns>A structure containing the results of the graph operation</returns>
         IFormatterGraphResult Graph(XmlWriter s, IGraphable o);
-
-        /// <summary>
-        /// Parse an object from an XMLReader
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "r")]
-        [Obsolete("ParseObject will be replaced with Parse", false)]
-        IGraphable ParseObject(XmlReader r);
-
-        /// <summary>
-        /// Parse an object from <paramref name="r"/> using type <paramref name="t"/>
-        /// </summary>
-        /// <param name="r">The reader to read from</param>
-        /// <param name="t">The type to use for formatting</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "t"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "r")]
-        [Obsolete("ParseObject will be replaced with Parse", false)]
-        IGraphable ParseObject(XmlReader r, Type t);
 
         /// <summary>
         /// Parse an object from an XMLReader

@@ -80,7 +80,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (phaseValue != null)
             {
                 s.WriteStartElement("phase", "urn:hl7-org:v3");
-                Host.GraphObject(s, (IGraphable)phaseValue);
+                var hostResult = Host.Graph(s, (IGraphable)phaseValue);
+                result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement();
             }
 
@@ -179,11 +180,23 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                         try
                         {
                             if (s.LocalName == "phase") // low value
-                                phaseProperty.SetValue(instance, Host.ParseObject(s, phaseIvlType), null);
+                            {
+                                var hostResult = Host.Parse(s, phaseIvlType);
+                                result.AddResultDetail(hostResult.Details);
+                                phaseProperty.SetValue(instance, hostResult.Structure, null);
+                            }
                             else if (s.LocalName == "period") // high value
-                                periodProperty.SetValue(instance, Host.ParseObject(s, typeof(PQ)), null);
+                            {
+                                var hostResult = Host.Parse(s, typeof(PQ));
+                                result.AddResultDetail(hostResult.Details);
+                                periodProperty.SetValue(instance, hostResult.Structure, null);
+                            }
                             else if (s.LocalName == "frequency" && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian) // frequency
-                                frequencyProperty.SetValue(instance, Host.ParseObject(s, typeof(RTO<INT, PQ>)), null);
+                            {
+                                var hostResult = Host.Parse(s, typeof(RTO<INT,PQ>));
+                                result.AddResultDetail(hostResult.Details);
+                                frequencyProperty.SetValue(instance, hostResult.Structure, null);
+                            }
                             else if (s.NodeType == System.Xml.XmlNodeType.Element)
                                 result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning,
                                     s.LocalName, s.NamespaceURI, s.ToString(), null));

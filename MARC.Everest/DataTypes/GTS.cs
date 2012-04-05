@@ -93,6 +93,7 @@ namespace MARC.Everest.DataTypes
         /// Represents the "hull" of the General Timing Specification object
         /// </summary>
         [XmlIgnore()]
+        [Property(Name = "hull", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Mandatory)]
         public ISetComponent<TS> Hull { get; set; }
 
         /// <summary>

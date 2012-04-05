@@ -673,37 +673,6 @@ namespace MARC.Everest.DataTypes
         }
 
 
-        /// <summary>
-        /// Less than operator
-        /// </summary>
-        public static bool operator <(PQ a, PQ b)
-        {
-            return a.CompareTo(b) < 0;
-        }
-
-        /// <summary>
-        /// Less than equal to operator
-        /// </summary>
-        public static bool operator <=(PQ a, PQ b)
-        {
-            return a.CompareTo(b) <= 0;
-        }
-
-        /// <summary>
-        /// Greater than operator
-        /// </summary>
-        public static bool operator >(PQ a, PQ b)
-        {
-            return a.CompareTo(b) > 0;
-        }
-
-        /// <summary>
-        /// Greater than equal to operator
-        /// </summary>
-        public static bool operator >=(PQ a, PQ b)
-        {
-            return a.CompareTo(b) >= 0;
-        }
         #region IImplicitInterval<PQ> Members
 
         /// <summary>

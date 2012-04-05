@@ -217,7 +217,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             var ivlValid = hostResult.Structure as IVL<TS>;
                             if (ivlValid != null)
                             {
-                                ivlValid = ivlValid.ToBoundIVL(); // Bind the IVL
                                 retVal.ValidTimeHigh = ivlValid.High;
                                 retVal.ValidTimeLow = ivlValid.Low;
                             }

@@ -99,14 +99,14 @@ namespace MARC.Everest.Test.DataTypes
             DatatypeFormatter fmtr = new DatatypeFormatter();
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw));
             xw.WriteStartElement("sxpr");
-            fmtr.GraphObject(xw, test);
+            fmtr.Graph(xw, test);
             xw.WriteEndElement(); // comp
             xw.Flush();
             Tracer.Trace(sw.ToString());
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            var parse = fmtr.ParseObject(rdr, typeof(SXPR<RTO<INT, INT>>)) as SXPR<RTO<INT, INT>>;
+            var parse = fmtr.Parse(rdr, typeof(SXPR<RTO<INT, INT>>)).Structure as SXPR<RTO<INT, INT>>;
             Assert.AreEqual(parse.Count, test.Count);
             for (int i = 0; i < parse.Count; i++)
                 Assert.AreEqual(parse[i].GetType(), test[i].GetType());
@@ -137,14 +137,14 @@ namespace MARC.Everest.Test.DataTypes
             DatatypeFormatter fmtr = new DatatypeFormatter();
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw));
             xw.WriteStartElement("sxpr");
-            fmtr.GraphObject(xw, test);
+            fmtr.Graph(xw, test);
             xw.WriteEndElement(); // comp
             xw.Flush();
             Tracer.Trace(sw.ToString());
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            var parse = fmtr.ParseObject(rdr, typeof(SXPR<TS>)) as SXPR<TS>;
+            var parse = fmtr.Parse(rdr, typeof(SXPR<TS>)).Structure as SXPR<TS>;
             Assert.AreEqual(parse.Count, test.Count);
             for (int i = 0; i < parse.Count; i++)
                 Assert.AreEqual(parse[i].GetType(), test[i].GetType());

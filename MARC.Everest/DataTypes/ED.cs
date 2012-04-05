@@ -571,7 +571,7 @@ namespace MARC.Everest.DataTypes
         {
             get
             {
-                if (Representation == EncapsulatedDataRepresentation.TXT)
+                if (Representation == EncapsulatedDataRepresentation.TXT && Data != null)
                     return System.Text.Encoding.UTF8.GetString(Data ?? new byte[0]);
                 else
                     return null;
@@ -599,7 +599,7 @@ namespace MARC.Everest.DataTypes
         {
             get
             {
-                if (Representation == EncapsulatedDataRepresentation.B64)
+                if (Representation == EncapsulatedDataRepresentation.B64 && this.Data != null)
                     return Convert.ToBase64String(Data);
                 else
                     return null;
@@ -623,7 +623,7 @@ namespace MARC.Everest.DataTypes
             {
                 try
                 {
-                    if (Representation == EncapsulatedDataRepresentation.XML)
+                    if (Representation == EncapsulatedDataRepresentation.XML && Data != null)
                     {
                         MemoryStream ms = new MemoryStream(Data);
                         XmlDocument xd = new XmlDocument();

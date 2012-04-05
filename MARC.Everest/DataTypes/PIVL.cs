@@ -275,9 +275,8 @@ namespace MARC.Everest.DataTypes
             return
                 ((NullFlavor != null && Period == null && Phase == null && Frequency == null) || (NullFlavor == null)) &&
                 ((NullFlavor == null && (Period != null) ^ (Frequency != null)) &&
-                    ((this.Phase != null && this.Phase.Width != null && this.Period != null && this.Period.CompareTo(this.Phase.Width) >= 0) || (this.Phase == null || this.Period == null || this.Phase.Width == null)) ||
-                    (NullFlavor != null)
-                );
+                 ((this.Phase != null && this.Phase.Width != null && this.Period != null && this.Period.CompareTo(this.Phase.Width) >= 0) || (this.Phase == null || this.Period == null || this.Phase.Width == null)) ||
+                 (NullFlavor != null));
         }
 
         #region IEquatable<PIVL<T>> Members

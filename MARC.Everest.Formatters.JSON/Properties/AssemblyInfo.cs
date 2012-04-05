@@ -5,15 +5,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MARC-HI Everest Framework")]
-[assembly: AssemblyDescription("MARC-HI Everest Framework core library")]
+[assembly: AssemblyTitle("MARC-HI Everest Framework JSON Formatter")]
+[assembly: AssemblyDescription("JSON Formatter for HL7v3 Messages")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mohawk College of Applied Arts and Technology")]
 [assembly: AssemblyProduct("MARC-HI Everest Framework")]
-[assembly: AssemblyCopyright("Copyright ©  2009 Mohawk College of Applied Arts and Technology")]
+[assembly: AssemblyCopyright("Copyright ©  2012 Mohawk College of Applied Arts and Technology")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyInformationalVersion("1.0")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -21,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("26fe0406-5086-49d5-a6dc-5f0ed355ce7f")]
+[assembly: Guid("2b76b4b5-c2e9-4fdf-97c2-7d1c33361166")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -33,6 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.5.0")]
-
-[assembly: AssemblyFileVersion("1.5.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

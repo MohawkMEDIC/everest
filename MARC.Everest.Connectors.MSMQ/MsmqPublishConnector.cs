@@ -94,6 +94,7 @@ namespace MARC.Everest.Connectors.MSMQ
             {
                 IGraphable data = (IGraphable)state;
                 MessageQueueTransaction tx = null;
+                IFormatterGraphResult gResult = null;
 
                 try
                 {
@@ -102,8 +103,9 @@ namespace MARC.Everest.Connectors.MSMQ
                     Result = new MsmqSendResult();
 
                     // Format and prepare result
-                    Result.Code = Formatter.GraphObject(msg.BodyStream, data);
-                    Result.Details = (IResultDetail[])Formatter.Details.Clone();
+                    gResult = Formatter.Graph(msg.BodyStream, data);
+                    Result.Code = gResult.Code;
+                    Result.Details = gResult.Details;
 
                     // Accepted messages get sent
                     if (Result.Code == ResultCode.Accepted || Result.Code == ResultCode.AcceptedNonConformant)
@@ -128,7 +130,7 @@ namespace MARC.Everest.Connectors.MSMQ
                 {
                     Result.Code = ResultCode.Rejected;
                     List<IResultDetail> dtl = new List<IResultDetail>(new IResultDetail[] { new ResultDetail(ResultDetailType.Error, e.Message, e) });
-                    dtl.AddRange(Formatter.Details ?? new IResultDetail[0]);
+                    dtl.AddRange(gResult.Details ?? new IResultDetail[0]);
                     Result.Details = dtl.ToArray();
                     if (tx != null && tx.Status == MessageQueueTransactionStatus.Pending) tx.Abort();
                 }

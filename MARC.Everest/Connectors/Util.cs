@@ -211,6 +211,8 @@ namespace MARC.Everest.Connectors
             // Basic formatting 
             if (instanceValue is bool || instanceValue is bool?)
                 return instanceValue.ToString().ToLower();
+            else if (instanceValue is byte[])
+                return System.Convert.ToBase64String(instanceValue as byte[]);
 
             // Key format
             Type realType = instanceValue.GetType().IsEnum ?
@@ -283,7 +285,7 @@ namespace MARC.Everest.Connectors
         {
             string typeName = typeNames.Dequeue();
             
-            // Fix: EV-876
+            // Find the type 
             Type cType = Array.Find(typeof(Util).Assembly.GetTypes(), delegate(Type a)
             {
                 var structureAtt = a.GetCustomAttributes(typeof(StructureAttribute), false);
@@ -294,7 +296,7 @@ namespace MARC.Everest.Connectors
                 var typeMapAtt = a.GetCustomAttributes(typeof(TypeMapAttribute), false);
                 bool result = false;
                 foreach (TypeMapAttribute tma in typeMapAtt)
-                    result |= (tma.Name == typeName) && (String.IsNullOrEmpty(tma.ArgumentType) ^ (tma.ArgumentType == typeNames.Peek()));
+                    result |= tma.Name == typeName;
                 return result || (structureAtt[0] as StructureAttribute).Name == typeName;
             });
 
@@ -324,20 +326,6 @@ namespace MARC.Everest.Connectors
             }
             else
             {
-
-                // Fix: EV-876
-                object[] typeMapAttribute = cType.GetCustomAttributes(typeof(TypeMapAttribute), false);
-                if (typeMapAttribute.Length > 0)
-                {
-                    var tma = Array.Find(typeMapAttribute, o => (o as TypeMapAttribute).Name == typeName) as TypeMapAttribute;
-                    if (tma != null && !String.IsNullOrEmpty(tma.ArgumentType))
-                    {
-                        var genType = typeNames.Dequeue();
-                        if (genType != tma.ArgumentType)
-                            throw new InvalidOperationException(String.Format("Argument type to type map is incorrect, should not be here. Expected '{0}' found '{1}'", genType, tma.ArgumentType));
-                    }
-                }
-
                 return cType;
             }
         }

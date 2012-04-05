@@ -59,14 +59,14 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.UVP<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.UVP<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.UVP<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.UVP<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
 
@@ -97,13 +97,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.INT>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.INT)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.INT>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.INT)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -131,13 +131,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.CS<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.CS<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.CS<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.CS<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -174,13 +174,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.CV<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.CV<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.CV<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.CV<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -219,13 +219,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.CE<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.CE<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.CE<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.CE<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -266,13 +266,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.CD<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.CD<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.CD<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.CD<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -311,13 +311,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.CO>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.CO)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.CO>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.CO)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -345,13 +345,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.EN>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.EN)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.EN>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.EN)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -376,13 +376,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.TN>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.TN)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.TN>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.TN)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -408,13 +408,13 @@ namespace MARC.Everest.Test
         //    DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
         //    XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
         //    xw.WriteStartElement("test");
-        //    fmtr.GraphObject(xw, aValue);
+        //    fmtr.Graph(xw, aValue);
         //    xw.WriteEndElement(); // comp
         //    xw.Flush();
         //    StringReader sr = new StringReader(sw.ToString());
         //    XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
         //    rdr.Read(); rdr.Read();
-        //    bValue = Util.Convert<MARC.Everest.DataTypes.SXCM<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.SXCM<MARC.Everest.DataTypes.INT>)));
+        //    bValue = Util.Convert<MARC.Everest.DataTypes.SXCM<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.SXCM<MARC.Everest.DataTypes.INT>)).Structure);
         //    Assert.AreEqual(aValue, bValue);
         //}
         /// <summary>
@@ -441,13 +441,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.SXPR<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.SXPR<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.SXPR<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.SXPR<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -479,13 +479,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.RTO<MARC.Everest.DataTypes.INT, MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.RTO<MARC.Everest.DataTypes.INT, MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.RTO<MARC.Everest.DataTypes.INT, MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.RTO<MARC.Everest.DataTypes.INT, MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -514,13 +514,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.EIVL<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.EIVL<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.EIVL<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.EIVL<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -545,13 +545,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.BL>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.BL)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.BL>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.BL)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -582,13 +582,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.ADXP>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.ADXP)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.ADXP>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.ADXP)).Structure);
             bValue.Type = MARC.Everest.DataTypes.AddressPartType.AddressLine;
             Assert.AreEqual(aValue, bValue);
         }
@@ -624,13 +624,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -665,13 +665,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -706,13 +706,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -747,13 +747,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -787,13 +787,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.URG<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -822,13 +822,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.TEL>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.TEL)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.TEL>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.TEL)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
 
@@ -854,13 +854,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.GTS>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.GTS)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.GTS>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.GTS)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -889,13 +889,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.AD>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.AD)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.AD>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.AD)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -929,13 +929,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.PIVL<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.PIVL<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.PIVL<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.PIVL<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -966,13 +966,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.REAL>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.REAL)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.REAL>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.REAL)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1005,13 +1005,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.MO>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.MO)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.MO>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.MO)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1039,13 +1039,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.ST>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.ST)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.ST>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.ST)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1079,13 +1079,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.SC>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.SC)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.SC>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.SC)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1122,13 +1122,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.PQ>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.PQ)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.PQ>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.PQ)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1163,13 +1163,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.II>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.II)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.II>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.II)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
 
@@ -1196,13 +1196,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.TS>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.TS)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.TS>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.TS)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1227,13 +1227,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.ON>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.ON)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.ON>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.ON)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1257,13 +1257,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.LIST<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.LIST<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.LIST<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.LIST<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1303,13 +1303,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.ED>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.ED)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.ED>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.ED)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1334,13 +1334,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.PN>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.PN)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.PN>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.PN)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1369,13 +1369,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.CR<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.CR<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.CR<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.CR<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1399,13 +1399,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.SET<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.SET<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.SET<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.SET<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
 
@@ -1448,13 +1448,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.PQR>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.PQR)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.PQR>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.PQR)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1490,13 +1490,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1533,13 +1533,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1576,13 +1576,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1619,13 +1619,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
         /// <summary>
@@ -1662,13 +1662,13 @@ namespace MARC.Everest.Test
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
             xw.WriteStartElement("test");
-            fmtr.GraphObject(xw, aValue);
+            fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();
             StringReader sr = new StringReader(sw.ToString());
             XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
             rdr.Read(); rdr.Read();
-            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.ParseObject(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)));
+            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
     }

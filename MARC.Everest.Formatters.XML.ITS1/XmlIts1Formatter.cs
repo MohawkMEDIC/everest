@@ -400,20 +400,6 @@ namespace MARC.Everest.Formatters.XML.ITS1
 
         #region IXmlStructureFormatter Members
 
-        /// <summary>
-        /// Graphs <paramref name="o"/> onto the <see cref="T:System.Xml.XmlWriter"/> <paramref name="s"/>
-        /// </summary>
-        /// <param name="s">The <see cref="T:System.Xml.XmlWriter"/> that should be used to graph the object</param>
-        /// <param name="o">The <see cref="T:MARC.Everest.Interfaces.IGraphable"/> that should be graphed</param>
-        /// <returns>A result code indicating the outcome of the graph</returns>
-        [Obsolete("Use Graph()", false)]
-        public ResultCode GraphObject(XmlWriter s, IGraphable o)
-        {
-            var result = Graph(s, o);
-            this.Details = result.Details;
-            return result.Code;
-
-        }
 
         /// <summary>
         /// Graphs <paramref name="o"/> onto the <see cref="T:System.Xml.XmlWriter"/> <paramref name="s"/>
@@ -484,33 +470,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
             return resultContext;
         }
 
-        /// <summary>
-        /// Parses an object from <see cref="T:System.Xml.XmlReader"/> <paramref name="r"/>
-        /// </summary>
-        /// <param name="r">The <see cref="T:System.Xml.XmlReader"/> from which an object should be read</param>
-        /// <returns>A <see cref="T:MARC.Everest.Interfaces.IGraphable"/> representing the parsed instance</returns>
-        [Obsolete("Use Parse()", false)]
-        public IGraphable ParseObject(XmlReader r)
-        {
-            var result = Parse(r);
-            this.Details = result.Details;
-            return result.Structure;
-        }
 
-        /// <summary>
-        /// Parse an object from <see cref="T:System.Xml.XmlReader"/> <paramref name="r"/> using 
-        /// <paramref name="t"/> as a type hint
-        /// </summary>
-        /// <param name="r">The <see cref="T:System.Xml.XmlReader"/> to parse the object from</param>
-        /// <param name="t">The type hint (ie: type that should be parsed)</param>
-        /// <returns>A <see cref="T:MARC.Everest.Interfaces.IGraphable"/> representing the parsed instance</returns>
-        public IGraphable ParseObject(XmlReader r, Type t)
-        {
-            var result = Parse(r, t);
-            this.Details = result.Details;
-            return result.Structure;
-
-        }
 
         /// <summary>
         /// Parse an object from <see cref="T:System.Xml.XmlReader"/> <paramref name="r"/>
@@ -677,13 +637,6 @@ namespace MARC.Everest.Formatters.XML.ITS1
         #region IStructureFormatter Members
 
         /// <summary>
-        /// Gets a list of result details that identify the detected issues
-        /// found during formatting
-        /// </summary>
-        [Obsolete]
-        public IResultDetail[] Details { get; private set; }
-
-        /// <summary>
         /// Gets or sets a list of aide formatters that can be instantiated 
         /// to assist in the formatting of this instance.
         /// </summary>
@@ -702,23 +655,6 @@ namespace MARC.Everest.Formatters.XML.ITS1
             get { return new List<string>( new string[] { "*" } ); }
         }
 
-        /// <summary>
-        /// Graphs object <paramref name="o"/> onto stream <paramref name="s"/>
-        /// </summary>
-        /// <param name="s">The stream to which the object <paramref name="o"/> is being graphed</param>
-        /// <param name="o">The object to be graphed</param>
-        /// <returns>A result code indicating the result of the graph operation</returns>
-        /// <remarks>
-        /// This particular implementation of GraphObject is intended to keep backwards compatibility
-        /// with pre-Everest 1.0 formatting code.
-        /// </remarks>
-        [Obsolete("Use Graph()", false)]
-        public ResultCode GraphObject(Stream s, IGraphable o)
-        {
-            var result = Graph(s, o);
-            this.Details = result.Details;
-            return result.Code;
-        }
 
         /// <summary>
         /// Graphs object <paramref name="o"/> onto stream <paramref name="s"/>
@@ -761,20 +697,6 @@ namespace MARC.Everest.Formatters.XML.ITS1
             return result;
         }
 
-        /// <summary>
-        /// Parses an object from <paramref name="s"/>
-        /// </summary>
-        /// <param name="s">The stream from which to parse an object</param>
-        /// <returns>The parsed object</returns>
-        /// <remarks>This particular implementation of ParseObject is intended to 
-        /// keep backwards compatibility with pre-Everest 1.0 formatters</remarks>
-        [Obsolete("Use Parse()", false)]
-        public IGraphable ParseObject(Stream s)
-        {
-            var result = Parse(s);
-            this.Details = result.Details;
-            return result.Structure;
-        }
 
         /// <summary>
         /// Parse an object from <paramref name="s"/>
@@ -839,42 +761,6 @@ namespace MARC.Everest.Formatters.XML.ITS1
             {
                 return this.m_generatedAssemblies.ToArray();
             }
-        }
-
-        /// <summary>
-        /// Parses an object <paramref name="s"/> using <paramref name="a"/> to
-        /// locate a suitable object to parse into.
-        /// </summary>
-        /// <param name="s">The stream from which to parse</param>
-        /// <param name="a">The assembly from which to find a class to parse into</param>
-        /// <returns>An <see cref="T:MARC.Everest.Interfaces.IGraphable"/> object that represents the 
-        /// <paramref name="s"/> in object form</returns>
-        /// <remarks>This method signature is inteded to keep backwards compatibility with previous
-        /// versions of the Everest framework</remarks>
-        [Obsolete("Use Parse()", false)]
-        public IGraphable ParseObject(Stream s, Assembly a)
-        {
-            var result = Parse(s, a);
-            this.Details = result.Details;
-            return result.Structure;
-
-        }
-
-        /// <summary>
-        /// Parses an object from <paramref name="s"/> using <paramref name="a"/> to find
-        /// a suitable class definition to parse.
-        /// </summary>
-        /// <param name="s">The <see cref="System.Xml.XmlReader"/> from which to parse</param>
-        /// <param name="a">The assembly that should be used to scan</param>
-        /// <returns><paramref name="s"/> in object form</returns>
-        /// <remarks>This method signature is intended to keep backwards compatibilty with previous
-        /// versions of the Everest Framework</remarks>
-        [Obsolete("Use Parse()", false)]
-        public IGraphable ParseObject(XmlReader s, Assembly a)
-        {
-            var result = Parse(s, a);
-            this.Details = result.Details;
-            return result.Structure;
         }
 
         /// <summary>
@@ -1323,6 +1209,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
             if (!this.m_isDisposed)
             {
                 this.m_isDisposed = true;
+                
             }
 
         }

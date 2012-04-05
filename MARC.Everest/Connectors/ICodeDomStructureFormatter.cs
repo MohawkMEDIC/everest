@@ -52,44 +52,7 @@ namespace MARC.Everest.Connectors
         /// <para>This method override of Parse allows developers to specify which
         /// RMIM assembly they would like data parsed from.</para>
         /// </remarks>
-        [Obsolete("ParseObject will be replaced with the Parse method", false)] 
-        IGraphable ParseObject(Stream s, Assembly a);
-
-        /// <summary>
-        /// Parse an object from an XmlReader using only interactions from the specified
-        /// assembly
-        /// </summary>
-        /// <param name="s">The <see cref="T:System.Xml.XmlReader"/> from which to read data</param>
-        /// <param name="a">The assembly to use for qualifying the root element</param>
-        /// <seealso cref="M:Parse(System.Stream,System.Reflection.Assembly)"/>
-        [Obsolete("ParseObject will be replaced with the Parse method", false)]
-        IGraphable ParseObject(XmlReader s, Assembly a);
-
-        /// <summary>
-        /// Parse an object from a stream using only interactions from the specified 
-        /// assembly.
-        /// </summary>
-        /// <param name="a">The assembly from which to qualify the root element</param>
-        /// <param name="s">The stream from which to parse</param>
-        /// <remarks>
-        /// <para>When using formatter, it is important to remember that the formatter
-        /// by default will scan all assemblies in the current app domain. This may
-        /// result in undesirable effects when formatting within an application that
-        /// has multiple RMIM assemblies loaded (the formatter will just use the first
-        /// </para>
-        /// <para>This method override of Parse allows developers to specify which
-        /// RMIM assembly they would like data parsed from.</para>
-        /// </remarks>
         IFormatterParseResult Parse(Stream s, Assembly a);
-
-        /// <summary>
-        /// Parse an object from an XmlReader using only interactions from the specified
-        /// assembly
-        /// </summary>
-        /// <param name="s">The <see cref="T:System.Xml.XmlReader"/> from which to read data</param>
-        /// <param name="a">The assembly to use for qualifying the root element</param>
-        /// <seealso cref="M:Parse(System.Stream,System.Reflection.Assembly)"/>
-        IFormatterParseResult Parse(XmlReader s, Assembly a);
 
         /// <summary>
         /// Build a cache for the specified types

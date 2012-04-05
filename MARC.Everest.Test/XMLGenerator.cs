@@ -37,14 +37,14 @@ namespace MARC.Everest.Test
 
             Trace.WriteLine("Starting Serialization");
             DateTime start = DateTime.Now;
-            bool gresult = formatter.GraphObject(outputStream, result) == MARC.Everest.Connectors.ResultCode.Accepted;
+            var gresult = formatter.Graph(outputStream, result);
             Trace.WriteLine(String.Format("            ->{0}", DateTime.Now.Subtract(start).TotalMilliseconds));
             Trace.WriteLine(String.Format("            ->{0} bytes", outputStream.Length));
             List<IResultDetail> dlist = new List<IResultDetail>();
-            dlist.AddRange(formatter.Details);
+            dlist.AddRange(gresult.Details);
             details = dlist.ToArray();
 
-            return gresult;
+            return gresult.Code == MARC.Everest.Connectors.ResultCode.Accepted;
         }
 
     }

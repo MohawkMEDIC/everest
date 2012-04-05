@@ -61,13 +61,15 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (eventValue != null)
             {
                 s.WriteStartElement("event", "urn:hl7-org:v3");
-                Host.GraphObject(s, (IGraphable)eventValue);
+                var hostResult = Host.Graph(s, (IGraphable)eventValue);
+                result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement();
             }
             if (offsetValue != null)
             {
                 s.WriteStartElement("offset", "urn:hl7-org:v3");
-                Host.GraphObject(s, (IGraphable)offsetValue);
+                var hostResult = Host.Graph(s, (IGraphable)offsetValue);
+                result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement();
             }
 
@@ -123,9 +125,17 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                         try
                         {
                             if (s.LocalName == "offset") // low value
-                                offsetProperty.SetValue(instance, Host.ParseObject(s, typeof(IVL<PQ>)), null);
+                            {
+                                var hostResult = Host.Parse(s, typeof(IVL<PQ>));
+                                result.AddResultDetail(hostResult.Details);
+                                offsetProperty.SetValue(instance, hostResult.Structure, null);
+                            }
                             else if (s.LocalName == "event") // high value
-                                eventProperty.SetValue(instance, Util.FromWireFormat(Host.ParseObject(s, typeof(CS<DomainTimingEventType>)), typeof(CS<DomainTimingEventType>)), null);
+                            {
+                                var hostResult = Host.Parse(s, typeof(CS<DomainTimingEventType>));
+                                result.AddResultDetail(hostResult.Details);
+                                eventProperty.SetValue(instance, Util.Convert<CS<DomainTimingEventType>>(hostResult.Structure), null);
+                            }
                         }
                         catch (MessageValidationException e) // Message validation error
                         {

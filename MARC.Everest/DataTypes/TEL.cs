@@ -90,6 +90,7 @@ namespace MARC.Everest.DataTypes
         /// Identifies the value of the telecommunications address. Note that valid telecommunications
         /// address values must adhere to RFC2396 <a href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a>
         /// </summary>
+        [Property(Name = "value", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.Structural)]
         public override string Value
         {
             get

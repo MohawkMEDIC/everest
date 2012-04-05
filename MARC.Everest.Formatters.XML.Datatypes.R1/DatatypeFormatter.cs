@@ -165,29 +165,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         }
 
         /// <summary>
-        /// Graph object <paramref name="o"/> onto stream <paramref name="s"/>
-        /// </summary>
-        /// <param name="s">The stream to graph to</param>
-        /// <param name="o">The object to graph to</param>
-        public ResultCode GraphObject(System.IO.Stream s, MARC.Everest.Interfaces.IGraphable o)
-        {
-            var result = Graph(s, o);
-            this.Details = result.Details;
-            return result.Code;
-        }
-
-        /// <summary>
-        /// Graph object <paramref name="o"/> onto XML Stream <paramref name="s"/>
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        public ResultCode GraphObject(XmlWriter s, IGraphable o)
-        {
-            var result = Graph(s, o);
-            this.Details = result.Details;
-            return result.Code;
-        }
-
-        /// <summary>
         /// Get formatter
         /// </summary>
         /// <param name="type"></param>
@@ -220,39 +197,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
             return formatter;
         }
 
-        /// <summary>
-        /// Parse object from stream <paramref name="s"/>
-        /// </summary>
-        /// <param name="s">The stream to parse from</param>
-        /// <returns>The graphed object</returns>
-        public IGraphable ParseObject(System.IO.Stream s)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Parse an object
-        /// </summary>
-        public IGraphable ParseObject(XmlReader r)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Details
-        /// </summary>
-        public IResultDetail[] Details { get; private set; }
-
-        /// <summary>
-        /// Parse an object using the specified type as a hint
-        /// </summary>
-        public IGraphable ParseObject(XmlReader r, Type t)
-        {
-            var result = Parse(r, t);
-            this.Details = result.Details;
-            return result.Structure;
-            
-        }
 
         /// <summary>
         /// Get formatter from xsi type
@@ -307,7 +251,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         public IStructureFormatter Clone()
         {
             DatatypeFormatter retVal = (DatatypeFormatter)this.MemberwiseClone();
-            retVal.Details = null;
             return retVal;
         }
         #endregion
@@ -320,7 +263,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         object ICloneable.Clone()
         {
             DatatypeFormatter retVal = (DatatypeFormatter)this.MemberwiseClone();
-            retVal.Details = new IResultDetail[0];
             return retVal;
         }
 
@@ -338,8 +280,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         {
             if (o == null)
                 return new DatatypeFormatterGraphResult(this.CompatibilityMode, ResultCode.Accepted, null, this.ValidateConformance);
-
-            Details = new IResultDetail[0];
 
             try
             {
@@ -487,6 +427,20 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         /// Validate conformance
         /// </summary>
         public bool ValidateConformance { get; set; }
+
+        #endregion
+
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Disposes the object
+        /// </summary>
+        public void Dispose()
+        {
+            // No special dispose logic required
+            return;
+        }
 
         #endregion
     }

@@ -175,6 +175,7 @@ namespace MARC.Everest.Connectors.File
                 Stream s = null;
                 FileReceiveResult result = new FileReceiveResult();
                 result.FileName = state.ToString(); // reference filename
+                IFormatterParseResult pResult = null;
 
                 // parse the object
                 try
@@ -182,8 +183,9 @@ namespace MARC.Everest.Connectors.File
                     s = new FileStream(state.ToString(), FileMode.Open, FileAccess.Read, FileShare.Write);
 
                     // Parse the object
-                    result.Structure = Formatter.ParseObject(s);
-                    result.Details = Formatter.Details;
+                    pResult = Formatter.Parse(s);
+                    result.Structure = pResult.Structure;
+                    result.Details = pResult.Details;
                     result.Code = ResultCode.Accepted;
                     if (Array.Find<IResultDetail>(result.Details, o => o.Type == ResultDetailType.Error) != null)
                         result.Code = ResultCode.AcceptedNonConformant;
@@ -194,7 +196,7 @@ namespace MARC.Everest.Connectors.File
                 {
                     result.Code = ResultCode.Rejected;
                     List<IResultDetail> dtl = new List<IResultDetail>(new IResultDetail[] { new FileResultDetail(ResultDetailType.Error, e.Message, state.ToString(), e) });
-                    dtl.AddRange(Formatter.Details ?? new IResultDetail[0]);
+                    dtl.AddRange(pResult.Details ?? new IResultDetail[0]);
                     result.Details = dtl.ToArray();
                 }
                 catch (FormatException e)

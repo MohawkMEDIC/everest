@@ -81,19 +81,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
         #region IXmlStructureFormatter Members
 
         /// <summary>
-        /// Graph object <paramref name="o"/> to <paramref name="s"/>
-        /// </summary>
-        /// <param name="o">The object that is to be graphed to the stream</param>
-        /// <param name="s">The XmlWriter stream that is to be written to</param>
-        /// <returns>A <see cref="T:MARC.Everest.Connectors.ResultCode"/> representing the result of the graph operation</returns>
-        public ResultCode GraphObject(System.Xml.XmlWriter s, MARC.Everest.Interfaces.IGraphable o)
-        {
-            var result = Graph(s, o);
-            this.Details = result.Details;
-            return result.Code;
-        }
-
-        /// <summary>
         /// Get the datatype formatter for the specified type
         /// </summary>
         private IDatatypeFormatter GetFormatter(Type type)
@@ -124,29 +111,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
         }
 
         /// <summary>
-        /// Parse an object from <paramref name="r"/>
-        /// </summary>
-        /// <param name="r">The XmlReader that is to be read from</param>
-        /// <returns>An <see cref="T:MARC.Everest.Interfaces.IGraphable"/> instance that contains the interpreted object</returns>
-        public MARC.Everest.Interfaces.IGraphable ParseObject(System.Xml.XmlReader r)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Parse an object from <paramref name="r"/> using type <paramref name="t"/>
-        /// </summary>
-        /// <param name="r">The <see cref="T:System.Xml.XmlReader"/> to read data from</param>
-        /// <param name="t">The <see cref="T:System.Type"/> to attempt to parse as</param>
-        /// <returns>An <see cref="T:MARC.Everest.Interfaces.IGraphable"/> instance that contains the interpreted data cast to <paramref name="T"/></returns>
-        public MARC.Everest.Interfaces.IGraphable ParseObject(System.Xml.XmlReader r, Type t)
-        {
-            var result = Parse(r, t);
-            this.Details = result.Details;
-            return result.Structure;
-        }
-
-        /// <summary>
         /// Get a formatter based on the XSI type name
         /// </summary>
         internal IDatatypeFormatter GetFormatter(string xsiType)
@@ -172,11 +136,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
         #region IStructureFormatter Members
 
         /// <summary>
-        /// Gets the details related to the formatting of objects using this formatter
-        /// </summary>
-        public IResultDetail[] Details { get; private set; }
-
-        /// <summary>
         /// Gets or sets the list of graph aides that this formatter can employ
         /// </summary>
         public List<IStructureFormatter> GraphAides { get; set; }
@@ -194,30 +153,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
             get { return m_formatterNames; }
         }
 
-        /// <summary>
-        /// Graphs <paramref name="o"/> onto stream <paramref name="s"/>
-        /// </summary>
-        /// <param name="s">The stream to graph the object to</param>
-        /// <param name="o">The object that is to be graphed</param>
-        /// <returns>A <paramref name="T:MARC.Everest.Connectors.ResultCode"/> representing the outcome of the graph operation</returns>
-        /// <exception cref="System.NotImplementedException">This formatter is intended to be a graph aide and not a graph root, therefore does not implement this method</exception>
-        public ResultCode GraphObject(System.IO.Stream s, MARC.Everest.Interfaces.IGraphable o)
-        {
-            var result = Graph(s, o);
-            this.Details = result.Details;
-            return result.Code;
-        }
-
-        /// <summary>
-        /// Parses an object from <paramref name="s"/>
-        /// </summary>
-        /// <param name="s">The stream from which to parse</param>
-        /// <returns>An <see cref="T:MARC.Everest.Interfaces.IGraphable"/> instance containing the parsed data</returns>
-        /// <exception cref="System.NotImplementedException">This formatter is intended to be a graph aide and not a graph root, therefore does not implement this method</exception>
-        public MARC.Everest.Interfaces.IGraphable ParseObject(System.IO.Stream s)
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
 
@@ -229,7 +164,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
         public object Clone()
         {
             DatatypeR2Formatter retVal = (DatatypeR2Formatter)this.MemberwiseClone();
-            retVal.Details = null;
             return retVal;
         }
 
@@ -249,7 +183,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
             if (o == null)
                 return new DatatypeR2FormatterGraphResult(ResultCode.Accepted, null, this.ValidateConformance);
 
-            Details = new IResultDetail[0];
 
             try
             {
@@ -421,5 +354,18 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
             else
                 return Util.CreateXSITypeName(type);
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Dispose the object
+        /// </summary>
+        public void Dispose()
+        {
+            // No special dispose logic required
+            return;
+        }
+
+        #endregion
     }
 }
