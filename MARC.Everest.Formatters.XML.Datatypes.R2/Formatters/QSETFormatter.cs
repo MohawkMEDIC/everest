@@ -63,8 +63,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             }
 
             // Parse using the formatter
+            // Fix: EV-876
             fmtr.GenericArguments = this.GenericArguments;
-            fmtr.Host = this.Host;
+            fmtr.Host = this.Host; 
             return fmtr.Parse(s, result);
         }
 

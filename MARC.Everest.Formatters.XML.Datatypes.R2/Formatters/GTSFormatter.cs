@@ -113,7 +113,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
                     return null;
             }
 
-            // Graph the Hull
+            // Graph the Hull 
+            // Fix: EV-876
             formatter.Host = this.Host;
             formatter.GenericArguments = new Type[] { typeof(TS) };
             return Util.Convert<GTS>(formatter.Parse(s, result));
