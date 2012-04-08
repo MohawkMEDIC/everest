@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><POLB_IN111100CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/POLB_IN111100CA.xsd"><!--
+    - Note: This is an example instance.  In a real instance the following differences would apply
+    -     1. There would be no schema declaration.  (Receivers will validate against their own schemas)
+    -     2. Example OIDs would be replaced by real OIDs
+    -     3. Processing mode would be Production, not Debug
+    -     4. Data would be real values :>
+  --><realmCode code="CA"/>
+   <id root="02DC1BB1-7C6B-A925-2F3B-8ED6A7A40E36"/>
+   <creationTime value="20090913230223.906-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="POLB_IN111100CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://120.120.120.120"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.207.15.2.0.3" extension="LAB01"/>
+         <name>Good Health Clinic</name>
+      </device>
+   </sender>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.207.15.2.1" extension="63558528645612"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="POLB_TE001100CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090913230223.906-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <family>Nuclear</family>
+                  <given>John</given>
+                  <prefix>Mr.</prefix>
+                  <suffix>II</suffix>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19480712"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <author typeCode="AUT" contextControlCode="AP">
+         <time value="20090913230223.906-0700"/>
+         <assignedEntity1 classCode="ASSIGNED">
+            <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+            <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                  <prefix>Dr.</prefix>
+                  <given>Fay</given>
+                  <given qualifier="IN">F</given>
+                  <family>Family</family>
+               </name>
+               <asHealthCareProvider classCode="PROV">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+               </asHealthCareProvider>
+            </assignedPerson>
+         </assignedEntity1>
+      </author>
+      <location typeCode="LOC" contextControlCode="AP">
+         <serviceDeliveryLocation classCode="SDLOC">
+            <id xsi:type="II" specializationType="II.PUBLIC" extension="8-66733-1" displayable="true" root="2.16.840.1.113883.19.3.291.3"/>
+            <location classCode="PLC" determinerCode="INSTANCE">
+               <name>Good Health Clinic</name>
+            </location>
+         </serviceDeliveryLocation>
+      </location>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <placerGroup moodCode="RQO" classCode="ACT">
+            <id use="BUS" xsi:type="II" specializationType="II.BUS" root="2.16.840.1.113883.19.3.207.15.2.6" extension="U21CZR4UD536L"/>
+            <verifier contextControlCode="OP" typeCode="VRF">
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" extension="876456" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                  <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <given>Nina</given>
+                        <given qualifier="IN">N</given>
+                        <family>Nurse</family>
+                     </name>
+                  </assignedPerson>
+               </assignedEntity>
+            </verifier>
+            <component4 contextControlCode="AP" typeCode="COMP" contextConductionInd="true">
+               <batteryRequest moodCode="RQO" classCode="BATTERY">
+                  <id use="BUS" xsi:type="II" specializationType="II.BUS" root="2.16.840.1.113883.19.3.207.15.2.6" extension="O7C7JIN57Y"/>
+                  <code codeSystem="2.16.840.1.113883.6.1" code="50196-5"/>
+                  <statusCode code="active"/>
+                  <priorityCode codeSystem="2.16.840.1.113883.5.7" code="R"/>
+                  <verifier contextControlCode="OP" typeCode="VRF">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" extension="876456" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <given>Nina</given>
+                              <given qualifier="IN">N</given>
+                              <family>Nurse</family>
+                           </name>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </verifier>
+               </batteryRequest>
+            </component4>
+         </placerGroup>
+      </subject>
+   </controlActEvent>
+</POLB_IN111100CA>

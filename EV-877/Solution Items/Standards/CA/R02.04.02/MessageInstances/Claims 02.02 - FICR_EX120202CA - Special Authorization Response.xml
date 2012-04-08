@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><FICR_IN400002CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/FICR_IN400002CA.xsd">
+   <realmCode code="CA"/>
+   <id root="F8E6659A-E540-EA4E-3DB6-E5E830DDDD66"/>
+   <creationTime value="20090916224225.937-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="FICR_IN400002CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://120.120.122.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.3017.22.5.0.4" extension="DIS02"/>
+         <name>Good Neighbor Pharmacy</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </sender>
+   <acknowledgement>
+      <typeCode code="AA"/>
+      <targetMessage>
+         <id root="F96CEAE1-FDE6-946E-E950-FC6DE434FA6E"/>
+      </targetMessage>
+   </acknowledgement>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.1" extension="8741998443413"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="FICR_TE400002CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090916224224.937-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <family>Nuclear</family>
+                  <given>John</given>
+                  <prefix>Mr.</prefix>
+                  <suffix>II</suffix>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19480712"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <specialAuthorizationRequest classCode="ACTN" moodCode="RQO">
+            <id specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.297.15.37.20" extension="9UBTMJK5KX2"/>
+            <code codeSystem="2.16.840.1.113883.1.3" code="TBA"/>
+            <statusCode code="completed"/>
+            <author typeCode="AUT">
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="444222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203444" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity>
+            </author>
+            <subject typeCode="SUBJ">
+               <substanceAdministration classCode="SBADM" moodCode="EVN">
+                  <directTarget typeCode="DIR">
+                     <medication classCode="ADMM">
+                        <administerableMedicine classCode="MMAT" determinerCode="INSTANCE">
+                           <code code="3597005" codeSystem="2.16.840.1.113883.6.96"/>
+                           <name>Cancer-cure-all</name>
+                           <desc>A new cancer drug is undergoing clinical trials.</desc>
+                        </administerableMedicine>
+                     </medication>
+                  </directTarget>
+               </substanceAdministration>
+            </subject>
+            <fulfillment typeCode="FLFS">
+               <specialAuthorization classCode="ACTN" moodCode="EVN">
+                  <statusCode code="completed"/>
+                  <effectiveTime>
+                     <low value="20090916"/>
+                     <high value="20090916"/>
+                  </effectiveTime>
+                  <author typeCode="AUT">
+                     <assignedEntity classCode="ASSIGNED">
+                        <representedOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <id displayable="true" extension="686877" root="1B4C525E-0439-478F-B679-45C0778D5C4E"/>
+                           <name>Acme Referral Lab</name>
+                           <assignedOrganization classCode="ASSIGNED">
+                              <code code="LAB" codeSystem="2.16.840.1.113883.5.111"/>
+                              <telecom use="WP MC" value="Tel:+1(555)630-7961"/>
+                           </assignedOrganization>
+                        </representedOrganization>
+                     </assignedEntity>
+                  </author>
+                  <subject negationInd="false" typeCode="SUBJ">
+                     <substanceAdministration classCode="SBADM" moodCode="EVN">
+                        <directTarget typeCode="DIR">
+                           <medication classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="INSTANCE">
+                                 <code code="3597005" codeSystem="2.16.840.1.113883.6.96"/>
+                                 <name>Cancer-cure-all</name>
+                                 <desc>A new cancer drug is undergoing clinical trials.</desc>
+                              </administerableMedicine>
+                           </medication>
+                        </directTarget>
+                     </substanceAdministration>
+                  </subject>
+                  <coverage typeCode="COVBY">
+                     <policyOrAccount classCode="COV" moodCode="EVN">
+                        <id root="2.16.840.1.11533.224" extension="195436234" use="BUS"/>
+                        <code codeSystem="2.16.840.1.113883.5.4" code="DISEASEPRG"/>
+                        <beneficiary typeCode="BEN">
+                           <coveredParty classCode="COVPTY">
+                              <id root="4AB4AF09-F9BC-4493-9F76-5DBD43DBD918" use="BUS"/>
+                              <code code="STUD" codeSystem="2.16.840.1.113883.5.111"/>
+                              <coveredPartyAsPatientPerson classCode="PSN" determinerCode="INSTANCE">
+                                 <name use="L">
+                                    <given>Jim</given>
+                                    <family>Smith</family>
+                                 </name>
+                                 <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+                                 <birthTime value="19701127"/>
+                              </coveredPartyAsPatientPerson>
+                           </coveredParty>
+                        </beneficiary>
+                        <author typeCode="AUTH">
+                           <carrierRole classCode="UNDWRT">
+                              <id root="9ADDF123-697A-4FA7-AE13-FEAC5003868A" use="BUS"/>
+                           </carrierRole>
+                        </author>
+                     </policyOrAccount>
+                  </coverage>
+               </specialAuthorization>
+            </fulfillment>
+         </specialAuthorizationRequest>
+      </subject>
+   </controlActEvent>
+</FICR_IN400002CA>

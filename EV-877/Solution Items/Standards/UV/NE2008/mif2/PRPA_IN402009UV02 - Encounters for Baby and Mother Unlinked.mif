@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1" name="402009"
+                 title="Inpatient Encounter Event Revise Notification Unlink Baby To Mother">
+   <mif:businessName name="Encounters for Baby and Mother Unlinked"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="PA" artifact="IN"
+                        realmNamespace="UV"
+                        version="02"
+                        id="402009"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>An inpatient encounter informer sends this <html:b xmlns:html="http://www.w3.org/1999/xhtml">notification </html:b>after an erroneous link between the inpatient encounter for a newborn baby and the inpatient encounter for the baby's mother was deleted. A separate interaction is defined for each type of encounter unlink because the same two encounters could be linked in more than one way. For example, a mother could also donate part of her liver to her newborn infant. The payload contains enough information to identify the two encounters and an associating ActRelationship with an update mode of "delete".</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PA" artifact="TE"
+                             realmNamespace="UV"
+                             version="02"
+                             id="402009"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="AM" subSection="PR" domain="PA"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="02"
+                             id="402008"
+                             traversalName="encounterEvent"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

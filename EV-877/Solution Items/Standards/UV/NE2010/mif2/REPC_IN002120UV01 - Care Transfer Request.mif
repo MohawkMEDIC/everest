@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="002120"
+                 title="Care Transfer Request Activate Fulfillment Request">
+   <mif:businessName name="Care Transfer Request"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="RE" domain="PC" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="002120"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>The interaction is used to request the receiver accept responsibility for care provision of the subject. The interaction has two possible receiver responsibility types. The first, Care Transfer Promise, is used by the receiving application role when it accepts the request. The second receiver responsibility is Reject Care Transfer and is used by the fulfiller to reject the request. </mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="RE" domain="PC" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="002100"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="RE" domain="PC"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="002000"
+                             traversalName="careProvisionRequest"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>The fulfiller does not agree to perform the request.</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="RE" domain="PC" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="002040"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="RE" domain="PC" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="002040"/>
+   </mif:receiverResponsibilities>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>The fulfiller agrees to perform the request.</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="RE" domain="PC" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="003130"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="RE" domain="PC" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="003130"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?><REPC_IN040200CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/REPC_IN040200CA.xsd">
+   <realmCode code="CA"/>
+   <id root="5EC0CB62-81DE-2A64-03F9-6C024F6CE9D8"/>
+   <creationTime value="20090915225107.578-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="REPC_IN040200CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://120.120.120.120"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.0.3" extension="DIS01"/>
+         <name>Good Health Clinic</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </sender>
+   <acknowledgement>
+      <typeCode code="AA"/>
+      <targetMessage>
+         <id root="1F2A56AE-AAF5-F17F-E86C-4F1615177422"/>
+      </targetMessage>
+   </acknowledgement>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.1" extension="0575289645391"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="REPC_TE040200CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090915225106.578-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <family>Nuclear</family>
+                  <given>John</given>
+                  <prefix>Mr.</prefix>
+                  <suffix>II</suffix>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19480712"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <patientCareProvisionEvent classCode="PCPR" moodCode="EVN" negationInd="false">
+            <id displayable="true" extension="?" root="CB325687-9330-4CDB-BE93-C8231BC244C8"/>
+            <id displayable="true" extension="?" root="F21B982E-4777-47FE-AC4C-7B06CF544FAF"/>
+            <code code="CHR" codeSystem="2.16.840.1.113883.5.4"/>
+            <statusCode code="aborted"/>
+            <effectiveTime xsi:type="IVL_TS" specializationType="IVL_TS.DATETIME">
+               <low specializationType="TS.DATETIME" value="20090915225106.578-0700"/>
+            </effectiveTime>
+            <!--<effectiveTime>
+    <low value="20090108215448.437-0700"/>
+    <high value="20090108215448.437-0700"/>
+  </effectiveTime> --><confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+            <subject2 contextControlCode="OP" typeCode="SBJ">
+               <patient classCode="PAT">
+                  <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+                  <patientPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" specializationType="PN.BASIC">
+                        <family>Nuclear</family>
+                        <given>John</given>
+                        <prefix>Mr.</prefix>
+                        <suffix>II</suffix>
+                     </name>
+                     <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+                     <birthTime value="19480712"/>
+                  </patientPerson>
+               </patient>
+            </subject2>
+            <subject3 contextControlCode="OP" typeCode="SBJ">
+               <patient classCode="PAT">
+                  <patientEntityQuantifiedKind classCode="ENT" determinerCode="QUANTIFIED_KIND">
+                     <quantity value="2"/>
+                  </patientEntityQuantifiedKind>
+               </patient>
+            </subject3>
+            <responsibleParty contextControlCode="AP" typeCode="RESP">
+               <assignedEntity1 classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity1>
+            </responsibleParty>
+            <performer contextControlCode="OP" typeCode="PRF">
+               <assignedEntity1 classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity1>
+            </performer>
+            <author contextControlCode="AP" typeCode="AUT">
+               <time value="20090108215450-0700"/>
+               <assignedEntity1 classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity1>
+            </author>
+            <informant contextControlCode="AP" typeCode="INF">
+               <assignedEntity1 classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="777222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203777" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity1>
+            </informant>
+            <custodian1 contextControlCode="AP" typeCode="CST">
+               <assignedDevice classCode="ASSIGNED">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37"/>
+                  <assignedRepository classCode="DEV" determinerCode="INSTANCE">
+                     <name>Jurisdiction X HIAL</name>
+                  </assignedRepository>
+                  <representedRepositoryJurisdiction classCode="STATE" determinerCode="INSTANCE">
+                     <name>Saskatchewan</name>
+                  </representedRepositoryJurisdiction>
+               </assignedDevice>
+            </custodian1>
+            <custodian2 contextControlCode="OP" typeCode="CST">
+               <serviceDeliveryLocation classCode="SDLOC">
+                  <id displayable="true" extension="7-865733-2" root="2.16.840.1.113883.19.3.291.3"/>
+                  <code code="OF" codeSystem="2.16.840.1.113883.5.111"/>
+                  <addr use="PHYS">1001 Village Avenue<delimiter/>
+                     <city>Ann Arbor</city>
+                     <state>MI</state>
+                     <postalCode>99999</postalCode>
+                  </addr>
+                  <telecom use="WP" value="tel:+1-555-555-4001"/>
+                  <location classCode="PLC" determinerCode="INSTANCE">
+                     <name>Community Urgent Care</name>
+                  </location>
+               </serviceDeliveryLocation>
+            </custodian2>
+            <location contextControlCode="OP" typeCode="LOC">
+               <serviceDeliveryLocation classCode="SDLOC">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="7-1234500-1" root="2.16.840.1.113883.19.3.291.3"/>
+                  <code code="HOSP" codeSystem="2.16.840.1.113883.5.111"/>
+                  <addr use="PHYS" xsi:type="AD" specializationType="AD.BASIC">
+                     <delimiter>Hospital Lane</delimiter>
+                     <city>Ann Arbor</city>
+                     <state>MI</state>
+                     <postalCode>99999</postalCode>
+                  </addr>
+                  <telecom xsi:type="TEL" specializationType="TEL.PHONE" use="WP" value="tel:+1-555-555-3013"/>
+                  <location classCode="PLC" determinerCode="INSTANCE">
+                     <name xsi:type="ST">New World Teaching hospital</name>
+                  </location>
+               </serviceDeliveryLocation>
+            </location>
+            <outcome contextConductionInd="true" contextControlCode="AN" typeCode="OUTC">
+               <diagnosisEvent classCode="OBS" moodCode="EVN">
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="completed"/>
+                  <value code="112143006" codeSystem="2.16.840.1.113883.6.96"/>
+               </diagnosisEvent>
+            </outcome>
+            <component1 contextConductionInd="true" contextControlCode="AN" typeCode="COMP">
+               <actEvent classCode="ACT" moodCode="EVN">
+                  <id root="52362C5B-6828-44CF-9D19-E605AC6B905C" use="BUS"/>
+               </actEvent>
+            </component1>
+            <component2 contextConductionInd="true" contextControlCode="ON" typeCode="COMP">
+               <patientCareProvisionEventPortion classCode="PCPR" moodCode="EVN">
+                  <location contextControlCode="ON" typeCode="LOC">
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="?" root="FE2A0838-F52D-4CD3-91AC-8A1523B6B8F4"/>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <participant typeCode="PART">
+                     <modeCode code="DICTATE" codeSystem="2.16.840.1.113883.5.1064"/>
+                     <role classCode="ROL">
+                        <id displayable="true" extension="?" root="EB5EDF76-7007-44B5-9CD1-D8D7ABC1DC83"/>
+                        <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+                     </role>
+                  </participant>
+               </patientCareProvisionEventPortion>
+            </component2>
+            <successor contextConductionInd="false" contextControlCode="ON" typeCode="SUCC">
+               <newPatientCareProvisionEvent classCode="PCPR" moodCode="EVN">
+                  <id root="50AFFA6B-A872-42CA-801E-87342DAD507B" use="BUS"/>
+               </newPatientCareProvisionEvent>
+            </successor>
+            <subjectOf3 contextConductionInd="false" contextControlCode="ON" typeCode="SUBJ">
+               <subsetCode code="SUM"/>
+               <annotationIndicator classCode="ACT" moodCode="EVN">
+                  <statusCode code="completed"/>
+               </annotationIndicator>
+            </subjectOf3>
+            <subjectOf4 contextConductionInd="false" contextControlCode="AN" typeCode="SUBJ">
+               <subsetCode code="RECENT"/>
+               <controlActEvent classCode="CACT" moodCode="EVN">
+                  <reasonCode code="ABORTED" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                  <author contextControlCode="OP" typeCode="AUT">
+                     <time value="20090108215500-0700"/>
+                     <assignedEntity1 classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity1>
+                  </author>
+               </controlActEvent>
+            </subjectOf4>
+            <componentOf contextConductionInd="false" contextControlCode="AN" typeCode="COMP">
+               <patientCareProvisionEvent moodCode="EVN" classCode="PCPR">
+                  <id xsi:type="II" use="BUS" specializationType="II.BUS" root="1.6186.2.6203.4064.62.86.3.2845" extension="Q3G1AOGEQI"/>
+                  <code codeSystem="2.16.840.1.113883.5.4" code="AMB"/>
+                  <effectiveTime xsi:type="IVL_TS" specializationType="IVL_TS.DATETIME">
+                     <high value="20090916"/>
+                  </effectiveTime>
+                  <admitter typeCode="ADM">
+                     <assignedEntity1 classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" extension="8767876" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Peter</given>
+                              <given qualifier="IN">P</given>
+                              <family>Physician</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" extension="3005099" displayable="true" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity1>
+                  </admitter>
+                  <attender typeCode="ATND">
+                     <assignedEntity1 classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" extension="8767876" displayable="true" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson determinerCode="INSTANCE" classCode="PSN">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Peter</given>
+                              <given qualifier="IN">P</given>
+                              <family>Physician</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" extension="3005099" displayable="true" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity1>
+                  </attender>
+                  <location typeCode="LOC">
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <code codeSystem="2.16.840.1.113883.5.111" code="DX"/>
+                     </serviceDeliveryLocation>
+                  </location>
+               </patientCareProvisionEvent>
+            </componentOf>
+         </patientCareProvisionEvent>
+      </subject>
+      <queryAck>
+         <queryId root="FAC2B44E-F1CA-5520-748D-CEDBA45D0868"/>
+         <queryResponseCode code="NF"/>
+         <resultTotalQuantity value="0"/>
+         <resultCurrentQuantity value="0"/>
+         <resultRemainingQuantity value="0"/>
+      </queryAck>
+      <queryByParameter>
+         <queryId root="FAC2B44E-F1CA-5520-748D-CEDBA45D0868"/>
+         <parameterList>
+            <includeHistoryIndicator>
+               <value value="false"/>
+            </includeHistoryIndicator>
+            <includeNotesIndicator>
+               <value value="true"/>
+            </includeNotesIndicator>
+            <recordId>
+               <value root="BFD2AE80-676D-4846-BD91-89808E14A5F0" use="BUS"/>
+            </recordId>
+         </parameterList>
+      </queryByParameter>
+   </controlActEvent>
+</REPC_IN040200CA>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" isSerializable="true" name="402008" packageKind="id" representationKind="flat" schemaVersion="2.0">
+   <packageLocation artifact="MT" domain="PA" realmNamespace="UV" root="DEFN" section="AM" subSection="PR" version="02"/>
+   <header>
+      <renderingInformation application="RoseTree 4.2.7">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl,v 1.15 2007/10/19 05:55:13 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl,v 1.4 2007/03/20 02:48:49 wbeeler Exp $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl,v 1.5 2007/03/20 02:48:50 wbeeler Exp $
+ Fix Names Transform: $Id: FixMifNames.xsl,v 1.8 2007/03/20 02:48:49 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $</mif:renderingNotes>
+      </renderingInformation>
+      <legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2008">
+         <notation>All rights reserved.</notation>
+      </legalese>
+   </header>
+   <derivedFrom staticModelDerivationId="1">
+      <targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <targetStaticModel artifact="RM" domain="PA" id="402008" realmNamespace="UV" root="DEFN" section="AM" subSection="PR"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <targetStaticModel artifact="HD" domain="PA" id="402008" realmNamespace="UV" root="DEFN" section="AM" subSection="PR" version="02"/>
+   </derivedFrom>
+   <entryPoint className="EncounterEvent" name="Unknown" useKind="SemanticPayload">
+      <annotations>
+         
+      <documentation><description>
+            <text>
+               <xhtml:p>This R-MIM defines the message used to report that inpatient encounters for two different patients are linked (or unlinked) for care and billing purposes.</xhtml:p>
+            </text>
+         </description></documentation></annotations>
+   </entryPoint>
+   <containedClass>
+      <commonModelElementRef isAbstract="false" name="A_EncounterIdentified">
+         <derivedFrom className="PatientEncounter" staticModelDerivationId="1"/>
+         <derivedFrom className="A_EncounterIdentified" staticModelDerivationId="2"/>
+         <derivedFrom className="A_EncounterIdentified" staticModelDerivationId="3"/>
+         <annotations/>
+      </commonModelElementRef>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="EncounterEvent">
+         <derivedFrom className="PatientEncounter" staticModelDerivationId="1"/>
+         <derivedFrom className="EncounterEvent" staticModelDerivationId="2"/>
+         <derivedFrom className="EncounterEvent" staticModelDerivationId="3"/>
+         <annotations>
+            
+            
+         <documentation><definition>
+               <text>
+                  <xhtml:p>An interaction between a patient and care provider(s) for the purpose of providing healthcare-related service(s)</xhtml:p>
+               </text>
+            </definition><designComments>
+               <text>
+                  <xhtml:p>The 'source' encounter is in some way dependent on the 'target' encounter. For example, a new born baby's encounter is linked to the mother's encounter, or an organ donor's encounter is linked to the organ recipient's encounter.</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <annotations>
+               
+            <documentation><definition>
+                  <text>
+                     <xhtml:p>Structural attribute; this is a "patient encounter" act</xhtml:p>
+                  </text>
+               </definition></documentation></annotations>
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="EncounterEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="EncounterEvent" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActClass"/><code code="ENC"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <annotations>
+               
+            <documentation><definition>
+                  <text>
+                     <xhtml:p>Structural attribute; this is a patient encounter event</xhtml:p>
+                  </text>
+               </definition></documentation></annotations>
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="EncounterEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="EncounterEvent" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActMood"/><code code="EVN"/></supplierVocabulary>
+         </attribute>
+         <attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="1" name="id" sortKey="3" updateModesAllowed="A N">
+            <annotations>
+               
+            <documentation><definition>
+                  <text>
+                     <xhtml:p>One or more unique identifiers for this encounter (for example, an "internal" id used only by computer systems and an "external" id for display to users)</xhtml:p>
+                  </text>
+               </definition></documentation></annotations>
+            <derivedFrom attributeName="id" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="EncounterEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="EncounterEvent" staticModelDerivationId="3"/>
+            <type name="SET">
+               <argumentDatatype name="II"/>
+            </type>
+         </attribute>
+         <attribute defaultValue="IMP" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="code" sortKey="4" updateModesAllowed="A N">
+            <annotations>
+               
+            <documentation><definition>
+                  <text>
+                     <xhtml:p>A value further specifying the type of patient encounter drawn from the ActEncounterCode domain. This is an inpatient encounter - a patient encounter where a patient is admitted by a hospital or equivalent facility, assigned to a location where patients generally stay at least overnight and provided with room, board, and continuous nursing service.</xhtml:p>
+                  </text>
+               </definition></documentation></annotations>
+            <derivedFrom attributeName="code" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="EncounterEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="EncounterEvent" staticModelDerivationId="3"/>
+            <type name="CD"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActCode"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="statusCode" sortKey="5" updateModesAllowed="A R N">
+            <annotations>
+               
+            <documentation><definition>
+                  <text>
+                     <xhtml:p>A value specifying the state of this patient encounter (based on the RIM Act class state machine), for example, active, aborted, completed</xhtml:p>
+                  </text>
+               </definition></documentation></annotations>
+            <derivedFrom attributeName="statusCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="statusCode" className="EncounterEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="statusCode" className="EncounterEvent" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActStatus"/></supplierVocabulary>
+         </attribute>
+         <attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="effectiveTime" sortKey="6">
+            <annotations>
+               
+            <documentation><definition>
+                  <text>
+                     <xhtml:p>The time interval starting with the administrative onset of the encounter (e.g. admission, registration, patient arrival) and ending with the patient's departure (e.g. discharge). Note: for active encounters the end of the effectiveTime range is the anticipated end date-time.</xhtml:p>
+                  </text>
+               </definition></documentation></annotations>
+            <derivedFrom attributeName="effectiveTime" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="effectiveTime" className="EncounterEvent" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="effectiveTime" className="EncounterEvent" staticModelDerivationId="3"/>
+            <type name="IVL">
+               <argumentDatatype name="TS"/>
+            </type>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="PertinentInformation">
+         <derivedFrom className="ActRelationship" staticModelDerivationId="1"/>
+         <derivedFrom className="PertinentInformation" staticModelDerivationId="2"/>
+         <derivedFrom className="PertinentInformation" staticModelDerivationId="3"/>
+         <annotations>
+            
+         <documentation><definition>
+               <text>
+                  <xhtml:p>A mandatory association for care and billing purposes from the focal encounter to another encounter for a different patient.</xhtml:p>
+               </text>
+            </definition></documentation></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="PertinentInformation" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="PertinentInformation" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ActRelationshipPertains"/><code code="PERT"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <commonModelElementRef isAbstract="false" name="R_PatientIdentified">
+         <derivedFrom className="Patient" staticModelDerivationId="1"/>
+         <derivedFrom className="R_PatientIdentified" staticModelDerivationId="2"/>
+         <derivedFrom className="R_PatientIdentified" staticModelDerivationId="3"/>
+         <annotations/>
+      </commonModelElementRef>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Subject">
+         <derivedFrom className="Participation" staticModelDerivationId="1"/>
+         <derivedFrom className="Subject" staticModelDerivationId="2"/>
+         <derivedFrom className="Subject" staticModelDerivationId="3"/>
+         <annotations>
+            
+         <documentation><definition>
+               <text>
+                  <xhtml:p>Required association to the patient who is the subject of the encounter</xhtml:p>
+               </text>
+            </definition></documentation></annotations>
+         <attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <annotations/>
+            <derivedFrom attributeName="typeCode" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Subject" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Subject" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ParticipationTargetSubject"/><code code="SBJ"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <association sortKey="2">
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="pertinentInformation" participantClassName="PertinentInformation" sortKey="BD________" updateModeDefault="A" updateModesAllowed="A ">
+            <annotations>
+                     
+                  <documentation><definition>
+                        <text>
+                           <xhtml:p>A mandatory association for care and billing purposes from the focal encounter to another encounter for a different patient.</xhtml:p>
+                        </text>
+                     </definition></documentation></annotations>
+            <derivedFrom associationEndName="outboundRelationship" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="pertinentInformation" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="pertinentInformation" className="Act" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="EncounterEvent"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="subject" participantClassName="Subject" sortKey="AAA_______">
+            <annotations>
+                     
+                  <documentation><definition>
+                        <text>
+                           <xhtml:p>Required association to the patient who is the subject of the encounter</xhtml:p>
+                        </text>
+                     </definition></documentation></annotations>
+            <derivedFrom associationEndName="participation" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="subject" className="Act" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="subject" className="Act" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="EncounterEvent"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="encounter" participantClassName="A_EncounterIdentified" sortKey="BZ">
+            <annotations/>
+            <derivedFrom associationEndName="target" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="encounter" className="ActRelationship" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="encounter" className="ActRelationship" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="PertinentInformation"/></association>
+   <association sortKey="1">
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="patient" participantClassName="R_PatientIdentified" sortKey="BZ">
+            <annotations/>
+            <derivedFrom associationEndName="role" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="patient" className="Participation" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="patient" className="Participation" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Subject"/></association>
+</mif:staticModel>

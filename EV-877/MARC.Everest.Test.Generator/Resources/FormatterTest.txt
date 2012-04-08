@@ -1,0 +1,28 @@
+        [TestMethod]
+        public void $className$_FMTR_$formatterSettings$_$instanceName$()
+		{
+		
+			$instanceClass$ original = TypeCreator.GetCreator(typeof($instanceClass$)).CreateInstance() as $instanceClass$;
+			
+			// New ms
+			MemoryStream ms = new MemoryStream();
+			
+			// Format
+			MARC.Everest.Formatters.XML.ITS1.Formatter fmtr = new MARC.Everest.Formatters.XML.ITS1.Formatter();
+			
+			fmtr.Settings = MARC.Everest.Formatters.XML.ITS1.SettingsType.$formatterSettings$;
+			fmtr.GraphAides.Add(typeof(MARC.Everest.Formatters.XML.Datatypes.R1.Formatter));
+			fmtr.ValidateConformance = false;
+			var graphResult = fmtr.Graph(ms, original);
+			
+			Assert.AreEqual(graphResult, MARC.Everest.Connectors.ResultCode.Accepted);
+			
+			// Seek back to begin
+			ms.Seek(0, SeekOrigin.Begin);
+		
+			// Parse
+			$instanceClass$ parsed = ($instanceClass$)fmtr.ParseObject(ms, original.GetType().Assembly);
+			
+			// Assert
+			$assertions$
+		}

@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{00D56FC7-864D-4209-A7EB-2697E9C2557A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS</RootNamespace>
+    <AssemblyName>MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.XML</DocumentationFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TFS Build - Check-in|AnyCPU' ">
+    <OutputPath>bin\TFS Build - Check-in\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TFS Build - Nightly|AnyCPU' ">
+    <OutputPath>bin\TFS Build - Nightly\</OutputPath>
+    <DocumentationFile>bin\TFS Build - Nightly\MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Engine, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Build.Framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Build.Utilities" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\FeatureRendererAttribute.cs" />
+    <Compile Include="Attributes\RenderAsAnnotation.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="HeuristicEngine\Datatypes.cs" />
+    <Compile Include="HeuristicEngine\Interfaces.cs" />
+    <Compile Include="Interfaces\IFeatureRenderer.cs" />
+    <Compile Include="Licenses.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Licenses.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderer\ClassRenderer.cs" />
+    <Compile Include="Renderer\DocumentationRenderer.cs" />
+    <Compile Include="Renderer\EnumerationRenderer.cs" />
+    <Compile Include="Renderer\InteractionRenderer.cs" />
+    <Compile Include="Renderer\SubsystemRenderer.cs" />
+    <Compile Include="RimbaCsRenderer.cs" />
+    <Compile Include="Template.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Template.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Util\Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MARC.Everest\MARC.Everest.csproj">
+      <Project>{283B7891-BF96-4C00-BF6D-955EE68BBFBB}</Project>
+      <Name>MARC.Everest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.COR\MohawkCollege.EHR.gpmr.COR.csproj">
+      <Project>{6C99D22F-AD3D-4532-9441-C0E616C87261}</Project>
+      <Name>MohawkCollege.EHR.gpmr.COR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.Pipeline\MohawkCollege.EHR.gpmr.Pipeline.csproj">
+      <Project>{3EABF240-372F-4805-BFBF-133E65B8EC71}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Licenses.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Licenses.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Template.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Template.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Default.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BSD.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MIT.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AssemblyInfo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\APACHE.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

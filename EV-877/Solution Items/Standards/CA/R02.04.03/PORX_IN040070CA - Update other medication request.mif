@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.3" name="040070"
+                 title="Medication Statement Event Revise Request">
+   <mif:businessName name="Update other medication request"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="RX" artifact="IN"
+                        realmNamespace="CA"
+                        id="040070"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Requests that status, comments or other information about an existing medication record be modified.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="RX" artifact="TE"
+                             realmNamespace="CA"
+                             id="040070"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="CA"
+                        id="002100">
+      <mif:parameterModel parameterName="ControlActEvent" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="CA"
+                          id="700210"
+                          traversalName="controlActEvent">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="RX"
+                             artifact="MT"
+                             realmNamespace="CA"
+                             id="040020"
+                             traversalName="otherMedication"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <html:text xmlns:html="http://www.w3.org/1999/xhtml">
+                  <html:p>Non-prescribed drug updated</html:p>
+               </html:text>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="PO" domain="RX" artifact="IN"
+                             realmNamespace="CA"
+                             id="040080"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="PO" domain="RX" artifact="TE"
+                              realmNamespace="CA"
+                              id="040040"/>
+   </mif:receiverResponsibilities>
+   <mif:receiverResponsibilities>
+      <mif:reason/>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="PO" domain="RX" artifact="IN"
+                             realmNamespace="CA"
+                             id="040090"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

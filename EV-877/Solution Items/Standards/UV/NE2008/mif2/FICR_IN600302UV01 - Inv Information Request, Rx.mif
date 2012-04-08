@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1" name="600302"
+                 title="Invoice Information Event Activate Request Complete Pharmacy">
+   <mif:businessName name="Inv Information Request, Rx"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="FI" domain="CR" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="600302"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>The sender sends an Information Invoice Adjudication Request message for Pharmacy services and/or products. The receiver will provide completed Invoice Adjudication Results, NOT initial results. Invoice Adjudication Results indicate adjudication results for specified services and/or products, that may generate a payment.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="FI" domain="CR" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="600201"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="AM" subSection="FI" domain="CR"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="600201"
+                             traversalName="paymentRequest"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

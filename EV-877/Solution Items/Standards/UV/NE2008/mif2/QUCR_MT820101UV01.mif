@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" isSerializable="true" name="820101" packageKind="id" representationKind="flat" schemaVersion="2.0">
+   <packageLocation artifact="MT" domain="CR" realmNamespace="UV" root="DEFN" section="IM" subSection="QU" version="01"/>
+   <header>
+      <renderingInformation application="RoseTree 4.2.7">
+         <mif:renderingNotes>HMD was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
+ HMD to MIF Transform: $Id: RoseTreeHmdToMIFStaticModel.xsl,v 1.15 2007/10/19 05:55:13 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $
+  HTML To MIF markup: $Id: HtmlToMIFMarkup.xsl,v 1.4 2007/03/20 02:48:49 wbeeler Exp $
+ Flat to Serialization Transform: $Id: MIFStaticModelFlatToSerialization.xsl,v 1.5 2007/03/20 02:48:50 wbeeler Exp $
+ Fix Names Transform: $Id: FixMifNames.xsl,v 1.8 2007/03/20 02:48:49 wbeeler Exp $
+  Base transform: $Id: ConvertBase.xsl,v 1.5 2007/10/19 05:55:13 wbeeler Exp $
+  Package Id Conversion: $Id: TransformPackageIds.xsl,v 1.6 2007/03/20 02:48:49 wbeeler Exp $</mif:renderingNotes>
+      </renderingInformation>
+      <legalese copyrightOwner="Health Level Seven, Inc." copyrightYears="2008">
+         <notation>All rights reserved.</notation>
+      </legalese>
+   </header>
+   <derivedFrom staticModelDerivationId="1">
+      <targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <targetStaticModel artifact="RM" domain="CR" id="820000" realmNamespace="UV" root="DEFN" section="IM" subSection="QU"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <targetStaticModel artifact="HD" domain="CR" id="820100" realmNamespace="UV" root="DEFN" section="IM" subSection="QU" version="01"/>
+   </derivedFrom>
+   <entryPoint className="ParameterList" name="Unknown" useKind="SemanticPayload">
+      <annotations>
+         
+      <documentation><description>
+            <text>
+               <xhtml:p>Entry point for SOFA (stmt of financial activity) details query request message</xhtml:p>
+            </text>
+         </description></documentation></annotations>
+   </entryPoint>
+   <containedClass>
+      <class isAbstract="false" name="AdjudResultsGroup.Author.Time">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="AdjudResultsGroup.Author.Time" staticModelDerivationId="2"/>
+         <derivedFrom className="AdjudResultsGroup.Author.Time" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>adjudication period</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="AdjudResultsGroup.Author.Time" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="AdjudResultsGroup.Author.Time" staticModelDerivationId="3"/>
+            <type name="IVL">
+               <argumentDatatype name="TS"/>
+            </type>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="AdjudResultsGroup.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="AdjudResultsGroup.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="AdjudResultsGroup.Id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Harry's bucket or accumulator id</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="AdjudResultsGroup.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="AdjudResultsGroup.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="FinancialContract.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="FinancialContract.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="FinancialContract.Id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>e.g. Business Arrangement Identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="FinancialContract.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="FinancialContract.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="InsuranceCarrierRole.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="InsuranceCarrierRole.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="InsuranceCarrierRole.Id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>insurance carrier id</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="InsuranceCarrierRole.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="InsuranceCarrierRole.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="InvoiceElementGroup.Code">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="InvoiceElementGroup.Code" staticModelDerivationId="2"/>
+         <derivedFrom className="InvoiceElementGroup.Code" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>invoice type</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="InvoiceElementGroup.Code" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="InvoiceElementGroup.Code" staticModelDerivationId="3"/>
+            <type name="CS"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActInvoiceGroupCode"/></supplierVocabulary>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Location.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="Location.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="Location.Id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Service/good location identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="Location.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="Location.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="ParameterList">
+         <derivedFrom className="ParameterList" staticModelDerivationId="1"/>
+         <derivedFrom className="ParameterList" staticModelDerivationId="2"/>
+         <derivedFrom className="ParameterList" staticModelDerivationId="3"/>
+         <annotations>
+            
+         <documentation><designComments>
+               <text>
+                  <xhtml:p>Either a AdjudResultsGroup.ID (which implies date, payee, payor) or date, payee, payor needs to be specified.</xhtml:p>
+               </text>
+            </designComments></documentation></annotations>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="id" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>Query Identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="id" className="Parameter" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="ParameterList" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Payee.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="Payee.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="Payee.Id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>payee identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="Payee.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="Payee.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Payor.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="Payor.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="Payor.Id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>payor identifier</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="Payor.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="Payor.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="Provider.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="Provider.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="Provider.Id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>provider identifier for service/good</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="Provider.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="Provider.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <containedClass>
+      <class isAbstract="false" name="SendingApplication.Id">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="SendingApplication.Id" staticModelDerivationId="2"/>
+         <derivedFrom className="SendingApplication.Id" staticModelDerivationId="3"/>
+         <annotations/>
+         <attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="1">
+            <annotations>
+               
+            <documentation><designComments>
+                  <text>
+                     <xhtml:p>sending application</xhtml:p>
+                  </text>
+               </designComments></documentation></annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="SendingApplication.Id" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="SendingApplication.Id" staticModelDerivationId="3"/>
+            <type name="II"/>
+         </attribute>
+      </class>
+   </containedClass>
+   <association sortKey="1">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="adjudResultsGroup.Author.Time" participantClassName="AdjudResultsGroup.Author.Time" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="adjudResultsGroup.Author.Time" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="adjudResultsGroup.Author.Time" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="2">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="adjudResultsGroup.Id" participantClassName="AdjudResultsGroup.Id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="adjudResultsGroup.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="adjudResultsGroup.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="3">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="financialContract.Id" participantClassName="FinancialContract.Id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="financialContract.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="financialContract.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="4">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="insuranceCarrierRole.Id" participantClassName="InsuranceCarrierRole.Id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="insuranceCarrierRole.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="insuranceCarrierRole.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="5">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="invoiceElementGroup.Code" participantClassName="InvoiceElementGroup.Code" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="invoiceElementGroup.Code" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="invoiceElementGroup.Code" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="6">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="location.Id" participantClassName="Location.Id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="location.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="location.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="7">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="payee.Id" participantClassName="Payee.Id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="payee.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="payee.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="8">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="payor.Id" participantClassName="Payor.Id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="payor.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="payor.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="9">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="provider.Id" participantClassName="Provider.Id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="provider.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="provider.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+   <association sortKey="10">
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="sendingApplication.Id" participantClassName="SendingApplication.Id" sortKey="Z ZZ">
+            <annotations/>
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="sendingApplication.Id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="sendingApplication.Id" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList"/></association>
+</mif:staticModel>

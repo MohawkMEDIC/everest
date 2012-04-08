@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" isAbstract="false" isSerializable="true" name="01" packageKind="version" representationKind="flat" schemaVersion="2.0" xsi:schemaLocation="">
+   <mif:packageLocation artifact="MT" domain="CT" id="050203" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2008"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0" y="0"/>
+         <mif:size height="406" width="668"/>
+      </mif:graphElement>
+   <entryPoint name="R_PatientPerson contact"><mif:graphElement containerDiagramName="Main" shapeId="Sheet.139">
+            <mif:position x="2" y="148"/>
+            <mif:size height="56" width="167"/>
+            <mif:anchorage connectToShapeId="Sheet.139">
+               <mif:position x="170" y="127"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.189">
+                     <mif:position x="288" y="172"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement></entryPoint><class className="E_OrganizationContact" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.81" shapeTemplate="CMET">
+               <mif:position x="313" y="0"/>
+               <mif:size height="60" width="96"/>
+            </mif:graphElement></class><class className="E_PersonContact" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.1" shapeTemplate="CMET">
+               <mif:position x="381" y="344"/>
+               <mif:size height="60" width="96"/>
+            </mif:graphElement></class><class className="PatientPerson" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.189" shapeTemplate="Role">
+               <mif:position x="288" y="142"/>
+               <mif:size height="74" width="128"/>
+            </mif:graphElement></class><association className="E_PersonContact" relationshipName="patientPerson"><mif:graphElement connectToShapeId="Sheet.189" containerDiagramName="Main">
+                     <mif:position x="301" y="210"/>
+                     <mif:graphEdge>
+                        <mif:anchor connectToShapeId="Sheet.1">
+                           <mif:position x="381" y="350"/>
+                        </mif:anchor>
+                     </mif:graphEdge>
+                  </mif:graphElement></association><association className="E_OrganizationContact" relationshipName="providerOrganization"><mif:graphElement connectToShapeId="Sheet.189" containerDiagramName="Main">
+                     <mif:position x="301" y="150"/>
+                     <mif:graphEdge>
+                        <mif:anchor connectToShapeId="Sheet.81">
+                           <mif:position x="352" y="61"/>
+                        </mif:anchor>
+                     </mif:graphEdge>
+                  </mif:graphElement></association></mif:graphicRepresentation>
+   <derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel artifact="RM" domain="CT" id="050203" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel artifact="HD" domain="CT" id="050203" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   </derivedFrom>
+   <entryPoint className="PatientPerson" id="COCT_MT050203UV01" isAbstract="false" name="R_PatientPerson contact">
+      <mif:annotations>
+         
+      <documentation><mif:description>
+            <mif:text>16 Mar 2004 Used to contact a person-patient.</mif:text>
+         </mif:description></documentation></mif:annotations>
+      
+   </entryPoint>
+   <containedClass>
+      <mif:commonModelElementRef name="E_OrganizationContact">
+         <derivedFrom className="Organization" staticModelDerivationId="1"/>
+         <derivedFrom className="E_OrganizationContact" staticModelDerivationId="2"/>
+         <derivedFrom className="E_OrganizationContact" staticModelDerivationId="3"/>
+         <supplierVocabulary><vocabularyDomain xmlns="" name="EntityClass"/></supplierVocabulary>
+         
+         <cmet name="COCT_MT150003UV03"/>
+      </mif:commonModelElementRef>
+   </containedClass>
+   <containedClass>
+      <mif:commonModelElementRef name="E_PersonContact">
+         <derivedFrom className="Person" staticModelDerivationId="1"/>
+         <derivedFrom className="E_PersonContact" staticModelDerivationId="2"/>
+         <derivedFrom className="E_PersonContact" staticModelDerivationId="3"/>
+         <supplierVocabulary><vocabularyDomain xmlns="" name="EntityClass"/></supplierVocabulary>
+         
+         <cmet name="COCT_MT030203UV02"/>
+      </mif:commonModelElementRef>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="PatientPerson">
+         <derivedFrom className="Patient" staticModelDerivationId="1"/>
+         <derivedFrom className="PatientPerson" staticModelDerivationId="2"/>
+         <derivedFrom className="PatientPerson" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="Patient" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="PatientPerson" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="PatientPerson" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="PAT" codeSystemName="RoleClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="*" minimumMultiplicity="1" name="id" sortKey="2">
+            <derivedFrom attributeName="id" className="Patient" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="PatientPerson" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="PatientPerson" staticModelDerivationId="3"/>
+            <mif:type name="SET">
+               <argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="addr" sortKey="3">
+            <derivedFrom attributeName="addr" className="Patient" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="addr" className="PatientPerson" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="addr" className="PatientPerson" staticModelDerivationId="3"/>
+            <mif:type name="BAG">
+               <argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="telecom" sortKey="4">
+            <derivedFrom attributeName="telecom" className="Patient" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="telecom" className="PatientPerson" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="telecom" className="PatientPerson" staticModelDerivationId="3"/>
+            <mif:type name="BAG">
+               <argumentDatatype name="TEL"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <association sortKey="1">
+      
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="patientPerson" participantClassName="E_PersonContact" sortKey="AZ">
+            <derivedFrom associationEndName="player" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="patientPerson" className="PatientPerson" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="patientPerson" className="PatientPerson" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="PatientPerson">
+            <derivedFrom associationEndName="playedRole" className="Entity" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+   <association sortKey="2">
+      
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="providerOrganization" participantClassName="E_OrganizationContact" sortKey="BZ">
+            <derivedFrom associationEndName="scoper" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="providerOrganization" className="PatientPerson" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="providerOrganization" className="PatientPerson" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="PatientPerson">
+            <derivedFrom associationEndName="scopedRole" className="Entity" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+</mif:staticModel>

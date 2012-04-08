@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="306031"
+                 title="Provider Event Report Query Response">
+   <mif:businessName name="Provider Report Query Response"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="PM" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="306031"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>This interaction is used to respond to an Provider Report Query (PRPM_IN306030) interaction and will contain the preformatted report requested.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PM" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="306114"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000300">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="QU"
+                          domain="QI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="120001"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="AM" subSection="PR" domain="PM"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="306310"
+                             traversalName="documentEvent"/>
+         <mif:parameterModel parameterName="ParameterList" root="DEFN" section="AM" subSection="PR"
+                             domain="PM"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="306210"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1" name="800102"
+                 title="SOFA Event Payment Advice Query Pharmacy">
+   <mif:businessName name="SOFA Pymt Adv Query Request, Rx"/>
+   <mif:packageLocation root="DEFN" section="IM" subSection="QU" domain="CR" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="800102"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>The sender sends a SOFA (Statement of Financial Activity) Payment Advice Query message for Pharmacy services and/or products. The request is for summary level account information, including daily totals. Totals will be reported on a future Payment Advice.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="IM" subSection="QU" domain="CR" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="800101"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="QU"
+                          domain="QI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="020001"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="ParameterList" root="DEFN" section="IM" subSection="QU"
+                             domain="CR"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="800101"
+                             traversalName="parameterList"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <html:text xmlns:html="http://www.w3.org/1999/xhtml">  
+                  <html:p>SOFA Payment Advice Query Response</html:p>  
+               </html:text>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="IM" subSection="QU" domain="CR" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="810102"/>
+      <mif:invokeTriggerEvent root="DEFN" section="IM" subSection="QU" domain="CR" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="810101"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

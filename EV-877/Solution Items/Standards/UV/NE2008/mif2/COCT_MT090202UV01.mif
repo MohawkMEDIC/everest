@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" isAbstract="false" isSerializable="true" name="01" packageKind="version" representationKind="flat" schemaVersion="2.0" xsi:schemaLocation="">
+   <mif:packageLocation artifact="MT" domain="CT" id="090202" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2008"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0" y="0"/>
+         <mif:size height="564" width="462"/>
+      </mif:graphElement>
+   <entryPoint name="R_AssignedOrganization Identified-Confirmable"><mif:graphElement containerDiagramName="Main" shapeId="Sheet.46">
+            <mif:position x="2" y="2"/>
+            <mif:size height="107" width="311"/>
+            <mif:anchorage connectToShapeId="Sheet.46">
+               <mif:position x="163" y="110"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.26">
+                     <mif:position x="153" y="264"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement></entryPoint><class className="AssignedOrganization" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.26" shapeTemplate="Role">
+               <mif:position x="47" y="264"/>
+               <mif:size height="74" width="210"/>
+            </mif:graphElement></class><class className="E_OrganizationIdentified-confirmable" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.65" shapeTemplate="CMET">
+               <mif:position x="290" y="132"/>
+               <mif:size height="60" width="128"/>
+            </mif:graphElement></class><class className="Organization" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.179" shapeTemplate="Entity">
+               <mif:position x="268" y="479"/>
+               <mif:size height="72" width="169"/>
+            </mif:graphElement></class><class className="PrincipalChoiceList" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" nodeOrientation="Portrait" shapeId="Sheet.71" shapeTemplate="Choice">
+               <mif:position x="256" y="455"/>
+               <mif:size height="108" width="193"/>
+            </mif:graphElement></class><association className="PrincipalChoiceList" relationshipName="assignedPrincipalChoiceList"><mif:graphElement connectToShapeId="Sheet.26" containerDiagramName="Main">
+                     <mif:position x="237" y="332"/>
+                     <mif:graphEdge>
+                        <mif:anchor connectToShapeId="Sheet.71">
+                           <mif:position x="276" y="455"/>
+                        </mif:anchor>
+                     </mif:graphEdge>
+                  </mif:graphElement></association><association className="E_OrganizationIdentified-confirmable" relationshipName="representedOrganization"><mif:graphElement connectToShapeId="Sheet.26" containerDiagramName="Main">
+                     <mif:position x="237" y="272"/>
+                     <mif:graphEdge>
+                        <mif:anchor connectToShapeId="Sheet.65">
+                           <mif:position x="368" y="192"/>
+                        </mif:anchor>
+                     </mif:graphEdge>
+                  </mif:graphElement></association></mif:graphicRepresentation>
+   <derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel artifact="RM" domain="CT" id="090202" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel artifact="HD" domain="CT" id="090202" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   </derivedFrom>
+   <entryPoint className="AssignedOrganization" id="COCT_MT090202UV01" isAbstract="false" name="R_AssignedOrganization Identified-Confirmable">
+      <mif:annotations>
+         
+      <documentation><mif:description>
+            <mif:text>16 Mar 2004 Supports messages related to an assigned organization. An assigned role is one in which the agent is an entity acting on behalf of another organization. </mif:text>
+         </mif:description></documentation></mif:annotations>
+      
+   </entryPoint>
+   <containedClass>
+      <mif:class isAbstract="false" name="AssignedOrganization">
+         <derivedFrom className="Role" staticModelDerivationId="1"/>
+         <derivedFrom className="AssignedOrganization" staticModelDerivationId="2"/>
+         <derivedFrom className="AssignedOrganization" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="AssignedOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="AssignedOrganization" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="ASSIGNED" codeSystemName="RoleClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="*" minimumMultiplicity="1" name="id" sortKey="2">
+            <derivedFrom attributeName="id" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="AssignedOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="AssignedOrganization" staticModelDerivationId="3"/>
+            <mif:type name="SET">
+               <argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="code" sortKey="3">
+            <mif:businessName name="role in organization"><realmNamespace value="UV"/></mif:businessName>
+            <derivedFrom attributeName="code" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="AssignedOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="AssignedOrganization" staticModelDerivationId="3"/>
+            <mif:type name="CE"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="RoleCode"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="addr" sortKey="4">
+            <derivedFrom attributeName="addr" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="addr" className="AssignedOrganization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="addr" className="AssignedOrganization" staticModelDerivationId="3"/>
+            <mif:type name="BAG">
+               <argumentDatatype name="AD"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:commonModelElementRef name="E_OrganizationIdentified-confirmable">
+         <derivedFrom className="Organization" staticModelDerivationId="1"/>
+         <derivedFrom className="E_OrganizationIdentified-confirmable" staticModelDerivationId="2"/>
+         <derivedFrom className="E_OrganizationIdentified-confirmable" staticModelDerivationId="3"/>
+         <supplierVocabulary><vocabularyDomain xmlns="" name="EntityClass"/></supplierVocabulary>
+         
+         <cmet name="COCT_MT150002UV01"/>
+      </mif:commonModelElementRef>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="Organization">
+         <derivedFrom className="Organization" staticModelDerivationId="1"/>
+         <derivedFrom className="Organization" staticModelDerivationId="2"/>
+         <derivedFrom className="Organization" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="Organization" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="Organization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="Organization" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="ORG" codeSystemName="EntityClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="determinerCode" sortKey="2">
+            <derivedFrom attributeName="determinerCode" className="Organization" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="determinerCode" className="Organization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="determinerCode" className="Organization" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="INSTANCE" codeSystemName="EntityDeterminer"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="1" name="name" sortKey="3">
+            <derivedFrom attributeName="name" className="Organization" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="name" className="Organization" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="name" className="Organization" staticModelDerivationId="3"/>
+            <mif:type name="BAG">
+               <argumentDatatype name="EN"/>
+            </mif:type>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="true" name="PrincipalChoiceList">
+         <derivedFrom className="Entity" staticModelDerivationId="1"/>
+         <derivedFrom className="PrincipalChoiceList" staticModelDerivationId="2"/>
+         <derivedFrom className="PrincipalChoiceList" staticModelDerivationId="3"/>
+         
+         <childClass className="Organization">
+            
+         </childClass>
+      </mif:class>
+   </containedClass>
+   <association sortKey="0">
+      
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="assignedPrincipalChoiceList" participantClassName="PrincipalChoiceList" sortKey="AZ">
+            <derivedFrom associationEndName="player" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="assignedPrincipalChoiceList" className="AssignedOrganization" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="assignedPrincipalChoiceList" className="AssignedOrganization" staticModelDerivationId="3"/>
+            <participantClassSpecialization className="Organization" traversalName="assignedOrganization"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="AssignedOrganization">
+            <derivedFrom associationEndName="playedRole" className="Entity" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+   <association sortKey="1">
+      
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="representedOrganization" participantClassName="E_OrganizationIdentified-confirmable" sortKey="BZ">
+            <derivedFrom associationEndName="scoper" className="Role" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="representedOrganization" className="AssignedOrganization" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="representedOrganization" className="AssignedOrganization" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="AssignedOrganization">
+            <derivedFrom associationEndName="scopedRole" className="Entity" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+</mif:staticModel>

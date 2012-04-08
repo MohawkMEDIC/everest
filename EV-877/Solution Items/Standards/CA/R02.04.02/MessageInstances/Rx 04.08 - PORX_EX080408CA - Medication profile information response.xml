@@ -1,0 +1,2533 @@
+<?xml version="1.0" encoding="UTF-8"?><PORX_IN060380CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/PORX_IN060380CA.xsd">
+   <realmCode code="CA"/>
+   <id root="971FB52D-C659-6A14-15EC-5223E6D321F8"/>
+   <creationTime value="20090915232753.062-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="PORX_IN060380CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://120.120.120.120"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.0.3" extension="DIS01"/>
+         <name>Good Health Clinic</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </sender>
+   <acknowledgement>
+      <typeCode code="AA"/>
+      <targetMessage>
+         <id root="E2B953DC-947A-59CF-E278-4F1B4F5EFD4B"/>
+      </targetMessage>
+   </acknowledgement>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.1" extension="52669080530095"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="PORX_TE060290CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090915232752.062-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="444112345"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <prefix>Mrs.</prefix>
+                  <given>Nelda</given>
+                  <given qualifier="IN">W</given>
+                  <family>Nuclear</family>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19700512"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <otherMedication classCode="SBADM" moodCode="EVN">
+            <id use="BUS" specializationType="II.BUS" root="2.16.840.1.113883.19.3.297.15.37.19" extension="D1XKYVN"/>
+            <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+            <statusCode code="active"/>
+            <effectiveTime xsi:type="IVL_TS">
+               <low value="20090915"/>
+            </effectiveTime>
+            <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+            <consumable typeCode="CSM" contextControlCode="OP">
+               <medication classCode="ADMM">
+                  <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                     <code code="N02BE01" codeSystem="2.16.840.1.113883.6.73"/>
+                     <name>ACETAMINOPHEN</name>
+                     <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                     <ingredient classCode="INGR" negationInd="false">
+                        <quantity value="500" unit="mg"/>
+                        <ingredient classCode="MMAT" determinerCode="KIND">
+                           <code code="270" codeSystem="2.16.840.1.113883.5.1103"/>
+                        </ingredient>
+                     </ingredient>
+                  </administerableMedicine>
+               </medication>
+            </consumable>
+            <author typeCode="AUT" contextControlCode="AP">
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity>
+            </author>
+            <location typeCode="LOC" contextControlCode="OP">
+               <serviceDeliveryLocation classCode="SDLOC">
+                  <id displayable="true" extension="7-1234500-1" root="2.16.840.1.113883.19.3.291.3"/>
+                  <code code="OF" codeSystem="2.16.840.1.113883.5.111"/>
+                  <addr use="PHYS">1000 Hospital Lane<delimiter/>
+                     <city>Ann Arbor</city>
+                     <state>MI</state>
+                     <postalCode>99999</postalCode>
+                  </addr>
+                  <telecom use="WP" value="tel:+1-555-555-3013;postd=999"/>
+                  <location classCode="PLC" determinerCode="INSTANCE">
+                     <name>GHH Outpatient Clinic</name>
+                  </location>
+               </serviceDeliveryLocation>
+            </location>
+            <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+               <dosageInstruction classCode="SBADM" moodCode="EVN">
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>By mouth take 2, 3 times per day</text>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <low value="20090915232752.062-0700"/>
+                  </effectiveTime>
+                  <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="EVN">
+                        <effectiveTime xsi:type="PIVL_TS">
+                           <frequency>
+                              <numerator value="3"/>
+                              <denominator value="1" unit="d"/>
+                           </frequency>
+                        </effectiveTime>
+                        <doseQuantity value="2"/>
+                     </dosageLine>
+                  </component2>
+               </dosageInstruction>
+            </component>
+         </otherMedication>
+      </subject>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <combinedMedicationRequest classCode="SBADM" moodCode="RQO">
+            <id use="BUS" specializationType="II.BUS" root="2.16.840.1.113883.19.3.297.15.37.3" extension="VCAKMX"/>
+            <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+            <statusCode code="active"/>
+            <confidentialityCode code="R" codeSystem="2.16.840.1.113883.5.25"/>
+            <directTarget typeCode="DIR" contextControlCode="OP">
+               <medication classCode="ADMM">
+                  <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                     <code code="02230784" codeSystem="2.16.840.1.113883.6.73"/>
+                     <name>TAZORAC</name>
+                     <formCode code="GEL" codeSystem="2.16.840.1.113883.5.85"/>
+                     <asManufacturedProduct classCode="MANU">
+                        <manufacturer classCode="ORG" determinerCode="INSTANCE">
+                           <name>ALLERGAN INC.</name>
+                        </manufacturer>
+                     </asManufacturedProduct>
+                  </administerableMedicine>
+               </medication>
+            </directTarget>
+            <author typeCode="AUT" contextControlCode="AP">
+               <time value="20090915"/>
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity>
+            </author>
+            <location typeCode="LOC" contextControlCode="OP">
+               <serviceDeliveryLocation classCode="SDLOC">
+                  <id displayable="true" extension="7-1234500-1" root="2.16.840.1.113883.19.3.291.3"/>
+                  <code code="OF" codeSystem="2.16.840.1.113883.5.111"/>
+                  <addr use="PHYS">1000 Hospital Lane<delimiter/>
+                     <city>Ann Arbor</city>
+                     <state>MI</state>
+                     <postalCode>99999</postalCode>
+                  </addr>
+                  <telecom use="WP" value="tel:+1-555-555-3013;postd=999"/>
+                  <location classCode="PLC" determinerCode="INSTANCE">
+                     <name>GHH Outpatient Clinic</name>
+                  </location>
+               </serviceDeliveryLocation>
+            </location>
+            <definition typeCode="INST" contextControlCode="AN" contextConductionInd="false">
+               <substanceAdministrationDefinition classCode="SBADM" moodCode="DEF">
+                  <id displayable="true" root="2.16.840.1.113883.19.3.229.37" extension="T4M1PCL05D0W"/>
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+               </substanceAdministrationDefinition>
+            </definition>
+            <predecessor typeCode="SUCC" contextControlCode="ON" contextConductionInd="false">
+               <priorCombinedMedicationRequest classCode="SBADM" moodCode="RQO">
+                  <id use="BUS" specializationType="II.BUS" root="2.16.840.1.113883.19.3.297.15.37.3" extension="3ANXJVN9D8S"/>
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+               </priorCombinedMedicationRequest>
+            </predecessor>
+            <reason typeCode="RSON" contextControlCode="AN" contextConductionInd="true">
+               <priorityNumber value="1"/>
+               <observationProblem moodCode="EVN" classCode="OBS">
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="completed"/>
+                  <value code="402320002:246100006=385315009,246112005=371924009" codeSystem="2.16.840.1.113883.6.96"/>
+               </observationProblem>
+            </reason>
+            <coverage typeCode="COVBY" contextControlCode="AN" contextConductionInd="false">
+               <coverage classCode="COV" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.304.7" extension="ESEV1"/>
+                  <author typeCode="AUT">
+                     <carrierRole classCode="UNDWRT">
+                        <id displayable="true" root="2.16.840.1.113883.19.3.304" extension="186376187799769"/>
+                        <underwritingCarrierOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <name>Super Health Insurance Inc.</name>
+                        </underwritingCarrierOrganization>
+                     </carrierRole>
+                  </author>
+               </coverage>
+            </coverage>
+            <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+               <dosageInstruction classCode="SBADM" moodCode="EVN">
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>Topical application to skin on face at bedtime.  Apply in a thin layer to psoriasis.</text>
+                  <approachSiteCode nullFlavor="OTH" codeSystem="2.16.840.1.113883.12.163">
+                     <originalText>face</originalText>
+                  </approachSiteCode>
+                  <routeCode code="SKIN" codeSystem="2.16.840.1.113883.5.112"/>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="EVN">
+                        <effectiveTime xsi:type="EIVL_TS">
+                           <event code="HS"/>
+                        </effectiveTime>
+                        <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <supplementalInstruction classCode="SBADM" moodCode="EVN">
+                              <text>Apply in a thin layer to psoriasis</text>
+                           </supplementalInstruction>
+                        </component>
+                     </dosageLine>
+                  </component2>
+               </dosageInstruction>
+            </component1>
+            <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true" negationInd="true">
+               <trialSupplyPermission classCode="SPLY" moodCode="PERM">
+                  <code code="TF" codeSystem="2.16.840.1.113883.5.4"/>
+               </trialSupplyPermission>
+            </component2>
+            <component3 typeCode="COMP" contextControlCode="AN" contextConductionInd="true">
+               <supplyRequest classCode="SPLY" moodCode="RQO">
+                  <statusCode code="active"/>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <low value="20090915"/>
+                     <high value="20100915"/>
+                  </effectiveTime>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <substitutionConditionCode code="UNCOND" codeSystem="2.16.840.1.113883.5.1071"/>
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyRequestItem classCode="SPLY" moodCode="RQO">
+                        <quantity value="120" unit="g"/>
+                        <expectedUseTime>
+                           <width value="12" unit="mo"/>
+                        </expectedUseTime>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="2"/>
+                           <subsequentSupplyRequest classCode="SPLY" moodCode="RQO">
+                              <repeatNumber value="4"/>
+                              <quantity value="30" unit="g"/>
+                              <expectedUseTime>
+                                 <width value="3" unit="mo"/>
+                              </expectedUseTime>
+                           </subsequentSupplyRequest>
+                        </component2>
+                     </supplyRequestItem>
+                  </component>
+               </supplyRequest>
+            </component3>
+            <fulfillment1 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <medicationDispense classCode="SPLY" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.4" extension="QGHWY5"/>
+                  <statusCode code="aborted"/>
+                  <responsibleParty typeCode="RESP" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="777222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203777" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </responsibleParty>
+                  <performer typeCode="PRF" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="666222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203666" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </performer>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyEvent classCode="SPLY" moodCode="EVN">
+                        <code code="RFC" codeSystem="2.16.840.1.113883.5.4"/>
+                        <effectiveTime xsi:type="IVL_TS">
+                           <low value="20090915"/>
+                           <high value="20090915"/>
+                        </effectiveTime>
+                        <quantity value="30" unit="g"/>
+                        <expectedUseTime>
+                           <width value="3" unit="mo"/>
+                        </expectedUseTime>
+                        <product typeCode="PRD" contextControlCode="ON">
+                           <medication classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                                 <code code="02230784" codeSystem="2.16.840.1.113883.6.73"/>
+                                 <name>TAZORAC</name>
+                                 <formCode code="GEL" codeSystem="2.16.840.1.113883.5.85"/>
+                                 <lotNumberText>3A9TIC</lotNumberText>
+                                 <asManufacturedProduct classCode="MANU">
+                                    <manufacturer classCode="ORG" determinerCode="INSTANCE">
+                                       <name>ALLERGAN INC.</name>
+                                    </manufacturer>
+                                 </asManufacturedProduct>
+                              </administerableMedicine>
+                           </medication>
+                        </product>
+                     </supplyEvent>
+                  </component1>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <dosageInstruction classCode="SBADM" moodCode="EVN">
+                        <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                        <text>Topical application to skin on face at bedtime.  Apply in a thin layer to psoriasis.</text>
+                        <approachSiteCode nullFlavor="OTH" codeSystem="2.16.840.1.113883.12.163">
+                           <originalText>face</originalText>
+                        </approachSiteCode>
+                        <routeCode code="SKIN" codeSystem="2.16.840.1.113883.5.112"/>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="EVN">
+                              <effectiveTime xsi:type="EIVL_TS">
+                                 <event code="HS"/>
+                              </effectiveTime>
+                              <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                                 <supplementalInstruction classCode="SBADM" moodCode="EVN">
+                                    <text>Apply in a thin layer to psoriasis</text>
+                                 </supplementalInstruction>
+                              </component>
+                           </dosageLine>
+                        </component2>
+                     </dosageInstruction>
+                  </component2>
+                  <subjectOf1 typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+                     <controlActEvent classCode="CACT" moodCode="EVN">
+                        <code code="PORX_TE020090CA" codeSystem="2.16.840.1.113883.1.18"/>
+                        <statusCode code="completed"/>
+                        <effectiveTime xsi:type="IVL_TS">
+                           <low value="201004200000"/>
+                           <high value="201004200000"/>
+                        </effectiveTime>
+                        <reasonCode code="NOPICK" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                        <responsibleParty typeCode="RESP">
+                           <assignedEntity classCode="ASSIGNED">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="777222222" root="2.16.840.1.113883.19.4.207"/>
+                              <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                              <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                                 <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                                    <prefix>Dr.</prefix>
+                                    <given>Irving</given>
+                                    <given qualifier="IN">I</given>
+                                    <family>Intern</family>
+                                 </name>
+                                 <asHealthCareProvider classCode="PROV">
+                                    <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203777" root="2.16.840.1.113883.4.41"/>
+                                 </asHealthCareProvider>
+                              </assignedPerson>
+                           </assignedEntity>
+                        </responsibleParty>
+                        <author typeCode="AUT">
+                           <time value="20100420232752.062-0700"/>
+                           <assignedEntity classCode="ASSIGNED">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="666222222" root="2.16.840.1.113883.19.4.207"/>
+                              <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                              <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                                 <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                                    <prefix>Dr.</prefix>
+                                    <given>Irving</given>
+                                    <given qualifier="IN">I</given>
+                                    <family>Intern</family>
+                                 </name>
+                                 <asHealthCareProvider classCode="PROV">
+                                    <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203666" root="2.16.840.1.113883.4.41"/>
+                                 </asHealthCareProvider>
+                              </assignedPerson>
+                           </assignedEntity>
+                        </author>
+                     </controlActEvent>
+                  </subjectOf1>
+               </medicationDispense>
+            </fulfillment1>
+            <fulfillment2 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="RECENT"/>
+               <supplyEventLastSummary classCode="SPLY" moodCode="EVN">
+                  <effectiveTime>
+                     <high value="20100416"/>
+                  </effectiveTime>
+                  <quantity value="30" unit="mg"/>
+               </supplyEventLastSummary>
+            </fulfillment2>
+            <fulfillment3 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="FIRST"/>
+               <supplyEventFirstSummary classCode="SPLY" moodCode="EVN">
+                  <effectiveTime xsi:type="IVL_TS">
+                     <high value="20090918"/>
+                  </effectiveTime>
+                  <quantity value="30" unit="mg"/>
+               </supplyEventFirstSummary>
+            </fulfillment3>
+            <fulfillment4 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="FUTSUM"/>
+               <supplyEventFutureSummary classCode="SPLY" moodCode="EVN">
+                  <repeatNumber value="2"/>
+                  <quantity value="60" unit="g"/>
+               </supplyEventFutureSummary>
+            </fulfillment4>
+            <fulfillment5 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="PREVSUM"/>
+               <supplyEventPastSummary classCode="SPLY" moodCode="EVN">
+                  <repeatNumber value="2"/>
+                  <quantity value="60" unit="g"/>
+               </supplyEventPastSummary>
+            </fulfillment5>
+            <componentOf2 typeCode="COMP" contextControlCode="AN" contextConductionInd="false">
+               <workingListEvent classCode="LIST" moodCode="EVN">
+                  <code code="CHRON" codeSystem="2.16.840.1.113883.5.4"/>
+               </workingListEvent>
+            </componentOf2>
+         </combinedMedicationRequest>
+      </subject>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <combinedMedicationRequest classCode="SBADM" moodCode="RQO">
+            <id use="BUS" specializationType="II.BUS" root="2.16.840.1.113883.19.3.297.15.37.3" extension="LDTSF0XQOAAEK"/>
+            <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+            <statusCode code="active"/>
+            <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+            <directTarget typeCode="DIR" contextControlCode="OP">
+               <medication classCode="ADMM">
+                  <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                     <code code="00608165" codeSystem="2.16.840.1.113883.6.73"/>
+                     <name>RATIO-OXYCOCET</name>
+                     <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                  </administerableMedicine>
+               </medication>
+            </directTarget>
+            <author typeCode="AUT" contextControlCode="AP">
+               <time value="20090915"/>
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity>
+            </author>
+            <location typeCode="LOC" contextControlCode="OP">
+               <serviceDeliveryLocation classCode="SDLOC">
+                  <id displayable="true" extension="7-1234500-1" root="2.16.840.1.113883.19.3.291.3"/>
+                  <code code="OF" codeSystem="2.16.840.1.113883.5.111"/>
+                  <addr use="PHYS">1000 Hospital Lane<delimiter/>
+                     <city>Ann Arbor</city>
+                     <state>MI</state>
+                     <postalCode>99999</postalCode>
+                  </addr>
+                  <telecom use="WP" value="tel:+1-555-555-3013;postd=999"/>
+                  <location classCode="PLC" determinerCode="INSTANCE">
+                     <name>GHH Outpatient Clinic</name>
+                  </location>
+               </serviceDeliveryLocation>
+            </location>
+            <reason typeCode="RSON" contextControlCode="AN" contextConductionInd="true">
+               <priorityNumber value="1"/>
+               <observationProblem moodCode="EVN" classCode="OBS">
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="completed"/>
+                  <value xsi:type="CV" code="76948002" codeSystem="2.16.840.1.113883.6.96">
+                     <originalText>severe pain</originalText>
+                  </value>
+               </observationProblem>
+            </reason>
+            <precondition typeCode="PRCN" contextControlCode="AN" contextConductionInd="false">
+               <verificationEventCriterion classCode="VERIF" moodCode="EVN.CRT">
+                  <code code="VFPAPER" codeSystem="2.16.840.1.113883.5.4"/>
+               </verificationEventCriterion>
+            </precondition>
+            <coverage typeCode="COVBY" contextControlCode="AN" contextConductionInd="false">
+               <coverage classCode="COV" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.305.52" extension="35DPV7E"/>
+                  <author typeCode="AUT">
+                     <carrierRole classCode="UNDWRT">
+                        <id displayable="true" root="2.16.840.1.113883.19.3.305" extension="385925066"/>
+                        <underwritingCarrierOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <name>Get Well Insurance Inc.</name>
+                        </underwritingCarrierOrganization>
+                     </carrierRole>
+                  </author>
+               </coverage>
+            </coverage>
+            <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+               <dosageInstruction classCode="SBADM" moodCode="RQO">
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>By mouth, take 1-2 tablets every 4-6 hours when needed for severe pain to a maximum of 8 per day</text>
+                  <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                  <maxDoseQuantity>
+                     <numerator value="8"/>
+                     <denominator value="1" unit="d"/>
+                  </maxDoseQuantity>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="RQO">
+                        <effectiveTime xsi:type="PIVL_TS">
+                           <frequency xsi:type="RTO_INT_PQ">
+                              <numerator xsi:type="URG_INT">
+                                 <low value="4"/>
+                                 <high value="6"/>
+                              </numerator>
+                              <denominator value="1" unit="d"/>
+                           </frequency>
+                        </effectiveTime>
+                        <doseQuantity specializationType="URG_PQ.DRUG">
+                           <low value="1"/>
+                           <high value="2"/>
+                        </doseQuantity>
+                        <trigger typeCode="TRIG" contextControlCode="AN" contextConductionInd="false">
+                           <actEventCriterion classCode="ACT" moodCode="EVN.CRT">
+                              <text>needed for severe pain</text>
+                           </actEventCriterion>
+                        </trigger>
+                     </dosageLine>
+                  </component2>
+               </dosageInstruction>
+            </component1>
+            <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true" negationInd="true">
+               <trialSupplyPermission classCode="SPLY" moodCode="PERM">
+                  <code code="TF" codeSystem="2.16.840.1.113883.5.4"/>
+               </trialSupplyPermission>
+            </component2>
+            <component3 typeCode="COMP" contextControlCode="AN" contextConductionInd="true">
+               <supplyRequest classCode="SPLY" moodCode="RQO">
+                  <statusCode code="active"/>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <low value="20090915"/>
+                     <high value="20100915"/>
+                  </effectiveTime>
+                  <receiver typeCode="RCV" contextControlCode="OP">
+                     <personalRelationship classCode="PRS">
+                        <code code="SPS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <relationshipHolder classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L">
+                              <prefix>Mr.</prefix>
+                              <given>Neville</given>
+                              <given qualifier="IN">S</given>
+                              <family>Nuclear</family>
+                           </name>
+                        </relationshipHolder>
+                     </personalRelationship>
+                  </receiver>
+                  <receiver typeCode="RCV" contextControlCode="OP">
+                     <personalRelationship classCode="PRS">
+                        <code code="CHILD" codeSystem="2.16.840.1.113883.5.111"/>
+                        <relationshipHolder classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L">
+                              <prefix>Mr.</prefix>
+                              <given>Ned</given>
+                              <given qualifier="IN">S</given>
+                              <family>Nuclear</family>
+                           </name>
+                        </relationshipHolder>
+                     </personalRelationship>
+                  </receiver>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <substitutionConditionCode code="UNCOND" codeSystem="2.16.840.1.113883.5.1071"/>
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyRequestItem classCode="SPLY" moodCode="RQO">
+                        <quantity value="600"/>
+                        <expectedUseTime>
+                           <width value="6" unit="mo"/>
+                        </expectedUseTime>
+                        <product typeCode="PRD" contextControlCode="OP">
+                           <medication classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                                 <code code="00608165" codeSystem="2.16.840.1.113883.6.73"/>
+                                 <name>RATIO-OXYCOCET</name>
+                                 <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                              </administerableMedicine>
+                           </medication>
+                        </product>
+                        <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <initialSupplyRequest classCode="SPLY" moodCode="RQO">
+                              <effectiveTime xsi:type="IVL_TS">
+                                 <high value="20090918"/>
+                              </effectiveTime>
+                              <quantity value="20"/>
+                              <expectedUseTime>
+                                 <width value="6" unit="d"/>
+                              </expectedUseTime>
+                           </initialSupplyRequest>
+                        </component1>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="2"/>
+                           <subsequentSupplyRequest classCode="SPLY" moodCode="RQO">
+                              <effectiveTime>
+                                 <width value="30" unit="d"/>
+                              </effectiveTime>
+                              <repeatNumber value="6"/>
+                              <quantity value="100"/>
+                              <expectedUseTime>
+                                 <width value="30" unit="d"/>
+                              </expectedUseTime>
+                           </subsequentSupplyRequest>
+                        </component2>
+                     </supplyRequestItem>
+                  </component>
+               </supplyRequest>
+            </component3>
+            <fulfillment1 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <medicationDispense classCode="SPLY" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.4" extension="BHW3TR2F"/>
+                  <statusCode code="completed"/>
+                  <responsibleParty typeCode="RESP" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="777222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203777" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </responsibleParty>
+                  <performer typeCode="PRF" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="666222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203666" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </performer>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyEvent classCode="SPLY" moodCode="EVN">
+                        <code code="RFC" codeSystem="2.16.840.1.113883.5.4"/>
+                        <effectiveTime xsi:type="IVL_TS">
+                           <low value="20090915"/>
+                           <high value="20090915"/>
+                        </effectiveTime>
+                        <quantity value="100"/>
+                        <expectedUseTime>
+                           <width value="30" unit="d"/>
+                        </expectedUseTime>
+                        <product typeCode="PRD" contextControlCode="ON">
+                           <medication classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                                 <code code="00608165" codeSystem="2.16.840.1.113883.6.73"/>
+                                 <name>RATIO-OXYCOCET</name>
+                                 <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                                 <asManufacturedProduct classCode="MANU">
+                                    <manufacturer classCode="ORG" determinerCode="INSTANCE">
+                                       <name>RATIOPHARM INC.</name>
+                                    </manufacturer>
+                                 </asManufacturedProduct>
+                              </administerableMedicine>
+                           </medication>
+                        </product>
+                        <receiver typeCode="RCV" contextControlCode="ON">
+                           <personalRelationship classCode="PRS">
+                              <code code="CHILD" codeSystem="2.16.840.1.113883.5.111"/>
+                              <relationshipHolder classCode="PSN" determinerCode="INSTANCE">
+                                 <name use="L">
+                                    <prefix>Mr.</prefix>
+                                    <given>Ned</given>
+                                    <given qualifier="IN">S</given>
+                                    <family>Nuclear</family>
+                                 </name>
+                              </relationshipHolder>
+                           </personalRelationship>
+                        </receiver>
+                     </supplyEvent>
+                  </component1>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <dosageInstruction classCode="SBADM" moodCode="RQO">
+                        <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                        <text>By mouth, take 1-2 tablets every 4-6 hours when needed for severe pain to a maximum of 8 per day</text>
+                        <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                        <maxDoseQuantity>
+                           <numerator value="8"/>
+                           <denominator value="1" unit="d"/>
+                        </maxDoseQuantity>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="RQO">
+                              <effectiveTime xsi:type="PIVL_TS">
+                                 <frequency xsi:type="RTO_INT_PQ">
+                                    <numerator xsi:type="URG_INT">
+                                       <low value="4"/>
+                                       <high value="6"/>
+                                    </numerator>
+                                    <denominator value="1" unit="d"/>
+                                 </frequency>
+                              </effectiveTime>
+                              <doseQuantity specializationType="URG_PQ.DRUG">
+                                 <low value="1"/>
+                                 <high value="2"/>
+                              </doseQuantity>
+                              <trigger typeCode="TRIG" contextControlCode="AN" contextConductionInd="false">
+                                 <actEventCriterion classCode="ACT" moodCode="EVN.CRT">
+                                    <text>needed for severe pain</text>
+                                 </actEventCriterion>
+                              </trigger>
+                           </dosageLine>
+                        </component2>
+                     </dosageInstruction>
+                  </component2>
+               </medicationDispense>
+            </fulfillment1>
+            <fulfillment2 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="RECENT"/>
+               <supplyEventLastSummary classCode="SPLY" moodCode="EVN">
+                  <effectiveTime>
+                     <high value="20100204"/>
+                  </effectiveTime>
+                  <quantity value="100"/>
+               </supplyEventLastSummary>
+            </fulfillment2>
+            <fulfillment3 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="FIRST"/>
+               <supplyEventFirstSummary classCode="SPLY" moodCode="EVN">
+                  <effectiveTime xsi:type="IVL_TS">
+                     <high value="20090916"/>
+                  </effectiveTime>
+                  <quantity value="20"/>
+               </supplyEventFirstSummary>
+            </fulfillment3>
+            <fulfillment4 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="FUTSUM"/>
+               <supplyEventFutureSummary classCode="SPLY" moodCode="EVN">
+                  <repeatNumber value="1"/>
+                  <quantity value="100"/>
+               </supplyEventFutureSummary>
+            </fulfillment4>
+            <fulfillment5 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="PREVSUM"/>
+               <supplyEventPastSummary classCode="SPLY" moodCode="EVN">
+                  <repeatNumber value="6"/>
+                  <quantity value="500"/>
+               </supplyEventPastSummary>
+            </fulfillment5>
+            <subjectOf3 typeCode="SUBJ" contextControlCode="AN" contextConductionInd="false">
+               <annotation classCode="ACT" moodCode="EVN">
+                  <text xsi:type="ST" specializationType="ST.LANG" language="en">Use easy-open</text>
+                  <statusCode code="completed"/>
+                  <author typeCode="AUT">
+                     <time xsi:type="TS" specializationType="TS.FULLDATETIME" value="20110822232752.062-0700"/>
+                     <assignedEntity1 classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Fay</given>
+                              <given qualifier="IN">F</given>
+                              <family>Family</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity1>
+                  </author>
+               </annotation>
+            </subjectOf3>
+            <subjectOf4 typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+               <subsetCode code="SUM"/>
+               <annotationIndicator classCode="ACT" moodCode="EVN">
+                  <statusCode code="completed"/>
+               </annotationIndicator>
+            </subjectOf4>
+            <subjectOf6 typeCode="SUBJ" contextControlCode="AN" contextConductionInd="false">
+               <controlActEvent classCode="CACT" moodCode="EVN">
+                  <code code="PORX_TE010250CA" codeSystem="2.16.840.1.113883.1.18"/>
+                  <statusCode code="completed"/>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <low value="201002220000"/>
+                     <high value="201002220000"/>
+                  </effectiveTime>
+                  <reasonCode code="RXSUSP" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                  <responsibleParty typeCode="RESP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="777222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203777" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </responsibleParty>
+                  <author typeCode="AUT">
+                     <time value="20100223020452.062-0700"/>
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="666222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203666" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </author>
+               </controlActEvent>
+            </subjectOf6>
+            <subjectOf7 typeCode="SUBJ" contextControlCode="AN" contextConductionInd="false">
+               <refusalToFill classCode="CACT" moodCode="EVN">
+                  <code code="PORX_TE010340CA" codeSystem="2.16.840.1.113883.1.18"/>
+                  <statusCode code="completed"/>
+                  <effectiveTime value="20090916"/>
+                  <reasonCode code="FRR05" codeSystem="2.16.840.1.113883.5.8"/>
+                  <author typeCode="AUT" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="666222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203666" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </author>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+               </refusalToFill>
+            </subjectOf7>
+            <componentOf2 typeCode="COMP" contextControlCode="AN" contextConductionInd="false">
+               <workingListEvent classCode="LIST" moodCode="EVN">
+                  <code code="CHRON" codeSystem="2.16.840.1.113883.5.4"/>
+               </workingListEvent>
+            </componentOf2>
+         </combinedMedicationRequest>
+      </subject>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <combinedMedicationRequest classCode="SBADM" moodCode="RQO">
+            <id use="BUS" specializationType="II.BUS" root="2.16.840.1.113883.19.3.297.15.37.3" extension="47PH4HX"/>
+            <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+            <statusCode code="completed"/>
+            <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+            <directTarget typeCode="DIR" contextControlCode="OP">
+               <medication classCode="ADMM">
+                  <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                     <code code="00608165" codeSystem="2.16.840.1.113883.6.73"/>
+                     <name>RATIO-OXYCOCET</name>
+                     <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                  </administerableMedicine>
+               </medication>
+            </directTarget>
+            <author typeCode="AUT" contextControlCode="AP">
+               <time value="20090915"/>
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity>
+            </author>
+            <location typeCode="LOC" contextControlCode="OP">
+               <serviceDeliveryLocation classCode="SDLOC">
+                  <id displayable="true" extension="7-1234500-1" root="2.16.840.1.113883.19.3.291.3"/>
+                  <code code="OF" codeSystem="2.16.840.1.113883.5.111"/>
+                  <addr use="PHYS">1000 Hospital Lane<delimiter/>
+                     <city>Ann Arbor</city>
+                     <state>MI</state>
+                     <postalCode>99999</postalCode>
+                  </addr>
+                  <telecom use="WP" value="tel:+1-555-555-3013;postd=999"/>
+                  <location classCode="PLC" determinerCode="INSTANCE">
+                     <name>GHH Outpatient Clinic</name>
+                  </location>
+               </serviceDeliveryLocation>
+            </location>
+            <definition typeCode="INST" contextControlCode="AN" contextConductionInd="false">
+               <substanceAdministrationDefinition classCode="SBADM" moodCode="DEF">
+                  <id displayable="true" extension="295" root="2.16.840.1.113883.19.3.304.3329.5"/>
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+               </substanceAdministrationDefinition>
+            </definition>
+            <reason typeCode="RSON" contextControlCode="AN" contextConductionInd="true">
+               <priorityNumber value="1"/>
+               <observationProblem moodCode="EVN" classCode="OBS">
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="completed"/>
+                  <value xsi:type="CV" code="80774000" codeSystem="2.16.840.1.113883.6.96">
+                     <originalText>h. pylori</originalText>
+                  </value>
+               </observationProblem>
+            </reason>
+            <precondition typeCode="PRCN" contextControlCode="AN" contextConductionInd="false">
+               <verificationEventCriterion classCode="VERIF" moodCode="EVN.CRT">
+                  <code code="VFPAPER" codeSystem="2.16.840.1.113883.5.4"/>
+               </verificationEventCriterion>
+            </precondition>
+            <coverage typeCode="COVBY" contextControlCode="AN" contextConductionInd="false">
+               <coverage classCode="COV" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.305.52" extension="GAHH8COQ"/>
+                  <author typeCode="AUT">
+                     <carrierRole classCode="UNDWRT">
+                        <id displayable="true" root="2.16.840.1.113883.19.3.305" extension="385925066"/>
+                        <underwritingCarrierOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <name>Get Well Insurance Inc.</name>
+                        </underwritingCarrierOrganization>
+                     </carrierRole>
+                  </author>
+               </coverage>
+            </coverage>
+            <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+               <dosageInstruction classCode="SBADM" moodCode="EVN">
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>For 10 days, swallow 1 Prevacid, 2 times per day</text>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <width value="7" unit="d"/>
+                  </effectiveTime>
+                  <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                  <consumable typeCode="CSM" contextControlCode="OP">
+                     <medication2 classCode="ADMM">
+                        <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                           <code code="02165511" codeSystem="2.16.840.1.113883.6.73"/>
+                           <name>PREVACID - SRC 30MG</name>
+                           <formCode code="ERCAP" codeSystem="2.16.840.1.113883.5.85"/>
+                        </administerableMedicine>
+                     </medication2>
+                  </consumable>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="EVN">
+                        <effectiveTime xsi:type="PIVL_TS">
+                           <frequency>
+                              <numerator value="2"/>
+                              <denominator value="1" unit="d"/>
+                           </frequency>
+                        </effectiveTime>
+                        <doseQuantity value="1"/>
+                     </dosageLine>
+                  </component2>
+               </dosageInstruction>
+            </component1>
+            <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+               <dosageInstruction classCode="SBADM" moodCode="EVN">
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>For 10 days, swallow 1 Biaxin, 2 times per day</text>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <width value="7" unit="d"/>
+                  </effectiveTime>
+                  <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                  <consumable typeCode="CSM" contextControlCode="OP">
+                     <medication2 classCode="ADMM">
+                        <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                           <code code="J01FA09" codeSystem="2.16.840.1.113883.6.73"/>
+                           <name>CLARITHROMYCIN</name>
+                           <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                           <ingredient classCode="INGR" negationInd="false">
+                              <quantity value="500" unit="mg"/>
+                              <ingredient classCode="MMAT" determinerCode="KIND">
+                                 <code code="8318" codeSystem="2.16.840.1.113883.5.1103"/>
+                              </ingredient>
+                           </ingredient>
+                        </administerableMedicine>
+                     </medication2>
+                  </consumable>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="EVN">
+                        <effectiveTime xsi:type="PIVL_TS">
+                           <frequency>
+                              <numerator value="2"/>
+                              <denominator value="1" unit="d"/>
+                           </frequency>
+                        </effectiveTime>
+                        <doseQuantity value="1"/>
+                     </dosageLine>
+                  </component2>
+               </dosageInstruction>
+            </component1>
+            <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+               <dosageInstruction classCode="SBADM" moodCode="EVN">
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>For 10 days, swallow 2 Amoxicillin, 2 times per day</text>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <width value="7" unit="d"/>
+                  </effectiveTime>
+                  <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                  <consumable typeCode="CSM" contextControlCode="OP">
+                     <medication2 classCode="ADMM">
+                        <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                           <code code="J01CA04" codeSystem="2.16.840.1.113883.6.73"/>
+                           <name>AMOXICILLIN</name>
+                           <formCode code="CAP" codeSystem="2.16.840.1.113883.5.85"/>
+                           <ingredient classCode="INGR" negationInd="false">
+                              <quantity value="500" unit="mg"/>
+                              <ingredient classCode="MMAT" determinerCode="KIND">
+                                 <code code="11101" codeSystem="2.16.840.1.113883.5.1103"/>
+                              </ingredient>
+                           </ingredient>
+                        </administerableMedicine>
+                     </medication2>
+                  </consumable>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="EVN">
+                        <effectiveTime xsi:type="PIVL_TS">
+                           <frequency>
+                              <numerator value="2"/>
+                              <denominator value="1" unit="d"/>
+                           </frequency>
+                        </effectiveTime>
+                        <doseQuantity value="2"/>
+                     </dosageLine>
+                  </component2>
+               </dosageInstruction>
+            </component1>
+            <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true" negationInd="true">
+               <trialSupplyPermission classCode="SPLY" moodCode="PERM">
+                  <code code="TF" codeSystem="2.16.840.1.113883.5.4"/>
+               </trialSupplyPermission>
+            </component2>
+            <component3 typeCode="COMP" contextControlCode="AN" contextConductionInd="true">
+               <supplyRequest classCode="SPLY" moodCode="RQO">
+                  <statusCode code="active"/>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <low value="20090915"/>
+                     <high value="20100915"/>
+                  </effectiveTime>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <substitutionConditionCode code="UNCOND" codeSystem="2.16.840.1.113883.5.1071"/>
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyRequestItem classCode="SPLY" moodCode="RQO">
+                        <quantity value="1"/>
+                        <expectedUseTime>
+                           <width value="7" unit="d"/>
+                        </expectedUseTime>
+                        <product typeCode="PRD" contextControlCode="OP">
+                           <medication classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                                 <code code="02238525" codeSystem="2.16.840.1.113883.6.73"/>
+                                 <name>HP-PAC</name>
+                                 <formCode nullFlavor="OTH" codeSystem="2.16.840.1.113883.5.85">
+                                    <originalText>Package</originalText>
+                                 </formCode>
+                              </administerableMedicine>
+                           </medication>
+                        </product>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="2"/>
+                           <subsequentSupplyRequest classCode="SPLY" moodCode="RQO">
+                              <repeatNumber value="1"/>
+                              <quantity value="1"/>
+                              <expectedUseTime>
+                                 <width value="7" unit="d"/>
+                              </expectedUseTime>
+                           </subsequentSupplyRequest>
+                        </component2>
+                     </supplyRequestItem>
+                  </component>
+               </supplyRequest>
+            </component3>
+            <fulfillment1 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <medicationDispense classCode="SPLY" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.4" extension="CL3YZR"/>
+                  <statusCode code="completed"/>
+                  <responsibleParty typeCode="RESP" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="777222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203777" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </responsibleParty>
+                  <performer typeCode="PRF" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="666222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203666" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </performer>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyEvent classCode="SPLY" moodCode="EVN">
+                        <code code="RFC" codeSystem="2.16.840.1.113883.5.4"/>
+                        <effectiveTime xsi:type="IVL_TS">
+                           <low value="20090915"/>
+                           <high value="20090915"/>
+                        </effectiveTime>
+                        <quantity value="1"/>
+                        <expectedUseTime>
+                           <width value="7" unit="d"/>
+                        </expectedUseTime>
+                        <product typeCode="PRD" contextControlCode="ON">
+                           <medication classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                                 <code code="02238525" codeSystem="2.16.840.1.113883.6.73"/>
+                                 <name>HP-PAC</name>
+                                 <formCode nullFlavor="OTH" codeSystem="2.16.840.1.113883.5.85">
+                                    <originalText>Package</originalText>
+                                 </formCode>
+                                 <asManufacturedProduct classCode="MANU">
+                                    <manufacturer classCode="ORG" determinerCode="INSTANCE">
+                                       <name>TAP PHARMACEUTICALS INC.</name>
+                                    </manufacturer>
+                                 </asManufacturedProduct>
+                              </administerableMedicine>
+                           </medication>
+                        </product>
+                     </supplyEvent>
+                  </component1>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <dosageInstruction classCode="SBADM" moodCode="EVN">
+                        <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                        <text>For 10 days, swallow 1 Prevacid, 2 times per day</text>
+                        <effectiveTime xsi:type="IVL_TS">
+                           <width value="7" unit="d"/>
+                        </effectiveTime>
+                        <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                        <consumable typeCode="CSM" contextControlCode="OP">
+                           <medication2 classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                                 <code code="02165511" codeSystem="2.16.840.1.113883.6.73"/>
+                                 <name>PREVACID - SRC 30MG</name>
+                                 <formCode code="ERCAP" codeSystem="2.16.840.1.113883.5.85"/>
+                              </administerableMedicine>
+                           </medication2>
+                        </consumable>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="EVN">
+                              <effectiveTime xsi:type="PIVL_TS">
+                                 <frequency>
+                                    <numerator value="2"/>
+                                    <denominator value="1" unit="d"/>
+                                 </frequency>
+                              </effectiveTime>
+                              <doseQuantity value="1"/>
+                           </dosageLine>
+                        </component2>
+                     </dosageInstruction>
+                  </component2>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <dosageInstruction classCode="SBADM" moodCode="EVN">
+                        <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                        <text>For 10 days, swallow 1 Biaxin, 2 times per day</text>
+                        <effectiveTime xsi:type="IVL_TS">
+                           <width value="7" unit="d"/>
+                        </effectiveTime>
+                        <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                        <consumable typeCode="CSM" contextControlCode="OP">
+                           <medication2 classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                                 <code code="J01FA09" codeSystem="2.16.840.1.113883.6.73"/>
+                                 <name>CLARITHROMYCIN</name>
+                                 <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                                 <ingredient classCode="INGR" negationInd="false">
+                                    <quantity value="500" unit="mg"/>
+                                    <ingredient classCode="MMAT" determinerCode="KIND">
+                                       <code code="8318" codeSystem="2.16.840.1.113883.5.1103"/>
+                                    </ingredient>
+                                 </ingredient>
+                              </administerableMedicine>
+                           </medication2>
+                        </consumable>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="EVN">
+                              <effectiveTime xsi:type="PIVL_TS">
+                                 <frequency>
+                                    <numerator value="2"/>
+                                    <denominator value="1" unit="d"/>
+                                 </frequency>
+                              </effectiveTime>
+                              <doseQuantity value="1"/>
+                           </dosageLine>
+                        </component2>
+                     </dosageInstruction>
+                  </component2>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <dosageInstruction classCode="SBADM" moodCode="EVN">
+                        <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                        <text>For 10 days, swallow 2 Amoxicillin, 2 times per day</text>
+                        <effectiveTime xsi:type="IVL_TS">
+                           <width value="7" unit="d"/>
+                        </effectiveTime>
+                        <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                        <consumable typeCode="CSM" contextControlCode="OP">
+                           <medication2 classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                                 <code code="J01CA04" codeSystem="2.16.840.1.113883.6.73"/>
+                                 <name>AMOXICILLIN</name>
+                                 <formCode code="CAP" codeSystem="2.16.840.1.113883.5.85"/>
+                                 <ingredient classCode="INGR" negationInd="false">
+                                    <quantity value="500" unit="mg"/>
+                                    <ingredient classCode="MMAT" determinerCode="KIND">
+                                       <code code="11101" codeSystem="2.16.840.1.113883.5.1103"/>
+                                    </ingredient>
+                                 </ingredient>
+                              </administerableMedicine>
+                           </medication2>
+                        </consumable>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="EVN">
+                              <effectiveTime xsi:type="PIVL_TS">
+                                 <frequency>
+                                    <numerator value="2"/>
+                                    <denominator value="1" unit="d"/>
+                                 </frequency>
+                              </effectiveTime>
+                              <doseQuantity value="2"/>
+                           </dosageLine>
+                        </component2>
+                     </dosageInstruction>
+                  </component2>
+               </medicationDispense>
+            </fulfillment1>
+            <fulfillment2 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="RECENT"/>
+               <supplyEventLastSummary classCode="SPLY" moodCode="EVN">
+                  <effectiveTime>
+                     <high value="20090915"/>
+                  </effectiveTime>
+                  <quantity value="1"/>
+               </supplyEventLastSummary>
+            </fulfillment2>
+            <fulfillment3 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="FIRST"/>
+               <supplyEventFirstSummary classCode="SPLY" moodCode="EVN">
+                  <effectiveTime xsi:type="IVL_TS">
+                     <high value="20090915"/>
+                  </effectiveTime>
+                  <quantity value="1"/>
+               </supplyEventFirstSummary>
+            </fulfillment3>
+            <fulfillment4 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="FUTSUM"/>
+               <supplyEventFutureSummary classCode="SPLY" moodCode="EVN">
+                  <repeatNumber value="0"/>
+                  <quantity value="0"/>
+               </supplyEventFutureSummary>
+            </fulfillment4>
+            <fulfillment5 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="PREVSUM"/>
+               <supplyEventPastSummary classCode="SPLY" moodCode="EVN">
+                  <repeatNumber value="1"/>
+                  <quantity value="1"/>
+               </supplyEventPastSummary>
+            </fulfillment5>
+            <componentOf2 typeCode="COMP" contextControlCode="AN" contextConductionInd="false">
+               <workingListEvent classCode="LIST" moodCode="EVN">
+                  <code code="CHRON" codeSystem="2.16.840.1.113883.5.4"/>
+               </workingListEvent>
+            </componentOf2>
+         </combinedMedicationRequest>
+      </subject>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <combinedMedicationRequest classCode="SBADM" moodCode="RQO">
+            <id use="BUS" specializationType="II.BUS" root="2.16.840.1.113883.19.3.297.15.37.3" extension="HGIWFDG"/>
+            <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+            <statusCode code="completed"/>
+            <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+            <directTarget typeCode="DIR" contextControlCode="OP">
+               <medication classCode="ADMM">
+                  <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                     <code nullFlavor="OTH"/>
+                     <name>Cool Stat Mouthwash</name>
+                     <desc>Mix equal parts</desc>
+                     <formCode code="RINSE" codeSystem="2.16.840.1.113883.5.85"/>
+                     <ingredient classCode="INGR" negationInd="false">
+                        <quantity value="100" unit="ml"/>
+                        <ingredient classCode="MMAT" determinerCode="KIND">
+                           <code code="02103567" codeSystem="2.16.840.1.113883.5.1105"/>
+                           <name>SULCRATE SUSPENSION PLUS - 1G/5ML</name>
+                        </ingredient>
+                     </ingredient>
+                     <ingredient classCode="INGR" negationInd="false">
+                        <quantity value="100" unit="ml"/>
+                        <ingredient classCode="MMAT" determinerCode="KIND">
+                           <code code="00001686" codeSystem="2.16.840.1.113883.5.1105"/>
+                           <name>XYLOCAINE VISCOUS 2%</name>
+                        </ingredient>
+                     </ingredient>
+                     <ingredient classCode="INGR" negationInd="false">
+                        <quantity value="100" unit="ml"/>
+                        <ingredient classCode="MMAT" determinerCode="KIND">
+                           <name>Cherry Koolaid</name>
+                        </ingredient>
+                     </ingredient>
+                     <ingredient classCode="INGR" negationInd="true">
+                        <ingredient classCode="MMAT" determinerCode="KIND">
+                           <name>Sugar</name>
+                        </ingredient>
+                     </ingredient>
+                  </administerableMedicine>
+               </medication>
+            </directTarget>
+            <author typeCode="AUT" contextControlCode="AP">
+               <time value="20090915"/>
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity>
+            </author>
+            <location typeCode="LOC" contextControlCode="OP">
+               <serviceDeliveryLocation classCode="SDLOC">
+                  <id displayable="true" extension="7-1234500-1" root="2.16.840.1.113883.19.3.291.3"/>
+                  <code code="OF" codeSystem="2.16.840.1.113883.5.111"/>
+                  <addr use="PHYS">1000 Hospital Lane<delimiter/>
+                     <city>Ann Arbor</city>
+                     <state>MI</state>
+                     <postalCode>99999</postalCode>
+                  </addr>
+                  <telecom use="WP" value="tel:+1-555-555-3013;postd=999"/>
+                  <location classCode="PLC" determinerCode="INSTANCE">
+                     <name>GHH Outpatient Clinic</name>
+                  </location>
+               </serviceDeliveryLocation>
+            </location>
+            <reason typeCode="RSON" contextControlCode="AN" contextConductionInd="true">
+               <priorityNumber value="1"/>
+               <observationProblem moodCode="EVN" classCode="OBS">
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="completed"/>
+                  <value xsi:type="CV" code="30811009" codeSystem="2.16.840.1.113883.6.96">
+                     <originalText>oesophageal ulcers</originalText>
+                  </value>
+               </observationProblem>
+            </reason>
+            <precondition typeCode="PRCN" contextControlCode="AN" contextConductionInd="false">
+               <verificationEventCriterion classCode="VERIF" moodCode="EVN.CRT">
+                  <code code="VFPAPER" codeSystem="2.16.840.1.113883.5.4"/>
+               </verificationEventCriterion>
+            </precondition>
+            <derivedFrom typeCode="DRIV" contextControlCode="ON" contextConductionInd="false">
+               <sourceDispense classCode="SPLY" moodCode="EVN">
+                  <statusCode code="completed"/>
+               </sourceDispense>
+            </derivedFrom>
+            <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+               <dosageInstruction classCode="SBADM" moodCode="EVN">
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>Swish and then swallow 1 teaspoon for 30 seconds 4 times per day.  Shake well before using.</text>
+                  <routeCode code="SWISHSWAL" codeSystem="2.16.840.1.113883.5.112"/>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="EVN">
+                        <effectiveTime xsi:type="PIVL_TS">
+                           <phase>
+                              <width value="30" unit="s"/>
+                           </phase>
+                           <frequency>
+                              <numerator value="4"/>
+                              <denominator value="1" unit="d"/>
+                           </frequency>
+                        </effectiveTime>
+                        <doseQuantity value="1" unit="[tsp_us]"/>
+                        <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <supplementalInstruction classCode="SBADM" moodCode="EVN">
+                              <text>Shake well before using</text>
+                           </supplementalInstruction>
+                        </component>
+                     </dosageLine>
+                  </component2>
+               </dosageInstruction>
+            </component1>
+            <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true" negationInd="false">
+               <trialSupplyPermission classCode="SPLY" moodCode="PERM">
+                  <code code="TF" codeSystem="2.16.840.1.113883.5.4"/>
+               </trialSupplyPermission>
+            </component2>
+            <component3 typeCode="COMP" contextControlCode="AN" contextConductionInd="true">
+               <supplyRequest classCode="SPLY" moodCode="RQO">
+                  <statusCode code="active"/>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <low value="20090915"/>
+                     <high value="20100915"/>
+                  </effectiveTime>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <substitutionConditionCode code="UNCOND" codeSystem="2.16.840.1.113883.5.1071"/>
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyRequestItem classCode="SPLY" moodCode="RQO">
+                        <quantity value="300" unit="ml"/>
+                        <expectedUseTime>
+                           <width value="14" unit="d"/>
+                        </expectedUseTime>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="2"/>
+                           <subsequentSupplyRequest classCode="SPLY" moodCode="RQO">
+                              <repeatNumber value="4"/>
+                              <quantity value="300" unit="ml"/>
+                              <expectedUseTime>
+                                 <width value="14" unit="d"/>
+                              </expectedUseTime>
+                           </subsequentSupplyRequest>
+                        </component2>
+                     </supplyRequestItem>
+                  </component>
+               </supplyRequest>
+            </component3>
+            <fulfillment1 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <medicationDispense classCode="SPLY" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.4" extension="SWY26Z9UR4UC"/>
+                  <statusCode code="completed"/>
+                  <responsibleParty typeCode="RESP" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="777222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203777" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </responsibleParty>
+                  <performer typeCode="PRF" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="666222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203666" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </performer>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyEvent classCode="SPLY" moodCode="EVN">
+                        <code code="FF" codeSystem="2.16.840.1.113883.5.4"/>
+                        <effectiveTime xsi:type="IVL_TS">
+                           <low value="20090915"/>
+                           <high value="20090915"/>
+                        </effectiveTime>
+                        <quantity value="300" unit="ml"/>
+                        <expectedUseTime>
+                           <width value="14" unit="d"/>
+                        </expectedUseTime>
+                        <product typeCode="PRD" contextControlCode="ON">
+                           <medication classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                                 <code nullFlavor="OTH"/>
+                                 <name>Cool Stat Mouthwash</name>
+                                 <desc>Mix equal parts</desc>
+                                 <formCode code="RINSE" codeSystem="2.16.840.1.113883.5.85"/>
+                                 <expirationTime>
+                                    <high value="20100215"/>
+                                 </expirationTime>
+                                 <ingredient classCode="INGR" negationInd="false">
+                                    <quantity value="100" unit="ml"/>
+                                    <ingredient classCode="MMAT" determinerCode="KIND">
+                                       <code code="02103567" codeSystem="2.16.840.1.113883.5.1105"/>
+                                       <name>SULCRATE SUSPENSION PLUS - 1G/5ML</name>
+                                    </ingredient>
+                                 </ingredient>
+                                 <ingredient classCode="INGR" negationInd="false">
+                                    <quantity value="100" unit="ml"/>
+                                    <ingredient classCode="MMAT" determinerCode="KIND">
+                                       <code code="00001686" codeSystem="2.16.840.1.113883.5.1105"/>
+                                       <name>XYLOCAINE VISCOUS 2%</name>
+                                    </ingredient>
+                                 </ingredient>
+                                 <ingredient classCode="INGR" negationInd="false">
+                                    <quantity value="100" unit="ml"/>
+                                    <ingredient classCode="MMAT" determinerCode="KIND">
+                                       <name>Cherry Koolaid</name>
+                                    </ingredient>
+                                 </ingredient>
+                              </administerableMedicine>
+                           </medication>
+                        </product>
+                     </supplyEvent>
+                  </component1>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <dosageInstruction classCode="SBADM" moodCode="EVN">
+                        <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                        <text>Swish and then swallow 1 teaspoon for 30 seconds 4 times per day.  Shake well before using.</text>
+                        <routeCode code="SWISHSWAL" codeSystem="2.16.840.1.113883.5.112"/>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="EVN">
+                              <effectiveTime xsi:type="PIVL_TS">
+                                 <phase>
+                                    <width value="30" unit="s"/>
+                                 </phase>
+                                 <frequency>
+                                    <numerator value="4"/>
+                                    <denominator value="1" unit="d"/>
+                                 </frequency>
+                              </effectiveTime>
+                              <doseQuantity value="1" unit="[tsp_us]"/>
+                              <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                                 <supplementalInstruction classCode="SBADM" moodCode="EVN">
+                                    <text>Shake well before using</text>
+                                 </supplementalInstruction>
+                              </component>
+                           </dosageLine>
+                        </component2>
+                     </dosageInstruction>
+                  </component2>
+               </medicationDispense>
+            </fulfillment1>
+            <fulfillment2 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="RECENT"/>
+               <supplyEventLastSummary classCode="SPLY" moodCode="EVN">
+                  <effectiveTime>
+                     <high value="20090915"/>
+                  </effectiveTime>
+                  <quantity value="300" unit="ml"/>
+               </supplyEventLastSummary>
+            </fulfillment2>
+            <fulfillment3 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="FIRST"/>
+               <supplyEventFirstSummary classCode="SPLY" moodCode="EVN">
+                  <effectiveTime xsi:type="IVL_TS">
+                     <high value="20090915"/>
+                  </effectiveTime>
+                  <quantity value="300" unit="ml"/>
+               </supplyEventFirstSummary>
+            </fulfillment3>
+            <fulfillment4 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="FUTSUM"/>
+               <supplyEventFutureSummary classCode="SPLY" moodCode="EVN">
+                  <repeatNumber value="0"/>
+                  <quantity value="0" unit="ml"/>
+               </supplyEventFutureSummary>
+            </fulfillment4>
+            <fulfillment5 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="PREVSUM"/>
+               <supplyEventPastSummary classCode="SPLY" moodCode="EVN">
+                  <repeatNumber value="1"/>
+                  <quantity value="300" unit="ml"/>
+               </supplyEventPastSummary>
+            </fulfillment5>
+            <componentOf2 typeCode="COMP" contextControlCode="AN" contextConductionInd="false">
+               <workingListEvent classCode="LIST" moodCode="EVN">
+                  <code code="ACU" codeSystem="2.16.840.1.113883.5.4"/>
+               </workingListEvent>
+            </componentOf2>
+         </combinedMedicationRequest>
+      </subject>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <combinedMedicationRequest classCode="SBADM" moodCode="RQO">
+            <id use="BUS" specializationType="II.BUS" root="2.16.840.1.113883.19.3.297.15.37.3" extension="GYF9H"/>
+            <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+            <statusCode code="active"/>
+            <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+            <directTarget typeCode="DIR" contextControlCode="OP">
+               <medication classCode="ADMM">
+                  <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                     <code code="H02AB07" codeSystem="2.16.840.1.113883.6.73"/>
+                     <name>PREDNISONE</name>
+                     <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                     <asContent classCode="CONT">
+                        <containerPackagedMedicine classCode="CONT" determinerCode="KIND">
+                           <formCode code="COMPPKG" codeSystem="2.16.840.1.113883.5.1060"/>
+                        </containerPackagedMedicine>
+                     </asContent>
+                     <ingredient classCode="INGR" negationInd="false">
+                        <quantity value="5" unit="mg"/>
+                        <ingredient classCode="MMAT" determinerCode="KIND">
+                           <code code="7566" codeSystem="2.16.840.1.113883.5.1103"/>
+                        </ingredient>
+                     </ingredient>
+                  </administerableMedicine>
+               </medication>
+            </directTarget>
+            <responsibleParty typeCode="RESP" contextControlCode="AP">
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="999222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203999" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity>
+            </responsibleParty>
+            <author typeCode="AUT" contextControlCode="AP">
+               <time value="20090915"/>
+               <assignedEntity classCode="ASSIGNED">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="555222222" root="2.16.840.1.113883.19.4.207"/>
+                  <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                  <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                        <prefix>Dr.</prefix>
+                        <given>Irving</given>
+                        <given qualifier="IN">I</given>
+                        <family>Intern</family>
+                     </name>
+                     <asHealthCareProvider classCode="PROV">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203555" root="2.16.840.1.113883.4.41"/>
+                     </asHealthCareProvider>
+                  </assignedPerson>
+               </assignedEntity>
+            </author>
+            <location typeCode="LOC" contextControlCode="OP">
+               <serviceDeliveryLocation classCode="SDLOC">
+                  <id displayable="true" extension="7-1234500-1" root="2.16.840.1.113883.19.3.291.3"/>
+                  <code code="OF" codeSystem="2.16.840.1.113883.5.111"/>
+                  <addr use="PHYS">1000 Hospital Lane<delimiter/>
+                     <city>Ann Arbor</city>
+                     <state>MI</state>
+                     <postalCode>99999</postalCode>
+                  </addr>
+                  <telecom use="WP" value="tel:+1-555-555-3013;postd=999"/>
+                  <location classCode="PLC" determinerCode="INSTANCE">
+                     <name>GHH Outpatient Clinic</name>
+                  </location>
+               </serviceDeliveryLocation>
+            </location>
+            <reason typeCode="RSON" contextControlCode="AN" contextConductionInd="true">
+               <priorityNumber value="1"/>
+               <observationProblem moodCode="EVN" classCode="OBS">
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="completed"/>
+                  <value xsi:type="CV" code="80774000" codeSystem="2.16.840.1.113883.6.96">
+                     <originalText>rheumatoid arthritis</originalText>
+                  </value>
+               </observationProblem>
+            </reason>
+            <coverage typeCode="COVBY" contextControlCode="AN" contextConductionInd="false">
+               <coverage classCode="COV" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.304.7" extension="BDUSO9JRB50"/>
+                  <author typeCode="AUT">
+                     <carrierRole classCode="UNDWRT">
+                        <id displayable="true" root="2.16.840.1.113883.19.3.304" extension="186376187799769"/>
+                        <underwritingCarrierOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <name>Super Health Insurance Inc.</name>
+                        </underwritingCarrierOrganization>
+                     </carrierRole>
+                  </author>
+               </coverage>
+            </coverage>
+            <coverage typeCode="COVBY" contextControlCode="AN" contextConductionInd="false">
+               <coverage classCode="COV" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.305.52" extension="Q2H9T4R"/>
+                  <author typeCode="AUT">
+                     <carrierRole classCode="UNDWRT">
+                        <id displayable="true" root="2.16.840.1.113883.19.3.305" extension="186376187799769"/>
+                        <underwritingCarrierOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <name>Get Well Insurance Inc.</name>
+                        </underwritingCarrierOrganization>
+                     </carrierRole>
+                  </author>
+               </coverage>
+            </coverage>
+            <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+               <dosageInstruction classCode="SBADM" moodCode="RQO">
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>Take orally:
+10 once per day for 5 days
+9 once per day for 3 days
+8 once per day for 3 days
+7 once per day for 3 days
+6 once per day for 3 days
+5 once per day for 3 days
+4 once per day for 3 days
+5 once per day for 3 days
+2 once per day for 12 days</text>
+                  <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="RQO">
+                        <effectiveTime xsi:type="SXPR_TS">
+                           <comp xsi:type="IVL_TS">
+                              <width value="5" unit="d"/>
+                           </comp>
+                           <comp xsi:type="PIVL_TS" operator="A">
+                              <frequency>
+                                 <numerator value="1"/>
+                                 <denominator value="1" unit="d"/>
+                              </frequency>
+                           </comp>
+                        </effectiveTime>
+                        <doseQuantity value="10"/>
+                     </dosageLine>
+                  </component2>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="RQO">
+                        <effectiveTime xsi:type="SXPR_TS">
+                           <comp xsi:type="IVL_TS">
+                              <width value="3" unit="d"/>
+                           </comp>
+                           <comp xsi:type="PIVL_TS" operator="A">
+                              <frequency>
+                                 <numerator value="1"/>
+                                 <denominator value="1" unit="d"/>
+                              </frequency>
+                           </comp>
+                        </effectiveTime>
+                        <doseQuantity value="9"/>
+                     </dosageLine>
+                  </component2>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="RQO">
+                        <effectiveTime xsi:type="SXPR_TS">
+                           <comp xsi:type="IVL_TS">
+                              <width value="3" unit="d"/>
+                           </comp>
+                           <comp xsi:type="PIVL_TS" operator="A">
+                              <frequency>
+                                 <numerator value="1"/>
+                                 <denominator value="1" unit="d"/>
+                              </frequency>
+                           </comp>
+                        </effectiveTime>
+                        <doseQuantity value="8"/>
+                     </dosageLine>
+                  </component2>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="RQO">
+                        <effectiveTime xsi:type="SXPR_TS">
+                           <comp xsi:type="IVL_TS">
+                              <width value="3" unit="d"/>
+                           </comp>
+                           <comp xsi:type="PIVL_TS" operator="A">
+                              <frequency>
+                                 <numerator value="1"/>
+                                 <denominator value="1" unit="d"/>
+                              </frequency>
+                           </comp>
+                        </effectiveTime>
+                        <doseQuantity value="7"/>
+                     </dosageLine>
+                  </component2>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="RQO">
+                        <effectiveTime xsi:type="SXPR_TS">
+                           <comp xsi:type="IVL_TS">
+                              <width value="3" unit="d"/>
+                           </comp>
+                           <comp xsi:type="PIVL_TS" operator="A">
+                              <frequency>
+                                 <numerator value="1"/>
+                                 <denominator value="1" unit="d"/>
+                              </frequency>
+                           </comp>
+                        </effectiveTime>
+                        <doseQuantity value="6"/>
+                     </dosageLine>
+                  </component2>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="RQO">
+                        <effectiveTime xsi:type="SXPR_TS">
+                           <comp xsi:type="IVL_TS">
+                              <width value="3" unit="d"/>
+                           </comp>
+                           <comp xsi:type="PIVL_TS" operator="A">
+                              <frequency>
+                                 <numerator value="1"/>
+                                 <denominator value="1" unit="d"/>
+                              </frequency>
+                           </comp>
+                        </effectiveTime>
+                        <doseQuantity value="5"/>
+                     </dosageLine>
+                  </component2>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="RQO">
+                        <effectiveTime xsi:type="SXPR_TS">
+                           <comp xsi:type="IVL_TS">
+                              <width value="3" unit="d"/>
+                           </comp>
+                           <comp xsi:type="PIVL_TS" operator="A">
+                              <frequency>
+                                 <numerator value="1"/>
+                                 <denominator value="1" unit="d"/>
+                              </frequency>
+                           </comp>
+                        </effectiveTime>
+                        <doseQuantity value="4"/>
+                     </dosageLine>
+                  </component2>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="RQO">
+                        <effectiveTime xsi:type="SXPR_TS">
+                           <comp xsi:type="IVL_TS">
+                              <width value="3" unit="d"/>
+                           </comp>
+                           <comp xsi:type="PIVL_TS" operator="A">
+                              <frequency>
+                                 <numerator value="1"/>
+                                 <denominator value="1" unit="d"/>
+                              </frequency>
+                           </comp>
+                        </effectiveTime>
+                        <doseQuantity value="3"/>
+                     </dosageLine>
+                  </component2>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <sequenceNumber value="1"/>
+                     <dosageLine classCode="SBADM" moodCode="RQO">
+                        <effectiveTime xsi:type="SXPR_TS">
+                           <comp xsi:type="IVL_TS">
+                              <width value="12" unit="d"/>
+                           </comp>
+                           <comp xsi:type="PIVL_TS" operator="A">
+                              <frequency>
+                                 <numerator value="1"/>
+                                 <denominator value="1" unit="d"/>
+                              </frequency>
+                           </comp>
+                        </effectiveTime>
+                        <doseQuantity value="2"/>
+                     </dosageLine>
+                  </component2>
+               </dosageInstruction>
+            </component1>
+            <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true" negationInd="true">
+               <trialSupplyPermission classCode="SPLY" moodCode="PERM">
+                  <code code="TF" codeSystem="2.16.840.1.113883.5.4"/>
+               </trialSupplyPermission>
+            </component2>
+            <component3 typeCode="COMP" contextControlCode="AN" contextConductionInd="true">
+               <supplyRequest classCode="SPLY" moodCode="RQO">
+                  <statusCode code="active"/>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <low value="20090915"/>
+                     <high value="20100915"/>
+                  </effectiveTime>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <substitutionConditionCode code="UNCOND" codeSystem="2.16.840.1.113883.5.1071"/>
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyRequestItem classCode="SPLY" moodCode="RQO">
+                        <quantity value="250"/>
+                        <expectedUseTime>
+                           <width value="60" unit="d"/>
+                        </expectedUseTime>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="2"/>
+                           <subsequentSupplyRequest classCode="SPLY" moodCode="RQO">
+                              <repeatNumber value="1"/>
+                              <quantity value="250"/>
+                              <expectedUseTime>
+                                 <width value="60" unit="d"/>
+                              </expectedUseTime>
+                           </subsequentSupplyRequest>
+                        </component2>
+                     </supplyRequestItem>
+                  </component>
+               </supplyRequest>
+            </component3>
+            <fulfillment1 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <medicationDispense classCode="SPLY" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.4" extension="OJZ1141D"/>
+                  <statusCode code="completed"/>
+                  <responsibleParty typeCode="RESP" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="777222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203777" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </responsibleParty>
+                  <performer typeCode="PRF" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="666222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203666" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </performer>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyEvent classCode="SPLY" moodCode="EVN">
+                        <code code="FFP" codeSystem="2.16.840.1.113883.5.4"/>
+                        <effectiveTime xsi:type="IVL_TS">
+                           <low value="20090915"/>
+                           <high value="20090915"/>
+                        </effectiveTime>
+                        <quantity value="20"/>
+                        <expectedUseTime>
+                           <width value="38" unit="d"/>
+                        </expectedUseTime>
+                        <product typeCode="PRD" contextControlCode="ON">
+                           <medication classCode="ADMM">
+                              <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                                 <code code="00312770" codeSystem="2.16.840.1.113883.6.73"/>
+                                 <name>APO PREDNISONE TAB 5MG</name>
+                                 <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                                 <asManufacturedProduct classCode="MANU">
+                                    <manufacturer classCode="ORG" determinerCode="INSTANCE">
+                                       <name>APOTEX INCORPORATED</name>
+                                    </manufacturer>
+                                 </asManufacturedProduct>
+                                 <asContent classCode="CONT">
+                                    <containerPackagedMedicine classCode="CONT" determinerCode="KIND">
+                                       <formCode code="BLSTRPK" codeSystem="2.16.840.1.113883.5.1060"/>
+                                    </containerPackagedMedicine>
+                                 </asContent>
+                                 <ingredient classCode="INGR" negationInd="false">
+                                    <quantity value="5" unit="mg"/>
+                                    <ingredient classCode="MMAT" determinerCode="KIND">
+                                       <code code="7566" codeSystem="2.16.840.1.113883.5.1103"/>
+                                    </ingredient>
+                                 </ingredient>
+                              </administerableMedicine>
+                           </medication>
+                        </product>
+                     </supplyEvent>
+                  </component1>
+                  <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <dosageInstruction classCode="SBADM" moodCode="RQO">
+                        <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                        <text>Take orally:
+10 once per day for 5 days
+9 once per day for 3 days
+8 once per day for 3 days
+7 once per day for 3 days
+6 once per day for 3 days
+5 once per day for 3 days
+4 once per day for 3 days
+5 once per day for 3 days
+2 once per day for 12 days</text>
+                        <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="RQO">
+                              <effectiveTime xsi:type="SXPR_TS">
+                                 <comp xsi:type="IVL_TS">
+                                    <width value="5" unit="d"/>
+                                 </comp>
+                                 <comp xsi:type="PIVL_TS" operator="A">
+                                    <frequency>
+                                       <numerator value="1"/>
+                                       <denominator value="1" unit="d"/>
+                                    </frequency>
+                                 </comp>
+                              </effectiveTime>
+                              <doseQuantity value="10"/>
+                           </dosageLine>
+                        </component2>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="RQO">
+                              <effectiveTime xsi:type="SXPR_TS">
+                                 <comp xsi:type="IVL_TS">
+                                    <width value="3" unit="d"/>
+                                 </comp>
+                                 <comp xsi:type="PIVL_TS" operator="A">
+                                    <frequency>
+                                       <numerator value="1"/>
+                                       <denominator value="1" unit="d"/>
+                                    </frequency>
+                                 </comp>
+                              </effectiveTime>
+                              <doseQuantity value="9"/>
+                           </dosageLine>
+                        </component2>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="RQO">
+                              <effectiveTime xsi:type="SXPR_TS">
+                                 <comp xsi:type="IVL_TS">
+                                    <width value="3" unit="d"/>
+                                 </comp>
+                                 <comp xsi:type="PIVL_TS" operator="A">
+                                    <frequency>
+                                       <numerator value="1"/>
+                                       <denominator value="1" unit="d"/>
+                                    </frequency>
+                                 </comp>
+                              </effectiveTime>
+                              <doseQuantity value="8"/>
+                           </dosageLine>
+                        </component2>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="RQO">
+                              <effectiveTime xsi:type="SXPR_TS">
+                                 <comp xsi:type="IVL_TS">
+                                    <width value="3" unit="d"/>
+                                 </comp>
+                                 <comp xsi:type="PIVL_TS" operator="A">
+                                    <frequency>
+                                       <numerator value="1"/>
+                                       <denominator value="1" unit="d"/>
+                                    </frequency>
+                                 </comp>
+                              </effectiveTime>
+                              <doseQuantity value="7"/>
+                           </dosageLine>
+                        </component2>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="RQO">
+                              <effectiveTime xsi:type="SXPR_TS">
+                                 <comp xsi:type="IVL_TS">
+                                    <width value="3" unit="d"/>
+                                 </comp>
+                                 <comp xsi:type="PIVL_TS" operator="A">
+                                    <frequency>
+                                       <numerator value="1"/>
+                                       <denominator value="1" unit="d"/>
+                                    </frequency>
+                                 </comp>
+                              </effectiveTime>
+                              <doseQuantity value="6"/>
+                           </dosageLine>
+                        </component2>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="RQO">
+                              <effectiveTime xsi:type="SXPR_TS">
+                                 <comp xsi:type="IVL_TS">
+                                    <width value="3" unit="d"/>
+                                 </comp>
+                                 <comp xsi:type="PIVL_TS" operator="A">
+                                    <frequency>
+                                       <numerator value="1"/>
+                                       <denominator value="1" unit="d"/>
+                                    </frequency>
+                                 </comp>
+                              </effectiveTime>
+                              <doseQuantity value="5"/>
+                           </dosageLine>
+                        </component2>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="RQO">
+                              <effectiveTime xsi:type="SXPR_TS">
+                                 <comp xsi:type="IVL_TS">
+                                    <width value="3" unit="d"/>
+                                 </comp>
+                                 <comp xsi:type="PIVL_TS" operator="A">
+                                    <frequency>
+                                       <numerator value="1"/>
+                                       <denominator value="1" unit="d"/>
+                                    </frequency>
+                                 </comp>
+                              </effectiveTime>
+                              <doseQuantity value="4"/>
+                           </dosageLine>
+                        </component2>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="RQO">
+                              <effectiveTime xsi:type="SXPR_TS">
+                                 <comp xsi:type="IVL_TS">
+                                    <width value="3" unit="d"/>
+                                 </comp>
+                                 <comp xsi:type="PIVL_TS" operator="A">
+                                    <frequency>
+                                       <numerator value="1"/>
+                                       <denominator value="1" unit="d"/>
+                                    </frequency>
+                                 </comp>
+                              </effectiveTime>
+                              <doseQuantity value="3"/>
+                           </dosageLine>
+                        </component2>
+                        <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="1"/>
+                           <dosageLine classCode="SBADM" moodCode="RQO">
+                              <effectiveTime xsi:type="SXPR_TS">
+                                 <comp xsi:type="IVL_TS">
+                                    <width value="12" unit="d"/>
+                                 </comp>
+                                 <comp xsi:type="PIVL_TS" operator="A">
+                                    <frequency>
+                                       <numerator value="1"/>
+                                       <denominator value="1" unit="d"/>
+                                    </frequency>
+                                 </comp>
+                              </effectiveTime>
+                              <doseQuantity value="2"/>
+                           </dosageLine>
+                        </component2>
+                     </dosageInstruction>
+                  </component2>
+               </medicationDispense>
+            </fulfillment1>
+            <fulfillment2 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="RECENT"/>
+               <supplyEventLastSummary classCode="SPLY" moodCode="EVN">
+                  <effectiveTime>
+                     <high value="20090915"/>
+                  </effectiveTime>
+                  <quantity value="200"/>
+               </supplyEventLastSummary>
+            </fulfillment2>
+            <fulfillment3 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="FIRST"/>
+               <supplyEventFirstSummary classCode="SPLY" moodCode="EVN">
+                  <effectiveTime xsi:type="IVL_TS">
+                     <high value="20090915"/>
+                  </effectiveTime>
+                  <quantity value="200"/>
+               </supplyEventFirstSummary>
+            </fulfillment3>
+            <fulfillment4 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="FUTSUM"/>
+               <supplyEventFutureSummary classCode="SPLY" moodCode="EVN">
+                  <repeatNumber value="1"/>
+                  <quantity value="50"/>
+               </supplyEventFutureSummary>
+            </fulfillment4>
+            <fulfillment5 typeCode="FLFS" contextControlCode="ON" contextConductionInd="true">
+               <subsetCode code="PREVSUM"/>
+               <supplyEventPastSummary classCode="SPLY" moodCode="EVN">
+                  <repeatNumber value="1"/>
+                  <quantity value="200"/>
+               </supplyEventPastSummary>
+            </fulfillment5>
+            <subjectOf6 typeCode="SUBJ" contextControlCode="AN" contextConductionInd="false">
+               <controlActEvent classCode="CACT" moodCode="EVN">
+                  <code code="PORX_TE010250CA" codeSystem="2.16.840.1.113883.1.18"/>
+                  <statusCode code="completed"/>
+                  <effectiveTime xsi:type="IVL_TS">
+                     <low value="200910210000"/>
+                     <high value="200910210000"/>
+                  </effectiveTime>
+                  <reasonCode code="RXSUSP" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                  <responsibleParty typeCode="RESP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="777222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203777" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </responsibleParty>
+                  <author typeCode="AUT">
+                     <time value="20091022020452.062-0700"/>
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="666222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203666" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </author>
+               </controlActEvent>
+            </subjectOf6>
+            <subjectOf7 typeCode="SUBJ" contextControlCode="AN" contextConductionInd="false">
+               <refusalToFill classCode="CACT" moodCode="EVN">
+                  <code code="PORX_TE010240CA" codeSystem="2.16.840.1.113883.1.18"/>
+                  <statusCode code="completed"/>
+                  <effectiveTime value="20090917"/>
+                  <reasonCode code="FRR01" codeSystem="2.16.840.1.113883.5.8"/>
+                  <author typeCode="AUT" contextControlCode="OP">
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="666222222" root="2.16.840.1.113883.19.4.207"/>
+                        <code code="PHYS" codeSystem="2.16.840.1.113883.5.111"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Irving</given>
+                              <given qualifier="IN">I</given>
+                              <family>Intern</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200203666" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </author>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+               </refusalToFill>
+            </subjectOf7>
+            <componentOf2 typeCode="COMP" contextControlCode="AN" contextConductionInd="false">
+               <workingListEvent classCode="LIST" moodCode="EVN">
+                  <code code="CHRON" codeSystem="2.16.840.1.113883.5.4"/>
+               </workingListEvent>
+            </componentOf2>
+         </combinedMedicationRequest>
+      </subject>
+      <queryAck>
+         <queryId root="9094E35D-9A1A-4802-CDE2-68F6A7B0EFBA"/>
+         <queryResponseCode code="NF"/>
+         <resultTotalQuantity value="0"/>
+         <resultCurrentQuantity value="0"/>
+         <resultRemainingQuantity value="0"/>
+      </queryAck>
+      <queryByParameter>
+         <queryId root="9094E35D-9A1A-4802-CDE2-68F6A7B0EFBA"/>
+         <parameterList>
+            <administrationEffectivePeriod>
+               <value>
+                  <low value="20090717"/>
+               </value>
+            </administrationEffectivePeriod>
+            <includeEventHistoryIndicator>
+               <value value="false"/>
+            </includeEventHistoryIndicator>
+            <includeIssuesIndicator>
+               <value value="true"/>
+            </includeIssuesIndicator>
+            <includeNotesIndicator>
+               <value value="true"/>
+            </includeNotesIndicator>
+            <includePendingChangesIndicator>
+               <value value="true"/>
+            </includePendingChangesIndicator>
+            <mostRecentDispenseForEachRxIndicator>
+               <value value="true"/>
+            </mostRecentDispenseForEachRxIndicator>
+         </parameterList>
+      </queryByParameter>
+   </controlActEvent>
+</PORX_IN060380CA>

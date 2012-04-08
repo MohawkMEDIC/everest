@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:staticModel xmlns:mif="urn:hl7-org:v3/mif2" conformanceLevel="RealmExtension"
+                 schemaVersion="2.1.3"
+                 packageKind="realmNamespace"
+                 representationKind="flat"
+                 isAbstract="false"
+                 title="Drug contraindication query"
+                 isSerializable="true"
+                 name="CA">
+   <mif:packageLocation realmNamespace="CA" artifact="MT" root="DEFN" section="HM" subSection="PO"
+                        domain="RX"
+                        id="050010"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2009"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0.0" y="0.0"/>
+         <mif:size width="8.012" height="0.871"/>
+      </mif:graphElement>
+      <mif:entryPoint semanticLinkId="FE3990F6-2CAF-D750-7472-EC0544FD4A38">
+         <mif:graphElement shapeId="Sheet.9">
+            <mif:position x="0.028" y="-2.292"/>
+            <mif:size width="2.261" height="0.586"/>
+            <mif:anchorage connectToShapeId="Sheet.9">
+               <mif:position x="2.288" y="-0.024"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.5">
+                     <mif:position x="3.452" y="0.665"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement>
+      </mif:entryPoint>
+      <mif:class semanticLinkId="02520158-7177-A55F-9CB8-E0AE3BE78105" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.24" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="5.731" y="0.111"/>
+            <mif:size width="2.594" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:class semanticLinkId="711063B7-336C-AAF1-C95E-9B40023D7AB0" presentation="HL7">
+         <mif:graphElement shapeId="Sheet.5" shapeTemplate="OtherClass" isWidthAutoSize="true"
+                           isHeightAutoSize="true">
+            <mif:position x="3.452" y="0.103"/>
+            <mif:size width="1.250" height="0.750"/>
+         </mif:graphElement>
+      </mif:class>
+      <mif:association semanticLinkId="F0E4F370-BCAE-5A8B-4D70-ABFB534E74ED">
+         <mif:graphElement connectToShapeId="Sheet.5" shapeId="Sheet.60">
+            <mif:position x="4.702" y="0.478"/>
+            <mif:graphEdge>
+               <mif:waypoint x="5.216" y="0.478"/>
+               <mif:waypoint x="5.216" y="0.486"/>
+               <mif:anchor connectToShapeId="Sheet.24">
+                  <mif:position x="5.731" y="0.486"/>
+               </mif:anchor>
+            </mif:graphEdge>
+         </mif:graphElement>
+      </mif:association>
+   </mif:graphicRepresentation>
+   <mif:derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="0221"/>
+   </mif:derivedFrom>
+   <mif:importedDatatypeModelPackage realmNamespace="UV" artifact="DT" root="DEFN" version="1.0"/>
+   <mif:importedVocabularyModelPackage root="DEFN" artifact="VO" realmNamespace="UV" version="586-20081030"/>
+   <mif:importedCommonModelElementPackage realmNamespace="UV" artifact="IFC" root="DEFN" version="1.8.3"/>
+   <mif:entryPoint graphicLinkId="FE3990F6-2CAF-D750-7472-EC0544FD4A38" id="PORX_MT050010CA"
+                   name="Drug contraindication query"
+                   className="ParameterList">
+      <mif:annotations>
+         <mif:documentation>
+            <mif:description>
+               <mif:text>
+                  <html:p xmlns:html="http://www.w3.org/1999/xhtml">Entry point for patient drug contraindication query message</html:p>
+               </mif:text>
+            </mif:description>
+         </mif:documentation>
+      </mif:annotations>
+   </mif:entryPoint>
+   <mif:containedClass>
+      <mif:class graphicLinkId="02520158-7177-A55F-9CB8-E0AE3BE78105" name="DrugCode"
+                 isAbstract="false">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem"/>
+         <mif:attribute name="value" sortKey="1" minimumMultiplicity="1" maximumMultiplicity="1"
+                        conformance="R"
+                        isMandatory="true"
+                        isImmutable="false">
+            <mif:businessName name="Drug Codes"/>
+            <mif:annotations>
+               <mif:documentation>
+                  <mif:definition>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Indicates that the result set is to be filtered to include only those contraindications involving the specified drugs.</html:p>
+                     
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The codes may refer to administerable medications, orderable medications or higher level drug classifications.</html:p>
+                     
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">The set of contraindication records retrieved would include all potential DDI between and amongst the drugs.</html:p>
+                     </mif:text>
+                  </mif:definition>
+                  <mif:rationale>
+                     <mif:text>
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">Allows for the retrieval of all potential contraindications that would result from drug profile scenarios.</html:p>
+                     
+                        <html:p xmlns:html="http://www.w3.org/1999/xhtml">This will most commonly be used by providers to test the viability of prescribing/dispensing medications into profile scenarios.</html:p>
+                     </mif:text>
+                  </mif:rationale>
+               </mif:documentation>
+            </mif:annotations>
+            <mif:derivedFrom staticModelDerivationId="1" className="ParameterItem" attributeName="value"/>
+            <mif:type name="CV"/>
+            <mif:vocabulary>
+               <mif:conceptDomain name="ClinicalDrug"/>
+            </mif:vocabulary>
+         </mif:attribute>
+      </mif:class>
+   </mif:containedClass>
+   <mif:containedClass>
+      <mif:class graphicLinkId="711063B7-336C-AAF1-C95E-9B40023D7AB0" name="ParameterList"
+                 isAbstract="false">
+         <mif:businessName name="Generic Query Parameters"/>
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"/>
+         <mif:annotations>
+            <mif:documentation>
+               <mif:definition>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Defines the set of parameters that may be used to filter the query response.</html:p>
+                  </mif:text>
+               </mif:definition>
+               <mif:rationale>
+                  <mif:text>
+                     <html:p xmlns:html="http://www.w3.org/1999/xhtml">Root class for query definition</html:p>
+                  </mif:text>
+               </mif:rationale>
+            </mif:documentation>
+         </mif:annotations>
+      </mif:class>
+   </mif:containedClass>
+   <mif:association graphicLinkId="F0E4F370-BCAE-5A8B-4D70-ABFB534E74ED" sortKey="0">
+      <mif:traversableConnection name="drugCode" minimumMultiplicity="2" maximumMultiplicity="20"
+                                 conformance="R"
+                                 isMandatory="true"
+                                 sortKey="Z ZZ"
+                                 participantClassName="DrugCode">
+         <mif:derivedFrom staticModelDerivationId="1" className="ParameterList"
+                          associationEndName="parameter"/>
+      </mif:traversableConnection>
+      <mif:nonTraversableConnection participantClassName="ParameterList">
+         <mif:derivedFrom staticModelDerivationId="1" className="Parameter"
+                          associationEndName="parameterList"/>
+      </mif:nonTraversableConnection>
+   </mif:association>
+</mif:staticModel>

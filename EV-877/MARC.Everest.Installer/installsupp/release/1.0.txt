@@ -1,0 +1,54 @@
+﻿Everest Release Notes – 1.0
+===========================
+
+This version of Everest represents the first official release of the MARC-HI Everest Framework. It introduces several features that enhance the usability and reliability of the framework
+
+< Breaking Changes >
+	•	The PQ datatype's value property has been changed from the double type to decimal in order to better store decimal numbers
+	•	The IVL<T> datatype's HighClosed and LowClosed properties have been refactored to use R2 nomenclature of HighIncluded/LowIncluded. These changes were marked as "obsolete" in the RC1/RC2 releases and have been removed
+	•	Datatypes previously marked as obsolete have been removed. Namely these are the non-generic versions of datatypes that also have a genericized version (ie: RTO, QTY, PIVL, CD, CS, CV, etc...)
+	•	Re-Implemented the CO and SC data types to better reflect their representation in DataTypes R2 definition
+	•	Group property has been removed from CV as it is no longer referenced in either DT R1 or R2 standards
+	•	Formatter methods GraphObject and ParseObject have been marked "obsolete" in favour of Graph/Parse and the IFormatter[Graph|Parse]Result pattern. GraphObject and ParseObject will still continue to function as they did before however will result in a warning.
+	•	Formatter GraphAides property no longer accepts System.Type instances and instead accepts instances of IGraphable
+	•	The MARC.Everest.Formatters.XML.R1.Formatter class is obsolete, use MARC.Everest.Formatters.XML.R1.DatatypeFormatter. 
+		o	The formatter operates in Universal mode by default and can be placed in Canadian mode (for compatibility reasons)
+
+< Changes / New Features >
+	•	Changes to the MARC.Everest.DataTypes.TS data-type now make it more accurate in the representation of dates/times within rendered components. The behavior of this has changed as follows:
+	•	DateValuePrecision if not set by the developer, is automatically set Flavor is set
+	•	Value now exclusively uses the DateValuePrecision property to format string representations of dates
+	•	Fixed several bugs found in the MARC.Everest.DataTypes namespace, namely changes associated with casting and validation
+	•	New reference guide
+	•	GPMR 1.1 now included, improvements to GPMR include:
+	•	Improved handling of vocabulary MIFs including differentiation between code systems, concept domains and value sets
+	•	Support for NE2009 and NE2010 MIFs (after "true true" bug has been fixed)
+	•	Added support to create Deki-Wiki page properties via the --deki-property parameter
+	•	Generation of Java based RMIM classes
+	•	Handling of UV multi-bound generic parameters (template parameters) in UV interaction MIFs
+	•	Quirks mode for GPMR allows ingoring of errors
+	•	Replay log file for recording of collapse and combine information. This allows more consistency between generating of the same standard
+	•	Vocabulary structures now support inheritence and better support for value sets and code systems
+	•	New GPMR Wizard that allows users to graphically use GPMR
+	•	Data Type Enhancements: 
+		o	Unit conversions for Time in the PQ data type
+		o	Support for IUnitConverters in the PQ data type
+		o	Support for Contains in PIVL and IVL types
+		o	Support for arithmetic operations (via +,-,/,* and %) for INT, REAL, PQ, MO, TS data types
+		o	Determination of SemanticEquality is available via the SemanticEquals method
+	•	More granular detection of issues in serialization and graphing via new ResultDetail types
+	•	ConnectionStringBuilder classes available for the File and Wcf connectors
+	•	WCF connector now support IPv6 "from" addresses more reliably
+	•	Dual mode XML ITS 1 formatter can use either reflection or CodeDom: 
+		o	Multi Processor - Will use reflection method of formatting until CodeDom learning algorithm is complete
+		o	Single Processor - Will only use reflection method of formatting
+		o	Legacy Mode - Can be set with settings, will only use CodeDom method
+	•	Output of XSI namespace on root element of an instance rather than on child elements that use XSI values
+	•	Support for Clinical Document Architecture R2 structures
+	•	Support for HL7v3 NE2010
+	•	Support for Data Types R2 (ISO21090) formatting via the DatatypeR2Formatter
+	•	New examples illustrating the use of the WcfClientConnector using the MARC-HI Client Registry   
+	•	Added compatibility modes for the R1 data types formatters:
+		o	CDA Support - Supports data types in the style of CDA instances
+		o	Canadian Support - Support Canadian data types extensions
+	•	Support for the TypeMapAttribute which allows GPMR to map data types to an alternate on rendering

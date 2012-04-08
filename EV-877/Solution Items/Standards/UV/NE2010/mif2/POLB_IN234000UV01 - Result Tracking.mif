@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="234000"
+                 title="Result Event Tracking">
+   <mif:businessName name="Result Tracking"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="LB" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="234000"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>This interaction is used by the order fulfiller to communicate any changes to the state of a result. This is used to communicate the state of a result to a result receiver (tracker).</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="LB" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="004007"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="LB"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="004000"
+                             traversalName="observationEventChoice">
+            <mif:specialization className="ObservationReport" traversalName="observationReport"/>
+            <mif:specialization className="ObservationBattery" traversalName="observationBattery"/>
+            <mif:specialization className="SpecimenObservationCluster"
+                                traversalName="specimenObservationCluster"/>
+            <mif:specialization className="ObservationEvent" traversalName="observationEvent"/>
+         </mif:parameterModel>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

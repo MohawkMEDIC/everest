@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><FICR_IN510102CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/FICR_IN510102CA.xsd">
+   <realmCode code="CA"/>
+   <id root="7CB68A8B-E893-F1B4-9BE6-D3B98AECE439"/>
+   <creationTime value="20090916224225.531-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="FICR_IN510102CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://120.120.122.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.3017.22.5.0.4" extension="DIS02"/>
+         <name>Good Neighbor Pharmacy</name>
+      </device>
+   </sender>
+   <acknowledgement>
+      <typeCode code="AA"/>
+      <targetMessage>
+         <id root="B83DC659-12EA-5FD8-F217-ECED03A54E87"/>
+      </targetMessage>
+   </acknowledgement>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.3017.22.5.1" extension="950817155"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="FICR_TE510101CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090916224225.531-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <family>Nuclear</family>
+                  <given>John</given>
+                  <prefix>Mr.</prefix>
+                  <suffix>II</suffix>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19480712"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <financialTransactionIntent classCode="XACT" moodCode="INT">
+            <id displayable="true" specializationType="II.PUBLIC" root="2.16.840.1.113883.19.3.3017.22.5.20" extension="Q921JE1"/>
+            <statusCode code="active"/>
+            <amt currency="CAD" value="100.20"/>
+            <credit typeCode="CREDIT">
+               <account classCode="ACCT" moodCode="EVN">
+                  <code code="ACCTRECEIVABLE" codeSystem="2.16.840.1.113883.5.4"/>
+                  <holder typeCode="HLD">
+                     <payeeRole classCode="PAYEE">
+                        <id root="795BD96F-52C2-43DE-A97A-E5C8FF4EA85A" use="BUS"/>
+                        <payeePerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L">
+                              <given>Adam</given>
+                              <family>Everyman</family>
+                           </name>
+                           <asPayeeRelationshipRole classCode="COVPTY"/>
+                           <payeeLanguage>
+                              <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+                              <modeCode code="ESGN" codeSystem="2.16.840.1.113883.5.60"/>
+                              <preferenceInd value="false"/>
+                           </payeeLanguage>
+                        </payeePerson>
+                     </payeeRole>
+                  </holder>
+               </account>
+            </credit>
+            <debit typeCode="DEBIT">
+               <account classCode="ACCT" moodCode="EVN">
+                  <holder typeCode="HLD">
+                     <payorRole classCode="PAYOR">
+                        <id root="2B86C263-E3EB-4D5B-A6D9-E182AD8612D4" use="BUS"/>
+                     </payorRole>
+                  </holder>
+               </account>
+            </debit>
+            <reasonOf typeCode="RSON">
+               <adjudicatedInvoiceElementGroup classCode="INVE" moodCode="EVN">
+                  <id root="0EA2D847-AC14-45BE-B5B6-91D749692932" use="BUS"/>
+                  <code code="CPINV" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="active"/>
+                  <netAmt currency="CAD" value="100.20"/>
+                  <component typeCode="COMP">
+                     <adjudicatedInvoiceElementDetail classCode="INVE" moodCode="EVN">
+                        <id root="B58C3D9B-BF8C-4325-88F7-C06005D34767" use="BUS"/>
+                        <code code="AFTHRS" codeSystem="2.16.840.1.113883.5.4"/>
+                        <unitQuantity value="2"/>
+                        <unitPriceAmt>
+                           <numerator value="50.10" currency="CAD"/>
+                           <denominator value="1"/>
+                        </unitPriceAmt>
+                        <netAmt currency="CAD" value="100.20"/>
+                     </adjudicatedInvoiceElementDetail>
+                  </component>
+               </adjudicatedInvoiceElementGroup>
+            </reasonOf>
+         </financialTransactionIntent>
+      </subject>
+   </controlActEvent>
+</FICR_IN510102CA>

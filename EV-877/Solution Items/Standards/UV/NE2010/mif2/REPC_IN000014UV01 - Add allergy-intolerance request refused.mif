@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="000014"
+                 title="Allergyintolerance Event Activate Rejection">
+   <mif:businessName name="Add allergy/intolerance request refused"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="RE" domain="PC" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000014"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Indicates that the request to add the specified allergy or intolerance to the patient record has been denied.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="RE" domain="PC" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="000003"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000300">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess"/>
+   </mif:argumentMessage>
+</mif:interaction>

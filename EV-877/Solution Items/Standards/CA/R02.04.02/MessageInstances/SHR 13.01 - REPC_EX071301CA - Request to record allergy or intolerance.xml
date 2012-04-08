@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><REPC_IN000012CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/REPC_IN000012CA.xsd"><!--
+    - Note: This is an example instance.  In a real instance the following differences would apply
+    -     1. There would be no schema declaration.  (Receivers will validate against their own schemas)
+    -     2. Example OIDs would be replaced by real OIDs
+    -     3. Processing mode would be Production, not Debug
+    -     4. Data would be real values :>
+  --><realmCode code="CA"/>
+   <id root="22D49A4B-875C-031E-7257-8C6269668EE9"/>
+   <creationTime value="20090915225027.796-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="REPC_IN000012CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://120.120.120.120"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.0.3" extension="DIS01"/>
+         <name>Good Health Clinic</name>
+      </device>
+   </sender>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.1" extension="867406703590283"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="REPC_TE000001CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090915225027.796-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <family>Nuclear</family>
+                  <given>John</given>
+                  <prefix>Mr.</prefix>
+                  <suffix>II</suffix>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19480712"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <author typeCode="AUT" contextControlCode="AP">
+         <time value="20090915225027.796-0700"/>
+         <assignedEntity1 classCode="ASSIGNED">
+            <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+            <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                  <prefix>Dr.</prefix>
+                  <given>Fay</given>
+                  <given qualifier="IN">F</given>
+                  <family>Family</family>
+               </name>
+               <asHealthCareProvider classCode="PROV">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+               </asHealthCareProvider>
+            </assignedPerson>
+         </assignedEntity1>
+      </author>
+      <location typeCode="LOC" contextControlCode="AP">
+         <serviceDeliveryLocation classCode="SDLOC">
+            <id xsi:type="II" specializationType="II.PUBLIC" extension="8-66733-1" displayable="true" root="2.16.840.1.113883.19.3.291.3"/>
+            <location classCode="PLC" determinerCode="INSTANCE">
+               <name>Good Health Clinic</name>
+            </location>
+         </serviceDeliveryLocation>
+      </location>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <intoleranceCondition classCode="COND" moodCode="EVN" negationInd="false">
+            <code code="235719002" codeSystem="2.16.840.1.113883.6.96"/>
+            <statusCode code="active"/>
+            <effectiveTime value="20090108"/>
+            <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+            <uncertaintyCode code="N" codeSystem="2.16.840.1.113883.5.1053"/>
+            <value code="NDA06" codeSystem="2.16.840.1.113883.5.1060"/>
+            <informant contextControlCode="AP" typeCode="INF">
+               <time value="20090108"/>
+               <patient classCode="PAT">
+                  <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+                  <patientPerson classCode="PSN" determinerCode="INSTANCE">
+                     <name use="L" specializationType="PN.BASIC">
+                        <family>Nuclear</family>
+                        <given>John</given>
+                        <prefix>Mr.</prefix>
+                        <suffix>II</suffix>
+                     </name>
+                     <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+                     <birthTime value="19480712"/>
+                  </patientPerson>
+               </patient>
+            </informant>
+            <support contextConductionInd="true" contextControlCode="AN" typeCode="SPRT">
+               <causalityAssessment classCode="OBS" moodCode="EVN">
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="completed"/>
+                  <value code="RELATED" codeSystem="2.16.840.1.113883.2.20.5.2"/>
+                  <subject contextConductionInd="true" contextControlCode="AN" typeCode="SUBJ">
+                     <observationEvent classCode="OBS" moodCode="EVN" negationInd="false">
+                        <id root="2FA36B09-27FE-4C2B-B55E-4AB97C858B06" use="BUS"/>
+                        <code code="DX" codeSystem="2.16.840.1.113883.5.4"/>
+                        <text>Rash all over the body, five minutes after first dose</text>
+                        <statusCode code="completed"/>
+                        <effectiveTime>
+                           <low value="20090108"/>
+                        </effectiveTime>
+                        <value code="241938005" codeSystem="2.16.840.1.113883.6.96"/>
+                        <subjectOf contextConductionInd="false" contextControlCode="AN" typeCode="SUBJ">
+                           <severityObservation classCode="OBS" moodCode="EVN">
+                              <code code="SEV" codeSystem="2.16.840.1.113883.5.4"/>
+                              <statusCode code="completed"/>
+                              <value code="24484000" codeSystem="2.16.840.1.113883.6.96"/>
+                           </severityObservation>
+                        </subjectOf>
+                     </observationEvent>
+                  </subject>
+                  <startsAfterStartOf contextConductionInd="true" contextControlCode="AN" typeCode="SAS">
+                     <exposureEvent classCode="SBADM" moodCode="EVN">
+                        <id root="B8130353-F815-4F1F-A2F1-4635F581FE74" use="BUS"/>
+                        <routeCode code="AMNINJ" codeSystem="2.16.840.1.113883.5.112"/>
+                        <consumable contextControlCode="AN" typeCode="CSM">
+                           <administrableMaterial classCode="ADMM">
+                              <administerableMaterialKind classCode="MAT" determinerCode="KIND">
+                                 <code code="NDA06" codeSystem="2.16.840.1.113883.5.1060"/>
+                              </administerableMaterialKind>
+                           </administrableMaterial>
+                        </consumable>
+                     </exposureEvent>
+                  </startsAfterStartOf>
+               </causalityAssessment>
+            </support>
+            <subjectOf1 contextConductionInd="false" contextControlCode="AN" typeCode="SUBJ">
+               <annotation classCode="ACT" moodCode="EVN">
+                  <text xsi:type="ST" specializationType="ST.LANG" language="en">Patient went into convulsion immediately after swallowing a couple amoxicillin tablets.</text>
+                  <statusCode code="completed"/>
+                  <author typeCode="AUT">
+                     <time xsi:type="TS" specializationType="TS.FULLDATETIME" value="20110822225027.796-0700"/>
+                     <assignedEntity1 classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Fay</given>
+                              <given qualifier="IN">F</given>
+                              <family>Family</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity1>
+                  </author>
+               </annotation>
+            </subjectOf1>
+            <subjectOf2 contextConductionInd="false" contextControlCode="AN" typeCode="SUBJ">
+               <severityObservation classCode="OBS" moodCode="EVN">
+                  <code code="SEV" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="completed"/>
+                  <value code="24484000" codeSystem="2.16.840.1.113883.6.96"/>
+               </severityObservation>
+            </subjectOf2>
+         </intoleranceCondition>
+      </subject>
+   </controlActEvent>
+</REPC_IN000012CA>

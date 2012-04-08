@@ -1,0 +1,2586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: -->
+<!DOCTYPE xs:schema PUBLIC "-//W3C//DTD XMLSCHEMA 200102//EN" "XMLSchema.dtd" [
+  <!ENTITY % HTMLlat1 SYSTEM "xhtml-lat1.ent">
+  <!ENTITY % HTMLspecial SYSTEM "xhtml-special.ent">
+  <!ENTITY % HTMLsymbol SYSTEM "xhtml-symbol.ent">
+  <!ENTITY % schematron SYSTEM "schematron1-5.dtd">
+  %schematron;%HTMLlat1;%HTMLspecial;%HTMLsymbol;
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/1999/xhtml" xmlns:sch="http://www.ascc.net/xml/schematron" targetNamespace="http://www.w3.org/1999/xhtml" elementFormDefault="qualified" version="1.0" xml:lang="en">
+  <xs:annotation>
+    <xs:documentation>
+********************************************************************************
+Customized for HL7 use by by Lloyd McKenzie, Dec. 2005
+
+Customizations (c) 2005-2006 by HL7 Inc.
+
+Purpose:
+  
+	Defines the available text markup for use in various descriptive elements in various artifacts.
+	The contents of this schema are owned and defined by the publishing committee.  I.e. They decide what sorts of markup are allowed
+
+********************************************************************************
+MIF:
+2005 - Customized by excluding those elements not supported for HL7 use.
+********************************************************************************
+    </xs:documentation>
+    <xs:documentation>
+    XHTML 1.0 (Second Edition) Strict in XML Schema
+
+    This is the same as HTML 4 Strict except for
+    changes due to the differences between XML and SGML.
+
+    Namespace = http://www.w3.org/1999/xhtml
+
+    For further information, see: http://www.w3.org/TR/xhtml1
+
+    Copyright (c) 1998-2002 W3C (MIT, INRIA, Keio),
+    All Rights Reserved. 
+
+    The DTD version is identified by the PUBLIC and SYSTEM identifiers:
+
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+
+    $Id: xhtml1-strict.xsd,v 1.2 2006/11/27 23:30:43 ggrieve Exp $
+    </xs:documentation>
+    <xs:documentation>This schema has been customized for use by HL7.  While some of this could have been done using re-defines, errors with XMLSpy make it easier to do here.  Also, some of the constraints are not supported using the 'restriction' approach due to how the XHTML schema has been defined, though the net effect is still a legitimate constraint on the XHTML schema.</xs:documentation>
+    <xs:documentation>UML: This markup content is outside of the UML model.  It should be conveyed within UML as just a string of marked-up text.</xs:documentation>
+  </xs:annotation>
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <!-- ================== Imported Names ================================== -->
+  <!-- MIF: Added constraint -->
+  <xs:simpleType name="ContentType">
+    <xs:annotation>
+      <xs:documentation>media type, as per [RFC2045]</xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="MediaType xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="MediaType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="text/plain">
+        <xs:annotation>
+          <xs:documentation>Plain Text</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="text/html">
+        <xs:annotation>
+          <xs:documentation>HTML Text</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="application/pdf">
+        <xs:annotation>
+          <xs:documentation>PDF</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="text/xml">
+        <xs:annotation>
+          <xs:documentation>XML Text</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="text/rtf">
+        <xs:annotation>
+          <xs:documentation>RTF Text</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="application/msword">
+        <xs:annotation>
+          <xs:documentation>Microsoft Word</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="audio/mpeg">
+        <xs:annotation>
+          <xs:documentation>MPEG audil layer 3</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="image/png">
+        <xs:annotation>
+          <xs:documentation>PNG image</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="image/gif">
+        <xs:annotation>
+          <xs:documentation>GIF </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="image/jpeg">
+        <xs:annotation>
+          <xs:documentation>JPEG image</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="video/mpeg">
+        <xs:annotation>
+          <xs:documentation>MPEG Video</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- MIF: Added to allow distinguishing types of images -->
+  <xs:simpleType name="ImageKind">
+    <xs:annotation>
+      <xs:documentation>Identifies the type of image being represented.  Necessary to allow for proper image scaling.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="application/postscript">
+        <xs:annotation>
+          <xs:documentation>A post-script image.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="application/pdf">
+        <xs:annotation>
+          <xs:documentation>An Adobe PDF document</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="application/png">
+        <xs:annotation>
+          <xs:documentation>A Portable Network Graphic</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="application/svg+xml">
+        <xs:annotation>
+          <xs:documentation>A scalable vector graphic</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="application/jpeg">
+        <xs:annotation>
+          <xs:documentation>A JPEG image</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="image/gif">
+        <xs:annotation>
+          <xs:documentation>GIF </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- MIF constraint -->
+  <xs:simpleType name="StyleSheet">
+    <xs:annotation>
+      <xs:documentation>style sheet data</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Requirement">
+        <xs:annotation>
+          <xs:documentation>Indented on a coloured background.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Indent">
+        <xs:annotation>
+          <xs:documentation>Indented (based on stylesheet indent scheme).  Indents nest.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Note">
+        <xs:annotation>
+          <xs:documentation>Prefixed with 'Note:' and a hanging indent.  May be alternatively formatted.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="NonNumbered">
+        <xs:annotation>
+          <xs:documentation>Indicates that the specified division should not have numbers.</xs:documentation>
+          <!-- Todo: Enforce this only shows up for divisions -->
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Background:Aqua">
+        <xs:annotation>
+          <xs:documentation>Sets the background color of the text to Aqua</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Background:Lime">
+        <xs:annotation>
+          <xs:documentation>Sets the background color of the text to Lime</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Background:Pink">
+        <xs:annotation>
+          <xs:documentation>Sets the background color of the text to Pink</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Background:Yellow">
+        <xs:annotation>
+          <xs:documentation>Sets the background color of the text to Yellow</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+    <!-- MIF: Constrained to only allow those styles explicitly defined by HL7 -->
+    <!-- End Constraint -->
+  </xs:simpleType>
+  <xs:simpleType name="MifClassType">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="inserted"/>
+      <xs:enumeration value="deleted"/>
+      <xs:enumeration value="changed"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- End MIF constraint -->
+  <!-- MIF: Added types to define allowed objects and parameters -->
+  <xs:simpleType name="ObjectName">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="constructedElement">
+        <xs:annotation>
+          <xs:documentation>Allows insertion of a pre-defined complex structure (e.g. auto-generated table or diagram) to be inserted</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="footnote">
+        <xs:annotation>
+          <xs:documentation>Supporting content that should be referenced within the document, but displayed at the end of the page or document section.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="requirementRef">
+        <xs:annotation>
+          <xs:documentation>Allows linkage to an externally-defined requirement by number or id.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="externalSpecRef">
+        <xs:annotation>
+          <xs:documentation>A reference to an externally defined specification.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="figureRef">
+        <xs:annotation>
+          <xs:documentation>Allows referencing an 'img' in the markup associated with this or some other element within the current model or package.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="tableRef">
+        <xs:annotation>
+          <xs:documentation>Allows referencing an 'table' in the markup associated with this or some other element within the current model or package.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="itemName">
+        <xs:annotation>
+          <xs:documentation>Inserts the name of the current element or the name of one of it's ancestors.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="annotationRef">
+        <xs:annotation>
+          <xs:documentation>A reference to an annotation on the current element or one of its parents</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="artifactGroupRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a collection of artifacts of a particular type</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="packageRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a particular package</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="domainAnalysisModelRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific domain analysis model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="domainInstanceExampleRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific domain instance example</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="glossaryRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific glossary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="glossaryTermRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific term within a glossary</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="storyboardRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific storyboard model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="freehandDocumentRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific document (e.g. ITS, transport protocol, etc.)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="publicationRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific publication (e.g. ballot, normative edition, etc.)</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="datatypeModelRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a datatype model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="datatypeRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a datatype definition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="propertyRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific property of a datatype definition</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="staticModelRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific static model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="subjectAreaRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific subject area in a static model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="classRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific class in a static model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="stateRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific state for a class in a static model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="transitionRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific state transition for a class in a static model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="attributeRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific attribute for a class in a static model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="associationEndRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific association end for a class in a static model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="triggerEventRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific trigger event</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="applicationRoleRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific application role</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="interactionRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific interaction</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="vocabularyModelRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific vocabulary model</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="conceptDomainRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific vocabulary domain</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="vocabularyCodeSystemRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific code system</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="vocabularyCodeRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific code within a code system</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="vocabularyValueSetRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific value-set</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="testScenarioRef">
+        <xs:annotation>
+          <xs:documentation/>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="testCaseRef">
+        <xs:annotation>
+          <xs:documentation>An absolute reference to a specific value-set</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <!--      <xs:enumeration value="divRef">
+        <xs:annotation>
+          <xs:documentation>Allows referencing a 'div' in the markup associated with this or some other element within the current model or package.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>-->
+      <!-- Markup references -->
+      <!-- These differ from the use of 'a' in that they will verify the existence of the item being referenced and will take the name of the reference from the source for the referenced item -->
+      <!-- MIF Model Element references (generic) -->
+      <!-- MIF Model Element references (requirements) -->
+      <!-- MIF Model Element references (documentation) -->
+      <!-- MIF Model Element references (datatype) -->
+      <!-- MIF Model Element references (static model) -->
+      <!-- MIF Model Element references (dynamic) -->
+      <!-- MIF Model Element references (vocabulary) -->
+      <!-- MIF Model Element references (testCase) -->
+      <!-- Note: For templateRef, just use staticModelRef.  For itsRef and communicationProtocolRef, use FreehandDocumentRef -->
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ParamName">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="constructType"/>
+      <xs:enumeration value="id"/>
+      <xs:enumeration value="item"/>
+      <xs:enumeration value="annotationKind"/>
+      <xs:enumeration value="root"/>
+      <xs:enumeration value="domain"/>
+      <xs:enumeration value="realmNamespace"/>
+      <xs:enumeration value="version"/>
+      <xs:enumeration value="artifact"/>
+      <xs:enumeration value="subArtifact"/>
+      <xs:enumeration value="name"/>
+      <xs:enumeration value="artifactName"/>
+      <xs:enumeration value="group"/>
+      <xs:enumeration value="linkToEnd"/>
+      <xs:enumeration value="withinClassName"/>
+      <xs:enumeration value="relationshipName"/>
+      <xs:enumeration value="attributeName"/>
+      <xs:enumeration value="className"/>
+      <xs:enumeration value="supplierBindingArgumentDatatype"/>
+      <xs:enumeration value="datatypeName"/>
+      <xs:enumeration value="conversionDatatype"/>
+      <xs:enumeration value="propertyName"/>
+      <xs:enumeration value="termName"/>
+      <xs:enumeration value="stateName"/>
+      <xs:enumeration value="stateTransitionName"/>
+      <xs:enumeration value="subjectAreaName"/>
+      <xs:enumeration value="codeSystemId"/>
+      <xs:enumeration value="code"/>
+      <!-- Can repeat -->
+    </xs:restriction>
+    <!-- Todo: restrict what parameters are allowed for each object type
+       also restrict what the value can look like based on parameter name
+       finally, see if we can simplify this list of parameters -->
+  </xs:simpleType>
+  <!-- End MIF -->
+  <!-- MIF: Not used because the elements that reference it are unused
+  <xs:simpleType name="ContentTypes">
+    <xs:annotation>
+      <xs:documentation>comma-separated list of media types, as per [RFC2045]</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="Charset">
+    <xs:annotation>
+      <xs:documentation>a character encoding, as per [RFC2045]</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="Charsets">
+    <xs:annotation>
+      <xs:documentation>a space separated list of character encodings, as per [RFC2045]</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="LanguageCode">
+    <xs:annotation>
+      <xs:documentation>a language code, as per [RFC3066]</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:language"/>
+  </xs:simpleType>
+  -->
+  <xs:simpleType name="Character">
+    <xs:annotation>
+      <xs:documentation>a single character, as per section 2.2 of [XML]</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:length value="1" fixed="true"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Number">
+    <xs:annotation>
+      <xs:documentation>one or more digits</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:maxExclusive value="100"/>
+      <xs:pattern value="[0-9]+"/>
+      <!-- MIF: Added constraint -->
+      <!-- End MIF:-->
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- MIF: Not used because the elements that reference it are unused
+  <xs:simpleType name="tabindexNumber">
+    <xs:annotation>
+      <xs:documentation>tabindex attribute specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767. User agents should ignore leading zeros.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="Number">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="32767"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="LinkTypes">
+    <xs:annotation>
+      <xs:documentation>space-separated list of link types</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NMTOKENS"/>
+  </xs:simpleType>
+  <xs:simpleType name="MediaDesc">
+    <xs:annotation>
+      <xs:documentation>single or comma-separated list of media descriptors</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^,]+(,\s*[^,]+)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  -->
+  <xs:simpleType name="URI">
+    <xs:annotation>
+      <xs:documentation>a Uniform Resource Identifier, see [RFC2396]</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:anyURI">
+      <xs:minLength value="5"/>
+      <xs:maxLength value="255"/>
+      <!-- MIF: Added constraint -->
+      <!-- End MIF: Added constraint -->
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- MIF: Not used because the elements that reference it are unused
+  <xs:simpleType name="UriList">
+    <xs:annotation>
+      <xs:documentation>a space separated list of Uniform Resource Identifiers</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="Datetime">
+    <xs:annotation>
+      <xs:documentation>date and time information. ISO date format</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:dateTime"/>
+  </xs:simpleType>
+  <xs:simpleType name="Script">
+    <xs:annotation>
+      <xs:documentation>script expression</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  -->
+  <xs:simpleType name="Text">
+    <xs:annotation>
+      <xs:documentation>used for titles etc.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:minLength value="2"/>
+      <xs:maxLength value="255"/>
+    </xs:restriction>
+    <!-- MIF: Added constraint -->
+    <!-- MIF: Added constraint -->
+  </xs:simpleType>
+  <xs:simpleType name="Length">
+    <xs:annotation>
+      <xs:documentation>nn for pixels or nn% for percentage length</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10"/>
+      <xs:pattern value="[\-\+]?(\d+|\d+(\.\d+)?%)"/>
+      <!-- MIF: Added constraint -->
+      <!-- End MIF -->
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="MultiLength">
+    <xs:annotation>
+      <xs:documentation>pixel, percentage, or relative</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="500"/>
+      <xs:pattern value="[\-\+]?(\d+|\d+(\.\d+)?%)|[1-9]?(\d+)?\*"/>
+      <!-- MIF: Added constraint -->
+      <!-- End MIF -->
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Pixels">
+    <xs:annotation>
+      <xs:documentation>integer representing length in pixels</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:maxExclusive value="10000"/>
+    </xs:restriction>
+    <!-- MIF: Added constraint -->
+    <!-- End MIF -->
+  </xs:simpleType>
+  <xs:annotation>
+    <xs:documentation>these are used for image maps</xs:documentation>
+  </xs:annotation>
+  <xs:simpleType name="Shape">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="rect"/>
+      <xs:enumeration value="circle"/>
+      <xs:enumeration value="poly"/>
+      <xs:enumeration value="default"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Coords">
+    <xs:annotation>
+      <xs:documentation>comma separated list of lengths</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="500"/>
+      <xs:pattern value="[\-\+]?(\d+|\d+(\.\d+)?%)(,\s*[\-\+]?(\d+|\d+(\.\d+)?%))*"/>
+      <!-- MIF: Added constraint -->
+      <!-- End MIF -->
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- =================== Generic Attributes =============================== -->
+  <xs:attributeGroup name="coreattrs">
+    <!-- MIF: Not supported by HL7 because we don't know the context in which markup will appear and thus can't guarantee uniqueness except within a context. (not across the whole document)
+    <xs:attribute name="id" type="xs:ID">
+      <xs:annotation>
+        <xs:documentation>document-wide unique id</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    -->
+    <xs:attribute name="class" type="MifClassType">
+      <xs:annotation>
+        <xs:documentation>space separated list of classes</xs:documentation>
+      </xs:annotation>
+      <!-- Constrained to limit to only the HTML 2.0 'edit' values which we will use in preference of the 1.1 'ins' and 'del' elements -->
+    </xs:attribute>
+    <xs:attribute name="style" type="StyleSheet">
+      <xs:annotation>
+        <xs:documentation>associated style info</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <!-- MIF: Not used here.  Only supported for 'div'
+    <xs:attribute name="title" type="Text">
+      <xs:annotation>
+        <xs:documentation>advisory title/amplification</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    -->
+  </xs:attributeGroup>
+  <xs:attributeGroup name="i18n">
+    <xs:annotation>
+      <xs:documentation>internationalization attributes</xs:documentation>
+    </xs:annotation>
+    <!-- MIF: We only use xml:lang
+    <xs:attribute name="lang" type="LanguageCode">
+      <xs:annotation>
+        <xs:documentation>language code (backwards compatible)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    -->
+    <xs:attribute ref="xml:lang">
+      <xs:annotation>
+        <xs:documentation>language code (as per XML 1.0 spec)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <!-- MIF: Not presently supported by HL7
+    <xs:attribute name="dir">
+      <xs:annotation>
+        <xs:documentation>direction for weak/neutral text</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ltr"/>
+          <xs:enumeration value="rtl"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    -->
+  </xs:attributeGroup>
+  <!-- MIF: Excluded because we don't support 'behaviors' in our HL7 markup
+  <xs:attributeGroup name="events">
+    <xs:annotation>
+      <xs:documentation>attributes for common UI events</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="onclick" type="Script">
+      <xs:annotation>
+        <xs:documentation>a pointer button was clicked</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ondblclick" type="Script">
+      <xs:annotation>
+        <xs:documentation>a pointer button was double clicked</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="onmousedown" type="Script">
+      <xs:annotation>
+        <xs:documentation>a pointer button was pressed down</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="onmouseup" type="Script">
+      <xs:annotation>
+        <xs:documentation>a pointer button was released</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="onmouseover" type="Script">
+      <xs:annotation>
+        <xs:documentation>a pointer was moved onto the element</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="onmousemove" type="Script">
+      <xs:annotation>
+        <xs:documentation>a pointer was moved away from the element</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="onmouseout" type="Script">
+      <xs:annotation>
+        <xs:documentation>a key was pressed and released</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="onkeypress" type="Script">
+      <xs:annotation>
+        <xs:documentation></xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="onkeydown" type="Script">
+      <xs:annotation>
+        <xs:documentation>a key was pressed down</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="onkeyup" type="Script">
+      <xs:annotation>
+        <xs:documentation>a key was released</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="focus">
+    <xs:annotation>
+      <xs:documentation>attributes for elements that can get the focus</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="accesskey" type="Character">
+      <xs:annotation>
+        <xs:documentation>accessibility key character</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="tabindex" type="tabindexNumber">
+      <xs:annotation>
+        <xs:documentation>position in tabbing order</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="onfocus" type="Script">
+      <xs:annotation>
+        <xs:documentation>the element got the focus</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="onblur" type="Script">
+      <xs:annotation>
+        <xs:documentation>the element lost the focus</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  -->
+  <xs:attributeGroup name="attrs">
+    <xs:attributeGroup ref="coreattrs"/>
+    <xs:attributeGroup ref="i18n"/>
+    <!-- MIF: Excluded because we don't support 'behaviors' in HL7 markup
+    <xs:attributeGroup ref="events"/>
+    -->
+  </xs:attributeGroup>
+  <!-- =================== Text Elements ==================================== -->
+  <xs:group name="special.pre">
+    <xs:choice>
+      <xs:element name="br" type="Br" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>forced line break</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="span" type="Span">
+        <xs:annotation>
+          <xs:documentation>generic language/style container</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- MIF: Not supported in HL7 markup because it's far more complex than we need or wish to deal with
+      <xs:element name="bdo" type="Bdo">
+        <xs:annotation>
+          <xs:documentation>I18N BiDi over-ride</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      -->
+      <!-- MIF: Excluded because we don't support 'behaviors' in our HL7 markup
+      <xs:element name="map" type="Map"/>
+      -->
+    </xs:choice>
+  </xs:group>
+  <xs:group name="special">
+    <xs:choice>
+      <xs:group ref="special.pre"/>
+      <xs:element name="object" type="Object">
+        <xs:annotation>
+          <xs:documentation>The OBJECT element allows specification of data that needs to be rendered by HL7-specific tools rather than generic HTML tools.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="img" type="Img">
+        <xs:annotation>
+          <xs:documentation>The IMG element embeds an image in the current document at the location of the element's definition.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="fontstyle">
+    <xs:choice>
+      <xs:element name="tt" type="Tt">
+        <xs:annotation>
+          <xs:documentation>fixed pitch font</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="i" type="I">
+        <xs:annotation>
+          <xs:documentation>italic font</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="b" type="B">
+        <xs:annotation>
+          <xs:documentation>bold font</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="big" type="Big">
+        <xs:annotation>
+          <xs:documentation>bigger font</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="small" type="Small">
+        <xs:annotation>
+          <xs:documentation>smaller font</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="phrase">
+    <xs:choice>
+      <xs:element name="em" type="Em">
+        <xs:annotation>
+          <xs:documentation>emphasis</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="strong" type="Strong">
+        <xs:annotation>
+          <xs:documentation>strong emphasis</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dfn" type="Dfn">
+        <xs:annotation>
+          <xs:documentation>definitional</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="code" type="Code">
+        <xs:annotation>
+          <xs:documentation>program code</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="q" type="Q">
+        <xs:annotation>
+          <xs:documentation>inlined quote</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="samp" type="Samp">
+        <xs:annotation>
+          <xs:documentation>sample</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="kbd" type="Kbd">
+        <xs:annotation>
+          <xs:documentation>something user would type</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="var" type="Var">
+        <xs:annotation>
+          <xs:documentation>variable</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="cite" type="Cite">
+        <xs:annotation>
+          <xs:documentation>citation</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="abbr" type="Abbr">
+        <xs:annotation>
+          <xs:documentation>abbreviation</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="acronym" type="Acronym">
+        <xs:annotation>
+          <xs:documentation>acronym</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="sub" type="Sub">
+        <xs:annotation>
+          <xs:documentation>subscript</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="sup" type="Sup">
+        <xs:annotation>
+          <xs:documentation>superscript</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+  <!-- MIF: Excluded because we don't data capture in our HL7 markup
+  <xs:group name="inline.forms">
+    <xs:choice>
+      <xs:element name="input" type="Input">
+        <xs:annotation>
+          <xs:documentation>form control</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="select" type="Select">
+        <xs:annotation>
+          <xs:documentation>option selector</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="textarea" type="Textarea">
+        <xs:annotation>
+          <xs:documentation>multi-line text field</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="label" type="Label">
+        <xs:annotation>
+          <xs:documentation>Each label must not contain more than ONE field.  Label elements shouldn't be nested.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="button" type="Button">
+        <xs:annotation>
+          <xs:documentation>Content is "Flow" excluding a, form and form controls</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+  -->
+  <!-- MIF: Excluded because we don't support behavior in our HL7 markup
+  <xs:group name="head.script">
+    <xs:sequence>
+      <xs:element name="script" type="Head.Script">
+        <xs:annotation>
+          <xs:documentation>script statements, which may include CDATA sections</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  -->
+  <!-- MIF: Excluded because we don't support behavior in our HL7 markup and we use 'class' to track changes
+  <xs:group name="misc.inline">
+    <xs:choice>
+      <xs:element name="ins" type="Ins">
+        <xs:annotation>
+          <xs:documentation>INS is used to markup sections of the document that have been inserted with respect to a different version of a document</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="del" type="Del">
+        <xs:annotation>
+          <xs:documentation>DEL is used to markup sections of the document that have been deleted with respect to a different version of a document</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:group ref="head.script"/>
+    </xs:choice>
+  </xs:group>
+  -->
+  <!-- MIF: Excluded because we don't support behavior in HL7 markup
+  <xs:group name="misc">
+    <xs:annotation>
+      <xs:documentation>these can only occur at block level</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="noscript" type="Noscript" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>alternate content container for non script-based rendering</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:group ref="misc.inline" minOccurs="0"/>
+    </xs:choice>
+  </xs:group>
+  -->
+  <xs:group name="a">
+    <xs:sequence>
+      <xs:element name="a" type="A">
+        <xs:annotation>
+          <xs:documentation>content is "Inline" except that anchors shouldn't be nested</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="inline">
+    <xs:choice>
+      <xs:group ref="a"/>
+      <xs:group ref="special"/>
+      <xs:group ref="fontstyle"/>
+      <xs:group ref="phrase"/>
+      <!-- MIF: Excluded because we don't data capture in our HL7 markup
+      <xs:group ref="inline.forms"/>
+      -->
+    </xs:choice>
+  </xs:group>
+  <xs:complexType name="Inline" mixed="true">
+    <xs:annotation>
+      <xs:documentation>"Inline" covers inline or "text-level" elements</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="inline"/>
+      <!-- MIF: Excluded because we don't support behavior in HL7 markup
+      <xs:group ref="misc.inline"/>
+      -->
+    </xs:choice>
+  </xs:complexType>
+  <!-- ================== Block level elements ============================== -->
+  <!-- MIF: We don't support heading because heading level depends on how the document gets generated.  Instead we use 'div's with titles
+  <xs:group name="heading">
+    <xs:choice>
+      <xs:element name="h1" type="H1" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="h2" type="H2" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="h3" type="H3" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="h4" type="H4" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="h5" type="H5" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="h6" type="H6" minOccurs="0" maxOccurs="1"/>
+    </xs:choice>
+  </xs:group>
+  -->
+  <xs:group name="lists">
+    <xs:choice>
+      <xs:element name="ul" type="Ul">
+        <xs:annotation>
+          <xs:documentation>Unordered list</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ol" type="Ol">
+        <xs:annotation>
+          <xs:documentation>Ordered (numbered) list</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dl" type="Dl">
+        <xs:annotation>
+          <xs:documentation>Definition (term + description) list</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="blocktext">
+    <xs:choice>
+      <xs:element name="pre" type="Pre">
+        <xs:annotation>
+          <xs:documentation>Content whose spacing and formatting is to be preserved</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="hr" type="Hr">
+        <xs:annotation>
+          <xs:documentation>Horizontal rule (aka separator line)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="blockquote" type="Blockquote">
+        <xs:annotation>
+          <xs:documentation>Block quotation</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- MIF: Author information is conveyed in the HL7 header structure
+      <xs:element name="address" type="Address">
+        <xs:annotation>
+          <xs:documentation>information on author</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      -->
+    </xs:choice>
+  </xs:group>
+  <xs:group name="block">
+    <xs:choice>
+      <!-- MIF: Changed all elements within the choice to minOccurs = 0.
+        This is ok because the only places 'block' is used is inside a choice which itself has minOccurs of 0
+        Only exception is the Map type, but we exclude that in our constraint, so it doesn't matter -->
+      <xs:element name="p" type="P">
+        <xs:annotation>
+          <xs:documentation>Paragraph</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- MIF: We don't support heading because heading level depends on how the document gets generated.  Instead we use 'div's with titles
+      <xs:group ref="heading"/>
+      -->
+      <xs:group ref="div"/>
+      <xs:group ref="lists"/>
+      <xs:group ref="blocktext"/>
+      <!-- MIF: Excluded because we don't data capture in our HL7 markup
+      <xs:element name="fieldset" type="Fieldset">
+        <xs:annotation>
+          <xs:documentation>The fieldset element is used to group form fields.  Only one legend element should occur in the content and if present should only be preceded by whitespace.
+            NOTE: this content model is different from the XHTML 1.0 DTD, closer to the intended content model in HTML4 DTD</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      -->
+      <xs:element name="table" type="Table">
+        <xs:annotation>
+          <xs:documentation>Two-dimensional table</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+  <xs:complexType name="Block" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="block"/>
+      <!-- MIF: Excluded because we don't data capture in our HL7 markup
+      <xs:element name="form" type="Form"/>
+      -->
+      <!-- MIF: Excluded because we don't support behavior in HL7 markup
+      <xs:group ref="misc"/>
+      -->
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="Flow" mixed="true">
+    <xs:annotation>
+      <xs:documentation>"Flow" mixes block and inline and is used for list items etc.</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="block"/>
+      <!-- MIF: Excluded because we don't data capture in our HL7 markup
+      <xs:element name="form" type="Form"/>
+      -->
+      <xs:group ref="inline"/>
+      <!-- MIF: Excluded because we don't support behavior in HL7 markup
+      <xs:group ref="misc"/>
+      -->
+    </xs:choice>
+  </xs:complexType>
+  <!-- ================== Content models for exclusions ===================== -->
+  <xs:complexType name="a.content" mixed="true">
+    <xs:annotation>
+      <xs:documentation>a elements use "Inline" excluding a</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="special"/>
+      <xs:group ref="fontstyle"/>
+      <xs:group ref="phrase"/>
+      <!-- MIF: Excluded because we don't data capture in our HL7 markup
+      <xs:group ref="inline.forms"/>
+      -->
+      <!-- MIF: Excluded because we don't support behavior in HL7 markup
+      <xs:group ref="misc.inline"/>
+      -->
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="pre.content" mixed="true">
+    <xs:annotation>
+      <xs:documentation>pre uses "Inline" excluding big, small, sup or sup</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="a"/>
+      <xs:group ref="fontstyle"/>
+      <xs:group ref="phrase"/>
+      <xs:group ref="special.pre"/>
+      <!-- MIF: Excluded because we don't support behavior in HL7 markup
+      <xs:group ref="misc.inline"/>
+      -->
+      <!-- MIF: Excluded because we don't data capture in our HL7 markup
+      <xs:group ref="inline.forms"/>
+      -->
+    </xs:choice>
+  </xs:complexType>
+  <!-- MIF: Excluded because we don't data capture in our HL7 markup
+  <xs:complexType name="form.content">
+    <xs:annotation>
+      <xs:documentation>form uses "Block" excluding form</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:group ref="block"/>
+      <xs:group ref="misc"/>
+    </xs:choice>
+  </xs:complexType>
+  -->
+  <xs:group name="div">
+    <xs:sequence>
+      <xs:element name="div" type="Div">
+        <xs:annotation>
+          <xs:documentation>generic language/style container</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <!-- MIF: Excluded because we don't data capture in our HL7 markup
+  <xs:complexType name="button.content" mixed="true">
+    <xs:annotation>
+      <xs:documentation>button uses "Flow" but excludes a, form and form controls</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="p" type="P"/>
+      <xs:group ref="heading"/>
+      <xs:group ref="div"/>
+      <xs:group ref="lists"/>
+      <xs:group ref="blocktext"/>
+      <xs:element name="table" type="Table"/>
+      <xs:group ref="special"/>
+      <xs:group ref="fontstyle"/>
+      <xs:group ref="phrase"/>
+      <xs:group ref="misc"/>
+    </xs:choice>
+  </xs:complexType>
+  -->
+  <!-- ================ Document Structure ================================== -->
+  <!-- MIF: Excluded because we don't actually use the full header from HTML, just the markup definition
+  <xs:element name="html" type="Html"/>
+  <xs:complexType name="Html">
+    <xs:sequence>
+      <xs:element name="head" type="Head">
+        <xs:annotation>
+          <xs:documentation>content model is "head.misc" combined with a single title and an optional base element in any order</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="body" type="Body"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="i18n"/>
+    <xs:attribute name="id" type="xs:ID"/>
+  </xs:complexType>-->
+  <!-- ================ Document Head ======================================= -->
+  <!-- MIF: Excluded because we don't actually use the full header from HTML, just the markup definition
+  <xs:group name="head.misc">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="head.script"/>
+        <xs:element name="style" type="Head.Style">
+          <xs:annotation>
+            <xs:documentation>style info, which may include CDATA sections</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="meta" type="Meta">
+          <xs:annotation>
+            <xs:documentation>generic metainformation</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="link" type="Link">
+          <xs:annotation>
+            <xs:documentation>Relationship values can be used in principle:
+              a) for document specific toolbars/menus when used with the link element in document head e.g. start, contents, previous, next, index, end, help
+              b) to link to a separate style sheet (rel="stylesheet")
+              c) to make a link to a script (rel="script")
+              d) by stylesheets to control how collections of html nodes are rendered into printed documents
+              e) to make a link to a printable version of this document
+                 e.g. a PostScript or PDF version (rel="alternate" media="print")</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="object" type="Object"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="head.title">
+    <xs:sequence>
+      <xs:element name="title" type="Title">
+        <xs:annotation>
+          <xs:documentation>The title element is not considered part of the flow of text.  It should be displayed, for example as the page header or window title. Exactly one title is required per document.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:group name="head.base">
+    <xs:sequence>
+      <xs:element name="base" type="Base">
+        <xs:annotation>
+          <xs:documentation>document base URI
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:complexType name="Head">
+    <xs:sequence>
+      <xs:group ref="head.misc"/>
+      <xs:choice>
+        <xs:sequence>
+          <xs:group ref="head.title"/>
+          <xs:group ref="head.misc"/>
+          <xs:sequence minOccurs="0">
+            <xs:group ref="head.base"/>
+            <xs:group ref="head.misc"/>
+          </xs:sequence>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:group ref="head.base"/>
+          <xs:group ref="head.misc"/>
+          <xs:group ref="head.title"/>
+          <xs:group ref="head.misc"/>
+        </xs:sequence>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attributeGroup ref="i18n"/>
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="profile" type="URI"/>
+  </xs:complexType>
+  <xs:complexType name="Title" mixed="true">
+    <xs:attributeGroup ref="i18n"/>
+    <xs:attribute name="id" type="xs:ID"/>
+  </xs:complexType>
+  <xs:complexType name="Base">
+    <xs:attribute name="href" type="URI" use="required"/>
+    <xs:attribute name="id" type="xs:ID"/>
+  </xs:complexType>
+  <xs:complexType name="Meta">
+    <xs:attributeGroup ref="i18n"/>
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="http-equiv"/>
+    <xs:attribute name="name"/>
+    <xs:attribute name="content" use="required"/>
+    <xs:attribute name="scheme"/>
+  </xs:complexType>
+  <xs:complexType name="Link">
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attribute name="charset" type="Charset"/>
+    <xs:attribute name="href" type="URI"/>
+    <xs:attribute name="hreflang" type="LanguageCode"/>
+    <xs:attribute name="type" type="ContentType"/>
+    <xs:attribute name="rel" type="LinkTypes"/>
+    <xs:attribute name="rev" type="LinkTypes"/>
+    <xs:attribute name="media" type="MediaDesc"/>
+  </xs:complexType>
+  <xs:complexType name="Head.Style" mixed="true">
+    <xs:attributeGroup ref="i18n"/>
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="type" type="ContentType" use="required"/>
+    <xs:attribute name="media" type="MediaDesc"/>
+    <xs:attribute name="title" type="Text"/>
+    <xs:attribute ref="xml:space" fixed="preserve"/>
+  </xs:complexType>
+  <xs:complexType name="Head.Script" mixed="true">
+    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="charset" type="Charset"/>
+    <xs:attribute name="type" type="ContentType" use="required"/>
+    <xs:attribute name="src" type="URI"/>
+    <xs:attribute name="defer">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="defer"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute ref="xml:space" fixed="preserve"/>
+  </xs:complexType>
+  <xs:complexType name="Noscript" mixed="true">
+    <xs:complexContent>
+      <xs:extension base="Block">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  -->
+  <!-- =================== Document Body ==================================== -->
+  <!-- MIF: Excluded because we don't actually use the full header from HTML, just the markup definition
+  <xs:complexType name="Body" mixed="true">
+    <xs:complexContent>
+      <xs:extension base="Block">
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute name="onload" type="Script"/>
+        <xs:attribute name="onunload" type="Script"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  -->
+  <xs:complexType name="Div" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Flow">
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute name="title" type="Text" use="required">
+          <xs:annotation>
+            <xs:documentation>advisory title/amplification</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="hl7Id" type="xs:NMTOKEN">
+          <xs:annotation>
+            <xs:documentation>Provides a unique identifier for the element within the context of the element containing the markup, not necessarily the entire document</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+      <!-- MIF: Added back in after excluding from generic collection and made required -->
+      <!-- MIF: End add -->
+      <!-- MIF: Added (takes the place of 'id' but isn't required to be unique across a whole document because what constitutes a document varies.  Also, we only want ids in certain places -->
+      <!-- MIF: End Add -->
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- =================== Paragraphs ======================================= -->
+  <xs:complexType name="P" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- =================== Headings ========================================= -->
+  <!-- MIF: We don't support heading because heading level depends on how the document gets generated.  Instead we use 'div's with titles
+  <xs:complexType name="H1" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="H2" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="H3" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="H4" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="H5" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="H6" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  -->
+  <!-- =================== Lists ============================================ -->
+  <xs:complexType name="Ul">
+    <xs:group ref="Li" maxOccurs="unbounded"/>
+    <xs:attributeGroup ref="attrs"/>
+  </xs:complexType>
+  <xs:complexType name="Ol">
+    <xs:group ref="Li" maxOccurs="unbounded"/>
+    <xs:attributeGroup ref="attrs"/>
+  </xs:complexType>
+  <xs:group name="Li">
+    <xs:sequence>
+      <xs:element name="li" type="Li">
+        <xs:annotation>
+          <xs:documentation>list item</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:complexType name="Li" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Flow">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:annotation>
+    <xs:documentation>definition lists - dt for term, dd for its definition</xs:documentation>
+  </xs:annotation>
+  <xs:complexType name="Dl">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="dt" type="Dt">
+        <xs:annotation>
+          <xs:documentation>Definition term</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dd" type="Dd">
+        <xs:annotation>
+          <xs:documentation>Defintion description</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+    <xs:attributeGroup ref="attrs"/>
+  </xs:complexType>
+  <xs:complexType name="Dt" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Dd" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Flow">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- =================== Address ========================================== -->
+  <!-- MIF: Author information is conveyed in the HL7 header structure
+  <xs:complexType name="Address" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  -->
+  <!-- =================== Horizontal Rule ================================== -->
+  <xs:complexType name="Hr">
+    <xs:attributeGroup ref="attrs"/>
+  </xs:complexType>
+  <!-- =================== Preformatted Text ================================ -->
+  <xs:complexType name="Pre" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="pre.content">
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute ref="xml:space" fixed="preserve">
+          <xs:annotation>
+            <xs:documentation>Indicates whether spacing should be maintained</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- =================== Block-like Quotes ================================ -->
+  <xs:complexType name="Blockquote" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Block">
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute name="cite" type="URI">
+          <xs:annotation>
+            <xs:documentation>Provides a reference to the external source from which the quote is extracted.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- =================== Inserted/Deleted Text ============================ -->
+  <xs:annotation>
+    <xs:documentation>ins/del are allowed in block and inline content, but it's inappropriate to include block content within an ins element occurring in inline content.</xs:documentation>
+  </xs:annotation>
+  <xs:complexType name="Ins" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Flow"/>
+      <!-- MIF: No attributes are required.  Additional details can be communicated by the historyItem associated with the element.
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute name="cite" type="URI"/>
+        <xs:attribute name="datetime" type="Datetime"/>
+        -->
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Del" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Flow"/>
+      <!-- MIF: No attributes are required.  Additional details can be communicated by the historyItem associated with the element.
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute name="cite" type="URI"/>
+        <xs:attribute name="datetime" type="Datetime"/>
+        -->
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ================== The Anchor Element ================================ -->
+  <xs:complexType name="A" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="a.content">
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute name="type" type="ContentType">
+          <xs:annotation>
+            <xs:documentation>This attribute gives an advisory hint as to the content type of the content available at the link target address. It allows user agents to opt to use a fallback mechanism rather than fetch the content if they are advised that they will get content in a content type they do not support</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="name" type="xs:NMTOKEN">
+          <xs:annotation>
+            <xs:documentation>This attribute names the current anchor so that it may be the destination of another link. The value of this attribute must be a unique anchor name</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="href" type="URI">
+          <xs:annotation>
+            <xs:documentation>This attribute specifies the location of a Web resource, thus defining a link between the current element (the source anchor) and the destination anchor defined by this attribute.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="shape" type="Shape" default="rect">
+          <xs:annotation>
+            <xs:documentation>This attribute specifies the shape of a region.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="coords" type="Coords">
+          <xs:annotation>
+            <xs:documentation>This attribute specifies the position and shape on the screen. The number and order of values depends on the shape being defined.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+      <!-- MIF: No point specifying this on the reference as it can be determined once the reference is resolved
+        <xs:attribute name="charset" type="Charset">
+          <xs:annotation>
+            <xs:documentation>This attribute specifies the character encoding of the resource designated by the link</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        -->
+      <!-- MIF: Not used for HL7
+        <xs:attribute name="hreflang" type="LanguageCode">
+          <xs:annotation>
+            <xs:documentation>This attribute specifies the base language of the resource designated by href and may only be used when href is specified.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="rel" type="LinkTypes">
+          <xs:annotation>
+            <xs:documentation>This attribute describes the relationship from the current document to the anchor specified by the href attribute. The value of this attribute is a space-separated list of link types.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="rev" type="LinkTypes">
+          <xs:annotation>
+            <xs:documentation>This attribute is used to describe a reverse link from the anchor specified by the href attribute to the current document. The value of this attribute is a space-separated list of link types.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        -->
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ===================== Inline Elements ================================ -->
+  <xs:complexType name="Span" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- MIF: Not used because the elements that reference it are unused
+  <xs:complexType name="Bdo" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="coreattrs"/>
+        <xs:attribute name="lang" type="LanguageCode"/>
+        <xs:attribute ref="xml:lang"/>
+        <xs:attribute name="dir" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="ltr"/>
+              <xs:enumeration value="rtl"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  -->
+  <xs:complexType name="Br">
+    <xs:attributeGroup ref="coreattrs"/>
+  </xs:complexType>
+  <xs:complexType name="Em" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Strong" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Dfn" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Code" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Samp" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Kbd" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Var" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Cite" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Abbr" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Acronym" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Q" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute name="cite" type="URI">
+          <xs:annotation>
+            <xs:documentation>Provides a reference to the external source from which the quote is extracted.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Sub" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Sup" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Tt" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="I" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="B" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Big" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Small" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ==================== Object ====================================== -->
+  <xs:complexType name="Object" mixed="true">
+    <xs:annotation>
+      <xs:documentation>object is used to embed objects as part of HTML pages.  param elements should precede other content. Parameters can also be expressed as attribute/value pairs on the object element itself when brevity is desired.</xs:documentation>
+      <xs:appinfo>
+        <sch:pattern name="Validate Object type">
+          <sch:rule context="element(*, xhtml:Object)">
+            <sch:report test="@name='divRef' and (count(xhtml:param)!=1 or count(xhtml:param[@name='id'])!=1)">
+								ERROR: divRef must have exactly one parameter which must have a type of 'id'.</sch:report>
+            <sch:report test="@name='figureRef' and (count(xhtml:param)!=1 or count(xhtml:param[@name='id'])!=1)">
+								ERROR: divRef must have exactly one parameter which must have a type of 'id'.</sch:report>
+            <sch:report test="@name='tableRef' and (count(xhtml:param)!=1 or count(xhtml:param[@name='id'])!=1)">
+								ERROR: divRef must have exactly one parameter which must have a type of 'id'.</sch:report>
+            <sch:report test="@name='itemName' and (count(xhtml:param)&gt;1 or count(xhtml:param[@name!='item'])!=0)">
+								ERROR: itemName is only allowed one parameter, which must be of type 'item' (if present)</sch:report>
+            <sch:report test="@name='annotationRef' and (count(xhtml:param[@name='annotationKind'])=0 or count(xhtml:param[not(contains('annotationKind','item','id'),@name)])!=0)">
+								ERROR: annotationRef must have an annotationKind parameter.  Only other allowed parameters are 'item' and 'id'</sch:report>
+            <!-- Additional validation -->
+            <sch:report test="(@name='itemName' or @name='') and not(xhtml:Param[@name='item']) and (not(
+												 ancestor::mif:datatypeDefinition or ancestor::mif:property or ancestor::mif:class or ancestor::mif:attribute or
+												 ancestor::mif:relationship or ancestor::mif:triggerEvent or ancestor::mif:applicationRole))">
+							ERROR: There is no ancestor of an appropriate type having a name.</sch:report>
+          </sch:rule>
+        </sch:pattern>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="param" type="Param">
+        <xs:annotation>
+          <xs:documentation>param is used to supply a named property value. In XML it would seem natural to follow RDF and support an abbreviated syntax where the param elements are replaced by attribute value pairs on the object start tag.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:group ref="block"/>
+      <!-- MIF: Not required for HL7's use which is strictly for extension elements
+      <xs:element name="form" type="Form"/>
+      -->
+      <xs:group ref="inline"/>
+      <!-- MIF: Not required for HL7's use which is strictly for extension elements
+      <xs:group ref="misc"/>
+      -->
+    </xs:choice>
+    <xs:attribute name="name" type="ObjectName">
+      <xs:annotation>
+        <xs:documentation>Indicates the name of the extension element</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="hl7Id" type="xs:NMTOKEN">
+      <xs:annotation>
+        <xs:documentation>Provides a unique identifier for the element within the context of the element containing the markup, not necessarily the entire document</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <!-- MIF: Added to allow identification of objects -->
+    <!-- MIF: End Modification -->
+    <!-- MIF: Constrained to restrict allowed values -->
+    <!-- MIF: End modification -->
+    <!-- MIF: Not required for HL7's use which is strictly for extension elements
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attribute name="declare">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="declare"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="classid" type="URI"/>
+    <xs:attribute name="codebase" type="URI"/>
+    <xs:attribute name="data" type="URI"/>
+    <xs:attribute name="type" type="ContentType"/>
+    <xs:attribute name="codetype" type="ContentType"/>
+    <xs:attribute name="archive" type="UriList"/>
+    <xs:attribute name="standby" type="Text"/>
+    <xs:attribute name="height" type="Length"/>
+    <xs:attribute name="width" type="Length"/>
+    <xs:attribute name="usemap" type="URI"/>
+    -->
+    <!-- MIF: Excluded because we don't handle 'behavior' in our HL7 markup
+    <xs:attribute name="tabindex" type="tabindexNumber"/>
+    -->
+  </xs:complexType>
+  <xs:complexType name="Param">
+    <xs:annotation>
+      <xs:documentation>A parameter passed into the object definition</xs:documentation>
+      <xs:appinfo>
+        <sch:pattern name="Validate Param type">
+          <sch:rule context="element(*, xhtml:Param)">
+            <sch:report test="@name='id' and not(@value castable as mif:BasicId)">
+								ERROR: 'id' parameter must restricted to alpha-numeric with a limited set of punctuation and must be between 1 and 40 characters in length.</sch:report>
+            <sch:report test="@name='item' and not(@value castable as mif:ItemName)">
+								ERROR: 'item' parameter must be drawn from the set of allowed item values (refer to mif:referencedCodes.xsd/ParentArtifactKind)</sch:report>
+            <sch:report test="@name='annotationKind' and not(@value castable as mif:AnnotationKind)">
+								ERROR: 'annotationKind' parameter must be drawn from the set of allowed annotation types (refer to mif:referencedCodes.xsd/AnnotationKind)</sch:report>
+            <!-- Additional parameter validation -->
+            <sch:report test="@name='item' and (
+                         (@value='datatype' and not(ancestor::mif:datatypeDefinition)) or
+												 (@value='property' and not(ancestor::mif:property)) or
+												 (@value='class' and not(ancestor::mif:class)) or
+												 (@value='attribute' and not(ancestor::mif:attribute)) or
+												 (@value='relationship' and not(ancestor::mif:relationship)) or
+												 (@value='trigger' and not(ancestor::mif:triggerEvent)) or
+												 (@value='appRole' and not(ancestor::mif:applicationRole))">
+							ERROR: There is no ancestor of the specified type.</sch:report>
+          </sch:rule>
+        </sch:pattern>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:attribute name="name" type="ParamName">
+      <xs:annotation>
+        <xs:documentation>The name of the parameter defining what value is being specified</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="value" type="ParamValue">
+      <xs:annotation>
+        <xs:documentation>Indicates the content for the parameter being specified</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <!-- MIF: Not required for HL7's use which is strictly for extension elements
+    <xs:attribute name="id" type="xs:ID"/>
+    -->
+    <!-- MIF: Modified to make required and constrain type -->
+    <!-- MIF: End modification -->
+    <!-- MIF: Not required for HL7's use, where 'data' is only allowed possibility
+    <xs:attribute name="valuetype" default="data">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="data"/>
+          <xs:enumeration value="ref"/>
+          <xs:enumeration value="object"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="type" type="ContentType"/>
+    -->
+  </xs:complexType>
+  <xs:simpleType name="ParamValue">
+    <xs:restriction base="xs:string"/>
+    <!-- todo: constrain to reasonable length, and if possible, to a tighter type such as xs:TOKEN -->
+  </xs:simpleType>
+  <!-- MIF: End Add -->
+  <!-- =================== Images =========================================== -->
+  <xs:complexType name="Img">
+    <xs:annotation>
+      <xs:documentation>To avoid accessibility problems for people who aren't able to see the image, you should provide a text description using the alt and longdesc attributes. In addition, avoid the use of server-side image maps. Note that in this DTD there is no name attribute. That is only available in the transitional and frameset DTD.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="thumbnail" type="Img" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>A small rendition of the pixmap image intended to be used as a place-holder (often with a hyperlink to the larger pixmap image) when space constraints prevent the display of the full-size image.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="imageType" type="ImageKind" use="required">
+      <xs:annotation>
+        <xs:documentation>Defines what format the image is stored in.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="hl7Id" type="xs:NMTOKEN">
+      <xs:annotation>
+        <xs:documentation>Provides a unique identifier for the element within the context of the element containing the markup, not necessarily the entire document</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attribute name="src" type="URI" use="required">
+      <xs:annotation>
+        <xs:documentation>Indicates where the image is located.  Path should be expressed based on the package in which the image is stored</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="alt" type="Text" use="required">
+      <xs:annotation>
+        <xs:documentation>Provides a description which can be rendered in place of the graphic</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="height" type="Length">
+      <xs:annotation>
+        <xs:documentation>Requests that the image be scaled to the specified vertical size or percentage of the available vertical space</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="width" type="Length">
+      <xs:annotation>
+        <xs:documentation>Requests that the image be scaled to the specified horizontal size or percentage of the available horizontal space</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <!-- MIF: Add - to support different rendering capabilities for images-->
+    <!-- MIF: End Add -->
+    <!-- MIF: Added (takes the place of 'id' but isn't required to be unique across a whole document because what constitutes a document varies.  Also, we only want ids in certain places -->
+    <!-- MIF: End Add -->
+    <!-- MIF: not required by HL7
+    <xs:attribute name="longdesc" type="URI">
+      <xs:annotation>
+        <xs:documentation>This attribute specifies a link to a long description of the image. This description should supplement the short description provided using the alt attribute. When the image has an associated image map, this attribute should provide information about the image map's contents</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    -->
+    <!-- MIF: Behaviors are not supported by HL7
+    <xs:attribute name="usemap" type="URI">
+      <xs:annotation>
+        <xs:documentation>usemap points to a map element which may be in this document or an external document, although the latter is not widely supported</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ismap">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ismap"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    -->
+  </xs:complexType>
+  <!-- ================== Client-side image maps ============================ -->
+  <!-- MIF: Excluded because we don't support 'behaviors' in our HL7 markup
+  <xs:complexType name="Map">
+    <xs:annotation>
+      <xs:documentation>These can be placed in the same document or grouped in a separate document although this isn't yet widely supported</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:choice maxOccurs="unbounded">
+        <xs:group ref="block"/>
+        <xs:element name="form" type="Form"/>
+        <xs:group ref="misc"/>
+      </xs:choice>
+      <xs:element name="area" type="Area" maxOccurs="unbounded"/>
+    </xs:choice>
+    <xs:attributeGroup ref="i18n"/>
+    <xs:attributeGroup ref="events"/>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="class"/>
+    <xs:attribute name="style" type="StyleSheet"/>
+    <xs:attribute name="title" type="Text"/>
+    <xs:attribute name="name" type="xs:NMTOKEN"/>
+  </xs:complexType>
+  <xs:complexType name="Area">
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attributeGroup ref="focus"/>
+    <xs:attribute name="shape" type="Shape" default="rect"/>
+    <xs:attribute name="coords" type="Coords"/>
+    <xs:attribute name="href" type="URI"/>
+    <xs:attribute name="nohref">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="nohref"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="alt" type="Text" use="required"/>
+  </xs:complexType>-->
+  <!-- ================ Forms =============================================== -->
+  <!-- MIF: Excluded because we don't data capture in our HL7 markup
+  <xs:complexType name="Form">
+    <xs:complexContent>
+      <xs:extension base="form.content">
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute name="action" type="URI" use="required"/>
+        <xs:attribute name="method" default="get">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="get"/>
+              <xs:enumeration value="post"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="enctype" type="ContentType" default="application/x-www-form-urlencoded"/>
+        <xs:attribute name="onsubmit" type="Script"/>
+        <xs:attribute name="onreset" type="Script"/>
+        <xs:attribute name="accept" type="ContentTypes"/>
+        <xs:attribute name="accept-charset" type="Charsets"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Label" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute name="for" type="xs:IDREF"/>
+        <xs:attribute name="accesskey" type="Character"/>
+        <xs:attribute name="onfocus" type="Script"/>
+        <xs:attribute name="onblur" type="Script"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="InputType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="text"/>
+      <xs:enumeration value="password"/>
+      <xs:enumeration value="checkbox"/>
+      <xs:enumeration value="radio"/>
+      <xs:enumeration value="submit"/>
+      <xs:enumeration value="reset"/>
+      <xs:enumeration value="file"/>
+      <xs:enumeration value="hidden"/>
+      <xs:enumeration value="image"/>
+      <xs:enumeration value="button"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Input">
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attributeGroup ref="focus"/>
+    <xs:attribute name="type" type="InputType" default="text"/>
+    <xs:attribute name="name">
+      <xs:annotation>
+        <xs:documentation>the name attribute is required for all but submit &amp; reset</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="value"/>
+    <xs:attribute name="checked">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="checked"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="disabled">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="disabled"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="readonly">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="readonly"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="size"/>
+    <xs:attribute name="maxlength" type="Number"/>
+    <xs:attribute name="src" type="URI"/>
+    <xs:attribute name="alt"/>
+    <xs:attribute name="usemap" type="URI"/>
+    <xs:attribute name="onselect" type="Script"/>
+    <xs:attribute name="onchange" type="Script"/>
+    <xs:attribute name="accept" type="ContentTypes"/>
+  </xs:complexType>
+  <xs:group name="Option">
+    <xs:sequence>
+      <xs:element name="option" type="Option">
+        <xs:annotation>
+          <xs:documentation>selectable choice</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:complexType name="Select">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="optgroup" type="Optgroup">
+        <xs:annotation>
+          <xs:documentation>option group</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:group ref="Option"/>
+    </xs:choice>
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attribute name="name"/>
+    <xs:attribute name="size" type="Number"/>
+    <xs:attribute name="multiple">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="multiple"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="disabled">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="disabled"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="tabindex" type="tabindexNumber"/>
+    <xs:attribute name="onfocus" type="Script"/>
+    <xs:attribute name="onblur" type="Script"/>
+    <xs:attribute name="onchange" type="Script"/>
+  </xs:complexType>
+  <xs:complexType name="Optgroup">
+    <xs:sequence>
+      <xs:group ref="Option" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attribute name="disabled">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="disabled"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="label" type="Text" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="Option" mixed="true">
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attribute name="selected">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="selected"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="disabled">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="disabled"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="label" type="Text"/>
+    <xs:attribute name="value"/>
+  </xs:complexType>
+  <xs:complexType name="Textarea" mixed="true">
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attributeGroup ref="focus"/>
+    <xs:attribute name="name"/>
+    <xs:attribute name="rows" type="Number" use="required"/>
+    <xs:attribute name="cols" type="Number" use="required"/>
+    <xs:attribute name="disabled">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="disabled"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="readonly">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="readonly"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="onselect" type="Script"/>
+    <xs:attribute name="onchange" type="Script"/>
+  </xs:complexType>
+  <xs:complexType name="Fieldset" mixed="true">
+    <xs:sequence>
+      <xs:element name="legend" type="Legend">
+        <xs:annotation>
+          <xs:documentation>fieldset label</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="block"/>
+        <xs:element name="form" type="Form"/>
+        <xs:group ref="inline"/>
+        <xs:group ref="misc"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attributeGroup ref="attrs"/>
+  </xs:complexType>
+  <xs:complexType name="Legend" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attribute name="accesskey" type="Character"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Button" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="button.content">
+        <xs:attributeGroup ref="attrs"/>
+        <xs:attributeGroup ref="focus"/>
+        <xs:attribute name="name"/>
+        <xs:attribute name="value"/>
+        <xs:attribute name="type" default="submit">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="button"/>
+              <xs:enumeration value="submit"/>
+              <xs:enumeration value="reset"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="disabled">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="disabled"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  -->
+  <!-- ======================= Tables ======================================= -->
+  <xs:annotation>
+    <xs:documentation>Derived from IETF HTML table standard, see [RFC1942]</xs:documentation>
+  </xs:annotation>
+  <xs:simpleType name="TFrame">
+    <xs:annotation>
+      <xs:documentation>The border attribute sets the thickness of the frame around the table. The default units are screen pixels.
+        The frame attribute specifies which parts of the frame around the table should be rendered. The values are not the same as CALS to avoid a name clash with the valign attribute.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="void"/>
+      <xs:enumeration value="above"/>
+      <xs:enumeration value="below"/>
+      <xs:enumeration value="hsides"/>
+      <xs:enumeration value="lhs"/>
+      <xs:enumeration value="rhs"/>
+      <xs:enumeration value="vsides"/>
+      <xs:enumeration value="box"/>
+      <xs:enumeration value="border"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TRules">
+    <xs:annotation>
+      <xs:documentation>The rules attribute defines which rules to draw between cells:
+        If rules is absent then assume: "none" if border is absent or border="0" otherwise "all"</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="none"/>
+      <xs:enumeration value="groups"/>
+      <xs:enumeration value="rows"/>
+      <xs:enumeration value="cols"/>
+      <xs:enumeration value="all"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:attributeGroup name="cellhalign">
+    <xs:annotation>
+      <xs:documentation>horizontal alignment attributes for cell contents</xs:documentation>
+    </xs:annotation>
+    <!-- Todo: enforce that char and charoff are only permitted if align is 'char' -->
+    <xs:attribute name="align">
+      <xs:annotation>
+        <xs:documentation>Indicates the type of alignment</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="left"/>
+          <xs:enumeration value="center"/>
+          <xs:enumeration value="right"/>
+          <xs:enumeration value="justify"/>
+          <xs:enumeration value="char"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="char" type="Character">
+      <xs:annotation>
+        <xs:documentation>alignment char, e.g. char=':'</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="charoff" type="Length">
+      <xs:annotation>
+        <xs:documentation>offset for alignment char</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="cellvalign">
+    <xs:annotation>
+      <xs:documentation>vertical alignment attributes for cell contents</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="valign">
+      <xs:annotation>
+        <xs:documentation>Indicates the vertical position of text within the cell</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="top"/>
+          <xs:enumeration value="middle"/>
+          <xs:enumeration value="bottom"/>
+          <xs:enumeration value="baseline"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:complexType name="Table">
+    <xs:sequence>
+      <xs:element name="caption" type="Caption" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Descriptive text for labeling a table</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:choice>
+        <xs:element name="col" type="Col" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>col elements define the alignment properties for cells in one or more columns.
+              The width attribute specifies the width of the columns, e.g.
+                width=64        width in screen pixels
+                width=0.5*      relative width of 0.5
+              The span attribute causes the attributes of one col element to apply to more than one column.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="colgroup" type="Colgroup" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>colgroup groups a set of col elements. It allows you to group several semantically related columns together.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:choice>
+      <xs:element name="thead" type="Thead" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Header for the table (repeated at the top of each page)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="tfoot" type="Tfoot" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Footer for the table (repeated at the bottom of each page)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:choice>
+        <xs:element name="tbody" type="Tbody" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Table body - Main content of the table</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:group ref="Tr"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attribute name="hl7Id" type="xs:NMTOKEN">
+      <xs:annotation>
+        <xs:documentation>Provides a unique identifier for the element within the context of the element containing the markup, not necessarily the entire document</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="width" type="Length">
+      <xs:annotation>
+        <xs:documentation>specifies the desired width of the entire table and is intended for visual user agents. When the value is a percentage value, the value is relative to the user agent's available horizontal space. In the absence of any width specification, table width is determined by the user agent</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="border" type="Pixels">
+      <xs:annotation>
+        <xs:documentation>This attributes specifies the width (in pixels only) of the frame around a table</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="frame" type="TFrame">
+      <xs:annotation>
+        <xs:documentation>This attribute specifies which sides of the frame surrounding a table will be visible</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="rules" type="TRules">
+      <xs:annotation>
+        <xs:documentation>This attribute specifies which rules will appear between cells within a table</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="cellspacing" type="Length">
+      <xs:annotation>
+        <xs:documentation>This attribute specifies how much space the user agent should leave between the left side of the table and the left-hand side of the leftmost column, the top of the table and the top side of the topmost row, and so on for the right and bottom of the table. The attribute also specifies the amount of space to leave between cells</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="cellpadding" type="Length">
+      <xs:annotation>
+        <xs:documentation>This attribute specifies the amount of space between the border of the cell and its contents. If the value of this attribute is a pixel length, all four margins should be this distance from the contents. If the value of the attribute is a percentage length, the top and bottom margins should be equally separated from the content based on a percentage of the available vertical space, and the left and right margins should be equally separated from the content based on a percentage of the available horizontal space.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <!-- MIF: Added (takes the place of 'id' but isn't required to be unique across a whole document because what constitutes a document varies.  Also, we only want ids in certain places -->
+    <!-- MIF: End Add -->
+    <!-- MIF: Excluded as more complex than currently required for HL7 markup
+    <xs:attribute name="summary" type="Text">
+      <xs:annotation>
+        <xs:documentation>Provides a summary of the table's purpose and structure for user agents rendering to non-visual media such as speech and Braille.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    -->
+  </xs:complexType>
+  <xs:complexType name="Caption" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Inline">
+        <xs:attributeGroup ref="attrs"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:annotation>
+    <xs:documentation>Use thead to duplicate headers when breaking table across page boundaries, or for static headers when tbody sections are rendered in scrolling panel.
+      Use tfoot to duplicate footers when breaking table across page boundaries, or for static footers when tbody sections are rendered in scrolling panel.
+      Use multiple tbody sections when rules are needed between groups of table rows.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:group name="Tr">
+    <xs:sequence>
+      <xs:element name="tr" type="Tr" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Table row</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  <xs:complexType name="Thead">
+    <xs:group ref="Tr"/>
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attributeGroup ref="cellhalign"/>
+    <xs:attributeGroup ref="cellvalign"/>
+  </xs:complexType>
+  <xs:complexType name="Tfoot">
+    <xs:group ref="Tr"/>
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attributeGroup ref="cellhalign"/>
+    <xs:attributeGroup ref="cellvalign"/>
+  </xs:complexType>
+  <xs:complexType name="Tbody">
+    <xs:group ref="Tr"/>
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attributeGroup ref="cellhalign"/>
+    <xs:attributeGroup ref="cellvalign"/>
+  </xs:complexType>
+  <xs:complexType name="Colgroup">
+    <xs:sequence>
+      <xs:element name="col" type="Col" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>col elements define the alignment properties for cells in one or more columns.
+            The width attribute specifies the width of the columns, e.g.
+              width=64        width in screen pixels
+              width=0.5*      relative width of 0.5
+            The span attribute causes the attributes of one col element to apply to more than one column.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attribute name="span" type="Number" default="1">
+      <xs:annotation>
+        <xs:documentation>Indicates the number of columns in the group</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="width" type="MultiLength">
+      <xs:annotation>
+        <xs:documentation>The width of the columns within the column group.  (The last width specified applies to the remaining columns in the group)</xs:documentation>
+        <!-- Todo: constrain that number of lengths is <= span; verify assumption that last width applies to remainder; ensure that contained number of columns with spans <= span of group -->
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="cellhalign"/>
+    <xs:attributeGroup ref="cellvalign"/>
+  </xs:complexType>
+  <xs:complexType name="Col">
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attribute name="span" type="Number" default="1">
+      <xs:annotation>
+        <xs:documentation>Indicates the number of columns the definition of this column includes</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="width" type="MultiLength">
+      <xs:annotation>
+        <xs:documentation>Indicates the width of each column defined by the column definition</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="cellhalign"/>
+    <xs:attributeGroup ref="cellvalign"/>
+  </xs:complexType>
+  <xs:complexType name="Tr">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="th" type="Th">
+        <xs:annotation>
+          <xs:documentation>Table header for a row</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="td" type="Td">
+        <xs:annotation>
+          <xs:documentation>Table data cell</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+    <xs:attributeGroup ref="attrs"/>
+    <xs:attributeGroup ref="cellhalign"/>
+    <xs:attributeGroup ref="cellvalign"/>
+  </xs:complexType>
+  <!-- MIF: Not used because the elements that reference it are unused
+  <xs:simpleType name="Scope">
+    <xs:annotation>
+      <xs:documentation>Scope is simpler than headers attribute for common tables</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="row"/>
+      <xs:enumeration value="col"/>
+      <xs:enumeration value="rowgroup"/>
+      <xs:enumeration value="colgroup"/>
+    </xs:restriction>
+  </xs:simpleType>
+  -->
+  <xs:attributeGroup name="TableAttributes">
+    <xs:attributeGroup ref="attrs"/>
+    <!-- MIF: Excluded as more complex than currently required for HL7 markup
+    <xs:attribute name="abbr" type="Text">
+      <xs:annotation>
+        <xs:documentation>Abbreviated version of the text of the cell</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="axis">
+      <xs:annotation>
+        <xs:documentation>Allows defining a cell as representing a specific category of data</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="headers" type="xs:IDREFS">
+      <xs:annotation>
+        <xs:documentation>Indicates what headers are associated with the data cell.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="scope" type="Scope">
+      <xs:annotation>
+        <xs:documentation>This attribute specifies the set of data cells for which the current header cell provides header information.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    -->
+    <xs:attribute name="rowspan" type="Number" default="1">
+      <xs:annotation>
+        <xs:documentation>Indicates the number of the defined rows of the table the cell should occupy</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="colspan" type="Number" default="1">
+      <xs:annotation>
+        <xs:documentation>Indicates the number of the defined columns of the table the cell should occupy</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="cellhalign"/>
+    <xs:attributeGroup ref="cellvalign"/>
+  </xs:attributeGroup>
+  <xs:complexType name="Th" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Flow">
+        <xs:attributeGroup ref="TableAttributes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Td" mixed="true">
+    <xs:complexContent mixed="true">
+      <xs:extension base="Flow">
+        <xs:attributeGroup ref="TableAttributes"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

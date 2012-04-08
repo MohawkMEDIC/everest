@@ -1,0 +1,150 @@
+﻿using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MARC.Everest.DataTypes;
+using MARC.Everest.DataTypes.Interfaces;
+
+namespace MARC.Everest.Test.DataTypes.R2
+{
+    /// <summary>
+    /// Summary description for LISTTest
+    /// </summary>
+    [TestClass]
+    public class LISTTest
+    {
+        public LISTTest()
+        {
+            //
+            // TODO: Add constructor logic here
+            //
+        }
+
+        private TestContext testContextInstance;
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
+
+        #region Additional test attributes
+        //
+        // You can use the following additional attributes as you write your tests:
+        //
+        // Use ClassInitialize to run code before running the first test in the class
+        // [ClassInitialize()]
+        // public static void MyClassInitialize(TestContext testContext) { }
+        //
+        // Use ClassCleanup to run code after all tests in a class have run
+        // [ClassCleanup()]
+        // public static void MyClassCleanup() { }
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize()]
+        // public void MyTestInitialize() { }
+        //
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
+        #endregion
+
+        /// <summary>
+        /// Tests R2 serialization of a LIST with simple items
+        /// </summary>
+        [TestMethod]
+        public void R2LISTSimpleSerializationTest()
+        {
+            LIST<INT> inti = LIST<INT>.CreateList(1, 2, 3, 4);
+            string expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""><item value=""1""/><item value=""2""/><item value=""3""/><item value=""4""/></test>";
+            string actualXml = R2SerializationHelper.SerializeAsString(inti);
+            R2SerializationHelper.XmlIsEquivalent(expectedXml, actualXml);
+        }
+
+        /// <summary>
+        /// Tests R2 serialization of a LIST with items that don't match the generic parameter
+        /// </summary>
+        [TestMethod]
+        public void R2LISTTypeOverrideSerializationTest()
+        {
+            LIST<IQuantity> inti = LIST<IQuantity>.CreateList(
+                (INT)1, 
+                (REAL)2, 
+                new PQ(3, "ft"));
+            string expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""><item xsi:type=""INT"" value=""1""/><item xsi:type=""REAL"" value=""2""/><item xsi:type=""PQ"" value=""3"" unit=""ft""/></test>";
+            string actualXml = R2SerializationHelper.SerializeAsString(inti);
+            R2SerializationHelper.XmlIsEquivalent(expectedXml, actualXml);
+        }
+
+        /// <summary>
+        /// Tests R2 serliazation of a set with nested collections
+        /// </summary>
+        [TestMethod]
+        public void R2LISTNestedSerializationTest()
+        {
+            LIST<IColl> inti = LIST<IColl>.CreateList(
+                SET<INT>.CreateSET(1, 2, 3),
+                LIST<INT>.CreateList(1, 1, 2),
+                BAG<ST>.CreateBAG("1", "2")
+            );
+            string expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""><item xsi:type=""DSET_INT""><item value=""1""/><item value=""2""/><item value=""3""/></item><item xsi:type=""LIST_INT""><item value=""1""/><item value=""1""/><item value=""2""/></item><item xsi:type=""BAG_ST""><item value=""1"" language=""en-US""/><item value=""2"" language=""en-US""/></item></test>";
+            string actualXml = R2SerializationHelper.SerializeAsString(inti);
+            R2SerializationHelper.XmlIsEquivalent(expectedXml, actualXml);
+        }
+
+        /// <summary>
+        /// Tests R2 parse of a LIST with simple items
+        /// </summary>
+        [TestMethod]
+        public void R2LISTSimpleParseTest()
+        {
+            LIST<INT> inti = LIST<INT>.CreateList(1, 2, 3, 4);
+            string actualXml = R2SerializationHelper.SerializeAsString(inti);
+            LIST<INT> int2 = R2SerializationHelper.ParseString<LIST<INT>>(actualXml);
+            Assert.AreEqual(inti, int2);
+        }
+
+        /// <summary>
+        /// Tests R2 parse of a LIST with items that don't match the generic parameter
+        /// </summary>
+        [TestMethod]
+        public void R2LISTTypeOverrideParseTest()
+        {
+            LIST<IQuantity> inti = LIST<IQuantity>.CreateList(
+                (INT)1,
+                (REAL)2,
+                new PQ(3, "ft"));
+            string actualXml = R2SerializationHelper.SerializeAsString(inti);
+            LIST<IQuantity> int2 = R2SerializationHelper.ParseString<LIST<IQuantity>>(actualXml);
+            Assert.AreEqual(inti, int2);
+        }
+
+        /// <summary>
+        /// Tests R2 parse of a set with nested collections
+        /// </summary>
+        [TestMethod]
+        public void R2LISTNestedParseTest()
+        {
+            LIST<IColl> inti = LIST<IColl>.CreateList(
+                SET<INT>.CreateSET(1, 2, 3),
+                LIST<INT>.CreateList(1, 1, 2),
+                BAG<ST>.CreateBAG("1", "2")
+            );
+            string actualXml = R2SerializationHelper.SerializeAsString(inti);
+            LIST<IColl> int2 = R2SerializationHelper.ParseString<LIST<IColl>>(actualXml);
+            Assert.AreEqual(inti, int2);
+        }
+    }
+}

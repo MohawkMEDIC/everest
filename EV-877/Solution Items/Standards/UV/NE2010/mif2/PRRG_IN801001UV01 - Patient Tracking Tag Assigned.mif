@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="801001"
+                 title="Rtls Event Activate Notification Patient Tag">
+   <mif:businessName name="Patient Tracking Tag Assigned"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="RG" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="801001"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>This notification is sent from an EMR or registration system to a real time location tracking system to convey that a specific tracking tag has been assigned to a specific patient. IdTag Person NonPersonLivingSubject LivingSubjectChoice Patient Tag Assignment RegistrationEvent statusCode active Master File / Reg Notif. Control Act, Role Subject</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="RG" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="801001"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MF"
+                          domain="MI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700701"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="RegisteredRole" root="DEFN" section="AM" subSection="PR"
+                             domain="RG"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="801001"
+                             traversalName="idTag"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

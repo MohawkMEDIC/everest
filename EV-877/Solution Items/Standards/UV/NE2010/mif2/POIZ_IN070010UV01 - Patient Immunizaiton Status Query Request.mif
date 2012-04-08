@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="070010"
+                 title="Immunization Event Recommendation and Status Query">
+   <mif:businessName name="Patient Immunizaiton Status Query Request"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="IZ" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="070010"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Requests retrieval of an identified patient's immunization status and recommendation.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="IZ" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="070010"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000300">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="QU"
+                          domain="QI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="120001"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="IZ"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="070010"
+                             traversalName="parameterList"/>
+         <mif:parameterModel parameterName="ParameterList" root="DEFN" section="HM" subSection="PO"
+                             domain="IZ"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="070020"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

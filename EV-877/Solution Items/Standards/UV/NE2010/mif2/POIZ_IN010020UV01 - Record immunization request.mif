@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="010020"
+                 title="Immunization Event Complete Request Immunization">
+   <mif:businessName name="Record immunization request"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="PO" domain="IZ" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="010020"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>Requests that a particular immunization be added to a patient's record.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="PO" domain="IZ" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="010080"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="HM" subSection="PO" domain="IZ"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="030050"
+                             traversalName="immunization"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>Indicates that the immunization event has been recorded.</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="PO" domain="IZ" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="010030"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="PO" domain="IZ" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="010040"/>
+   </mif:receiverResponsibilities>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>Indicates that the receiver refused to record the immunization event.</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="PO" domain="IZ" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="010040"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="PO" domain="IZ" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="010010"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

@@ -1,0 +1,27 @@
+﻿Notes About Processing Delta Sets:
+
+1. Type representation is done using non-structured strings. This regex works pretty well 
+with non-generic types:
+^(\w+)?<?([A-Za-z\.\<\,]+>?)?>$
+
+Basically we have to turn IVL<RTO<PQ,PQ>> into:
+
+TR : IVL 
+	TP : RTO
+		TP	: PQ
+		TP	: PQ
+		
+Which is done as follows:
+
+RE Group	0		1				Action
+Pass 1:		IVL		RTO<PQ,PQ>		0 into TR1 name
+									RTO<PQ,PQ> to be processed
+Pass 2:		RTO		PQ,PQ			0 into TR2 name
+									Assign PQ as TP to TR2
+Pass 3:		PQ,PQ	NO MATCH		Split and return two TR(3,4) of PQ
+Pass 2:								Assign TR(3,4) as type parameters to TR2
+Pass 1:								Assign TR2 as type parameter to TR1
+
+Function for correcting data types will be called recursively until the
+second group in the regex no longer contains '<'. The results from the 
+child call will be placed as a type parameter to the parent.

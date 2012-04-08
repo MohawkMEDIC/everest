@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="320105"
+                 title="Authorization Event Nullify Request Complete Oral Health">
+   <mif:businessName name="Auth Nullify Request, OralHealth"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="FI" domain="CR" artifact="IN"
+                        realmNamespace="UV"
+                        version="03"
+                        id="320105"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>The sender sends an Authorization Nullify Request message to request the nullification of a previously submitted Authorization Request for Oral Health services and/or products. The receiver will provide completed nullify results only. The receiver does NOT return an initial response. Nullify results indicate that the receiver was successful or not in nullifying the Authorization Request.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="FI" domain="CR" artifact="TE"
+                             realmNamespace="UV"
+                             version="02"
+                             id="320101"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="AM" subSection="FI" domain="CR"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="02"
+                             id="320101"
+                             traversalName="invoiceElementGroup"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

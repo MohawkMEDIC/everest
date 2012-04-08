@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="000002"
+                 title="Query By Parameter Event Complete">
+   <mif:businessName name="General Query Complete Query Response"/>
+   <mif:packageLocation root="DEFN" section="IM" subSection="QU" domain="QI" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000002"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>General Query Complete Query Response interaction contains status on an identified query session and one or more instances of the query results set if any exist.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="IM" subSection="QU" domain="QI" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="000002"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000300"/>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>The query fulfiller must return the next set of instances from the result set or return a status indicating that there are no more result instances ofr the current query session.</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="IM" subSection="QU" domain="QI" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="000002"/>
+      <mif:invokeTriggerEvent root="DEFN" section="IM" subSection="QU" domain="QI" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="000002"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

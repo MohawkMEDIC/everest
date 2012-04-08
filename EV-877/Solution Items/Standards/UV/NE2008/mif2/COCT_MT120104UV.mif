@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" isAbstract="false" isSerializable="true" name="UV" packageKind="realmNamespace" representationKind="flat" schemaVersion="2.0" xsi:schemaLocation="">
+   <mif:packageLocation artifact="MT" domain="CT" id="120104" realmNamespace="UV" root="DEFN" section="IM" subSection="CO"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2008"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0" y="0"/>
+         <mif:size height="517" width="691"/>
+      </mif:graphElement>
+   <entryPoint name="A_ObservationDx Minimal"><mif:graphElement containerDiagramName="Main" shapeId="Sheet.12">
+            <mif:position x="104" y="458"/>
+            <mif:size height="60" width="216"/>
+            <mif:anchorage connectToShapeId="Sheet.12">
+               <mif:position x="208" y="458"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.2">
+                     <mif:position x="217" y="410"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement></entryPoint><class className="Author" presentation="HL7"><mif:graphElement containerDiagramName="Main" nodeOrientation="Right" shapeId="Sheet.30" shapeTemplate="Participation" textWrappingWidth="45.0">
+               <mif:position x="310" y="43"/>
+               <mif:size height="41" width="265"/>
+            </mif:graphElement></class><class className="ObservationDx" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="false" isWidthAutoSize="false" shapeId="Sheet.2" shapeTemplate="Act">
+               <mif:position x="0" y="0"/>
+               <mif:size height="409" width="309"/>
+            </mif:graphElement></class><class className="R_AssignedEntityIdentified" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="false" isWidthAutoSize="true" shapeId="Sheet.6" shapeTemplate="CMET">
+               <mif:position x="576" y="27"/>
+               <mif:size height="190" width="112"/>
+            </mif:graphElement></class><association className="R_AssignedEntityIdentified" relationshipName="assignedEntity"><mif:graphElement connectToShapeId="Sheet.30" containerDiagramName="Main">
+                                 <mif:position x="576" y="46"/>
+                                 <mif:graphEdge>
+                                    <mif:anchor connectToShapeId="Sheet.6">
+                                       <mif:position x="576" y="46"/>
+                                    </mif:anchor>
+                                 </mif:graphEdge>
+                              </mif:graphElement></association><association className="Author" relationshipName="author"><mif:graphElement connectToShapeId="Sheet.2" containerDiagramName="Main">
+                     <mif:position x="310" y="82"/>
+                     <mif:graphEdge>
+                        <mif:anchor connectToShapeId="Sheet.30">
+                           <mif:position x="310" y="82"/>
+                        </mif:anchor>
+                     </mif:graphEdge>
+                  </mif:graphElement></association></mif:graphicRepresentation>
+   <derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel artifact="RM" domain="CT" id="120104" realmNamespace="UV" root="DEFN" section="IM" subSection="CO"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel artifact="HD" domain="CT" id="120104" realmNamespace="UV" root="DEFN" section="IM" subSection="CO"/>
+   </derivedFrom>
+   <entryPoint className="ObservationDx" id="COCT_MT120104UV" isAbstract="false" name="A_ObservationDx Minimal">
+      <mif:annotations>
+         
+      <documentation><mif:description>
+            <mif:text>Provides detailed information on a specific medical diagnosis.</mif:text>
+         </mif:description></documentation></mif:annotations>
+      
+   </entryPoint>
+   <containedClass>
+      <mif:class isAbstract="false" name="Author">
+         <derivedFrom className="Participation" staticModelDerivationId="1"/>
+         <derivedFrom className="Author" staticModelDerivationId="2"/>
+         <derivedFrom className="Author" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <derivedFrom attributeName="typeCode" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="Author" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="Author" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="AUT" codeSystemName="ParticipationType"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" defaultValue="OP" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="contextControlCode" sortKey="2">
+            <derivedFrom attributeName="contextControlCode" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="contextControlCode" className="Author" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="contextControlCode" className="Author" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code codeSystemName="ContextControl"/></supplierVocabulary>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="ObservationDx">
+         <derivedFrom className="Observation" staticModelDerivationId="1"/>
+         <derivedFrom className="ObservationDx" staticModelDerivationId="2"/>
+         <derivedFrom className="ObservationDx" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="ObservationDx" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="ObservationDx" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="OBS" codeSystemName="ActClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <derivedFrom attributeName="moodCode" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="ObservationDx" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="ObservationDx" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="EVN" codeSystemName="ActMood"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="id" sortKey="3">
+            <derivedFrom attributeName="id" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="ObservationDx" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="ObservationDx" staticModelDerivationId="3"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="code" sortKey="4">
+            <mif:businessName name="e.g. LOINC code"><realmNamespace value="UV"/></mif:businessName>
+            <derivedFrom attributeName="code" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="ObservationDx" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="ObservationDx" staticModelDerivationId="3"/>
+            <mif:type name="CE"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ObservationDiagnosisTypes"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute defaultValue="false" isImmutable="true" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="negationInd" sortKey="5">
+            <derivedFrom attributeName="negationInd" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="negationInd" className="ObservationDx" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="negationInd" className="ObservationDx" staticModelDerivationId="3"/>
+            <mif:type name="BL"/>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="statusCode" sortKey="6">
+            <derivedFrom attributeName="statusCode" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="statusCode" className="ObservationDx" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="statusCode" className="ObservationDx" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE" valueSetName="ActStatusCompleted"/>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="effectiveTime" sortKey="7">
+            <mif:businessName name="physiologically relevant time"><realmNamespace value="UV"/></mif:businessName>
+            <derivedFrom attributeName="effectiveTime" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="effectiveTime" className="ObservationDx" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="effectiveTime" className="ObservationDx" staticModelDerivationId="3"/>
+            <mif:type name="IVL">
+               <argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="value" sortKey="8">
+            <derivedFrom attributeName="value" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="ObservationDx" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="ObservationDx" staticModelDerivationId="3"/>
+            <mif:type name="CE"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="DiagnosisValue"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="targetSiteCode" sortKey="9">
+            <derivedFrom attributeName="targetSiteCode" className="Observation" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="targetSiteCode" className="ObservationDx" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="targetSiteCode" className="ObservationDx" staticModelDerivationId="3"/>
+            <mif:type name="CD"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActSite"/></supplierVocabulary>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:commonModelElementRef name="R_AssignedEntityIdentified">
+         <derivedFrom className="Role" staticModelDerivationId="1"/>
+         <derivedFrom className="R_AssignedEntityIdentified" staticModelDerivationId="2"/>
+         <derivedFrom className="R_AssignedEntityIdentified" staticModelDerivationId="3"/>
+         <supplierVocabulary><vocabularyDomain xmlns="" name="RoleClass"/></supplierVocabulary>
+         
+         <cmet name="COCT_MT090001UV01"/>
+      </mif:commonModelElementRef>
+   </containedClass>
+   <association sortKey="2">
+      
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="assignedEntity" participantClassName="R_AssignedEntityIdentified" sortKey="BZ">
+            <derivedFrom associationEndName="role" className="Participation" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="assignedEntity" className="Author" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="assignedEntity" className="Author" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Author">
+            <derivedFrom associationEndName="participation" className="Role" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+   <association sortKey="0">
+      
+      
+   <mif:traversableConnection conformance="R" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="author" participantClassName="Author" sortKey="AEA_______">
+            <derivedFrom associationEndName="participation" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="author" className="ObservationDx" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="author" className="ObservationDx" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ObservationDx">
+            <derivedFrom associationEndName="act" className="Participation" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+</mif:staticModel>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="000029"
+                 title="Query Event Find Document Metadata">
+   <mif:businessName name="Find Document Metadata Query"/>
+   <mif:packageLocation root="DEFN" section="HM" subSection="RC" domain="MR" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000029"/>
+   <mif:invokingTriggerEvent root="DEFN" section="HM" subSection="RC" domain="MR" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="000901"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="QU"
+                          domain="QI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="021001"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="QueryByParameter" root="DEFN" section="HM" subSection="RC"
+                             domain="MR"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="000003"
+                             traversalName="queryByParameter"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason/>
+      <mif:invokeInteraction root="DEFN" section="HM" subSection="RC" domain="MR" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="000030"/>
+      <mif:invokeTriggerEvent root="DEFN" section="HM" subSection="RC" domain="MR" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="000902"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

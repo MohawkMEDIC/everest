@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><FICR_IN610102CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/FICR_IN610102CA.xsd">
+   <realmCode code="CA"/>
+   <id root="342AB8ED-9ECD-4039-EF4B-DC4773DBD10C"/>
+   <creationTime value="20090916224225.406-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="FICR_IN610102CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://120.120.122.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.3017.22.5.0.4" extension="DIS02"/>
+         <name>Good Neighbor Pharmacy</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </sender>
+   <acknowledgement>
+      <typeCode code="AA"/>
+      <targetMessage>
+         <id root="502E481B-E4DA-86E7-11A9-AEBE42C4F6A6"/>
+      </targetMessage>
+   </acknowledgement>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.1" extension="478608430"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="FICR_TE610101CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090916224224.406-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <family>Nuclear</family>
+                  <given>John</given>
+                  <prefix>Mr.</prefix>
+                  <suffix>II</suffix>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19480712"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <paymentIntent classCode="XACT" moodCode="PRMS">
+            <amt currency="CAD" value="100.20"/>
+            <reasonOf typeCode="RSON">
+               <adjudicatedInvoiceElementGroup classCode="INVE" moodCode="EVN">
+                  <id root="9B753808-E327-4E48-8E7C-6A0F40F6369A" use="BUS"/>
+                  <code code="CPINV" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="completed"/>
+                  <netAmt currency="CAD" value="100.20"/>
+                  <coverage typeCode="COVBY">
+                     <policyOrAccount classCode="COV" moodCode="EVN">
+                        <id root="2.16.840.1.11533.224" extension="195436234" use="BUS"/>
+                        <beneficiary typeCode="BEN">
+                           <coveredPartyAsPatient classCode="COVPTY">
+                              <id root="4AB4AF09-F9BC-4493-9F76-5DBD43DBD918" use="BUS"/>
+                              <code code="STUD" codeSystem="2.16.840.1.113883.5.111"/>
+                           </coveredPartyAsPatient>
+                        </beneficiary>
+                     </policyOrAccount>
+                  </coverage>
+                  <component typeCode="COMP">
+                     <adjudicatedInvoiceElementDetail classCode="INVE" moodCode="EVN">
+                        <id root="536391D1-AFEA-4C08-8CA6-DE5CDA325AE6" use="BUS"/>
+                        <code code="AFTHRS" codeSystem="2.16.840.1.113883.5.4"/>
+                        <unitQuantity unit="mmol/L" value="140.0"/>
+                        <unitPriceAmt/>
+                        <netAmt currency="CAD" value="100.20"/>
+                        <factorNumber value="1.3"/>
+                        <outcomeOf typeCode="OUTC">
+                           <adjudicationResult classCode="ADJUD" moodCode="EVN">
+                              <code code="AA" codeSystem="2.16.840.1.113883.5.4"/>
+                              <reference typeCode="REFR">
+                                 <invoiceElementGroup classCode="INVE" moodCode="RQO">
+                                    <id specializationType="II.BUS" use="BUS" root="2.16.840.1.113883.19.3.297.15.37.20" extension="7DH1QD1VTXDG9"/>
+                                    <code code="CPINV" codeSystem="2.16.840.1.113883.5.4"/>
+                                    <netAmt currency="CAD" value="105.20"/>
+                                 </invoiceElementGroup>
+                              </reference>
+                           </adjudicationResult>
+                        </outcomeOf>
+                     </adjudicatedInvoiceElementDetail>
+                  </component>
+               </adjudicatedInvoiceElementGroup>
+            </reasonOf>
+         </paymentIntent>
+      </subject>
+   </controlActEvent>
+</FICR_IN610102CA>

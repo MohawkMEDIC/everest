@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{341AB5C9-6084-4096-9B2E-AA3E5ADE7941}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>gpmrw</RootNamespace>
+    <AssemblyName>gpmrw</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="wstgJavaRendererOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wstgJavaRendererOptions.Designer.cs">
+      <DependentUpon>wstgJavaRendererOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EventTraceListener.cs" />
+    <Compile Include="frmWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWizard.designer.cs">
+      <DependentUpon>frmWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="wstgJavaRendererOptions.resx">
+      <DependentUpon>wstgJavaRendererOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWizard.resx">
+      <DependentUpon>frmWizard.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wstgCSRenderOptions.resx">
+      <DependentUpon>wstgCSRenderOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wstgOptimizations.resx">
+      <DependentUpon>wstgOptimizations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wstgRenderers.resx">
+      <DependentUpon>wstgRenderers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wstgRun.resx">
+      <DependentUpon>wstgRun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wstgSetOutput.resx">
+      <DependentUpon>wstgSetOutput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wstgSources.resx">
+      <DependentUpon>wstgSources.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wstgVerifyParameters.resx">
+      <DependentUpon>wstgVerifyParameters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wstgWelcome.resx">
+      <DependentUpon>wstgWelcome.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="wstgCSRenderOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wstgCSRenderOptions.Designer.cs">
+      <DependentUpon>wstgCSRenderOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="wstgOptimizations.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wstgOptimizations.Designer.cs">
+      <DependentUpon>wstgOptimizations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="wstgRenderers.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wstgRenderers.Designer.cs">
+      <DependentUpon>wstgRenderers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="wstgRun.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wstgRun.Designer.cs">
+      <DependentUpon>wstgRun.cs</DependentUpon>
+    </Compile>
+    <Compile Include="wstgSetOutput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wstgSetOutput.Designer.cs">
+      <DependentUpon>wstgSetOutput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="wstgSources.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wstgSources.Designer.cs">
+      <DependentUpon>wstgSources.cs</DependentUpon>
+    </Compile>
+    <Compile Include="wstgVerifyParameters.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wstgVerifyParameters.Designer.cs">
+      <DependentUpon>wstgVerifyParameters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="wstgWelcome.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="wstgWelcome.Designer.cs">
+      <DependentUpon>wstgWelcome.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MARC.Everest.VisualStudio.Wizards\MARC.Everest.VisualStudio.Wizards.csproj">
+      <Project>{8F476D12-8DC3-43EC-B9F0-31D74CA4F379}</Project>
+      <Name>MARC.Everest.VisualStudio.Wizards</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.csproj">
+      <Project>{A36444C8-6A75-4F38-967E-17B8218775AA}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\gpmr.csproj">
+      <Project>{474F5244-97D6-42B1-8664-122876EB56BF}</Project>
+      <Name>gpmr %28GPMR\gpmr%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.COR\MohawkCollege.EHR.gpmr.COR.csproj">
+      <Project>{6C99D22F-AD3D-4532-9441-C0E616C87261}</Project>
+      <Name>MohawkCollege.EHR.gpmr.COR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.Pipeline.Compiler\MohawkCollege.EHR.gpmr.Pipeline.Compiler.csproj">
+      <Project>{62C136F4-941F-40C3-840A-9C9F2084385F}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Compiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki\MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki.csproj">
+      <Project>{34291C69-DFE2-4DC7-85C8-53562A2967B9}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java\MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.csproj">
+      <Project>{984A3026-CB71-4449-8AAB-8BE638EC1687}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS\MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.csproj">
+      <Project>{00D56FC7-864D-4209-A7EB-2697E9C2557A}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.Pipeline.Renderer.XML.ITS\MohawkCollege.EHR.gpmr.Pipeline.Renderer.XML.ITS.csproj">
+      <Project>{86C6F736-D65C-4022-921E-45F97948D46D}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Renderer.XML.ITS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser.csproj">
+      <Project>{786AA82A-BC99-49F7-8C45-287C78CA5A44}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.Pipeline\MohawkCollege.EHR.gpmr.Pipeline.csproj">
+      <Project>{3EABF240-372F-4805-BFBF-133E65B8EC71}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MohawkCollege.EHR.HL7v3.MIF.MIF20\MohawkCollege.EHR.HL7v3.MIF.MIF20.csproj">
+      <Project>{010ED4F3-6714-4B52-8561-85F31889B5F8}</Project>
+      <Name>MohawkCollege.EHR.HL7v3.MIF.MIF20</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

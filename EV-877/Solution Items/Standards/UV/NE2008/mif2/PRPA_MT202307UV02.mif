@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" isAbstract="false" isSerializable="true" name="02" packageKind="version" representationKind="flat" schemaVersion="2.0" xsi:schemaLocation="">
+   <mif:packageLocation artifact="MT" domain="PA" id="202307" realmNamespace="UV" root="DEFN" section="AM" subSection="PR" version="02"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2008"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0" y="0"/>
+         <mif:size height="1056" width="816"/>
+      </mif:graphElement>
+   <entryPoint name="Location Registry Query By Identifier"><mif:graphElement containerDiagramName="Main" shapeId="Sheet.47">
+            <mif:position x="364" y="200"/>
+            <mif:size height="69" width="280"/>
+            <mif:anchorage connectToShapeId="Sheet.47">
+               <mif:position x="510" y="269"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.1">
+                     <mif:position x="500" y="337"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement></entryPoint><class className="DataSource" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.9" shapeTemplate="OtherClass">
+               <mif:position x="538" y="714"/>
+               <mif:size height="72" width="252"/>
+            </mif:graphElement></class><class className="ParameterList" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.13" shapeTemplate="OtherClass">
+               <mif:position x="440" y="543"/>
+               <mif:size height="72" width="120"/>
+            </mif:graphElement></class><class className="QueryByParameter" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.1" shapeTemplate="OtherClass">
+               <mif:position x="371" y="337"/>
+               <mif:size height="114" width="257"/>
+            </mif:graphElement></class><class className="ServiceDeliveryLocationIdentifier" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.5" shapeTemplate="OtherClass">
+               <mif:position x="202" y="714"/>
+               <mif:size height="72" width="263"/>
+            </mif:graphElement></class><association className="DataSource" relationshipName="dataSource"><mif:graphElement connectToShapeId="Sheet.13" containerDiagramName="Main" shapeId="Sheet.37">
+                                 <mif:position x="530" y="615"/>
+                                 <mif:graphEdge>
+                                    <mif:waypoint x="5.526" y="6.927"/>
+                                    <mif:waypoint x="6.920" y="6.927"/>
+                                    <mif:anchor connectToShapeId="Sheet.9">
+                                       <mif:position x="664" y="714"/>
+                                    </mif:anchor>
+                                 </mif:graphEdge>
+                              </mif:graphElement></association><association className="ServiceDeliveryLocationIdentifier" relationshipName="serviceDeliveryLocationIdentifier"><mif:graphElement connectToShapeId="Sheet.13" containerDiagramName="Main" shapeId="Sheet.27">
+                                 <mif:position x="470" y="615"/>
+                                 <mif:graphEdge>
+                                    <mif:waypoint x="4.901" y="6.927"/>
+                                    <mif:waypoint x="3.485" y="6.927"/>
+                                    <mif:anchor connectToShapeId="Sheet.5">
+                                       <mif:position x="334" y="714"/>
+                                    </mif:anchor>
+                                 </mif:graphEdge>
+                              </mif:graphElement></association><association className="ParameterList" relationshipName="parameterList"><mif:graphElement connectToShapeId="Sheet.1" containerDiagramName="Main" shapeId="Sheet.17">
+                     <mif:position x="500" y="451"/>
+                     <mif:graphEdge>
+                        <mif:waypoint x="5.214" y="4.218"/>
+                        <mif:anchor connectToShapeId="Sheet.13">
+                           <mif:position x="500" y="543"/>
+                        </mif:anchor>
+                     </mif:graphEdge>
+                  </mif:graphElement></association></mif:graphicRepresentation>
+   <derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel artifact="RM" domain="PA" id="202307" realmNamespace="UV" root="DEFN" section="AM" subSection="PR" version="02"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel artifact="HD" domain="PA" id="202307" realmNamespace="UV" root="DEFN" section="AM" subSection="PR" version="02"/>
+   </derivedFrom>
+   <entryPoint className="QueryByParameter" id="PRPA_MT202307UV02" isAbstract="false" name="Location Registry Query By Identifier">
+      <mif:annotations>
+         
+      <documentation><mif:description>
+            <mif:text>The payload message used for a query to a Service Delivery Location Registry for records matching matching a record identifier and, optionally, a data source.</mif:text>
+         </mif:description></documentation></mif:annotations>
+      
+   </entryPoint>
+   <containedClass>
+      <mif:class isAbstract="false" name="DataSource">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="DataSource" staticModelDerivationId="2"/>
+         <derivedFrom className="DataSource" staticModelDerivationId="3"/>
+         
+         <mif:annotations>
+            
+         <documentation><mif:definition>
+               <mif:text>
+                  <xhtml:p>This query parameter is the identifier for a data source. This supports data locator/aggregator type registries that respond to queries by farming the request out to other registries that hold the requested information.</xhtml:p>
+               </mif:text>
+            </mif:definition></documentation></mif:annotations>
+         <mif:attribute conformance="R" defaultValue="QueryParameterValue" isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="1" name="value" sortKey="1">
+            <mif:annotations>
+               
+            <documentation><mif:definition>
+                  <mif:text>
+                     <xhtml:p>An identifier for a data source (system). Multiple instances within a single parameter are combined with OR logic.</xhtml:p>
+                  </mif:text>
+               </mif:definition></documentation></mif:annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="DataSource" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="DataSource" staticModelDerivationId="3"/>
+            <mif:type name="SET">
+               <argumentDatatype name="II"/>
+            </mif:type>
+            <supplierVocabulary codingStrength="CWE"/>
+         </mif:attribute>
+         <mif:attribute conformance="R" defaultValue="DataSource.id" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="semanticsText" sortKey="2">
+            <derivedFrom attributeName="semanticsText" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="semanticsText" className="DataSource" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="semanticsText" className="DataSource" staticModelDerivationId="3"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="ParameterList">
+         <derivedFrom className="ParameterList" staticModelDerivationId="1"/>
+         <derivedFrom className="ParameterList" staticModelDerivationId="2"/>
+         <derivedFrom className="ParameterList" staticModelDerivationId="3"/>
+         
+         <mif:annotations>
+            
+         <documentation><mif:definition>
+               <mif:text>
+                  <xhtml:p>Parameter list for a query by service delivery location identifier query</xhtml:p>
+               </mif:text>
+            </mif:definition></documentation></mif:annotations>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="id" sortKey="1">
+            <mif:annotations>
+               
+            <documentation><mif:definition>
+                  <mif:text>
+                     <xhtml:p>Identifier(s) for a parameter list</xhtml:p>
+                  </mif:text>
+               </mif:definition></documentation></mif:annotations>
+            <derivedFrom attributeName="id" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="ParameterList" staticModelDerivationId="3"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="QueryByParameter">
+         <derivedFrom className="QueryByParameter" staticModelDerivationId="1"/>
+         <derivedFrom className="QueryByParameter" staticModelDerivationId="2"/>
+         <derivedFrom className="QueryByParameter" staticModelDerivationId="3"/>
+         
+         <mif:annotations>
+            
+         <documentation><mif:definition>
+               <mif:text>
+                  <xhtml:p>Entry point for the Query By Service Delivery Location Identifier payload message</xhtml:p>
+               </mif:text>
+            </mif:definition></documentation></mif:annotations>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="queryId" sortKey="1">
+            <mif:annotations>
+               
+            <documentation><mif:definition>
+                  <mif:text>
+                     <xhtml:p>Identifier for the query. It is used to associate this query instance with both the initial response message and with later query interactions. Valuing queryId avoids the need for the QueryAck class to carry as much detailed information as is carried in the initial query.</xhtml:p>
+                  </mif:text>
+               </mif:definition></documentation></mif:annotations>
+            <derivedFrom attributeName="queryId" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="queryId" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="queryId" className="QueryByParameter" staticModelDerivationId="3"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="statusCode" sortKey="2">
+            <derivedFrom attributeName="statusCode" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="statusCode" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="statusCode" className="QueryByParameter" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="QueryStatusCode"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="modifyCode" sortKey="3">
+            <mif:annotations>
+               
+            <documentation><mif:definition>
+                  <mif:text>
+                     <xhtml:p>Indicates whether the subscription to a query is new or is being modified</xhtml:p>
+                  </mif:text>
+               </mif:definition></documentation></mif:annotations>
+            <derivedFrom attributeName="modifyCode" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="modifyCode" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="modifyCode" className="QueryByParameter" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="ModifyIndicator"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="responseElementGroupId" sortKey="4">
+            <mif:annotations>
+               
+            <documentation><mif:definition>
+                  <mif:text>
+                     <xhtml:p>Identifies the specific message type to be returned in the query resonse. The message type is constrained to the set of message types supported by the receiver responsibilities associated with the query interaction.</xhtml:p>
+                  </mif:text>
+               </mif:definition></documentation></mif:annotations>
+            <derivedFrom attributeName="responseElementGroupId" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="responseElementGroupId" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="responseElementGroupId" className="QueryByParameter" staticModelDerivationId="3"/>
+            <mif:type name="SET">
+               <argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="responsePriorityCode" sortKey="5">
+            <mif:annotations>
+               
+            <documentation><mif:definition>
+                  <mif:text>
+                     <xhtml:p>Identifies the time frame in which a response is expected</xhtml:p>
+                  </mif:text>
+               </mif:definition></documentation></mif:annotations>
+            <derivedFrom attributeName="responsePriorityCode" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="responsePriorityCode" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="responsePriorityCode" className="QueryByParameter" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><vocabularyDomain xmlns="" name="QueryPriority"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="executionAndDeliveryTime" sortKey="6">
+            <mif:annotations>
+               
+            <documentation><mif:definition>
+                  <mif:text>
+                     <xhtml:p>Specifies the time the response is to be returned</xhtml:p>
+                  </mif:text>
+               </mif:definition></documentation></mif:annotations>
+            <derivedFrom attributeName="executionAndDeliveryTime" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="executionAndDeliveryTime" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="executionAndDeliveryTime" className="QueryByParameter" staticModelDerivationId="3"/>
+            <mif:type name="TS"/>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="ServiceDeliveryLocationIdentifier">
+         <derivedFrom className="ParameterItem" staticModelDerivationId="1"/>
+         <derivedFrom className="ServiceDeliveryLocationIdentifier" staticModelDerivationId="2"/>
+         <derivedFrom className="ServiceDeliveryLocationIdentifier" staticModelDerivationId="3"/>
+         
+         <mif:annotations>
+            
+         <documentation><mif:definition>
+               <mif:text>
+                  <xhtml:p>This query parameter is an identifier for a record in a service delivery location registry. Multiple instances within a single parameter are combined with OR logic.</xhtml:p>
+               </mif:text>
+            </mif:definition></documentation></mif:annotations>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="*" minimumMultiplicity="1" name="value" sortKey="1">
+            <mif:annotations>
+               
+            <documentation><mif:definition>
+                  <mif:text>
+                     <xhtml:p>An identifier for a record in a service delivery location registry. Multiple instances within a single parameter are combined with OR logic.</xhtml:p>
+                  </mif:text>
+               </mif:definition></documentation></mif:annotations>
+            <derivedFrom attributeName="value" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="value" className="ServiceDeliveryLocationIdentifier" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="value" className="ServiceDeliveryLocationIdentifier" staticModelDerivationId="3"/>
+            <mif:type name="SET">
+               <argumentDatatype name="II"/>
+            </mif:type>
+            <supplierVocabulary codingStrength="CWE"/>
+         </mif:attribute>
+         <mif:attribute conformance="R" defaultValue="ServiceDeliveryLocation.id" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="semanticsText" sortKey="2">
+            <derivedFrom attributeName="semanticsText" className="ParameterItem" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="semanticsText" className="ServiceDeliveryLocationIdentifier" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="semanticsText" className="ServiceDeliveryLocationIdentifier" staticModelDerivationId="3"/>
+            <mif:type name="ST"/>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <association sortKey="4">
+      
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="dataSource" participantClassName="DataSource" sortKey="Z ZZ">
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="dataSource" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="dataSource" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList">
+            <derivedFrom associationEndName="parameterList" className="Parameter" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+   <association sortKey="3">
+      
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="*" minimumMultiplicity="1" name="serviceDeliveryLocationIdentifier" participantClassName="ServiceDeliveryLocationIdentifier" sortKey="Z ZZ">
+            <derivedFrom associationEndName="parameter" className="ParameterList" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="serviceDeliveryLocationIdentifier" className="ParameterList" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="serviceDeliveryLocationIdentifier" className="ParameterList" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ParameterList">
+            <derivedFrom associationEndName="parameterList" className="Parameter" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+   <association sortKey="1">
+      
+      
+   <mif:traversableConnection conformance="R" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="parameterList" participantClassName="ParameterList" sortKey="Z">
+            <derivedFrom associationEndName="parameter" className="QueryByParameter" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="parameterList" className="QueryByParameter" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="parameterList" className="QueryByParameter" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="QueryByParameter">
+            <derivedFrom associationEndName="queryByParameter" className="Parameter" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+</mif:staticModel>

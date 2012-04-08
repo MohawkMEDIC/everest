@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><COMT_IN301001CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/COMT_IN301001CA.xsd"><!--
+    - Note: This is an example instance.  In a real instance the following differences would apply
+    -     1. There would be no schema declaration.  (Receivers will validate against their own schemas)
+    -     2. Example OIDs would be replaced by real OIDs
+    -     3. Processing mode would be Production, not Debug
+    -     4. Data would be real values :>
+  --><realmCode code="CA"/>
+   <id root="9B325D11-F5AD-D20F-9C50-F15DD1DB69EF"/>
+   <creationTime value="20090913213846.859-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="COMT_IN301001CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://120.120.122.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.3017.22.5.0.4" extension="DIS02"/>
+         <name>Good Neighbor Pharmacy</name>
+      </device>
+   </sender>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.3017.22.5.1" extension="90815846791"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="COMT_TE301001CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090913213846.859-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="666112999"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <family>Nuclear</family>
+                  <given>John</given>
+                  <prefix>Mr.</prefix>
+                  <suffix>II</suffix>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19480712"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <author typeCode="AUT" contextControlCode="AP">
+         <time value="20090913213846.859-0700"/>
+         <assignedEntity1 classCode="ASSIGNED">
+            <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+            <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                  <prefix>Dr.</prefix>
+                  <given>Fay</given>
+                  <given qualifier="IN">F</given>
+                  <family>Family</family>
+               </name>
+               <asHealthCareProvider classCode="PROV">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+               </asHealthCareProvider>
+            </assignedPerson>
+         </assignedEntity1>
+      </author>
+      <location typeCode="LOC" contextControlCode="AP">
+         <serviceDeliveryLocation classCode="SDLOC">
+            <id xsi:type="II" specializationType="II.PUBLIC" extension="8-66733-1" displayable="true" root="2.16.840.1.113883.19.3.291.3"/>
+            <location classCode="PLC" determinerCode="INSTANCE">
+               <name>Good Health Clinic</name>
+            </location>
+         </serviceDeliveryLocation>
+      </location>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <annotation classCode="ACT" moodCode="EVN">
+            <text>I do not believe that this record should have been created.  My observations of the patient do not support this treatment.</text>
+            <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+            <subject typeCode="SUBJ">
+               <annotatedAct classCode="ACT" moodCode="CRT">
+                  <id displayable="true" root="2.16.840.1.113883.19.3.3017.22.5.3" extension="169914301"/>
+               </annotatedAct>
+            </subject>
+         </annotation>
+      </subject>
+   </controlActEvent>
+</COMT_IN301001CA>

@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{474F5244-97D6-42B1-8664-122876EB56BF}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>gpmr</RootNamespace>
+    <AssemblyName>gpmr</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ManifestCertificateThumbprint>347747EBA8653274A5DC4FB1E1777F5A54750DD7</ManifestCertificateThumbprint>
+    <ManifestKeyFile>gpmr_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>true</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <MinimumRequiredVersion>0.2.0.0</MinimumRequiredVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>0.2.0.1</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\justin.LAPPY2\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartArguments>
+    </StartArguments>
+    <StartWorkingDirectory>..\..\</StartWorkingDirectory>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DocumentationFile>
+    </DocumentationFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <StartAction>Project</StartAction>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TFS Build - Check-in|AnyCPU' ">
+    <OutputPath>bin\TFS Build - Check-in\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'TFS Build - Nightly|AnyCPU' ">
+    <OutputPath>bin\TFS Build - Nightly\</OutputPath>
+    <DocumentationFile>bin\TFS Build - Nightly\gpmr.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConsoleTraceWriter.cs" />
+    <Compile Include="DumpableStringCollection.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MifConverterParameters.cs" />
+    <Compile Include="PipelineTriggers\SnifferPipelineTrigger.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.csproj">
+      <Project>{A36444C8-6A75-4F38-967E-17B8218775AA}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta</Name>
+    </ProjectReference>
+    <ProjectReference Include="MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java\MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.csproj">
+      <Project>{984A3026-CB71-4449-8AAB-8BE638EC1687}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java</Name>
+    </ProjectReference>
+    <ProjectReference Include="MohawkCollege.EHR.gpmr.Pipeline.Renderer.XML.ITS\MohawkCollege.EHR.gpmr.Pipeline.Renderer.XML.ITS.csproj">
+      <Project>{86C6F736-D65C-4022-921E-45F97948D46D}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Renderer.XML.ITS</Name>
+    </ProjectReference>
+    <ProjectReference Include="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser.csproj">
+      <Project>{786AA82A-BC99-49F7-8C45-287C78CA5A44}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser</Name>
+    </ProjectReference>
+    <ProjectReference Include="MohawkCollege.EHR.HL7v3.MIF.MIF20\MohawkCollege.EHR.HL7v3.MIF.MIF20.csproj">
+      <Project>{010ED4F3-6714-4B52-8561-85F31889B5F8}</Project>
+      <Name>MohawkCollege.EHR.HL7v3.MIF.MIF20</Name>
+    </ProjectReference>
+    <ProjectReference Include="MohawkCollege.Util.Console.Parameters\MohawkCollege.Util.Console.Parameters.csproj">
+      <Project>{40A8A100-FD15-46EE-B792-50726A9982DC}</Project>
+      <Name>MohawkCollege.Util.Console.Parameters</Name>
+    </ProjectReference>
+    <ProjectReference Include="MohawkCollege.Util.Console.Writer\MohawkCollege.Util.Console.Writer.csproj">
+      <Project>{320E36D4-224E-4C8B-B04B-24E932E5F3D9}</Project>
+      <Name>MohawkCollege.Util.Console.Writer</Name>
+    </ProjectReference>
+    <ProjectReference Include="MohawkCollege.EHR.gpmr.Pipeline.Compiler\MohawkCollege.EHR.gpmr.Pipeline.Compiler.csproj">
+      <Project>{62C136F4-941F-40C3-840A-9C9F2084385F}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Compiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki\MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki.csproj">
+      <Project>{34291C69-DFE2-4DC7-85C8-53562A2967B9}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki</Name>
+    </ProjectReference>
+    <ProjectReference Include="MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS\MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.csproj">
+      <Project>{00D56FC7-864D-4209-A7EB-2697E9C2557A}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS</Name>
+    </ProjectReference>
+    <ProjectReference Include="MohawkCollege.EHR.gpmr.Pipeline\MohawkCollege.EHR.gpmr.Pipeline.csproj">
+      <Project>{3EABF240-372F-4805-BFBF-133E65B8EC71}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="gpmr_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\JavaHeuristicData.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XSL\1.xslt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XSL\2.0.xslt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XSL\2.1.6.xslt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XSL\2.1.xslt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XSL\2.1.5.xslt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XSL\2.1.3.xslt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XSL\DocumentationFix.xslt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XSL\ProcessDefinitionForAnnotationNodes.xsl">
+      <SubType>Form</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="XSL\Readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent Condition="'$(Configuration)' == 'TFS Build - Check-in'">
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

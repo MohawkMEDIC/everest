@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1" name="201302"
+                 title="Patient Livingsubject Event Revise Notification">
+   <mif:businessName name="Patient Registry Record Revised"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="PA" artifact="IN"
+                        realmNamespace="UV"
+                        version="02"
+                        id="201302"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>A patient registry sends this <html:b xmlns:html="http://www.w3.org/1999/xhtml">notification</html:b> after <html:b xmlns:html="http://www.w3.org/1999/xhtml">revising</html:b> a record in the registry.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PA" artifact="TE"
+                             realmNamespace="UV"
+                             version="02"
+                             id="201302"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MF"
+                          domain="MI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700701"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="RegisteredRole" root="DEFN" section="AM" subSection="PR"
+                             domain="PA"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="02"
+                             id="201302"
+                             traversalName="patient"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

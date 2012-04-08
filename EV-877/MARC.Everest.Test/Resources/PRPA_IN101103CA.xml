@@ -1,0 +1,76 @@
+<PRPA_IN101103CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/PRPA_IN101103CA.xsd">
+  <id specializationType="II.TOKEN" root="97ADC1A9-1996-4D44-BC44-A8FDAD328D15"/>
+  <creationTime specializationType="TS.FULLDATETIME" value="20110510141229.917-0400"/>
+  <securityText>Security Text</securityText>
+  <responseModeCode code="I"/>
+  <versionCode code="V3-2008N"/>
+  <interactionId specializationType="II.PUBLIC" root="2.16.840.1.113883.1.18" extension="PRPA_IN101103CA" displayable="true" use="BUS"/>
+  <profileId root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+  <profileId root="1.3.6.1.4.1.33349.3.1.1.20.3" extension="R02.04.02" />
+  <processingCode code="P"/>
+  <processingModeCode code="T"/>
+  <acceptAckCode code="AL"/>
+  <receiver typeCode="RCV">
+    <telecom specializationType="TEL.URI" value="http://anonymous"/>
+    <device classCode="DEV" determinerCode="INSTANCE">
+      <id specializationType="II.BUS" root="1.3.6.1.4.1.33349.3.1.1.20.3" extension="OR1" use="BUS"/>
+      <name representation="TXT" mediaType="text/plain" language="en-US">Receiver Device Name</name>
+      <agent classCode="AGNT">
+        <agentOrganization>
+          <id specializationType="II.BUS" root="1.3.6.1.4.1.33349.3.1.1.20.3" extension="OR1" use="BUS"/>
+        </agentOrganization>
+      </agent>
+    </device>
+  </receiver>
+  <respondTo typeCode="RSP">
+    <telecom value="http://sampletele.com" specializationType="TEL.URI" />
+    <device classCode="DEV" determinerCode="INSTANCE">
+      <id specializationType="II.BUS" root="1.3.6.1.4.1.33349.3.1.1.20.3" extension="OR1" use="BUS"/>
+    </device>
+  </respondTo>
+  <sender typeCode="SND">
+    <telecom nullFlavor="NA"/>
+    <device classCode="DEV" determinerCode="INSTANCE">
+      <id specializationType="II.BUS" root="1.3.6.1.4.1.33349.3.1.1.20.4" extension="SURFACE" use="BUS"/>
+      <name representation="TXT" mediaType="text/plain" language="en-US">HealthPortalTouch</name>
+      <desc representation="TXT" mediaType="text/plain" language="en-US">Microsoft Surface EHRs Viewer</desc>
+      <manufacturerModelName language="en-US">Manufacturer Name</manufacturerModelName>
+      <softwareName representation="TXT" mediaType="text/plain" language="en-US">HealthPortalTouch</softwareName>
+      <agent classCode="AGNT">
+        <agentOrganization classCode="ORG" determinerCode="INSTANCE">
+          <id specializationType="II.BUS" root="1.3.6.1.4.1.33349.3.1.1.20.2" extension="OR1" use="BUS"/>
+        </agentOrganization>
+      </agent>
+    </device>
+  </sender>
+  <attentionLine>
+    <keyWordText language="en-US">Attention Line Keyword Text</keyWordText>
+    <value language="en-US">Attention Line Value</value>
+  </attentionLine>
+  <controlActEvent classCode="CACT" moodCode="EVN">
+    <id specializationType="II.BUS" root="40AB114B-FED3-43D3-8A57-9D874A24E19D" use="BUS"/>
+    <code code="PRPA_TE101103CA" codeSystem="2.16.840.1.113883.1.18"/>
+    <statusCode code="completed"/>
+    <author typeCode="AUT" contextControlCode="AP">
+      <time specializationType="TS.FULLDATETIME" value="20110510141229.917-0400"/>
+      <assignedEntity1 classCode="ASSIGNED">
+        <id root="1.3.6.1.4.1.33349.3.1.2.1.1" extension="A95C6BD7F1084134B474"/>
+        <id root="1.3.6.1.4.1.33349.3.1.2.1.1" extension="2" use="BUS"/>
+        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+          <name specializationType="PN.BASIC" use="P">
+            <family partType="FAM">GP</family>
+            <prefix partType="PFX">Dr.</prefix>
+          </name>
+        </assignedPerson>
+      </assignedEntity1>
+    </author>
+    <queryByParameter>
+      <queryId specializationType="II.TOKEN" root="B2CBE431-6976-4348-82AD-ABA2BD208B71"/>
+      <parameterList>
+        <clientId>
+          <value specializationType="II.PUBLIC" root="1.3.6.1.4.1.33349.3.1.2.1.0.1" extension="121806946" displayable="true" use="BUS"/>
+        </clientId>
+      </parameterList>
+    </queryByParameter>
+  </controlActEvent>
+</PRPA_IN101103CA>

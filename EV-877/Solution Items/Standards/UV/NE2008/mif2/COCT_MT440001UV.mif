@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" isAbstract="false" isSerializable="true" name="UV" packageKind="realmNamespace" representationKind="flat" schemaVersion="2.0" xsi:schemaLocation="">
+   <mif:packageLocation artifact="MT" domain="CT" id="440001" realmNamespace="UV" root="DEFN" section="IM" subSection="CO"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2008"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0" y="0"/>
+         <mif:size height="243" width="635"/>
+      </mif:graphElement>
+   <entryPoint name="A_ValuedItem identified"><mif:graphElement containerDiagramName="Main" shapeId="Sheet.12">
+            <mif:position x="339" y="0"/>
+            <mif:size height="60" width="190"/>
+            <mif:anchorage connectToShapeId="Sheet.12">
+               <mif:position x="432" y="61"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.28">
+                     <mif:position x="437" y="104"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement></entryPoint><class className="ValuedItem" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.28" shapeTemplate="Act">
+               <mif:position x="304" y="104"/>
+               <mif:size height="126" width="221"/>
+            </mif:graphElement></class></mif:graphicRepresentation>
+   <derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel artifact="RM" domain="CT" id="440001" realmNamespace="UV" root="DEFN" section="IM" subSection="CO"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel artifact="HD" domain="CT" id="440001" realmNamespace="UV" root="DEFN" section="IM" subSection="CO"/>
+   </derivedFrom>
+   <entryPoint className="ValuedItem" id="COCT_MT440001UV" isAbstract="false" name="A_ValuedItem identified">
+      <mif:annotations>
+         
+      <documentation><mif:description>
+            <mif:text>Description: Conveys the countable or measureable item that may be priced</mif:text>
+         </mif:description></documentation></mif:annotations>
+      
+   </entryPoint>
+   <containedClass>
+      <mif:class isAbstract="false" name="ValuedItem">
+         <derivedFrom className="InvoiceElement" staticModelDerivationId="1"/>
+         <derivedFrom className="ValuedItem" staticModelDerivationId="2"/>
+         <derivedFrom className="ValuedItem" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="InvoiceElement" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="ValuedItem" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="ValuedItem" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="INVE" codeSystemName="ActClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <derivedFrom attributeName="moodCode" className="InvoiceElement" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="ValuedItem" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="ValuedItem" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="DEF" codeSystemName="ActMood"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="id" sortKey="3">
+            <derivedFrom attributeName="id" className="InvoiceElement" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="ValuedItem" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="ValuedItem" staticModelDerivationId="3"/>
+            <mif:type name="SET">
+               <argumentDatatype name="II"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="code" sortKey="4">
+            <derivedFrom attributeName="code" className="InvoiceElement" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="ValuedItem" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="ValuedItem" staticModelDerivationId="3"/>
+            <mif:type name="CD"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActInvoiceDetailCode"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="effectiveTime" sortKey="5">
+            <derivedFrom attributeName="effectiveTime" className="InvoiceElement" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="effectiveTime" className="ValuedItem" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="effectiveTime" className="ValuedItem" staticModelDerivationId="3"/>
+            <mif:type name="IVL">
+               <argumentDatatype name="TS"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="unitQuantity" sortKey="6">
+            <derivedFrom attributeName="unitQuantity" className="InvoiceElement" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="unitQuantity" className="ValuedItem" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="unitQuantity" className="ValuedItem" staticModelDerivationId="3"/>
+            <mif:type name="RTO">
+               <argumentDatatype name="PQ"/>
+               <argumentDatatype name="PQ"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="unitPriceAmt" sortKey="7">
+            <derivedFrom attributeName="unitPriceAmt" className="InvoiceElement" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="unitPriceAmt" className="ValuedItem" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="unitPriceAmt" className="ValuedItem" staticModelDerivationId="3"/>
+            <mif:type name="RTO">
+               <argumentDatatype name="MO"/>
+               <argumentDatatype name="PQ"/>
+            </mif:type>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="netAmt" sortKey="8">
+            <derivedFrom attributeName="netAmt" className="InvoiceElement" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="netAmt" className="ValuedItem" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="netAmt" className="ValuedItem" staticModelDerivationId="3"/>
+            <mif:type name="MO"/>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+</mif:staticModel>

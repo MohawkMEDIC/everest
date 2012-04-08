@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?><PORX_IN010380CA xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ITSVersion="XML_1.0" xsi:schemaLocation="urn:hl7-org:v3 ../Schemas/PORX_IN010380CA.xsd"><!--
+    - Note: This is an example instance.  In a real instance the following differences would apply
+    -     1. There would be no schema declaration.  (Receivers will validate against their own schemas)
+    -     2. Example OIDs would be replaced by real OIDs
+    -     3. Processing mode would be Production, not Debug
+    -     4. Data would be real values :>
+  --><realmCode code="CA"/>
+   <id root="DF3CF0E6-7F29-8B14-D291-D3C7D2DAB3B1"/>
+   <creationTime value="20090915232952.062-0700"/>
+   <responseModeCode code="I"/>
+   <versionCode code="V3-2008N"/>
+   <interactionId root="2.16.840.1.113883.1.18" extension="PORX_IN010380CA" displayable="true"/>
+   <profileId use="BUS" root="2.16.840.1.113883.2.20.2" extension="R02.04.02"/>
+   <processingCode code="D"/>
+   <processingModeCode code="T"/>
+   <acceptAckCode code="NE"/>
+   <receiver typeCode="RCV">
+      <telecom value="http://100.100.100.100"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.297.15.37.0.47" extension="DIS01"/>
+         <name>Jurisdiction X HIAL</name>
+      </device>
+   </receiver>
+   <sender typeCode="SND">
+      <telecom value="http://120.120.120.120"/>
+      <device classCode="DEV" determinerCode="INSTANCE">
+         <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.0.3" extension="DIS01"/>
+         <name>Good Health Clinic</name>
+      </device>
+   </sender>
+   <controlActEvent moodCode="EVN" classCode="CACT">
+      <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.1" extension="03318912"/>
+      <code codeSystem="2.16.840.1.113883.1.18" code="PORX_TE010730CA"/>
+      <statusCode code="completed"/>
+      <effectiveTime xsi:type="IVL_TS">
+         <low value="20090915232952.062-0700"/>
+      </effectiveTime>
+      <languageCode code="en" codeSystem="2.16.840.1.113883.6.121"/>
+      <recordTarget typeCode="RCT" contextControlCode="AP">
+         <patient1 classCode="PAT">
+            <id displayable="true" root="2.16.840.1.113883.4.20" extension="444112345"/>
+            <patientPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" specializationType="PN.BASIC">
+                  <prefix>Mrs.</prefix>
+                  <given>Nelda</given>
+                  <given qualifier="IN">W</given>
+                  <family>Nuclear</family>
+               </name>
+               <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="M"/>
+               <birthTime value="19700512"/>
+            </patientPerson>
+         </patient1>
+      </recordTarget>
+      <author typeCode="AUT" contextControlCode="AP">
+         <time value="20090915232952.062-0700"/>
+         <assignedEntity1 classCode="ASSIGNED">
+            <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+            <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+               <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                  <prefix>Dr.</prefix>
+                  <given>Fay</given>
+                  <given qualifier="IN">F</given>
+                  <family>Family</family>
+               </name>
+               <asHealthCareProvider classCode="PROV">
+                  <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+               </asHealthCareProvider>
+            </assignedPerson>
+         </assignedEntity1>
+      </author>
+      <location typeCode="LOC" contextControlCode="AP">
+         <serviceDeliveryLocation classCode="SDLOC">
+            <id xsi:type="II" specializationType="II.PUBLIC" extension="8-66733-1" displayable="true" root="2.16.840.1.113883.19.3.291.3"/>
+            <location classCode="PLC" determinerCode="INSTANCE">
+               <name>Good Health Clinic</name>
+            </location>
+         </serviceDeliveryLocation>
+      </location>
+      <subject typeCode="SUBJ" contextControlCode="AN" contextConductionInd="true">
+         <combinedMedicationRequest classCode="SBADM" moodCode="RQO">
+            <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.3" extension="HIS5TTEUH"/>
+            <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+            <statusCode code="active"/>
+            <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+            <directTarget typeCode="DIR" contextControlCode="OP">
+               <medication classCode="ADMM">
+                  <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                     <code code="B01AA03" codeSystem="2.16.840.1.113883.6.73"/>
+                     <name>WARFARIN</name>
+                     <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                     <ingredient classCode="INGR" negationInd="false">
+                        <quantity value="1" unit="mg"/>
+                        <ingredient classCode="MMAT" determinerCode="KIND">
+                           <code code="9054" codeSystem="2.16.840.1.113883.5.1103"/>
+                        </ingredient>
+                     </ingredient>
+                  </administerableMedicine>
+               </medication>
+            </directTarget>
+            <reason typeCode="RSON" contextControlCode="AN" contextConductionInd="true">
+               <priorityNumber value="1"/>
+               <observationProblem moodCode="EVN" classCode="OBS">
+                  <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="completed"/>
+                  <value xsi:type="CV" code="49436004" codeSystem="2.16.840.1.113883.6.96"/>
+               </observationProblem>
+            </reason>
+            <coverage typeCode="COVBY" contextControlCode="ON" contextConductionInd="false">
+               <coverage classCode="COV" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.304.7" extension="J0IUCPE2BF0T"/>
+                  <author typeCode="AUT">
+                     <underwriter classCode="UNDWRT">
+                        <id displayable="true" root="2.16.840.1.113883.19.3.304" extension="186376187799769"/>
+                        <underwritingOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <name>Super Health Insurance Inc.</name>
+                        </underwritingOrganization>
+                     </underwriter>
+                  </author>
+               </coverage>
+            </coverage>
+            <coverage typeCode="COVBY" contextControlCode="ON" contextConductionInd="false">
+               <coverage classCode="COV" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.305.52" extension="L4M7IMLB81H"/>
+                  <author typeCode="AUT">
+                     <underwriter classCode="UNDWRT">
+                        <id displayable="true" root="2.16.840.1.113883.19.3.305" extension="385925066"/>
+                        <underwritingOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <name>Super Health Insurance Inc.</name>
+                        </underwritingOrganization>
+                     </underwriter>
+                  </author>
+               </coverage>
+            </coverage>
+            <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+               <dosageInstruction classCode="SBADM" moodCode="RQO">
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>By mouth, take as directed</text>
+                  <routeCode code="PO" codeSystem="2.16.840.1.113883.5.112"/>
+               </dosageInstruction>
+            </component1>
+            <component2 typeCode="COMP" contextControlCode="ON" contextConductionInd="true" negationInd="true">
+               <trialSupplyPermission classCode="SPLY" moodCode="PERM">
+                  <code code="TF" codeSystem="2.16.840.1.113883.5.4"/>
+               </trialSupplyPermission>
+            </component2>
+            <component3 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+               <supplyRequest classCode="SPLY" moodCode="RQO">
+                  <destination typeCode="DST" contextControlCode="OP">
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <addr use="H PHYS PST">
+                           <streetAddressLine>6666 Home Street</streetAddressLine>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <country>USA</country>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                     </serviceDeliveryLocation>
+                  </destination>
+                  <location typeCode="LOC" contextControlCode="OP">
+                     <substitutionConditionCode code="UNCOND" codeSystem="2.16.840.1.113883.5.1071"/>
+                     <serviceDeliveryLocation classCode="SDLOC">
+                        <id displayable="true" extension="7-865722-2" root="2.16.840.1.113883.19.3.291.3"/>
+                        <code code="PHARM" codeSystem="2.16.840.1.113883.5.111"/>
+                        <addr use="PHYS">2222 Village Avenue<delimiter/>
+                           <city>Ann Arbor</city>
+                           <state>MI</state>
+                           <postalCode>99999</postalCode>
+                        </addr>
+                        <telecom use="WP" value="tel:+1-555-555-4002"/>
+                        <location classCode="PLC" determinerCode="INSTANCE">
+                           <name>Good Neighbor Pharmacy</name>
+                        </location>
+                     </serviceDeliveryLocation>
+                  </location>
+                  <component typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                     <supplyRequestItem classCode="SPLY" moodCode="RQO">
+                        <quantity value="100"/>
+                        <expectedUseTime>
+                           <width value="60" unit="d"/>
+                        </expectedUseTime>
+                        <component1 typeCode="COMP" contextControlCode="ON" contextConductionInd="true">
+                           <sequenceNumber value="2"/>
+                           <subsequentSupplyRequest classCode="SPLY" moodCode="RQO">
+                              <repeatNumber value="1"/>
+                              <quantity value="100"/>
+                              <expectedUseTime nullFlavor="UNK"/>
+                           </subsequentSupplyRequest>
+                        </component1>
+                     </supplyRequestItem>
+                  </component>
+               </supplyRequest>
+            </component3>
+            <subjectOf1 typeCode="SUBJ" contextControlCode="OP" contextConductionInd="true">
+               <substitutionPermission classCode="SUBST" moodCode="PERM" negationInd="true">
+                  <code code="G" codeSystem="2.16.840.1.113883.5.4"/>
+                  <reasonCode code="PAT" codeSystem="2.16.840.1.113883.5.8">
+                     <originalText>Patient finds generics hard to swallow</originalText>
+                  </reasonCode>
+               </substitutionPermission>
+            </subjectOf1>
+            <componentOf typeCode="COMP" contextControlCode="AN" contextConductionInd="false">
+               <workingListEvent classCode="LIST" moodCode="EVN">
+                  <code code="CHRON" codeSystem="2.16.840.1.113883.5.4"/>
+               </workingListEvent>
+            </componentOf>
+         </combinedMedicationRequest>
+      </subject>
+      <subjectOf2 typeCode="SUBJ" contextControlCode="AP" contextConductionInd="false">
+         <detectedIssueEvent classCode="ALRT" moodCode="EVN">
+            <code code="DRG" codeSystem="2.16.840.1.113883.5.4"/>
+            <text>Potential reduced effectiveness</text>
+            <statusCode code="completed"/>
+            <priorityCode code="E" codeSystem="2.16.840.1.113883.5.1082"/>
+            <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+               <substanceAdministration classCode="SBADM" moodCode="RQO">
+                  <id nullFlavor="NA"/>
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="active"/>
+                  <effectiveTime>
+                     <low value="20090915"/>
+                  </effectiveTime>
+                  <consumable typeCode="CSM">
+                     <medication classCode="ADMM">
+                        <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                           <code code="B01AA03" codeSystem="2.16.840.1.113883.6.73"/>
+                           <name>WARFARIN</name>
+                           <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                           <ingredient classCode="INGR" negationInd="false">
+                              <quantity value="1" unit="mg"/>
+                              <ingredient classCode="MMAT" determinerCode="KIND">
+                                 <code code="9054" codeSystem="2.16.840.1.113883.5.1103"/>
+                              </ingredient>
+                           </ingredient>
+                        </administerableMedicine>
+                     </medication>
+                  </consumable>
+               </substanceAdministration>
+            </subject>
+            <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+               <substanceAdministration classCode="SBADM" moodCode="RQO">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.3" extension="GYF9H"/>
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="active"/>
+                  <effectiveTime>
+                     <low value="20090915"/>
+                  </effectiveTime>
+                  <consumable typeCode="CSM">
+                     <medication classCode="ADMM">
+                        <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                           <code code="H02AB07" codeSystem="2.16.840.1.113883.6.73"/>
+                           <name>PREDNISONE</name>
+                           <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                           <asContent classCode="CONT">
+                              <containerPackagedMedicine classCode="CONT" determinerCode="KIND">
+                                 <formCode code="COMPPKG" codeSystem="2.16.840.1.113883.5.1060"/>
+                              </containerPackagedMedicine>
+                           </asContent>
+                           <ingredient classCode="INGR" negationInd="false">
+                              <quantity value="5" unit="mg"/>
+                              <ingredient classCode="MMAT" determinerCode="KIND">
+                                 <code code="7566" codeSystem="2.16.840.1.113883.5.1103"/>
+                              </ingredient>
+                           </ingredient>
+                        </administerableMedicine>
+                     </medication>
+                  </consumable>
+               </substanceAdministration>
+            </subject>
+            <instantiation typeCode="INST" contextControlCode="ON" contextConductionInd="false">
+               <detectedIssueDefinition classCode="ALRT" moodCode="DEF">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.229.37" extension="R1H40XLLWFJFE"/>
+                  <text>
+        There are reports of enhanced as well as diminished effects of anticoagulants when given concurrently with corticosteroids (prednisone). Therefore, coagulation indices should be monitored to
+        maintain the desired anticoagulant effect.
+      </text>
+                  <author typeCode="AUT" contextControlCode="ON">
+                     <time value="19930105"/>
+                     <assignedEntity classCode="ASSIGNED">
+                        <assignedOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <name>Know It All Meds</name>
+                        </assignedOrganization>
+                     </assignedEntity>
+                  </author>
+               </detectedIssueDefinition>
+            </instantiation>
+            <mitigatedBy typeCode="MITGT" contextControlCode="ON" contextConductionInd="false">
+               <detectedIssueManagement classCode="ACT" moodCode="EVN">
+                  <code code="9" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>Will check INR values daily for remaining duration of Prednisone therapy</text>
+                  <statusCode code="completed"/>
+                  <author typeCode="AUT">
+                     <time value="20090915232929.062-0700"/>
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Fay</given>
+                              <given qualifier="IN">F</given>
+                              <family>Family</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </author>
+               </detectedIssueManagement>
+            </mitigatedBy>
+            <subjectOf typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+               <severityObservation classCode="OBS" moodCode="EVN">
+                  <code code="SEV" codeSystem="2.16.840.1.113883.5.4"/>
+                  <value code="H" codeSystem="2.16.840.1.113883.5.1063"/>
+               </severityObservation>
+            </subjectOf>
+         </detectedIssueEvent>
+      </subjectOf2>
+      <subjectOf2 typeCode="SUBJ" contextControlCode="AP" contextConductionInd="false">
+         <detectedIssueEvent classCode="ALRT" moodCode="EVN">
+            <code code="DRG" codeSystem="2.16.840.1.113883.5.4"/>
+            <text>Risk of internal bleeding</text>
+            <statusCode code="completed"/>
+            <priorityCode code="E" codeSystem="2.16.840.1.113883.5.1082"/>
+            <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+               <substanceAdministration classCode="SBADM" moodCode="RQO">
+                  <id nullFlavor="NA"/>
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="active"/>
+                  <effectiveTime>
+                     <low value="20090915"/>
+                  </effectiveTime>
+                  <consumable typeCode="CSM">
+                     <medication classCode="ADMM">
+                        <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                           <code code="B01AA03" codeSystem="2.16.840.1.113883.6.73"/>
+                           <name>WARFARIN</name>
+                           <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                           <ingredient classCode="INGR" negationInd="false">
+                              <quantity value="1" unit="mg"/>
+                              <ingredient classCode="MMAT" determinerCode="KIND">
+                                 <code code="9054" codeSystem="2.16.840.1.113883.5.1103"/>
+                              </ingredient>
+                           </ingredient>
+                        </administerableMedicine>
+                     </medication>
+                  </consumable>
+               </substanceAdministration>
+            </subject>
+            <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+               <substanceAdministration classCode="SBADM" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.19" extension="D1XKYVN"/>
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="active"/>
+                  <effectiveTime>
+                     <low value="20090915"/>
+                  </effectiveTime>
+                  <consumable typeCode="CSM">
+                     <medication classCode="ADMM">
+                        <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                           <code code="N02BE01" codeSystem="2.16.840.1.113883.6.73"/>
+                           <name>ACETAMINOPHEN</name>
+                           <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                           <ingredient classCode="INGR" negationInd="false">
+                              <quantity value="500" unit="mg"/>
+                              <ingredient classCode="MMAT" determinerCode="KIND">
+                                 <code code="270" codeSystem="2.16.840.1.113883.5.1103"/>
+                              </ingredient>
+                           </ingredient>
+                        </administerableMedicine>
+                     </medication>
+                  </consumable>
+               </substanceAdministration>
+            </subject>
+            <instantiation typeCode="INST" contextControlCode="ON" contextConductionInd="false">
+               <detectedIssueDefinition classCode="ALRT" moodCode="DEF">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.229.37" extension="Y1VRGMH6HGIPSZ"/>
+                  <text>
+        Those who take acetaminophen along with the widely used blood-thinning drug warfarin may face the risk of serious internal bleeding. People on warfarin who take acetaminophen for at least
+        seven days in a row should be closely watched for bleeding.
+      </text>
+                  <author typeCode="AUT" contextControlCode="ON">
+                     <time value="19950207"/>
+                     <assignedEntity classCode="ASSIGNED">
+                        <assignedOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <name>Know It All Meds</name>
+                        </assignedOrganization>
+                     </assignedEntity>
+                  </author>
+               </detectedIssueDefinition>
+            </instantiation>
+            <mitigatedBy typeCode="MITGT" contextControlCode="ON" contextConductionInd="false">
+               <detectedIssueManagement classCode="ACT" moodCode="EVN">
+                  <code code="7" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>Patient has been instructed to discontinue Tylenol use.</text>
+                  <statusCode code="completed"/>
+                  <author typeCode="AUT">
+                     <time value="20090915232929.062-0700"/>
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Fay</given>
+                              <given qualifier="IN">F</given>
+                              <family>Family</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </author>
+               </detectedIssueManagement>
+            </mitigatedBy>
+            <subjectOf typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+               <severityObservation classCode="OBS" moodCode="EVN">
+                  <code code="SEV" codeSystem="2.16.840.1.113883.5.4"/>
+                  <value code="H" codeSystem="2.16.840.1.113883.5.1063"/>
+               </severityObservation>
+            </subjectOf>
+         </detectedIssueEvent>
+      </subjectOf2>
+      <subjectOf2 typeCode="SUBJ" contextControlCode="AP" contextConductionInd="false">
+         <detectedIssueEvent classCode="ALRT" moodCode="EVN">
+            <code code="COND" codeSystem="2.16.840.1.113883.5.4"/>
+            <text>Increased risk of bleeding</text>
+            <statusCode code="completed"/>
+            <priorityCode code="E" codeSystem="2.16.840.1.113883.5.1082"/>
+            <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+               <substanceAdministration classCode="SBADM" moodCode="RQO">
+                  <id nullFlavor="NA"/>
+                  <code code="DRUG" codeSystem="2.16.840.1.113883.5.4"/>
+                  <statusCode code="active"/>
+                  <effectiveTime>
+                     <low value="20090915"/>
+                  </effectiveTime>
+                  <consumable typeCode="CSM">
+                     <medication classCode="ADMM">
+                        <administerableMedicine classCode="MMAT" determinerCode="KIND">
+                           <code code="B01AA03" codeSystem="2.16.840.1.113883.6.73"/>
+                           <name>WARFARIN</name>
+                           <formCode code="TAB" codeSystem="2.16.840.1.113883.5.85"/>
+                           <ingredient classCode="INGR" negationInd="false">
+                              <quantity value="1" unit="mg"/>
+                              <ingredient classCode="MMAT" determinerCode="KIND">
+                                 <code code="9054" codeSystem="2.16.840.1.113883.5.1103"/>
+                              </ingredient>
+                           </ingredient>
+                        </administerableMedicine>
+                     </medication>
+                  </consumable>
+               </substanceAdministration>
+            </subject>
+            <subject typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+               <observationCodedEvent classCode="OBS" moodCode="EVN">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.207.15.1.2" extension="WNXEEX9KBUH7"/>
+                  <code code="TODO" codeSystem="2.16.840.1.113883.6.96"/>
+                  <statusCode code="completed"/>
+               </observationCodedEvent>
+            </subject>
+            <instantiation typeCode="INST" contextControlCode="ON" contextConductionInd="false">
+               <detectedIssueDefinition classCode="ALRT" moodCode="DEF">
+                  <id use="BUS" root="2.16.840.1.113883.19.3.229.37" extension="E94KIKMQ"/>
+                  <text>
+        Warfarin appears to be especially hazardous after a transient ischaemic attack or minor stroke; in one trial, 14 months of warfarin therapy with a relatively high target INR of 3.0-4.5
+        increased major bleeding from 0.9% to 8.1%, intracranial bleeding from 0.5% to 4.1%, and fatal intracranial bleeding from 0.2% to 2.6% (relative to low dose aspirin therapy). Bleeding is most
+        likely during the first three months of treatment, and often follows trauma or unmasks a previously unsuspected comorbidity.
+      </text>
+                  <author typeCode="AUT" contextControlCode="ON">
+                     <time value="20010507"/>
+                     <assignedEntity classCode="ASSIGNED">
+                        <assignedOrganization classCode="ORG" determinerCode="INSTANCE">
+                           <name>Know It All Meds</name>
+                        </assignedOrganization>
+                     </assignedEntity>
+                  </author>
+               </detectedIssueDefinition>
+            </instantiation>
+            <mitigatedBy typeCode="MITGT" contextControlCode="ON" contextConductionInd="false">
+               <detectedIssueManagement classCode="ACT" moodCode="EVN">
+                  <code code="9" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>Will check INR values daily for first 3 weeks and every 3 days for next 10 weeks</text>
+                  <statusCode code="completed"/>
+                  <author typeCode="AUT">
+                     <time value="20090915232929.062-0700"/>
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Fay</given>
+                              <given qualifier="IN">F</given>
+                              <family>Family</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </author>
+               </detectedIssueManagement>
+            </mitigatedBy>
+            <mitigatedBy typeCode="MITGT" contextControlCode="ON" contextConductionInd="false">
+               <detectedIssueManagement classCode="ACT" moodCode="EVN">
+                  <code code="10" codeSystem="2.16.840.1.113883.5.4"/>
+                  <text>Informed patient of risks and warning signs for internal bleeding</text>
+                  <statusCode code="completed"/>
+                  <author typeCode="AUT">
+                     <time value="20090915232929.062-0700"/>
+                     <assignedEntity classCode="ASSIGNED">
+                        <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="222339999" root="2.16.840.1.113883.19.4.207"/>
+                        <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                           <name use="L" xsi:type="PN" specializationType="PN.BASIC">
+                              <prefix>Dr.</prefix>
+                              <given>Fay</given>
+                              <given qualifier="IN">F</given>
+                              <family>Family</family>
+                           </name>
+                           <asHealthCareProvider classCode="PROV">
+                              <id xsi:type="II" specializationType="II.PUBLIC" displayable="true" extension="200202888" root="2.16.840.1.113883.4.41"/>
+                           </asHealthCareProvider>
+                        </assignedPerson>
+                     </assignedEntity>
+                  </author>
+               </detectedIssueManagement>
+            </mitigatedBy>
+            <subjectOf typeCode="SUBJ" contextControlCode="ON" contextConductionInd="false">
+               <severityObservation classCode="OBS" moodCode="EVN">
+                  <code code="SEV" codeSystem="2.16.840.1.113883.5.4"/>
+                  <value code="H" codeSystem="2.16.840.1.113883.5.1063"/>
+               </severityObservation>
+            </subjectOf>
+         </detectedIssueEvent>
+      </subjectOf2>
+   </controlActEvent>
+</PORX_IN010380CA>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="310205"
+                 title="Authorization Event Activate Notification Initial/Complete Oral Health">
+   <mif:businessName name="Auth Init Results Init/Comp, OralHealth"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="FI" domain="CR" artifact="IN"
+                        realmNamespace="UV"
+                        version="03"
+                        id="310205"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>The sender sends an Authorization Results message containing the inital Authorization Results for Oral Health services and/or products. Completed results will follow at a later point in time (e.g. next day). Authorization Results indicate approval or disapproval to render the requested services and/or products, as well as the extent to which the Adjudicator will pay for those services and/or products.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="FI" domain="CR" artifact="TE"
+                             realmNamespace="UV"
+                             version="02"
+                             id="310102"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000300">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="AM" subSection="FI" domain="CR"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="03"
+                             id="310501"
+                             traversalName="paymentIntent"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

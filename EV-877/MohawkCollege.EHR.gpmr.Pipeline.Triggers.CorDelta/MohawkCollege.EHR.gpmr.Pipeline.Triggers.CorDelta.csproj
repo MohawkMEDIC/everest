@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A36444C8-6A75-4F38-967E-17B8218775AA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta</RootNamespace>
+    <AssemblyName>MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Annotations\AnnotationConstraintAnnotation.cs" />
+    <Compile Include="Annotations\BusinessNameConstraintAnnotation.cs" />
+    <Compile Include="Annotations\CardinalityConstraintAnnotation.cs" />
+    <Compile Include="Annotations\ConformanceConstraintAnnotation.cs" />
+    <Compile Include="Annotations\ConstraintAnnotation.cs" />
+    <Compile Include="Annotations\DatatypeChangeConstraintAnnotation.cs" />
+    <Compile Include="Annotations\DefaultValueConstraintAnnotation.cs" />
+    <Compile Include="Annotations\FixedValueConstraintAnnotation.cs" />
+    <Compile Include="Annotations\LengthConstraintAnnotation.cs" />
+    <Compile Include="Annotations\RemoveConstraintAnnotation.cs" />
+    <Compile Include="Annotations\SupplierDomainConstraintAnnotation.cs" />
+    <Compile Include="Annotations\SupplierStrengthConstraintAnnotation.cs" />
+    <Compile Include="Annotations\SupportedConstraintAnnotation.cs" />
+    <Compile Include="DekiRenderFunctoids.cs" />
+    <Compile Include="DeltaEngine.cs" />
+    <Compile Include="DeltaPipelineTrigger.cs" />
+    <Compile Include="Format\AnnotationConstraintValue.cs" />
+    <Compile Include="Format\AnnotationType.cs" />
+    <Compile Include="Format\BaseXmlType.cs" />
+    <Compile Include="Format\CardinalityConstraintValue.cs" />
+    <Compile Include="Format\ChangeType.cs" />
+    <Compile Include="Format\CodeValue.cs" />
+    <Compile Include="Format\ClassDeltaData.cs" />
+    <Compile Include="Format\Constraint.cs" />
+    <Compile Include="Format\ConstraintDeltaType.cs" />
+    <Compile Include="Format\ConstraintValue.cs" />
+    <Compile Include="Format\ConstraintValueBase.cs" />
+    <Compile Include="Format\DeltaData.cs" />
+    <Compile Include="Format\DeltaSet.cs" />
+    <Compile Include="Format\DeltaType.cs" />
+    <Compile Include="Format\DomainSourceType.cs" />
+    <Compile Include="Format\ListConstraintValue.cs" />
+    <Compile Include="Format\MetaData.cs" />
+    <Compile Include="Format\OwnedEntryPoint.cs" />
+    <Compile Include="Format\RelationshipDeltaData.cs" />
+    <Compile Include="Format\RemoveConstraintValue.cs" />
+    <Compile Include="Format\VocabularyConstraintValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\gpmr\MohawkCollege.EHR.gpmr.COR\MohawkCollege.EHR.gpmr.COR.csproj">
+      <Project>{6C99D22F-AD3D-4532-9441-C0E616C87261}</Project>
+      <Name>MohawkCollege.EHR.gpmr.COR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\gpmr\MohawkCollege.EHR.gpmr.Pipeline\MohawkCollege.EHR.gpmr.Pipeline.csproj">
+      <Project>{3EABF240-372F-4805-BFBF-133E65B8EC71}</Project>
+      <Name>MohawkCollege.EHR.gpmr.Pipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

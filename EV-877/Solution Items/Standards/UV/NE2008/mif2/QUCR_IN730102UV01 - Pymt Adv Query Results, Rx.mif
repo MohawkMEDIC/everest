@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1" name="730102"
+                 title="Payment Advice Event Query Response Pharmacy">
+   <mif:businessName name="Pymt Adv Query Results, Rx"/>
+   <mif:packageLocation root="DEFN" section="IM" subSection="QU" domain="CR" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="730102"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>The sender sends a Payment Advice Query Response message to detail the status of a specific payment component from a Payment Advice previously received by the Payee for Pharmacy services and/or products. Payment details include references to the adjudicated Invoices.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="IM" subSection="QU" domain="CR" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="730101"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000300">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="QU"
+                          domain="QI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="120001"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="IM" subSection="QU" domain="CR"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="730101"
+                             traversalName="adjudResultsGroup"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

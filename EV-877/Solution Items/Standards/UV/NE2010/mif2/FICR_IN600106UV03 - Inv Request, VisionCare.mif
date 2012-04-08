@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="600106"
+                 title="Invoice Event Activate Request Complete Vision Care">
+   <mif:businessName name="Inv Request, VisionCare"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="FI" domain="CR" artifact="IN"
+                        realmNamespace="UV"
+                        version="03"
+                        id="600106"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>The sender sends an Invoice Adjudication Request message for Vision Care services and/or products. The receiver will provide completed Invoice Adjudication Results, NOT initial results. Invoice Adjudication Results indicate adjudication results for specified services and/or products, that may generate a payment.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="FI" domain="CR" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="600101"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MC"
+                          domain="AI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700201"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="Act" root="DEFN" section="AM" subSection="FI" domain="CR"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="03"
+                             id="600601"
+                             traversalName="paymentRequest"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>Completed Invoice Adjudication Results</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="AM" subSection="FI" domain="CR" artifact="IN"
+                             realmNamespace="UV"
+                             version="03"
+                             id="610106"/>
+      <mif:invokeTriggerEvent root="DEFN" section="AM" subSection="FI" domain="CR" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="610101"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

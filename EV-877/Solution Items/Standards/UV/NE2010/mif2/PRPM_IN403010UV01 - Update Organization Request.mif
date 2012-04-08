@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.6" name="403010"
+                 title="Organization Event Revise Request">
+   <mif:businessName name="Update Organization Request"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="PM" artifact="IN"
+                        realmNamespace="UV"
+                        version="01"
+                        id="403010"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>This interaction is used to request that an organization record be updated within an organization registry system. It is expected that the receiving application will respond with an Update Organization Response (PRPM_IN403011) interaction containing the appropriate identifiers assigned by the organization registry system.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PM" artifact="TE"
+                             realmNamespace="UV"
+                             version="01"
+                             id="403010"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="UV"
+                        version="01"
+                        id="000100">
+      <mif:parameterModel parameterName="ControlActProcess" root="DEFN" section="IM" subSection="MF"
+                          domain="MI"
+                          artifact="MT"
+                          realmNamespace="UV"
+                          version="01"
+                          id="700721"
+                          traversalName="controlActProcess">
+         <mif:parameterModel parameterName="RegisteredRole" root="DEFN" section="AM" subSection="PR"
+                             domain="PM"
+                             artifact="MT"
+                             realmNamespace="UV"
+                             version="01"
+                             id="403010"
+                             traversalName="roleChoice">
+            <mif:specialization className="AssignedEntity" traversalName="assignedEntity"/>
+            <mif:specialization className="LicensedEntity" traversalName="licensedEntity"/>
+            <mif:specialization className="Member" traversalName="member"/>
+            <mif:specialization className="QualifiedEntity" traversalName="qualifiedEntity"/>
+            <mif:specialization className="RoleOther" traversalName="roleOther"/>
+         </mif:parameterModel>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+   <mif:receiverResponsibilities>
+      <mif:reason>
+         <mif:p>Registry response including key identifiers</mif:p>
+      </mif:reason>
+      <mif:invokeInteraction root="DEFN" section="AM" subSection="PR" domain="PM" artifact="IN"
+                             realmNamespace="UV"
+                             version="01"
+                             id="403011"/>
+      <mif:invokeTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PM" artifact="TE"
+                              realmNamespace="UV"
+                              version="01"
+                              id="403011"/>
+   </mif:receiverResponsibilities>
+</mif:interaction>

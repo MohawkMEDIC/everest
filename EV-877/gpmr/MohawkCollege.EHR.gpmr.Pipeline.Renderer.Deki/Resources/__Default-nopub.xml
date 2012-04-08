@@ -1,0 +1,1952 @@
+<docTemplate name="Clean" author="Justin Fyfe" output="text/html" xmlns="http://marc.mohawkcollege.ca/hi">
+
+
+  <!-- Style is not currently supported for publishing to DEKI, need to figure out how to register a global style -->
+  <style>
+    <![CDATA[
+    
+    #gpmrSummaryDiv  
+        {
+          width:320px;
+          max-width:350px;
+        	z-index:10;
+        	float:right;
+        	border:solid 1px #3366cc;
+        	background-image:url('http://wiki2.marc-hi.ca/skins/deuce/lighty-blue/header-bg.png');
+        	background-repeat:repeat-x;
+        	background-position:bottom;
+        	background-color:#fff;
+        }
+        #gpmrSummaryDiv th
+        {
+        	font-size:0.8em;
+        	text-align:right;
+        	vertical-align:top;
+        	padding:0px 2px;
+        	font-weight:bold;
+          background:none;
+        }
+        #gpmrSummaryDiv td.break, #gpmrSummaryDiv th.break
+        {
+        	border-top:solid 1px #000;
+        }
+        #gpmrSummaryDiv td
+        {
+        	padding:0px 2px;
+        	font-size:0.8em;
+        	overflow:hidden;
+        	vertical-align:top;
+        }
+        #gpmrSummaryDiv thead th
+        {
+        	background-color:#4f6b72;
+        	font-size:1.0em;
+        	color:#fff;
+        	padding:4px;
+        	text-align:left;
+        }
+        #gpmrSummaryDiv td ul
+        {
+        	margin:0px;
+        	padding:0px;
+        	list-style-type:none;
+        }
+        #gpmrToc
+        {
+        	border:solid 1px #3366cc;
+        	background-color:#f5f8fe;
+        	max-width:300px;
+        }
+        div.memberDoc h2.section
+        {
+          border-bottom:none;
+        }
+        h2.section
+        {
+        	border-bottom:solid 1px #3366cc;
+        }
+        div.memberDoc
+        {
+        	padding-left:2em;
+        }
+        div.memberDoc h3
+        {
+        	font-size:110%;
+        }
+        div.memberDoc h2
+        {
+        	font-size:120%;
+        }
+        div.dataType a, div.dataType
+        {
+        	font-style:italic;
+        }
+        table.memberTable, table.gpmrStateMachine
+        {
+        	border-collapse:collapse;
+        	border:solid 1px #ddd;
+        	min-width:400px;
+        	max-width:600px;
+        	width:80%;
+        }
+        table.memberTable th, table.gpmrStateMachine th
+        {
+        	font-weight:bold; 
+        	font-size:0.9em;
+          background-image:none;
+        	background-color:#f5f8fe;
+        	color:#4f6b72;
+        	border-top:solid 1px #4f6b72;
+        	padding:2px;
+        	width:20%;
+        	text-align:right;
+        	vertical-align:top;
+        }
+        table.memberTable td, table.gpmrStateMachine td
+        {
+        	font-size:0.9em;
+        	padding:2px;
+        	vertical-align:top;
+        	border:solid 1px #ddd;
+        }
+        table.memberTable td.dt
+        {
+        	min-width:80px;
+        	text-align:center;
+        }
+        div#gpmrPreamble
+        {
+          margin-bottom:5px;
+        }
+        div.hiddenTopic, td.hiddenTopic
+        {
+          display: none;
+        }
+        div.jurisdictionTopic, td.jurisdictionTopic
+        {
+          display: block;
+          border-top: solid 1px #ddd;
+        }
+    ]]>
+
+  </style>
+  <!--
+   Ensure that that the following CSS is placed in your WIKI Configuration:
+    <style type="text/css">
+        
+    </style>
+  -->
+  <!-- Defines what goes on any outputted file, no matter what -->
+  <globalTemplate>
+    <![CDATA[
+		<!-- 
+			This page was automatically generated using the General Purpose Mif Rendering Tool
+			using the HTML rendering extension.
+			
+			Rendered By: $user$
+			Rendered On: $date$ at $time$
+			Article Title: $value$
+    
+   -->
+   
+		$feature$
+		]]>
+  </globalTemplate>
+
+  <!--<script type="text/javascript">
+   
+   var jsCode = "";
+   function createCookie(name,value,days) {
+	    if (days) {
+		    var date = new Date();
+		    date.setTime(date.getTime()+(days*24*60*60*1000));
+		    var expires = "; expires="+date.toGMTString();
+	    }
+	    else var expires = "";
+	    document.cookie = name+"="+value+expires+"; path=/";
+    }
+
+    function readCookie(name) {
+	    var nameEQ = name + "=";
+	    var ca = document.cookie.split(';');
+	    for(var i=0;i < ca.length;i++) {
+		    var c = ca[i];
+		    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	    }
+	    return null;
+    }
+
+    function toggleJurisdiction(jurisdiction, sender)
+    {
+      var cookieSetStr = readCookie('view' + jurisdiction);
+      var cookieSet = cookieSetStr == "false" ? true : false;
+      createCookie('view' + jurisdiction, cookieSet, null);
+       
+      displayJurisdiction(jurisdiction);
+    }
+    
+    function displayJurisdiction(jurisdiction)
+    {
+      var cookieSetStr = readCookie('view' + jurisdiction);
+      var cookieSet = cookieSetStr == "false" ? false : true;
+      var style = cookieSet ? 'jurisdictionTopic' : 'hiddenTopic';
+      var items = document.getElementsByTagName('div'),
+        cmds = document.getElementsByTagName('a'),
+        tds = document.getElementsByTagName('td');
+      for(var i = 0; i < items.length; i++)
+      {
+        var a = items[i];
+        if((a.className == 'jurisdictionTopic' || a.className == 'hiddenTopic') &&
+          a.className != style && a.id.indexOf('vw' + jurisdiction) == 0)
+          a.className = style;
+      }
+      for(var i = 0; i < tds.length; i++)
+      {
+        var a = tds[i];
+        if((a.className == 'jurisdictionTopic' || a.className == 'hiddenTopic') &&
+          a.className != style && a.id.indexOf('vw' + jurisdiction) == 0)
+          a.className = style;
+      }
+      for(var i = 0; i < cmds.length; i++)
+      {
+        var a = cmds[i];
+        if(a.id.indexOf('cmd' + jurisdiction) == 0)
+          a.innerHTML = cookieSet ? '(Hide)' : '(Show)';
+      }
+
+    }
+    document.body.onload = function() { 
+          eval(jsCode);
+    }
+   </script>-->
+
+  <!-- Defines what goes into the Table of Contents Above the contents table -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki.Article.Article"
+		createNewPage="true" pageTitle="Documentation">
+    <propertyTemplate property="Children">
+      <![CDATA[
+        
+			]]>
+    </propertyTemplate>
+    <propertyTemplate property="Children" name="ChildrenHead">
+      <![CDATA[
+         <div id="gpmrChildren">
+          <h2>Contents</h2>
+			]]>
+    </propertyTemplate>
+    <propertyTemplate property="Children" name="ChildrenFoot">
+      <![CDATA[
+        </div>
+			]]>
+    </propertyTemplate>
+
+    <![CDATA[
+      <span style="font-style:italic; font-size:0.8em; color:#aaa">Generated by GPMR $version$ by $user$ on $date$</span>
+			$Content$
+      $ChildrenHead$
+      {{ wiki.tree{path: "~/$Url$", depth: "1"} }}
+      $ChildrenFoot$
+		]]>
+
+  </featureTemplate>
+
+  <!-- Enumerated Value -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.Enumeration+EnumerationValue"
+                 createNewPage="false">
+    <propertyTemplate property="Name">$value$</propertyTemplate>
+    <propertyTemplate property="RelatedCodes" name="RelatedCodesHead">
+      <![CDATA[
+        <h4 style="border-top-style:none">Related Codes</h4>
+        <div class="memberDoc">
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="RelatedCodes" name="RelatedCodesFoot">
+      <![CDATA[
+        </div>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="RelatedCodes">
+      <![CDATA[$feature$]]>
+    </propertyTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'div'][@class='memberDoc']//*[local-name() = 'h2']">
+      <![CDATA[
+        <h4>$InnerXml$</h4>
+      ]]>
+    </xmlElementTemplate>
+    <propertyTemplate name="CodeSystemExample" property="CodeSystem">codeSystem="$value$"</propertyTemplate>
+    <propertyTemplate name="DisplayNameExample" property="BusinessName">displayName="$value$"</propertyTemplate>
+    <propertyTemplate name="CodeSystemNameExample" property="CodeSystemName">codeSystemName="$value$"</propertyTemplate>
+    <propertyTemplate name="DocumentationSummary" property="Documentation">@Definition@</propertyTemplate>
+    <propertyTemplate property="Documentation">$feature$</propertyTemplate>
+    <propertyTemplate property="Container">
+      <![CDATA[
+            <tr>
+              <th>Defined In</th>
+              <td><a href="~/Vocabulary/$EnumerationType$/$Name$.html">$Name$</a></td>
+            </tr>
+
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+      <h3 style="border-top-style:none" id="$Name$">$Name$ - $BusinessName$</h3>
+      <div class="memberDoc">
+      
+        $DocumentationSummary$
+        <table class="memberTable">
+          <tbody>
+            <tr>
+              <th>Mnemonic</th>
+              <td>$Name$</td>
+            </tr>
+            <tr>
+              <th>Display Name</th>
+              <td>$BusinessName$</td>
+            </tr>
+            <tr>
+              <th>Code System</th>
+              <td>$CodeSystem$</td>
+            </tr>
+            $Container$
+            <tr>
+              <th>Example CD</th>
+              <td>&lt;code $CodeSystemExample$ code="$Name$" $DisplayNameExample$ $CodeSystemNameExample$/></td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+        $Documentation$
+        $RelatedCodesHead$
+        @RelatedCodes@
+        $RelatedCodesFoot$
+			]]>
+  </featureTemplate>
+
+  <!-- Feature template for Value Sets -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.ValueSet"
+		createNewPage="true" pageTitleProperty="PageTitle" pageParent="PageParent" pageAbstractProperty="PageAbstract">
+
+    <propertyTemplate name="PageAbstract"><![CDATA[(Value Set)]]></propertyTemplate>
+    <propertyTemplate name="PageTitle"><![CDATA[$Name$]]></propertyTemplate>
+    <propertyTemplate name="PageParent"><![CDATA[Vocabulary/$EnumerationType$]]></propertyTemplate>
+    <propertyTemplate property="BusinessName">
+      <![CDATA[<tr>
+        <th>Business Name:</th>
+        <td>$value$</td>
+      </tr>]]>
+    </propertyTemplate>
+    <propertyTemplate property="EnumerationReference" name="EnumerationReferenceHead">
+      <![CDATA[
+          <tr>
+            <th class="break">Supported Code Systems</th>
+            <td class="break">
+              <ul>
+        ]]>
+    </propertyTemplate>
+    <propertyTemplate property="EnumerationReference" name="EnumerationReferenceFoot">
+      <![CDATA[
+          </ul>
+         </td>
+        </tr>
+        ]]>
+    </propertyTemplate>
+    <propertyTemplate property="EnumerationReference">
+      <![CDATA[
+        <li><a href="~/Vocabulary/$EnumerationType$/$Name$.html">$Name$</a></li>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Name">$value$</propertyTemplate>
+    <propertyTemplate property="Literals" name="LiteralSummary">
+      <![CDATA[
+        <tr>
+          <td><a href="#$Name$">$Name$</a></td>
+          <td>$BusinessName$</td>
+          <td>$CodeSystem$</td>
+        </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Documentation">$feature$</propertyTemplate>
+    <propertyTemplate name="CopyrightText" property="Documentation">
+      <![CDATA[<p>$Copyright$<p>]]>
+    </propertyTemplate>
+    <propertyTemplate property="Literals">$feature$</propertyTemplate>
+    <propertyTemplate property="ContextBinding">
+      <![CDATA[
+                <tr>
+                  <th rowspan="2">Context Binding</th>
+                  <td>$Id$</td>
+                </tr>
+                <tr>
+                  <td><a href="~/Vocabulary/$EnumerationType$/$Name$.html">$Name$</a></td>
+                </tr>
+
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate name="DocumentationSummary" property="Documentation">@Definition@</propertyTemplate>
+    <![CDATA[
+          <table id="gpmrSummaryDiv">
+            <thead>
+                <tr>
+                    <th colspan="2">$Name$ (Value Set)</th>
+                </tr>
+            </thead>
+            <tbody>
+                $BusinessName$
+                <tr>
+                  <th class="break" style="min-width:100px">Value Set ID</th>
+                  <td class="break">$Id$</td>
+                </tr>
+                $EnumerationReferenceHead$
+                @EnumerationReference@
+                $EnumerationReferenceFoot$
+            </tbody>
+        </table>
+    $CopyrightText$
+    <div id="gpmrPreamble">
+    $DocumentationSummary$
+    </div>
+    
+    <div id="gpmrOtherDoc">
+      $Documentation$
+    </div>
+      
+			<h2 class="section">Member Summary</h2>
+      <table class="vocabTable">
+        <thead>
+          <tr>
+            <th>Mnemonic</th>
+            <th>Display Name</th>
+            <th>Code System</th>
+          </tr>
+         </thead>
+         <tbody>
+          @LiteralSummary@
+         </tbody>
+      </table>
+      
+      <h2 class="section">Members</h2>
+      @Literals@
+      
+      
+		]]>
+  </featureTemplate>
+
+  <!-- Feature template for Concept Domains -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.ConceptDomain"
+		createNewPage="true" pageTitleProperty="PageTitle" pageParent="PageParent" pageAbstractProperty="PageAbstract">
+
+    <propertyTemplate name="PageAbstract"><![CDATA[(Concept Domain)]]></propertyTemplate>
+    <propertyTemplate name="PageTitle"><![CDATA[$Name$]]></propertyTemplate>
+    <propertyTemplate name="PageParent"><![CDATA[Vocabulary/$EnumerationType$]]></propertyTemplate>
+    <propertyTemplate property="BusinessName">
+      <![CDATA[<tr>
+        <th>Business Name:</th>
+        <td>$value$</td>
+      </tr>]]>
+    </propertyTemplate>
+    <propertyTemplate property="EnumerationReference" name="EnumerationReferenceHead">
+      <![CDATA[
+          <tr>
+            <th class="break">Supported Code Systems</th>
+            <td class="break">
+              <ul>
+        ]]>
+    </propertyTemplate>
+    <propertyTemplate property="EnumerationReference" name="EnumerationReferenceFoot">
+      <![CDATA[
+          </ul>
+         </td>
+        </tr>
+        ]]>
+    </propertyTemplate>
+    <propertyTemplate property="EnumerationReference">
+      <![CDATA[
+        <li><a href="~/Vocabulary/$EnumerationType$/$Name$.html">$Name$</a></li>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Name">$value$</propertyTemplate>
+    <propertyTemplate property="Documentation">$feature$</propertyTemplate>
+    <propertyTemplate name="CopyrightText" property="Documentation">
+      <![CDATA[<p>$Copyright$<p>]]>
+    </propertyTemplate>
+    <propertyTemplate property="ContextBinding">
+      <![CDATA[
+        <li><a href="~/Vocabulary/$EnumerationType$/$Name$.html">$Name$</a></li>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate name="DocumentationSummary" property="Documentation">@Definition@</propertyTemplate>
+    <![CDATA[
+          <table id="gpmrSummaryDiv">
+            <thead>
+                <tr>
+                    <th colspan="2">$Name$ (Concept Domain)</th>
+                </tr>
+            </thead>
+            <tbody>
+                $BusinessName$
+                $ContentRef$
+                $EnumerationReferenceHead$
+                @EnumerationReference@
+                $EnumerationReferenceFoot$
+            </tbody>
+        </table>
+    $CopyrightText$
+    <div id="gpmrPreamble">
+    $DocumentationSummary$
+    </div>
+    
+    <div id="gpmrOtherDoc">
+      $Documentation$
+    </div>
+      
+    <h2>Bound Value Sets</h2>
+    <ul>
+      @ContextBinding@
+    </ul>
+		]]>
+  </featureTemplate>
+
+  <!-- Feature template for Code Systems -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.CodeSystem"
+  createNewPage="true" pageTitleProperty="PageTitle" pageParent="PageParent" pageAbstractProperty="PageAbstract">
+
+    <propertyTemplate name="PageAbstract"><![CDATA[(Code System)]]></propertyTemplate>
+    <propertyTemplate name="PageTitle"><![CDATA[$Name$]]></propertyTemplate>
+    <propertyTemplate name="PageParent"><![CDATA[Vocabulary/$EnumerationType$]]></propertyTemplate>
+    <propertyTemplate property="BusinessName">
+      <![CDATA[<tr>
+        <th>Business Name:</th>
+        <td>$value$</td>
+      </tr>]]>
+    </propertyTemplate>
+    <propertyTemplate property="ContentRef">
+      <![CDATA[
+                <tr>
+                  <th rowspan="2">Code System</th>
+                  <td>$Id$</td>
+                </tr>
+                <tr>
+                  <td><a href="~/Vocabulary/$EnumerationType$/$Name$.html">$Name$</a></td>
+                </tr>
+
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="EnumerationReference" name="EnumerationReferenceHead">
+      <![CDATA[
+          <tr>
+            <th class="break">Supported Code Systems</th>
+            <td class="break">
+              <ul>
+        ]]>
+    </propertyTemplate>
+    <propertyTemplate property="EnumerationReference" name="EnumerationReferenceFoot">
+      <![CDATA[
+          </ul>
+         </td>
+        </tr>
+        ]]>
+    </propertyTemplate>
+    <propertyTemplate property="EnumerationReference">
+      <![CDATA[
+        <li><a href="~/Vocabulary/$EnumerationType$/$Name$.html">$Name$</a></li>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Name">$value$</propertyTemplate>
+    <propertyTemplate property="Literals" name="LiteralSummary">
+      <![CDATA[
+        <tr>
+          <td><a href="#$Name$">$Name$</a></td>
+          <td>$BusinessName$</td>
+          <td>$CodeSystem$</td>
+        </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Documentation">$feature$</propertyTemplate>
+    <propertyTemplate name="CopyrightText" property="Documentation">
+      <![CDATA[<p>$Copyright$<p>]]>
+    </propertyTemplate>
+    <propertyTemplate property="Literals">$feature$</propertyTemplate>
+    <propertyTemplate name="DocumentationSummary" property="Documentation">@Definition@</propertyTemplate>
+    <![CDATA[
+          <table id="gpmrSummaryDiv">
+            <thead>
+                <tr>
+                    <th colspan="2">$Name$ (Code System)</th>
+                </tr>
+            </thead>
+            <tbody>
+                $BusinessName$
+                $ContentRef$
+                $EnumerationReferenceHead$
+                @EnumerationReference@
+                $EnumerationReferenceFoot$
+            </tbody>
+        </table>
+    $CopyrightText$
+    <div id="gpmrPreamble">
+    $DocumentationSummary$
+    </div>
+    
+    <div id="gpmrOtherDoc">
+      $Documentation$
+    </div>
+      
+			<h2 class="section">Member Summary</h2>
+      <table class="vocabTable">
+        <thead>
+          <tr>
+            <th>Mnemonic</th>
+            <th>Display Name</th>
+            <th>Code System</th>
+          </tr>
+         </thead>
+         <tbody>
+          @LiteralSummary@
+         </tbody>
+      </table>
+      
+      <h2 class="section">Members</h2>
+      @Literals@
+      
+      
+		]]>
+  </featureTemplate>
+
+  <!-- Title Documentation -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.Documentation+TitledDocumentation"
+                   createNewPage="false">
+    <propertyTemplate property="Text"><![CDATA[$value$]]></propertyTemplate>
+    <![CDATA[
+    @Text@
+    ]]>
+  </featureTemplate>
+
+  <!-- Feature template for Documentation -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.Documentation"
+		createNewPage="false">
+
+    <objectTemplate match="//*[local-name() = 'object'][@name='classRef'][./*[local-name() = 'param'][@name = 'artifact' and @value = 'RIM']]">
+      <![CDATA[<a href="~/Sub Systems/RIM/$className$.html">$className$</a>]]>
+    </objectTemplate>
+    <objectTemplate match="//*[local-name() = 'object'][@name='datatypeRef']">
+      <![CDATA[<a href="~/Datatypes/$name$.html">$name$</a>]]>
+    </objectTemplate>
+
+    <xmlElementTemplate match="//*[local-name() = 'classRef'][@artifact = 'RIM']"><![CDATA[<a href="~/Sub Systems/RIM/$className$.html">$className$</a>]]></xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'classRef'][not(@artifact = 'RIM')]"><![CDATA[<a href="~/Sub Systems/$subSection$$domain$_$artifact$$id$$realm$/$className$.html">$className$</a>]]></xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'vocabularyDomainRef']"><![CDATA[<a href="~/vocabulary/ValueSet/$name$.html">$name$</a>]]></xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'externalRef']"><![CDATA[<a href="$ref$">$alt$</a>]]></xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'datatypeRef']"><![CDATA[<a href="~/Datatypes/$name$">$name$</a>]]></xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'div'][count(@title) = 1]">
+      <![CDATA[<div><h3>$title$</h3>$InnerXml$</div>]]>
+    </xmlElementTemplate>
+
+    <propertyTemplate name="DescriptionTitle" property="Description"><![CDATA[<h2 class="section">Description</h2>]]></propertyTemplate>
+    <propertyTemplate name="RationaleTitle" property="Rationale"><![CDATA[<h2 class="section">Rationale</h2>]]></propertyTemplate>
+    <propertyTemplate name="WalkthroughTitle" property="Walkthrough"><![CDATA[<h2 class="section">Walkthrough</h2>]]></propertyTemplate>
+    <propertyTemplate name="UsageTitle" property="Usage"><![CDATA[<h2 class="section">Comment</h2>]]></propertyTemplate>
+
+    <propertyTemplate property="Walkthrough"><![CDATA[$value$]]></propertyTemplate>
+    <propertyTemplate property="Rationale"><![CDATA[$value$]]></propertyTemplate>
+    <propertyTemplate property="Description"><![CDATA[$value$]]></propertyTemplate>
+    <propertyTemplate property="Usage"><![CDATA[$value$]]></propertyTemplate>
+    <propertyTemplate property="Other">
+      <![CDATA[
+      <h2 class="section">$Title$</h2>
+      $feature$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Appendix">
+      <![CDATA[
+      <h2 class="section">Appendix $Name$ - $Title$</h2>
+      $feature$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate name="DisclaimerHeader" property="Disclaimer">
+      <![CDATA[<h2 class="section">Disclaimer</h2>]]>
+    </propertyTemplate>
+    <propertyTemplate property="Disclaimer">$value$</propertyTemplate>
+    <propertyTemplate property="LicenseTerms">$value$</propertyTemplate>
+    <propertyTemplate property="LicenseTerms" name="LicenseTermsHeader">
+      <![CDATA[<h2 class="section">License Terms</h2>]]>
+    </propertyTemplate>
+    <propertyTemplate name="ContributorHeader" property="Contributors"><![CDATA[<h2 class="section">Contributors</h2><ul>]]></propertyTemplate>
+    <propertyTemplate name="ContributorFoot" property="Contributors"><![CDATA[</ul>]]></propertyTemplate>
+    <propertyTemplate property="Contributors"><![CDATA[<li>$value$</li>]]></propertyTemplate>
+    <![CDATA[
+    
+		$DescriptionTitle$
+		@Description@
+		$RationaleTitle$
+		@Rationale@
+    $UsageTitle$
+    @Usage@
+		$WalkthroughTitle$
+		@Walkthrough@
+    
+    @Other@
+    
+    @Appendix@
+    
+    $DisclaimerHeader$
+    @Disclaimer@
+    
+    $LicenseTermsHeader$
+    @LicenseTerms@
+    
+    $ContributorHeader$
+    @Contributors@
+    $ContributorFoot$
+		]]>
+  </featureTemplate>
+
+  <!-- Feature template for Package -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.SubSystem"
+                   createNewPage="true" pageTitleProperty="PageTitle" pageAbstractProperty="PageAbstract" pageParent="PageParent">
+    <propertyTemplate name="PageParent">Sub Systems</propertyTemplate>
+    <propertyTemplate name="PageAbstract">(SubSystem) $BusinessName$</propertyTemplate>
+    <propertyTemplate name="PageTitle">$Name$</propertyTemplate>
+    <propertyTemplate property="Documentation">$feature$</propertyTemplate>
+    <propertyTemplate property="DerivedFrom" escaped="true">$value$</propertyTemplate>
+    <propertyTemplate property="EntryPoint" name="EntryPointHead">
+      <![CDATA[
+      <tr>
+        <th class="break">Entry Point(s)</th>
+        <td class="break">
+          <ul>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="EntryPoint" name="EntryPointFoot">
+      <![CDATA[
+        </ul>
+       </td>
+      </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="BusinessName">
+      <![CDATA[
+        <tr>
+            <th class="break" style="min-width:100px;">Business Name</th>
+            <td class="break">$value$</td>
+        </tr>      
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="EntryPoint">
+      <![CDATA[<li><a href="~/Sub Systems/$ContainerName$/$Name$.html">$Name$</a></li>]]>
+    </propertyTemplate>
+    <propertyTemplate property="GraphicRepresentation" escape="true">
+      <![CDATA[
+      <div id="classD">
+      {{graphviz.dot('$value$')}}
+      </div>
+      <script type="text/javascript">
+        var img;
+        for(i = 0; i < document.getElementById("classD").childNodes.length; i++)
+          if(document.getElementById("classD").childNodes[i].nodeName == "IMG")
+          {
+            img = document.getElementById("classD").childNodes[i];
+            var a = document.createElement('a');
+            a.setAttribute("href", img.src);
+            img.setAttribute("border","0");
+            img.width=300;
+            a.appendChild(img);
+            document.getElementById("classD").appendChild(a);
+          }
+      </script>
+      ]]>
+
+    </propertyTemplate>
+    <propertyTemplate name="Documentation" property="Documentation">$feature$</propertyTemplate>
+    <propertyTemplate name="DocumentationSummary" property="Documentation">@Definition@</propertyTemplate>
+    <propertyTemplate name="CopyrightText" property="Documentation">
+      <![CDATA[<p>$Copyright$<p>]]>
+    </propertyTemplate>
+    <propertyTemplate property="OwnedClasses">
+      <![CDATA[
+        <h3 style="border-style:none;"><a href="~/Sub Systems/$ContainerName$/$Name$.html">$Name$ - (Class) $BusinessName$</a></h3>      
+        <div class="memberDoc">
+          @SummaryDocumentation@
+        </div>
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+      <table id="gpmrSummaryDiv">
+            <thead>
+                <tr>
+                    <th colspan="2">$Name$ (SubSystem)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--<tr>
+                    <td colspan="2">
+                        $GraphicRepresentation$
+                    </td>
+                </tr>-->
+                $BusinessName$
+                $EntryPointHead$
+                @EntryPoint@
+                $EntryPointFoot$
+            </tbody>
+        </table>
+    $CopyrightText$
+    <div id="gpmrPreamble">
+    $DocumentationSummary$
+    </div>
+    
+     <div id="gpmrToc">
+        
+        <strong>Contents </strong> (<a id="gpmrShowHideToc" href="#" onclick="hideTOC()">hide</a>)
+        <div id="gpmrTocContent">
+            {{ wiki.toc{path: "~/Sub Systems/$Name$"} }}
+        </div>
+    </div>
+    
+    <div id="gpmrOtherDoc">
+      $Documentation$
+    </div>
+      
+     <h2 class="section">Contained Structures</h2>
+     <p>The following are member objects of $Name$</p>
+     @OwnedClasses@
+     
+    ]]>
+  </featureTemplate>
+
+  <!-- Type Parameter -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.TypeParameter">
+    <propertyTemplate name="ClassRef" property="Class">
+      <![CDATA[<a href="~/Sub Systems/$ContainerName$/$Name$.html">]]>
+    </propertyTemplate>
+    <propertyTemplate name="ClassRefEnd" property="Class">
+      <![CDATA[</a>]]>
+    </propertyTemplate>
+    <propertyTemplate name="DataTypeRefEnd" property="Class">
+      <![CDATA[</a>]]>
+    </propertyTemplate>
+    <propertyTemplate name="DataTypeRef" property="CoreDatatypeName">
+      <![CDATA[<a href="~/Datatypes/$value$.html">]]>
+    </propertyTemplate>
+    <propertyTemplate name="GenericSupplier" property="GenericSupplier">
+      <![CDATA[&lt;$feature$&gt;]]>
+    </propertyTemplate>
+    <propertyTemplate name="Flavor" property="Flavor">
+      <![CDATA[($value$)]]>
+    </propertyTemplate>
+    <![CDATA[
+     $ParameterName$:
+     $ClassRef$
+     $DataTypeRef$
+      $Name$ $Flavor$
+      $ClassRefEnd$
+      $DataTypeRefEnd$
+      @GenericSupplier@
+     ]]>
+  </featureTemplate>
+
+  <!-- Type Refernece -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.TypeReference">
+    <propertyTemplate name="ClassRef" property="Class">
+      <![CDATA[<a href="~/Sub Systems/$ContainerName$/$Name$.html">]]>
+    </propertyTemplate>
+    <propertyTemplate name="DataTypeRef" property="CoreDatatypeName">
+      <![CDATA[<a href="~/Datatypes/$value$.html">]]>
+    </propertyTemplate>
+    <propertyTemplate name="GenericSupplier" property="GenericSupplier">
+      <![CDATA[&lt;$feature$&gt;]]>
+    </propertyTemplate>
+    <propertyTemplate name="Flavor" property="Flavor">
+      <![CDATA[($value$)]]>
+    </propertyTemplate>
+    <![CDATA[
+     $ClassRef$
+     $DataTypeRef$
+      $Name$ $Flavor$</a>
+      @GenericSupplier@
+     ]]>
+  </featureTemplate>
+
+  <!-- List of State -->
+  <featureTemplate feature="System.Collections.Generic.KeyValuePair`2[[System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[MohawkCollege.EHR.gpmr.COR.State, MohawkCollege.EHR.gpmr.COR, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                   createNewPage="false">
+    <propertyTemplate property="Value">$feature$</propertyTemplate>
+    $Value$
+  </featureTemplate>
+
+  <!-- List of Supported Annotations -->
+  <featureTemplate feature="System.Collections.Generic.List`1[[MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.SupportedConstraintAnnotation, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                   createNewPage="false">
+    <propertyTemplate property="this">
+      <![CDATA[
+        <li>
+          $RealmCode$
+        </li>
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+    <ul>
+      @this@
+    </ul>
+    ]]>
+  </featureTemplate>
+
+  <!-- List of Conformance Constraints Annotations -->
+  <featureTemplate feature="System.Collections.Generic.List`1[[MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.ConformanceConstraintAnnotation, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                   createNewPage="false">
+    <propertyTemplate property="this">
+      <![CDATA[
+        <td id="vw$RealmCode$Conformance$guid$" class="jurisdictionTopic" style="min-width:80px;text-align:center;">
+          $NewValue$ ($RealmCode$) 
+        </td>
+        <td id="vw$RealmCode$Conformance$guid$" class="jurisdictionTopic"><conformDef value="$NewValue$"/></td>
+      </tr>
+      <tr>
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+    <tr>
+        <th rowspan="$Count$">Conformance</th>
+        @this@
+      </tr>
+    ]]>
+  </featureTemplate>
+
+  <!-- List of Supplier Strength Annotations -->
+  <featureTemplate feature="System.Collections.Generic.List`1[[MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.SupplierStrengthConstraintAnnotation, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                   createNewPage="false">
+    <propertyTemplate property="this">
+      <![CDATA[
+        <td id="vw$RealmCode$Strength$guid$" class="jurisdictionTopic" style="min-width:80px;text-align:center;">
+          $NewValue$ ($RealmCode$) 
+        </td>
+        <td id="vw$RealmCode$StrengthDef$guid$" class="jurisdictionTopic"><codeDef value="$NewValue$"/></td>
+      </tr>
+      <tr>
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+    <tr>
+        <th rowspan="$Count$">Supplier Strength</th>
+        @this@
+      </tr>
+    ]]>
+  </featureTemplate>
+
+  <!-- List of Conformance Constraints Annotations -->
+  <featureTemplate feature="System.Collections.Generic.List`1[[MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.FixedValueConstraintAnnotation, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                   createNewPage="false">
+    <propertyTemplate property="this">
+      <![CDATA[
+        <td id="vw$RealmCode$Fixed$guid$" class="jurisdictionTopic" style="min-width:80px;text-align:center;">
+          $NewValue$ ($RealmCode$) 
+        </td>
+        <td id="vw$RealmCode$FixedDesc$guid$" class="jurisdictionTopic">This member is fixed to '$NewValue$'</td>
+      </tr>
+      <tr>
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+    <tr>
+        <th rowspan="$Count$">Fixed Value</th>
+        @this@
+      </tr>
+    ]]>
+  </featureTemplate>
+
+  <!-- List of Supplier Domain Constraints -->
+  <featureTemplate feature="System.Collections.Generic.List`1[[MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.SupplierDomainConstraintAnnotation, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                   createNewPage="false">
+    <propertyTemplate property="this">
+      <![CDATA[
+        $feature$
+      </tr>
+      <tr>
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+    <tr>
+        <th rowspan="$Count$">Supplier Domain</th>
+        @this@
+      </tr>
+    ]]>
+  </featureTemplate>
+
+  <!-- Supplier Domain Constraint -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.SupplierDomainConstraintAnnotation"
+                   createNewPage="false">
+    <propertyTemplate property="StrongReference" name="StrongReferenceLink">
+      <![CDATA[<a href="~/Vocabulary/$EnumerationType$/$Name$.html">$Name$</a>]]>
+    </propertyTemplate>
+    <propertyTemplate property="StrongReference" name="StrongReferenceDesc">'$Name$'</propertyTemplate>
+    <propertyTemplate property="WeakReference" name="WeakReferenceDesc">'$value$'</propertyTemplate>
+    <![CDATA[
+      <td id="vw$RealmCode$Vocab$guid$" class="jurisdictionTopic" style="min-width:80px;text-align:center;">
+        $StrongReferenceLink$
+        $WeakReference$ ($RealmCode$)
+      </td>
+      <td id="vw$RealmCode$VocabDesc$guid$" class="jurisdictionTopic">The contents of this element are to be drawn from $StrongReferenceDesc$ $WeakReferenceDesc$</td>
+    ]]>
+  </featureTemplate>
+
+
+
+
+  <!-- List of Default Value Constraint Annotations -->
+  <featureTemplate feature="System.Collections.Generic.List`1[[MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.DefaultValueConstraintAnnotation, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                   createNewPage="false">
+    <propertyTemplate property="this">
+      <![CDATA[
+        <td id="vw$RealmCode$Default$guid$" class="jurisdictionTopic" style="min-width:80px;text-align:center;">
+          $NewValue$ ($RealmCode$) 
+        </td>
+        <td id="vw$RealmCode$DefaultDesc$guid$" class="jurisdictionTopic">Default value of '$NewValue$' is assumed if not specified</td>
+      </tr>
+      <tr>
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+    <tr>
+        <th rowspan="$Count$">Default Value</th>
+        @this@
+      </tr>
+    ]]>
+  </featureTemplate>
+
+  <!-- List of Conformance Constraints Annotations -->
+  <featureTemplate feature="System.Collections.Generic.List`1[[MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.CardinalityConstraintAnnotation, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                   createNewPage="false">
+    <propertyTemplate property="this">
+      <![CDATA[
+        <td id="vw$RealmCode$Cardinality$guid$" class="jurisdictionTopic" style="min-width:80px;text-align:center;">
+          $MinOccurs$ .. $MaxOccurs$ ($RealmCode$) 
+        </td>
+        <td id="vw$RealmCode$CardinalityDef$guid$" class="jurisdictionTopic"><multiplicityDef value="$MaxOccurs$"/></td>
+      </tr>
+      <tr>
+      ]]>
+
+    </propertyTemplate>
+    <![CDATA[
+      <tr>
+        <th rowspan="$Count$">Multiplicity</th>
+        @this@
+      </tr>
+    ]]>
+
+  </featureTemplate>
+
+  <!-- List of Data Type Constraints Annotations -->
+  <featureTemplate feature="System.Collections.Generic.List`1[[MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.DatatypeChangeConstraintAnnotation, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                   createNewPage="false">
+    <propertyTemplate property="this">
+      <![CDATA[
+        <td id="vw$RealmCode$DT$guid$" class="jurisdictionTopic" style="min-width:80px;text-align:center;">
+          $feature$ ($RealmCode$)
+        </td>
+        <td id="vw$RealmCode$DTDef$guid$" class="jurisdictionTopic">See documentation</td>
+      </tr>
+      <tr>
+      ]]>
+
+    </propertyTemplate>
+    <![CDATA[
+      <tr>
+        <th rowspan="$Count$">Data Type</th>
+        @this@
+      </tr>
+    ]]>
+
+  </featureTemplate>
+
+  <!-- One Data Type Constraint -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.DatatypeChangeConstraintAnnotation"
+                 createNewPage="false">
+    <propertyTemplate property="NewValue">
+      <![CDATA[
+        $feature$
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+      $NewValue$
+    ]]>
+
+  </featureTemplate>
+
+
+
+  <!-- List of Documentation Constraints Annotations -->
+  <featureTemplate feature="System.Collections.Generic.List`1[[MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.Annotations.AnnotationConstraintAnnotation, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                   createNewPage="false">
+    <propertyTemplate property="this">
+      <![CDATA[
+      <div id="vw$RealmCode$Documentation$guid$" class="jurisdictionTopic" style="border-style:none">
+      <h4>$AnnotationType$ ($RealmCode$)</h4>
+      @NewValue@
+      </div>
+      ]]>
+    </propertyTemplate>
+    @this@
+  </featureTemplate>
+
+  <!-- Annotation -->
+  <featureTemplate feature="System.Collections.Generic.List`1[MohawkCollege.EHR.gpmr.COR.Annotation, MohawkCollege.EHR.gpmr.COR, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]"
+                   createNewPage="false">
+    <propertyTemplate property="this">$feature$</propertyTemplate>
+    @this@
+  </featureTemplate>
+
+  <!-- State -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.State"
+                   createNewPage="false">
+    <propertyTemplate property="ChildStates">
+      <![CDATA[
+      $feature$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Documentation">
+      <![CDATA[<i>@Definition@</i>]]>
+    </propertyTemplate>
+    <propertyTemplate property="ChildStates" name="ChildStatesTitle">
+      Child States
+    </propertyTemplate>
+    <![CDATA[
+      <tr>
+      <th>$Name$</th>
+      <td>
+        $Documentation$
+      </td>
+      </tr>
+      <tr>
+        <td colspan="2" style="border:solid 1px #000">
+          $ChildStatesTitle$
+          <table style="width:90%; margin-left:15px" cellspacing="0" cellpadding="0">
+            @ChildStates@
+          </table>
+        </td>
+      </tr>
+      ]]>
+  </featureTemplate>
+
+  <!-- State Machine -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.StateMachine"
+                   createNewPage="false">
+    <propertyTemplate property="States">$feature$</propertyTemplate>
+    <propertyTemplate property="Transitions">
+      <![CDATA[<li>$value$</li>]]>
+    </propertyTemplate>
+    <propertyTemplate property="GraphicalRepresentation" escape="true">
+      <![CDATA[
+       <div id="classD">
+      {{graphviz.dot('$value$')}}
+      </div>
+      <script type="text/javascript">
+        var img;
+        for(i = 0; i < document.getElementById("classD").childNodes.length; i++)
+          if(document.getElementById("classD").childNodes[i].nodeName == "IMG")
+          {
+            img = document.getElementById("classD").childNodes[i];
+            var a = document.createElement('a');
+            a.setAttribute("href", img.src);
+            img.setAttribute("border","0");
+            img.width=400;
+            a.appendChild(img);
+            document.getElementById("classD").appendChild(a);
+          }
+      </script>
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+      $GraphicalRepresentation$<br/>
+      <span style="font-style:normal">
+      <b>States</b>
+      <table style="width:100%" class="gpmrStateMachine">
+        @States@
+      </table>
+      <h5>Transitions</h5>
+      <ul>@Transitions@</ul>
+      </span>
+    ]]>
+  </featureTemplate>
+
+  <!-- Class Content -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.Choice"
+                   createNewPage="false">
+    <!-- Multiplicity -->
+    <xmlElementTemplate match="//*[local-name() = 'multiplicityDef'][@value = '*']">
+      Multiplicity is unbounded, any number of repetitions is permitted
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'multiplicityDef'][@value = '1']">
+      Does not repeat
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'multiplicityDef']">
+      Repeats up to $value$ times.
+    </xmlElementTemplate>
+    <!-- Conformance -->
+    <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='Mandatory']">
+      Value must always be supplied (ie: No Nulls)
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='Required']">
+      All implementors must support this property. They must be able to transmit, or to receive and
+      usefully handle the concept
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='Optional']">
+      the concept is optional. Implementers must declare whether they support the concept or not.
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='Populated']">
+      Implementers must support and must always send a value, however a null flavor is permitted as a value
+    </xmlElementTemplate>
+    <propertyTemplate property="Content">
+      <![CDATA[
+        $feature$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Documentation">
+      <![CDATA[
+        $feature$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="BusinessName">
+      ($Value$)
+    </propertyTemplate>
+    <functionTemplate invoke="CardinalityConstraintAnnotation"
+      type="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.DekiRenderFunctoids, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      name="MaxOccurs"
+      escaped="true">
+      <![CDATA[
+        $feature$
+      ]]>
+    </functionTemplate>
+    <![CDATA[
+      <h3 id="$Name$">$Name$ $BusinessName$</h3>
+      <div class="memberDoc">
+
+        $Documentation$
+        
+        <table class="memberTable">
+            <tr>
+                <th>Data Type</th>
+                <td class="dt">Choice</td>
+                <td>See Below</td>
+            </tr>
+            <tr>
+                <th>Conformance</th>
+                <td class="dt">$Conformance$</td>
+                <td><conformDef value="$Conformance$"/></td>
+            </tr>
+            ^MaxOccurs^
+        </table>
+        $Documentation$
+        <h2>Choice of:</h2>
+        @Content@
+      </div>
+    ]]>
+  </featureTemplate>
+
+  <!-- Class Content -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.Property"
+                   createNewPage="false">
+    <propertyTemplate property="BusinessName">($value$)</propertyTemplate>
+    <propertyTemplate property="Type">
+      <![CDATA[
+        $feature$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Documentation">
+      <![CDATA[
+        <p>
+        @Definition@
+        </p>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Documentation" name="AllOtherDocumentation">
+      <![CDATA[
+        $feature$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="SupplierStrength" name="CodeStrength">
+      <![CDATA[
+      <tr>
+        <th>Code Strength</th>
+        <td class="dt">$value$</td>
+        <td><codeDef value="$value$"/></td>
+      </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="SupplierDomainRef" name="CodeDomain">
+      <![CDATA[
+      <tr>
+        <th>Code Domain</th>
+        <td class="dt"><a href="~/Vocabulary/$EnumerationType$/$Name$.html">$Name$</a></td>
+        <td>The contents are constrained to the value-set '$Name$' in the domain being implemented</td>
+      </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Validation">
+      <![CDATA[
+        <tr>
+          <th>Validation</th>
+          <td class="dt">$value$</td>
+          <td>Regular Expression validation</td>
+        </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="DefaultValue">
+      <![CDATA[
+        <tr>
+          <th>Default Value</th>
+          <td class="dt">$value$</td>
+          <td>Default value of '$value$' is assumed if not specified otherwise</td>
+        </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="UpdateMode">
+      <![CDATA[
+      <tr>
+          <th>Default Update Mode</th>
+          <td class="dt">$value$</td>
+          <td><updateDef value="$value$"/></td>
+      </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="StateMachine">
+      <![CDATA[
+        <h2>State Diagram</h2>
+        $feature$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Type" name="TypeDoc">
+      <![CDATA[
+        $ClassDocumentation$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="AlternateTraversalNames" name="TraversalHeader">
+      <![CDATA[
+      <h2>Alternate Traversal Names</h2>
+      <ul>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="AlternateTraversalNames" name="TraversalFooter">
+      <![CDATA[
+      </ul>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="AlternateTraversalNames">
+      <![CDATA[
+      <li>$feature$</li>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="MinLength">
+      <![CDATA[
+      <tr>
+          <th>Minimum Length</th>
+          <td class="dt">$value$</td>
+          <td>The data being passed using this element must be at lest $value$ characters</td>
+        </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="MaxLength">
+      <![CDATA[
+      <tr>
+          <th>Maximum Length</th>
+          <td class="dt">$value$</td>
+          <td>The data being passed using this element must not exceed $value$ characters</td>
+        </tr>
+      ]]>
+    </propertyTemplate>
+    <!-- Coding Domain -->
+    <xmlElementTemplate match="//*[local-name() = 'codeDef'][@value='CodedWithExceptions']">
+      If not null, the element must be coded if there is an appropriate value in the set of codes
+      deteremined by the identified domain and the realm in which the instance is constructed. If
+      no appropriate code is available, a local code may be used or the value may be populated with
+      only original text
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'codeDef']">
+      If not null, the element must be coded and must be drawn from the set of codes determined
+      but the identified domain and the realm in which the instance is constructed. The set of code
+      is fixed to those values in place at the time this model was successfully balloted
+    </xmlElementTemplate>
+
+    <!-- Conformance -->
+    <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='Mandatory']">
+      Value must always be supplied (ie: No Nulls)
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='Required']">
+      All implementors must support this property. They must be able to transmit, or to receive and
+      usefully handle the concept
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='Optional']">
+      the concept is optional. Implementers must declare whether they support the concept or not.
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='Populated']">
+      Implementers must support and must always send a value, however a null flavor is permitted as a value
+    </xmlElementTemplate>
+
+    <!-- Multiplicity -->
+    <xmlElementTemplate match="//*[local-name() = 'multiplicityDef'][@value = '*']">
+      Multiplicity is unbounded, any number of repetitions is permitted
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'multiplicityDef'][@value = '1']">
+      Does not repeat
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'multiplicityDef']">
+      Repeats up to $value$ times.
+    </xmlElementTemplate>
+
+    <!-- Update Modes -->
+    <xmlElementTemplate match="//*[local-name() = 'updateDef'][@value = 'Unknown']">
+      Update mode not specified
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'updateDef'][@value = 'Add']">
+      New value is appended to the existing data set
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'updateDef'][@value = 'Replace']">
+      New value will replace an existing value
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'updateDef'][@value = 'Delete']">
+      Existing value is removed
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'updateDef'][@value = 'NoChange']">
+      No change is permitted
+    </xmlElementTemplate>
+
+    <!-- Property Types -->
+    <xmlElementTemplate match="//*[local-name() = 'propDef'][@value = 'Structural']">
+      This attribute is structural in nature (example: in XML, this would equate to an attribute)
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'propDef'][@value = 'NonStructural']">
+      This attribute is non-structural in nature (example: in XML, this would equate to an element)
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'propDef'][@value = 'TraversableAssociation']">
+      This attribute represents a Traversable association to another class
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'propDef'][@value = 'NonTraversableAssociation']">
+      This attribute represents a non-traversable association to another class. These are usually not
+      rendered in the ITS
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'div'][@class='memberDoc']//*[local-name() = 'h2']">
+      <![CDATA[
+        <h4>$InnerXml$</h4>
+      ]]>
+    </xmlElementTemplate>
+    <functionTemplate invoke="ConformanceConstraintAnnotation"
+        type="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.DekiRenderFunctoids, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        name="ConformanceConstraints"
+        escaped="true">
+      <![CDATA[
+        $feature$
+      ]]>
+    </functionTemplate>
+    <functionTemplate invoke="CardinalityConstraintAnnotation"
+        type="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.DekiRenderFunctoids, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        name="MaxOccurs"
+        escaped="true">
+      <![CDATA[
+        $feature$
+      ]]>
+    </functionTemplate>
+    <functionTemplate invoke="DocumentationConstraintAnnotation"
+        type="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.DekiRenderFunctoids, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        escaped="true"
+        name="AllOtherDocumentation">
+      <![CDATA[
+        $feature$
+      ]]>
+    </functionTemplate>
+    <functionTemplate invoke="FixedValueConstraintAnnotation"
+    type="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.DekiRenderFunctoids, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+    escaped="true"
+    name="FixedValue">
+      <![CDATA[
+        $feature$
+      ]]>
+    </functionTemplate>
+    <functionTemplate invoke="DefaultValueConstraintAnnotation"
+    type="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.DekiRenderFunctoids, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+    escaped="true"
+    name="DefaultValue">
+      <![CDATA[
+        $feature$
+      ]]>
+    </functionTemplate>
+    <functionTemplate invoke="DataTypeConstraintAnnotation"
+    type="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.DekiRenderFunctoids, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+    escaped="true"
+    name="DataType">
+      <![CDATA[
+        $feature$
+      ]]>
+    </functionTemplate>
+    <functionTemplate invoke="SupplierStrengthConstraintAnnotation"
+      type="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.DekiRenderFunctoids, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      escaped="true"
+      name="CodeStrength">
+      <![CDATA[
+        $feature$
+      ]]>
+    </functionTemplate>
+    <functionTemplate invoke="SupplierDomainConstraintAnnotation"
+      type="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.DekiRenderFunctoids, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      escaped="true"
+      name="CodeDomain">
+      <![CDATA[
+        $feature$
+      ]]>
+    </functionTemplate>
+    <![CDATA[
+      <h3 style="border-style:none" id="$Name$">$Name$ $BusinessName$</h3>
+      <div class="memberDoc">
+        $TraversalHeader$
+        @AlternateTraversalNames@
+        $TraversalFooter$
+        $Documentation$
+        $TypeDoc$
+        <table class="memberTable">
+          ^DataType^
+          ^FixedValue^
+          ^DefaultValue^
+          <tr>
+            <th>Member Type</th>
+            <td class="dt">$PropertyType$</td>
+            <td><propDef value="$PropertyType$"/></td>
+          </tr>
+          ^ConformanceConstraints^
+          ^MaxOccurs^
+          $MinLength$
+          $MaxLength$
+          ^CodeStrength^
+          ^CodeDomain^
+          $UpdateMode$
+          @Validation@
+        </table>
+        
+        $AllOtherDocumentation$
+        ^AllOtherDocumentation^
+        $StateMachine$
+        
+      </div>
+    
+    ]]>
+
+  </featureTemplate>
+
+  <!-- Code Combine Annotation -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.CodeCombineAnnotation"
+                   createNewPage="false">
+    <propertyTemplate propertyName="OriginalType">$value$</propertyTemplate>
+    <![CDATA[
+      $OriginalType$
+    ]]>
+  </featureTemplate>
+
+  <!-- Class Feature Template -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.Class"
+                   createNewPage="true" pageTitleProperty="PageTitle" pageAbstractProperty="PageAbstract" pageParent="PageParent">
+    <propertyTemplate name="PageTitle">$Name$</propertyTemplate>
+    <propertyTemplate name="PageAbstract">(Class) $BusinessName$</propertyTemplate>
+    <propertyTemplate name="PageParent">Sub Systems/$ContainerName$</propertyTemplate>
+    <propertyTemplate name="Documentation" property="Documentation">$feature$</propertyTemplate>
+    <propertyTemplate name="DocumentationSummary" property="Documentation">@Definition@</propertyTemplate>
+    <propertyTemplate name="CopyrightText" property="Documentation">
+      <![CDATA[<p>$Copyright$<p>]]>
+    </propertyTemplate>
+    <propertyTemplate name="ContainerNameLink" property="ContainerName">
+      <![CDATA[<a href="~/Sub Systems/$value$.html">$value$</a>]]>
+    </propertyTemplate>
+    <propertyTemplate name="Content" property="Content">
+      <![CDATA[
+        $feature$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="BaseClass" name="Extension">
+      <![CDATA[
+        <tr>
+            <th class="break">Specializes</th>
+            <td class="break">$feature$</td>
+        </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="SpecializedBy" name="GeneralizationTitle">
+      <![CDATA[
+        <tr>
+            <th>Specialized By</th>
+            <td>
+                <ul>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Realizations" name="ProjectionTitle">
+      <![CDATA[
+        <tr>
+            <th>Realization</th>
+            <td>
+              <ul>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="BusinessName">
+      <![CDATA[
+        <tr>
+            <th style="min-width:100px;">Business Name</th>
+            <td>$value$</td>
+        </tr>      
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Realizations" name="ProjectionFoot">
+      <![CDATA[
+              </ul>
+            </td>
+        </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Realizations">
+      <![CDATA[<li>$feature$</li>]]>
+    </propertyTemplate>
+    <propertyTemplate property="SpecializedBy" name="GeneralizationFoot">
+      <![CDATA[
+                </ul>
+            </td>
+        </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="SpecializedBy">
+      <![CDATA[<li>$feature$</li>]]>
+    </propertyTemplate>
+    <propertyTemplate name="TypeParameterHead" property="TypeParameters">
+      <![CDATA[
+      <tr>
+        <th>Type Parameters</th>
+        <td>
+          <ul>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="TypeParameters">
+      <![CDATA[<li>$ParameterName$</li>]]>
+    </propertyTemplate>
+    <propertyTemplate property="TypeParameters" name="TypeParameterFoot" >
+      <![CDATA[
+          </ul>
+        </td>
+      </tr>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate name="AnnotationsHead" property="Annotations">
+      <![CDATA[
+        <tr>
+            <th class="break">Same As</th>
+            <td class="break">
+                <ul>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Annotations">
+      <![CDATA[<li>$feature$</li>]]>
+    </propertyTemplate>
+    <propertyTemplate property="Annotations" name="AnnotationsFoot" >
+      <![CDATA[
+                </ul>
+            </td>
+        </tr>      
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="GraphicalRepresentation" escape="true">
+      <![CDATA[
+      <div id="classD">
+    {{graphviz.dot('$value$')}}
+      </div>
+      <script type="text/javascript">
+        var img;
+        for(i = 0; i < document.getElementById("classD").childNodes.length; i++)
+          if(document.getElementById("classD").childNodes[i].nodeName == "IMG")
+          {
+            img = document.getElementById("classD").childNodes[i];
+            var a = document.createElement('a');
+            a.setAttribute("href", img.src);
+            img.setAttribute("border","0");
+            img.width=300;
+            a.appendChild(img);
+            document.getElementById("classD").appendChild(a);
+          }
+      </script>
+      ]]>
+    </propertyTemplate>
+    <functionTemplate invoke="SupportedInAnnotation"
+            type="MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.DekiRenderFunctoids, MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+            name="SupportedAnnotations"
+            escaped="true">
+      <![CDATA[
+        $feature$
+      ]]>
+    </functionTemplate>
+
+    <![CDATA[
+    
+        <table id="gpmrSummaryDiv">
+            <thead>
+                <tr>
+                    <th colspan="2">$Name$ (Class)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        $GraphicalRepresentation$
+                    </td>
+                </tr>
+                <tr>
+                    <th class="break" style="min-width:100px;">Container</th>
+                    <td class="break">$ContainerNameLink$</td>
+                </tr>
+                <tr>
+                  <th class="break">Supported In</th>
+                  <td class="break">^SupportedAnnotations^</th>
+                </tr>
+                $BusinessName$
+                <tr>
+                    <th>Abstract</th>
+                    <td>$IsAbstract$</td>
+                </tr>
+                $TypeParameterHead$
+                @TypeParameters@
+                $TypeParameterFoot$
+                $ProjectionTitle$
+                @Realizations@
+                $ProjectionFoot$
+                $Extension$ 
+                $GeneralizationTitle$
+                @SpecializedBy@
+                $GeneralizationFoot$
+                $AnnotationsHead$
+                @Annotations@
+                $AnnotationsFoot$
+            </tbody>
+        </table>
+    $CopyrightText$
+    <div id="gpmrPreamble">
+    $DocumentationSummary$
+    </div>
+    
+     <div id="gpmrToc">
+        <script type="text/javascript">
+            function hideTOC() {
+                document.getElementById("gpmrTocContent").style.display = "none";
+                document.getElementById("gpmrShowHideToc").innerHTML = "show";
+                document.getElementById("gpmrShowHideToc").onclick = showTOC;
+            }
+            function showTOC() {
+                document.getElementById("gpmrTocContent").style.display = "block";
+                document.getElementById("gpmrShowHideToc").innerHTML = "hide";
+                document.getElementById("gpmrShowHideToc").onclick = hideTOC;
+            }                
+        </script>
+        <strong>Contents </strong> (<a id="gpmrShowHideToc" href="#" onclick="hideTOC()">hide</a>)
+        <div id="gpmrTocContent">
+            {{ wiki.toc{path: "~/Sub Systems/$ContainerName$/$Name$"} }}
+        </div>
+    </div>
+    
+    <div id="gpmrOtherDoc">
+      $Documentation$
+    </div>
+      
+    <h2 class="section">Members</h2>
+      
+    @Content@
+
+    ]]>
+  </featureTemplate>
+
+  <!-- Alternate Traversal Names-->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.Property.AlternateTraversalData"
+                   createNewPage="false">
+    <propertyTemplate property="CaseWhen">
+      $feature$
+    </propertyTemplate>
+    <proeprtyTemplate property="TraversalName">
+      $value$
+    </proeprtyTemplate>
+    <![CDATA[
+      $TraversalName$ - $CaseWhen$
+    ]]>
+  </featureTemplate>
+
+  <!-- Interactions -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.Interaction" createNewPage="true" pageTitleProperty="PageTitle" pageAbstractProperty="PageAbstract" pageParent="PageParent">
+    <propertyTemplate name="PageAbstract">(Interaction) $BusinessName$</propertyTemplate>
+    <propertyTemplate name="PageTitle">$Name$</propertyTemplate>
+    <propertyTemplate name="PageParent">Interactions</propertyTemplate>
+    <propertyTemplate property="BusinessName">
+      <![CDATA[
+        <tr>
+          <th>
+            Business Name
+          </th>
+          <td>
+            $value$
+          </td>
+        </tr>]]>
+    </propertyTemplate>
+    <propertyTemplate name="Documentation" property="Documentation">$feature$</propertyTemplate>
+    <propertyTemplate name="DocumentationSummary" property="Documentation">@Definition@</propertyTemplate>
+    <propertyTemplate name="CopyrightText" property="Documentation">
+      <![CDATA[<p>$Copyright$<p>]]>
+    </propertyTemplate>
+    <propertyTemplate property="Documentation">
+      $feature$
+    </propertyTemplate>
+    <propertyTemplate property="MessageType">
+      <![CDATA[$feature$]]>
+    </propertyTemplate>
+    <propertyTemplate property="Responses">
+      <![CDATA[
+        <li><a href="~/Interactions/$Name$.html">$Name$</a></li>
+      ]]>
+    </propertyTemplate>
+
+    <![CDATA[
+    
+     <table id="gpmrSummaryDiv">
+            <thead>
+                <tr>
+                    <th colspan="2">$Name$ (Interaction)</th>
+                </tr>
+            </thead>
+            <tbody>
+                $BusinessName$
+                <tr>
+                    <th class="break" style="min-width:100px;">Message Type</th>
+                    <td class="break">$MessageType$</td>
+                </tr>
+                <tr>
+                  <th>Trigger Event</th>
+                  <td>$TriggerEvent$</td>
+                </tr>
+                <tr>
+                  <th>Responses:</th>
+                  <td>  
+                    <ul>
+                      @Responses@
+                     </ul>
+                   </td>
+                </tr>
+            </tbody>
+        </table>
+    $CopyrightText$
+    <div id="gpmrPreamble">
+    $DocumentationSummary$
+    </div>
+    
+     <div id="gpmrToc">
+        <script type="text/javascript">
+            function hideTOC() {
+                document.getElementById("gpmrTocContent").style.display = "none";
+                document.getElementById("gpmrShowHideToc").innerHTML = "show";
+                document.getElementById("gpmrShowHideToc").onclick = showTOC;
+            }
+            function showTOC() {
+                document.getElementById("gpmrTocContent").style.display = "block";
+                document.getElementById("gpmrShowHideToc").innerHTML = "hide";
+                document.getElementById("gpmrShowHideToc").onclick = hideTOC;
+            }                
+        </script>
+        <strong>Contents </strong> (<a id="gpmrShowHideToc" href="#" onclick="hideTOC()">hide</a>)
+        <div id="gpmrTocContent">
+            {{ wiki.toc{path: "~/Interactions/$Name$"} }}
+        </div>
+    </div>
+    
+    <div id="gpmrOtherDoc">
+      $Documentation$
+    </div>
+      
+
+    ]]>
+  </featureTemplate>
+
+  <!-- CMET -->
+  <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.CommonTypeReference" createNewPage="true" pageTitleProperty="PageTitle" pageAbstractProperty="PageAbstract" pageParent="PageParent">
+    <propertyTemplate name="PageAbstract">(CMET) $BusinessName$</propertyTemplate>
+    <propertyTemplate name="PageTitle">$Name$</propertyTemplate>
+    <propertyTemplate name="PageParent">CMET</propertyTemplate>
+    <propertyTemplate property="BusinessName">
+      <![CDATA[<b>Business Name:</b> $value$<br/>]]>
+    </propertyTemplate>
+    <propertyTemplate name="Documentation" property="Documentation">$feature$</propertyTemplate>
+    <propertyTemplate name="DocumentationSummary" property="Documentation">@Definition@</propertyTemplate>
+    <propertyTemplate name="CopyrightText" property="Documentation">
+      <![CDATA[<p>$Copyright$<p>]]>
+    </propertyTemplate>
+    <propertyTemplate property="Documentation">
+      $feature$
+    </propertyTemplate>
+    <propertyTemplate property="Class">
+      <![CDATA[$feature$]]>
+    </propertyTemplate>
+    <propertyTemplate property="ClassifierCode">
+      <![CDATA[
+        $value$
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="ClassifierDomain">
+      <![CDATA[
+        <a href="~/Vocabulary/$EnumerationType$/$Name$.html">$Name$</a>
+      ]]>
+    </propertyTemplate>
+    <propertyTemplate property="Class" name="ClassDocumentation">
+      <![CDATA[
+        $ClassDocumentation$
+      ]]>
+    </propertyTemplate>
+    <![CDATA[
+      <table id="gpmrSummaryDiv">
+            <thead>
+                <tr>
+                    <th colspan="2">$Name$ (CMET)</th>
+                </tr>
+            </thead>
+            <tbody>
+                $BusinessName$
+                <tr>
+                    <th class="break" style="min-width:100px;">Bound To</th>
+                    <td class="break">$Class$</td>
+                </tr>
+                <tr>
+                  <th>Classifier Domain</th>
+                  <td>$ClassifierDomain$</td>
+                </tr>
+                <tr>
+                  <th>Classifier Code</th>
+                  <td>$ClassifierCode$</td>
+                </tr>
+            </tbody>
+        </table>
+    $CopyrightText$
+    <div id="gpmrPreamble">
+    $DocumentationSummary$
+    </div>
+    
+     <div id="gpmrToc">
+        <script type="text/javascript">
+            function hideTOC() {
+                document.getElementById("gpmrTocContent").style.display = "none";
+                document.getElementById("gpmrShowHideToc").innerHTML = "show";
+                document.getElementById("gpmrShowHideToc").onclick = showTOC;
+            }
+            function showTOC() {
+                document.getElementById("gpmrTocContent").style.display = "block";
+                document.getElementById("gpmrShowHideToc").innerHTML = "hide";
+                document.getElementById("gpmrShowHideToc").onclick = hideTOC;
+            }                
+        </script>
+        <strong>Contents </strong> (<a id="gpmrShowHideToc" href="#" onclick="hideTOC()">hide</a>)
+        <div id="gpmrTocContent">
+            {{ wiki.toc{path: "~/CMET/$Name$"} }}
+        </div>
+    </div>
+    
+    <div id="gpmrOtherDoc">
+      $Documentation$
+    </div>
+    
+    <h2 class="section">Class Documententation</h2>
+    $ClassDocumentation$
+    ]]>
+  </featureTemplate>
+
+</docTemplate>

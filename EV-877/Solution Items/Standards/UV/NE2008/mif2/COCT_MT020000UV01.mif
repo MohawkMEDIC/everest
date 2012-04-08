@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?><mif:staticModel xmlns:mif="urn:hl7-org:v3/mif" xmlns="urn:hl7-org:v3/mif" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" isAbstract="false" isSerializable="true" name="01" packageKind="version" representationKind="flat" schemaVersion="2.0" xsi:schemaLocation="">
+   <mif:packageLocation artifact="MT" domain="CT" id="020000" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   <mif:header>
+      <mif:renderingInformation application="Visio to MIF transform"/>
+      <mif:legalese copyrightOwner="Health Level Seven" copyrightYears="2008"/>
+   </mif:header>
+   <mif:graphicRepresentation presentation="HL7">
+      <mif:graphElement name="Main">
+         <mif:position x="0" y="0"/>
+         <mif:size height="175" width="744"/>
+      </mif:graphElement>
+   <entryPoint name="A_Appointment"><mif:graphElement containerDiagramName="Main" shapeId="Sheet.1">
+            <mif:position x="2" y="-101"/>
+            <mif:size height="81" width="192"/>
+            <mif:anchorage connectToShapeId="Sheet.1">
+               <mif:position x="194" y="67"/>
+               <mif:graphEdge>
+                  <mif:anchor connectToShapeId="Sheet.14">
+                     <mif:position x="276" y="30"/>
+                  </mif:anchor>
+               </mif:graphEdge>
+            </mif:anchorage>
+         </mif:graphElement></entryPoint><class className="ActAppointmentRequest" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.18" shapeTemplate="Act">
+               <mif:position x="578" y="14"/>
+               <mif:size height="72" width="164"/>
+            </mif:graphElement></class><class className="ActRequest" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="true" isWidthAutoSize="true" shapeId="Sheet.28" shapeTemplate="Act">
+               <mif:position x="580" y="102"/>
+               <mif:size height="72" width="120"/>
+            </mif:graphElement></class><class className="Appointment" presentation="HL7"><mif:graphElement containerDiagramName="Main" isHeightAutoSize="false" isWidthAutoSize="false" shapeId="Sheet.14" shapeTemplate="Act">
+               <mif:position x="276" y="0"/>
+               <mif:size height="146" width="148"/>
+            </mif:graphElement></class><class className="ReferencedOrder" presentation="HL7"><mif:graphElement containerDiagramName="Main" nodeOrientation="Right" shapeId="Sheet.22" shapeTemplate="ActRelationship" textWrappingWidth="66.0">
+               <mif:position x="424" y="117"/>
+               <mif:size height="29" width="155"/>
+            </mif:graphElement></class><class className="ScheduleRequest" presentation="HL7"><mif:graphElement containerDiagramName="Main" nodeOrientation="Right" shapeId="Sheet.8" shapeTemplate="ActRelationship" textWrappingWidth="66.0">
+               <mif:position x="424" y="44"/>
+               <mif:size height="29" width="153"/>
+            </mif:graphElement></class><association className="ReferencedOrder" relationshipName="referencedOrder"><mif:graphElement connectToShapeId="Sheet.14" containerDiagramName="Main">
+                     <mif:position x="424" y="132"/>
+                     <mif:graphEdge>
+                        <mif:anchor connectToShapeId="Sheet.22">
+                           <mif:position x="424" y="132"/>
+                        </mif:anchor>
+                     </mif:graphEdge>
+                  </mif:graphElement></association><association className="ScheduleRequest" relationshipName="scheduleRequest"><mif:graphElement connectToShapeId="Sheet.14" containerDiagramName="Main">
+                     <mif:position x="424" y="44"/>
+                     <mif:graphEdge>
+                        <mif:anchor connectToShapeId="Sheet.8">
+                           <mif:position x="424" y="44"/>
+                        </mif:anchor>
+                     </mif:graphEdge>
+                  </mif:graphElement></association><association className="ActRequest" relationshipName="actRequest"><mif:graphElement connectToShapeId="Sheet.22" containerDiagramName="Main">
+                                 <mif:position x="580" y="131"/>
+                                 <mif:graphEdge>
+                                    <mif:anchor connectToShapeId="Sheet.28">
+                                       <mif:position x="580" y="131"/>
+                                    </mif:anchor>
+                                 </mif:graphEdge>
+                              </mif:graphElement></association><association className="ActAppointmentRequest" relationshipName="actAppointmentRequest"><mif:graphElement connectToShapeId="Sheet.8" containerDiagramName="Main">
+                                 <mif:position x="578" y="72"/>
+                                 <mif:graphEdge>
+                                    <mif:anchor connectToShapeId="Sheet.18">
+                                       <mif:position x="578" y="72"/>
+                                    </mif:anchor>
+                                 </mif:graphEdge>
+                              </mif:graphElement></association></mif:graphicRepresentation>
+   <derivedFrom staticModelDerivationId="1">
+      <mif:targetStaticModel artifact="RIM" root="DEFN" version="00"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="2">
+      <mif:targetStaticModel artifact="RM" domain="CT" id="020000" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   </derivedFrom>
+   <derivedFrom staticModelDerivationId="3">
+      <mif:targetStaticModel artifact="HD" domain="CT" id="020000" realmNamespace="UV" root="DEFN" section="IM" subSection="CO" version="01"/>
+   </derivedFrom>
+   <entryPoint className="Appointment" id="COCT_MT020000UV01" isAbstract="false" name="A_Appointment">
+      <mif:annotations>
+         
+      <documentation><mif:description>
+            <mif:text>26 Nov 2003 Used in situations where an encounter or service needs to refer back to the appointment that scheduled the event.</mif:text>
+         </mif:description></documentation></mif:annotations>
+      
+   </entryPoint>
+   <containedClass>
+      <mif:class isAbstract="false" name="ActAppointmentRequest">
+         <derivedFrom className="Act" staticModelDerivationId="1"/>
+         <derivedFrom className="ActAppointmentRequest" staticModelDerivationId="2"/>
+         <derivedFrom className="ActAppointmentRequest" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="ActAppointmentRequest" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="ActAppointmentRequest" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="ACT" codeSystemName="ActClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="ActAppointmentRequest" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="ActAppointmentRequest" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="ARQ" codeSystemName="ActMood"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="id" sortKey="3">
+            <derivedFrom attributeName="id" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="ActAppointmentRequest" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="ActAppointmentRequest" staticModelDerivationId="3"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="ActRequest">
+         <derivedFrom className="Act" staticModelDerivationId="1"/>
+         <derivedFrom className="ActRequest" staticModelDerivationId="2"/>
+         <derivedFrom className="ActRequest" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="ActRequest" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="ActRequest" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="ACT" codeSystemName="ActClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="ActRequest" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="ActRequest" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="RQO" codeSystemName="ActMood"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="id" sortKey="3">
+            <derivedFrom attributeName="id" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="ActRequest" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="ActRequest" staticModelDerivationId="3"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="Appointment">
+         <derivedFrom className="Act" staticModelDerivationId="1"/>
+         <derivedFrom className="Appointment" staticModelDerivationId="2"/>
+         <derivedFrom className="Appointment" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="classCode" sortKey="1">
+            <derivedFrom attributeName="classCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="classCode" className="Appointment" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="classCode" className="Appointment" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="ACT" codeSystemName="ActClass"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="moodCode" sortKey="2">
+            <derivedFrom attributeName="moodCode" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="moodCode" className="Appointment" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="moodCode" className="Appointment" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="APT" codeSystemName="ActMood"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute conformance="R" isImmutable="false" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="id" sortKey="3">
+            <mif:businessName name="filler appointment id"><realmNamespace value="UV"/></mif:businessName>
+            <derivedFrom attributeName="id" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="id" className="Appointment" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="id" className="Appointment" staticModelDerivationId="3"/>
+            <mif:type name="II"/>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="code" sortKey="4">
+            <derivedFrom attributeName="code" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="code" className="Appointment" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="code" className="Appointment" staticModelDerivationId="3"/>
+            <mif:type name="CD"/>
+            <supplierVocabulary codingStrength="CWE"><vocabularyDomain xmlns="" name="ActCode"/></supplierVocabulary>
+         </mif:attribute>
+         <mif:attribute isImmutable="false" isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="0" name="effectiveTime" sortKey="5">
+            <derivedFrom attributeName="effectiveTime" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="effectiveTime" className="Appointment" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="effectiveTime" className="Appointment" staticModelDerivationId="3"/>
+            <mif:type name="GTS"/>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="ReferencedOrder">
+         <derivedFrom className="ActRelationship" staticModelDerivationId="1"/>
+         <derivedFrom className="ReferencedOrder" staticModelDerivationId="2"/>
+         <derivedFrom className="ReferencedOrder" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <derivedFrom attributeName="typeCode" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="ReferencedOrder" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="ReferencedOrder" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="OREF" codeSystemName="ActRelationshipType"/></supplierVocabulary>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <containedClass>
+      <mif:class isAbstract="false" name="ScheduleRequest">
+         <derivedFrom className="ActRelationship" staticModelDerivationId="1"/>
+         <derivedFrom className="ScheduleRequest" staticModelDerivationId="2"/>
+         <derivedFrom className="ScheduleRequest" staticModelDerivationId="3"/>
+         
+         <mif:attribute conformance="R" isImmutable="true" isMandatory="true" maximumMultiplicity="1" minimumMultiplicity="1" name="typeCode" sortKey="1">
+            <derivedFrom attributeName="typeCode" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom attributeName="typeCode" className="ScheduleRequest" staticModelDerivationId="2"/>
+            <derivedFrom attributeName="typeCode" className="ScheduleRequest" staticModelDerivationId="3"/>
+            <mif:type name="CS"/>
+            <supplierVocabulary codingStrength="CNE"><code code="SCH" codeSystemName="ActRelationshipType"/></supplierVocabulary>
+         </mif:attribute>
+      </mif:class>
+   </containedClass>
+   <association sortKey="0">
+      
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="referencedOrder" participantClassName="ReferencedOrder" sortKey="BBAB______">
+            <derivedFrom associationEndName="outboundRelationship" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="referencedOrder" className="Appointment" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="referencedOrder" className="Appointment" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Appointment">
+            <derivedFrom associationEndName="source" className="ActRelationship" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+   <association sortKey="1">
+      
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="*" minimumMultiplicity="0" name="scheduleRequest" participantClassName="ScheduleRequest" sortKey="BBAC______">
+            <derivedFrom associationEndName="outboundRelationship" className="Act" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="scheduleRequest" className="Appointment" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="scheduleRequest" className="Appointment" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="Appointment">
+            <derivedFrom associationEndName="source" className="ActRelationship" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+   <association sortKey="3">
+      
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="actRequest" participantClassName="ActRequest" sortKey="BZ">
+            <derivedFrom associationEndName="target" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="actRequest" className="ReferencedOrder" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="actRequest" className="ReferencedOrder" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ReferencedOrder">
+            <derivedFrom associationEndName="inboundRelationship" className="Act" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+   <association sortKey="6">
+      
+      
+   <mif:traversableConnection isMandatory="false" maximumMultiplicity="1" minimumMultiplicity="1" name="actAppointmentRequest" participantClassName="ActAppointmentRequest" sortKey="BZ">
+            <derivedFrom associationEndName="target" className="ActRelationship" staticModelDerivationId="1"/>
+            <derivedFrom associationEndName="actAppointmentRequest" className="ScheduleRequest" staticModelDerivationId="2"/>
+            <derivedFrom associationEndName="actAppointmentRequest" className="ScheduleRequest" staticModelDerivationId="3"/>
+         </mif:traversableConnection><mif:nonTraversableConnection participantClassName="ScheduleRequest">
+            <derivedFrom associationEndName="inboundRelationship" className="Act" staticModelDerivationId="1"/>
+         </mif:nonTraversableConnection></association>
+</mif:staticModel>

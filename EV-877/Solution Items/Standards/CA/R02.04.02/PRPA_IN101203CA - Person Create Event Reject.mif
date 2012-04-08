@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mif:interaction xmlns:mif="urn:hl7-org:v3/mif2" schemaVersion="2.1.3" name="101203"
+                 title="Identifiedperson Event Activate Rejection">
+   <mif:businessName name="Person Create Event Reject"/>
+   <mif:packageLocation root="DEFN" section="AM" subSection="PR" domain="PA" artifact="IN"
+                        realmNamespace="CA"
+                        id="101203"/>
+   <mif:annotations>
+      <mif:documentation>
+         <mif:description>
+            <mif:text>person registry rejects a request to add a record and responds back to the requesting application. The reason for the rejection is returned as a Detected Issue in the Master File / Reg Notif. Control Act, Role Subject wrapper.</mif:text>
+         </mif:description>
+      </mif:documentation>
+   </mif:annotations>
+   <mif:invokingTriggerEvent root="DEFN" section="AM" subSection="PR" domain="PA" artifact="TE"
+                             realmNamespace="CA"
+                             id="101203"/>
+   <mif:argumentMessage root="DEFN" section="IM" subSection="MC" domain="CI" artifact="MT"
+                        realmNamespace="CA"
+                        id="002300">
+      <mif:parameterModel parameterName="ControlActEvent" root="DEFN" section="IM" subSection="MF"
+                          domain="MI"
+                          artifact="MT"
+                          realmNamespace="CA"
+                          id="700726"
+                          traversalName="controlActEvent">
+         <mif:parameterModel parameterName="RegisteredRole" root="DEFN" section="AM" subSection="PR"
+                             domain="PA"
+                             artifact="MT"
+                             realmNamespace="CA"
+                             id="101106"
+                             traversalName="identifiedEntity"/>
+      </mif:parameterModel>
+   </mif:argumentMessage>
+</mif:interaction>

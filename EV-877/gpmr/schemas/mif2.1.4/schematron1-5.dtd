@@ -1,0 +1,149 @@
+<!-- +//IDN sinica.edu.tw//DTD Schematron 1.5//EN -->
+<!-- http://www.ascc.net/xml/schematron/schematron1-5.dtd -->
+<!-- version of 2002/08/16 -->
+<!-- This version has the 1.6 feature that sch:key element with @match 
+     is allowed under sch:schema. This is not part of 1.5 proper.
+-->
+<!-- All names are given indirectly, to allow explicit use of a namespace prefix
+       if desired.  In that case, in the internal subset of the doctype declaration,
+       define <!ENTITY % sp "sch:" >
+-->
+<!ENTITY % sp "sch:">
+<!ENTITY % schschema "%sp;schema">
+<!ENTITY % active "%sp;active">
+<!ENTITY % assert "%sp;assert">
+<!ENTITY % dir "%sp;dir">
+<!ENTITY % emph "%sp;emph">
+<!ENTITY % extends "%sp;extends">
+<!ENTITY % diagnostic "%sp;diagnostic">
+<!ENTITY % diagnostics "%sp;diagnostics">
+<!ENTITY % schkey "%sp;key">
+<!ENTITY % name "%sp;name">
+<!ENTITY % ns "%sp;ns">
+<!ENTITY % par "%sp;p">
+<!ENTITY % schpattern "%sp;pattern">
+<!ENTITY % phase "%sp;phase">
+<!ENTITY % report "%sp;report">
+<!ENTITY % rule "%sp;rule">
+<!ENTITY % span "%sp;span">
+<!ENTITY % title "%sp;title">
+<!ENTITY % value-of "%sp;value-of">
+<!-- Data types -->
+<!ENTITY % URI "CDATA">
+<!ENTITY % PATH "CDATA">
+<!ENTITY % EXPR "CDATA">
+<!ENTITY % FPI "CDATA">
+<!-- Element declarations -->
+<!ELEMENT %schschema; ((%title;)?, (%ns;)*, (%par;)*, (%phase; | %schkey;)*, (%schpattern;)+, (%par;)*, (%diagnostics;)?)>
+<!ELEMENT %active; (#PCDATA | %dir; | %emph; | %span;)*>
+<!ELEMENT %assert; (#PCDATA | %name; | %emph; | %dir; | %span;)*>
+<!ELEMENT %dir; (#PCDATA)>
+<!ELEMENT %emph; (#PCDATA)>
+<!ELEMENT %extends; EMPTY>
+<!ELEMENT %diagnostic; (#PCDATA | %value-of; | %emph; | %dir; | %span;)*>
+<!ELEMENT %diagnostics; (%diagnostic;)*>
+<!ELEMENT %schkey; EMPTY>
+<!ELEMENT %name; EMPTY>
+<!ELEMENT %ns; EMPTY>
+<!ELEMENT %par; (#PCDATA | %dir; | %emph; | %span;)*>
+<!ELEMENT %schpattern; ((%par;)*, (%rule;)*)>
+<!ELEMENT %phase; ((%par;)*, (%active;)*)>
+<!ELEMENT %report; (#PCDATA | %name; | %emph; | %dir; | %span;)*>
+<!ELEMENT %rule; (%assert; | %report; | %schkey; | %extends;)+>
+<!ELEMENT %span; (#PCDATA)>
+<!ELEMENT %title; (#PCDATA | %dir;)*>
+<!ELEMENT %value-of; EMPTY>
+<!-- Attribute declarations -->
+<!ATTLIST %schschema;
+  xmlns %URI; #FIXED "http://www.ascc.net/xml/schematron"
+  xmlns:sch %URI; #FIXED "http://www.ascc.net/xml/schematron"
+  xmlns:xsi %URI; #FIXED "http://www.w3.org/2000/10/XMLSchema-instance"
+  xsi:schemaLocation %URI; "http://www.ascc.net/xml/schematron
+		http://www.ascc.net/xml/schematron/schematron.xsd"
+  id ID #IMPLIED
+  fpi %FPI; #IMPLIED
+  ns %FPI; #IMPLIED
+  schemaVersion CDATA #IMPLIED
+  defaultPhase IDREF #IMPLIED
+  icon %URI; #IMPLIED
+  version CDATA "1.5"
+  xml:lang NMTOKEN #IMPLIED
+>
+<!ATTLIST %active;
+  schpattern IDREF #REQUIRED
+>
+<!ATTLIST %assert;
+  test %EXPR; #REQUIRED
+  role NMTOKEN #IMPLIED
+  id ID #IMPLIED
+  diagnostics IDREFS #IMPLIED
+  icon %URI; #IMPLIED
+  subject %PATH; #IMPLIED
+  xml:lang NMTOKEN #IMPLIED
+>
+<!ATTLIST %dir;
+  value (ltr | rtl) #IMPLIED
+>
+<!ATTLIST %extends;
+  rule IDREF #REQUIRED
+>
+<!ATTLIST %diagnostic;
+  id ID #REQUIRED
+  icon %URI; #IMPLIED
+  xml:lang NMTOKEN #IMPLIED
+>
+<!ATTLIST %schkey;
+  match CDATA #IMPLIED
+  name NMTOKEN #REQUIRED
+  path %PATH; #REQUIRED
+  icon %URI; #IMPLIED
+>
+<!ATTLIST %name;
+  path %PATH; "."
+>
+<!-- Schematrons should implement '.' 
+               as the default value for path in sch:name -->
+<!ATTLIST %par;
+  xml:lang CDATA #IMPLIED
+  id ID #IMPLIED
+  class CDATA #IMPLIED
+  icon %URI; #IMPLIED
+>
+<!ATTLIST %schpattern;
+  name CDATA #REQUIRED
+  see %URI; #IMPLIED
+  id ID #IMPLIED
+  icon %URI; #IMPLIED
+>
+<!ATTLIST %ns;
+  uri %URI; #REQUIRED
+  prefix NMTOKEN #IMPLIED
+>
+<!ATTLIST %phase;
+  id ID #REQUIRED
+  fpi %FPI; #IMPLIED
+  icon %URI; #IMPLIED
+>
+<!ATTLIST %span;
+  class CDATA #IMPLIED
+>
+<!ATTLIST %report;
+  test %EXPR; #REQUIRED
+  role NMTOKEN #IMPLIED
+  id ID #IMPLIED
+  diagnostics IDREFS #IMPLIED
+  icon %URI; #IMPLIED
+  subject %PATH; #IMPLIED
+  xml:lang CDATA #IMPLIED
+>
+<!ATTLIST %rule;
+  context %PATH; #IMPLIED
+  abstract (true | false) "false"
+  role NMTOKEN #IMPLIED
+  id ID #IMPLIED
+>
+<!-- Schematrons should implement 'false' as the default
+                  value of abstract -->
+<!ATTLIST %value-of;
+  select %PATH; #REQUIRED
+>
