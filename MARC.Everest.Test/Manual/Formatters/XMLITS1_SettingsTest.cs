@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MARC.Everest.Xml;
 using System.Xml;
-
 using MARC.Everest.DataTypes;
 using MARC.Everest.Connectors;
 using MARC.Everest.Formatters.XML.ITS1;
