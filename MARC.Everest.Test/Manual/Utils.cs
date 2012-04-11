@@ -71,5 +71,49 @@ namespace MARC.Everest.Test.Manual.Interfaces
             // Return result
             return retVal;
         }
+
+
+        public static void PrintIds(IGraphable g)
+        {
+            // Can't scan a null object
+            if (g == null)
+                return;
+
+            Type gType = g.GetType();
+            foreach (PropertyInfo pi in gType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                // Store the value of the current property of the instance
+                object value = pi.GetValue(g, null);
+
+                // Don't report null objects (objects without members)
+                if (value == null)
+                    continue;
+
+                // Passes the value of the property into an object
+                // that follows the IIdentifiable interface rules
+                IIdentifiable identifiableObject = value as IIdentifiable;
+
+                // Passes the value of the property into an object
+                // that follows the ISetIdentifiable interface rules
+                ISetIdentifiable setIdentifiableObject = value as ISetIdentifiable;
+
+                if (identifiableObject != null)
+
+                    // Write the property name, the and object's root and extension.
+                    Console.WriteLine("{0} : {1}@{2}", pi.Name, identifiableObject.Id.Root, identifiableObject.Id.Extension);
+
+                else if (setIdentifiableObject != null)
+                {
+                    // Iterates through all instance identifiers
+                    // in a single id of the instance.
+                    foreach (var ii in setIdentifiableObject.Id)
+                        // Write the property name, the and object's extension.
+                        Console.WriteLine("{0} : {1}@{2}", pi.Name, ii.Root, ii.Extension);
+                }
+
+                // Recurse and Scan type
+                PrintIds(value as IGraphable);
+            } // end foreach
+        }
     }
 }

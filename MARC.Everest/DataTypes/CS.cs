@@ -217,8 +217,9 @@ namespace MARC.Everest.DataTypes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s")]
         internal static CS<T> Parse(string s)
         {
-            // FIX: EV-881
-            return Parse(new CS<String>(s));
+            CS<T> retVal = new CS<T>();
+            retVal.Code = (T)Util.FromWireFormat(s, typeof(T));
+            return retVal;
         }
 
         /// <summary>

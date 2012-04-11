@@ -3,21 +3,16 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using System.Xml;
 using System.IO.Pipes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using MARC.Everest.Xml;
 using MARC.Everest.DataTypes;
-using MARC.Everest.Interfaces;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Connectors;
 using MARC.Everest.Exceptions;
 using MARC.Everest.Formatters.XML.ITS1;
-using MARC.Everest.Test.Manual.Formatters;
 using MARC.Everest.Formatters.XML.Datatypes.R1;
+using MARC.Everest.Interfaces;
 using MARC.Everest.RMIM.UV.NE2008.COCT_MT050000UV01;
-using System.Reflection;
 
 namespace MARC.Everest.Test.Manual_Interfaces
 {
@@ -32,30 +27,6 @@ namespace MARC.Everest.Test.Manual_Interfaces
             //
             // TODO: Add constructor logic here
             //
-        }
-
-        public static string[] GetResourceList()
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            return asm.GetManifestResourceNames();
-        }
-
-        public static Stream GetResourceStream(string scriptname)
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            return asm.GetManifestResourceStream(scriptname);
-        }
-
-        public static string findResource(string neededResource)
-        {
-            foreach (string name in IInteractionTest.GetResourceList())
-            {
-                if (name.ToString().Contains("PRPA_IN101103CA.xml"))
-                {
-                    neededResource = name;
-                }
-            }
-            return neededResource;
         }
 
         private TestContext testContextInstance;
@@ -102,61 +73,122 @@ namespace MARC.Everest.Test.Manual_Interfaces
 
         /// <summary>
         /// This test will parse a valid instance of type 'IInteraction'.
-        /// IsTrue assertion should return true.
+        /// IsNotNull assertions should return TRUE.
         /// </summary>
-        [TestMethod]
-        public void IInteractionTest01()
-        {
-            // Find the resource to be parsed.
-            string neededResource = findResource("PRPA_IN101103CA.xml");
-            
-            // Load the assembly into the current AppDomain
-            Assembly.Load(new AssemblyName("MARC.Everest.RMIM.CA.R020402, Version=1.0.4366.42027, Culture=neutral"));
+        //[TestMethod]
+        //public void IInteractionTest01()
+        //{
+        //    // Setup the formatter as XML ITS 1 with Canadian Data Types R1
+        //    var formatter = new XmlIts1Formatter();
+        //    formatter.ValidateConformance = false;
+        //    formatter.GraphAides.Add(new DatatypeFormatter());
 
-            // Initialize stream that will read the needed resource file.
-            Stream s = null;
+        //    // Parse an instance from disk in the file:
+        //    IInteraction instance = formatter.ParseObject(File.OpenRead
+        //        (@"C:/Test Files/PRPA_IN101103CA.xml")
+        //        )
+        //        as IInteraction;
 
-            try
-            {
-                // Set the stream by reading from a file
-                // whose datatype is PRPA_IN101103CA
-                s = GetResourceStream(neededResource);
-                if (s == null)
-                    Console.WriteLine("Invalid input stream.");
-                
-                // Setup the formatter as XML ITS 1 with Canadian Data Types R1
-                var formatter = new XmlIts1Formatter();
-                formatter.ValidateConformance = false;
+        //    if (instance != null)   // Instance is an interaction
+        //    {
+        //        // Add all properties to a list and make sure aech
+        //        // property in the list of properties is populated
+        //        // to ensure for a valid IInteraction instance.
+        //        List<Object> propertyList = new List<Object>();
+        //        propertyList.Add(instance.Id);
+        //        propertyList.Add(instance.InteractionId.Extension);
+        //        propertyList.Add(instance.CreationTime);
+        //        propertyList.Add(instance.ProcessingModeCode);
+        //        propertyList.Add(instance.VersionCode);
 
-                // Assign graphing aides to formatter
-                formatter.GraphAides.Add(new DatatypeFormatter());
+        //        foreach (var property in propertyList)
+        //            Assert.IsNotNull(propertyList);
 
-                var instance = formatter.ParseObject(s) as IInteraction;
-                
-                if (instance != null)   // instance is an interaction
-                {
-                    // Output instance information
-                    Console.WriteLine("Interaction ID: {0}\r\nCreated On: {1}\r\nProcessing Mode Code: {2}\r\nVersion: {3}",
-                        instance.InteractionId.Extension,
-                        instance.CreationTime,
-                        instance.ProcessingModeCode,
-                        instance.VersionCode
-                    );
+        //        Console.WriteLine("Interaction ID: {0}\r\nCreated On: {1}\r\nProcessing Mode Code: {2}\r\nVersion: {3}",
+        //            instance.InteractionId.Extension,
+        //            instance.CreationTime,
+        //            instance.ProcessingModeCode,
+        //            instance.VersionCode
+        //        );
+        //    }
+        //    else
+        //    {
+        //        // if instance is null, fail assertion
+        //        Assert.Fail();
+        //    }
+        //}
 
-                    // Ensure that we have a valid patient interaction instance
-                    Assert.IsTrue(instance.InteractionId.Extension.StartsWith("PRPA"));
-                }
-                else
-                {
-                    // if instance is null, fail assertion
-                    Assert.Fail();
-                }
-            }
-            finally
-            {
-                if (s != null)
-                    s.Close();
-            }
-        }
+
+        ///// <summary>
+        ///// This test will parse a valid instance of type 'IInteraction',
+        ///// and compare resulting properties to expected properties from Xml.
+        ///// AreEqual assertions should pass, verifying that the properties
+        ///// are being read by the formatter as expected.
+        ///// </summary>
+        //[TestMethod]
+        //public void IInteractionTest02()
+        //{
+        //    // Setup the formatter as XML ITS 1 with Canadian Data Types R1
+        //    var formatter = new XmlIts1Formatter();
+        //    formatter.ValidateConformance = false;
+        //    formatter.GraphAides.Add(new DatatypeFormatter());
+
+        //    // Parse an instance from disk in the file:
+        //    IInteraction instance = formatter.ParseObject(File.OpenRead
+        //        (@"C:/Test Files/PRPA_IN101103CA.xml")
+        //        )
+        //        as IInteraction;
+
+        //    if (instance != null)   // Instance is an interaction
+        //    {
+        //        Assert.AreEqual(instance.InteractionId.Extension.ToString(), "PRPA_IN101103CA");
+        //        Assert.AreEqual(instance.ProcessingModeCode.ToString(), "T");
+        //        Assert.AreEqual(instance.VersionCode.ToString(), "V3-2008N");
+
+        //        Console.WriteLine("Interaction ID: {0}\r\nCreated On: {1}\r\nProcessing Mode Code: {2}\r\nVersion: {3}",
+        //            instance.InteractionId.Extension,
+        //            instance.CreationTime,
+        //            instance.ProcessingModeCode,
+        //            instance.VersionCode
+        //        );
+        //    }
+        //    else
+        //    {
+        //        // if instance is null, fail assertion
+        //        Assert.Fail();
+        //    }
+        //}
+
+
+
+        ///// <summary>
+        ///// This test will read an instance of type 'Patient'.
+        ///// IsNull assertion should return TRUE (invalid instance of IInteraction).
+        ///// </summary>
+        //[TestMethod]
+        //public void IInteractionTest03()
+        //{
+        //    // Setup the formatter as XML ITS 1 with Canadian Data Types R1
+        //    var formatter = new XmlIts1Formatter();
+        //    formatter.ValidateConformance = false;
+        //    formatter.GraphAides.Add(new DatatypeFormatter());
+
+        //    // Parse an instance from disk in the file:
+        //    IInteraction instance = formatter.ParseObject(File.OpenRead
+        //        (@"C:/Test Files/patientSample.xml")
+        //        ) as IInteraction;
+
+        //    if (instance != null)   // Instance is an interaction
+        //    {
+        //        Console.WriteLine("Instance is an interaction.");
+        //    }
+        //    else
+        //    {
+        //        // Verify that the instance was never created
+        //        // (which would only happen if it was not a valid instance of IInteraction).
+        //        Assert.IsNull(instance);
+        //        Console.WriteLine("Instance is not valid IInteraction");
+        //    }
+        //}
     }
 }

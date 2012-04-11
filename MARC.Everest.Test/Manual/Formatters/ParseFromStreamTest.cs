@@ -42,18 +42,6 @@ namespace MARC.Everest.Test.Manual.Formatters
             return asm.GetManifestResourceStream(scriptname);
         }
 
-        public static string findResource(string neededResource)
-        {
-            foreach (string name in ParseFromStreamTest.GetResourceList())
-            {
-                if (name.ToString().Contains(neededResource))
-                {
-                    neededResource = name;
-                }
-            }
-            return neededResource;
-        }
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -109,7 +97,14 @@ namespace MARC.Everest.Test.Manual.Formatters
         public void StreamParseTest01()
         {
             // Find the resource to be parsed.
-            string neededResource = findResource("MCCI_IN000000UV01.xml");
+            string neededResource = "";
+            foreach (string name in ParseFromStreamTest.GetResourceList())
+            {
+                if (name.ToString().Contains("MCCI_IN000000UV01.xml"))
+                {
+                    neededResource = name;
+                }
+            }
 
             // Load the assembly into the current AppDomain
             Assembly.Load(new AssemblyName("MARC.Everest.RMIM.UV.NE2008, Version=1.0.4366.42027, Culture=neutral"));
@@ -124,6 +119,7 @@ namespace MARC.Everest.Test.Manual.Formatters
                 s = GetResourceStream(neededResource);
                 if (s == null)
                     Console.WriteLine("Invalid input stream.");
+
                 
                 // Setup the formatter
                 IStructureFormatter structureFormatter = new XmlIts1Formatter()
@@ -166,7 +162,14 @@ namespace MARC.Everest.Test.Manual.Formatters
         public void StreamParseTest02()
         {
             // Find the resource to be parsed.
-            string neededResource = findResource("PRPA_IN101103CA.xml");
+            string neededResource = "";
+            foreach (string name in ParseFromStreamTest.GetResourceList())
+            {
+                if (name.ToString().Contains("PRPA_IN101103CA.xml"))
+                {
+                    neededResource = name;
+                }
+            }
 
             // Load the assembly into the current AppDomain
             Assembly.Load(new AssemblyName("MARC.Everest.RMIM.UV.NE2008, Version=1.0.4366.42027, Culture=neutral"));

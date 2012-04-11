@@ -53,7 +53,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
         public object Parse(System.Xml.XmlReader s, DatatypeR2FormatterParseResult result)
         {
             // First off, there is no way to determine which of the classes it is..
-           
+            
             // Try using the xsi type
             var fmtr = new DatatypeR2Formatter().GetFormatter(s.GetAttribute("type", DatatypeR2Formatter.NS_XSI));
             if (fmtr == null) // No formatter available, add a result
@@ -67,7 +67,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             fmtr.GenericArguments = this.GenericArguments;
             fmtr.Host = this.Host; 
             return fmtr.Parse(s, result);
-
         }
 
         /// <summary>
