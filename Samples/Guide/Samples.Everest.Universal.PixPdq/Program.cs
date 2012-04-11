@@ -76,7 +76,7 @@ namespace Samples.Everest.Universal.PixPdq
 
             // We'll indent the output
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(Console.OpenStandardOutput(), new XmlWriterSettings() { Indent = true }));
-            m_formatter.GraphObject(xw, message);
+            m_formatter.Graph(xw, message);
             xw.Flush();
         }
 

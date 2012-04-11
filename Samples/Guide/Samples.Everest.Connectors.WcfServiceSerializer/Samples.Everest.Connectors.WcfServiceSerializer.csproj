@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1CCC9385-7A1B-4B55-885F-02D3912E8962}</ProjectGuid>
+    <ProjectGuid>{F415F171-551F-43D5-B9B0-8C2880C592AE}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Samples.Everest.Connectors.WcfService</RootNamespace>
-    <AssemblyName>Samples.Everest.Connectors.WcfService</AssemblyName>
+    <RootNamespace>Samples.Everest.Connectors.WcfServiceSerializer</RootNamespace>
+    <AssemblyName>Samples.Everest.Connectors.WcfServiceSerializer</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,28 +31,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MARC.Everest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ba5b2480018546af, processorArchitecture=MSIL">
+    <Reference Include="MARC.Everest.Connectors.WCF, Version=1.1.0.0, Culture=neutral, PublicKeyToken=99dcf2dae6474efd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\MARC.Everest.dll</HintPath>
+      <HintPath>..\..\..\MARC.Everest.Connectors.WCF\bin\Debug\MARC.Everest.Connectors.WCF.dll</HintPath>
     </Reference>
-    <Reference Include="MARC.Everest.Connectors.WCF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=99dcf2dae6474efd, processorArchitecture=MSIL">
+    <Reference Include="MARC.Everest.RMIM.CA.R020402, Version=1.0.4432.17442, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\MARC.Everest.Connectors.WCF.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Mohawk College\Everest\lib\MARC.Everest.RMIM.CA.R020402.dll</HintPath>
     </Reference>
-    <Reference Include="MARC.Everest.RMIM.CA.R020402, Version=1.0.3525.15619, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MARC.Everest, Version=1.5.0.0, Culture=neutral, PublicKeyToken=ba5b2480018546af">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\MARC.Everest.RMIM.CA.R020402.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Mohawk College\Everest\lib\MARC.Everest.dll</HintPath>
     </Reference>
-    <Reference Include="MARC.Everest.Formatters.XML.Datatypes.R1, Version=0.1.3558.16262, Culture=neutral, PublicKeyToken=50c44f29d884a7e5, processorArchitecture=MSIL">
+    <Reference Include="MARC.Everest.Formatters.XML.Datatypes.R1, Version=1.1.0.0, Culture=neutral, PublicKeyToken=50c44f29d884a7e5">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\MARC.Everest.Formatters.XML.Datatypes.R1.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Mohawk College\Everest\lib\MARC.Everest.Formatters.XML.Datatypes.R1.dll</HintPath>
     </Reference>
-    <Reference Include="MARC.Everest.Formatters.XML.ITS1, Version=0.1.3558.16263, Culture=neutral, PublicKeyToken=a761391c991e4f91, processorArchitecture=MSIL">
+    <Reference Include="MARC.Everest.Formatters.XML.ITS1, Version=1.2.0.0, Culture=neutral, PublicKeyToken=a761391c991e4f91">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\MARC.Everest.Formatters.XML.ITS1.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Mohawk College\Everest\lib\MARC.Everest.Formatters.XML.ITS1.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
@@ -67,6 +73,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceBehavior.cs" />
+    <Compile Include="IServiceContract.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

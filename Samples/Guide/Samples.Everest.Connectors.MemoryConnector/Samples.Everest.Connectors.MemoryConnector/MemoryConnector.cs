@@ -130,8 +130,9 @@ public class MemoryConnector : IConnector, IFormattedConnector, ISendingConnecto
                 Result = new SendResult();
 
                 // Format and set result details
-                Result.Code = Formatter.GraphObject(ms, (IGraphable)state);
-                Result.Details = Formatter.Details;
+                var result = Formatter.Graph(ms, (IGraphable)state);
+                Result.Code = result.Code;
+                Result.Details = result.Details;
             }
             catch (Exception e)
             {

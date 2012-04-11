@@ -150,5 +150,17 @@ namespace Samples.Everest.Formatters.BinFormatter
             }
         }
         #endregion
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            return;
+        }
+
+        #endregion
     }
 }

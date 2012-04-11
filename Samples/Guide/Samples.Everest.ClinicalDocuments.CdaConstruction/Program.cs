@@ -44,11 +44,11 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
 
             // Create the CDA
             ClinicalDocument cda = new ClinicalDocument(
-                ActClassClinicalDocument.DOCCLIN, // Document type is clinical document
+                ActClassClinicalDocument.ClinicalDocument, // Document type is clinical document
                 new II("2.16.840.1.113883.19.4", "c266"), // Create an identifier for the document
-                new CE<DocumentType>(DocumentType._ActIdentityDocumentCode, "2.16.840.1.113883.6.1", "LOINC", null, "Consultation note", null), // Specify the type of document
+                new CE<String>("33049-3", "2.16.840.1.113883.6.1", "LOINC", null, "Consultation note", null), // Specify the type of document
                 DateTime.Now, // Effective time of the document (now)
-                x_BasicConfidentialityKind.N_, // Confidentiality code of N = Normal
+                x_BasicConfidentialityKind.Normal, // Confidentiality code of N = Normal
                 CreateRecordTarget(), // Create a record target, this is good for code reuse
                 CreateAuthor(), // Create the author node
                 CreateCustodian(), // Create custodian node
@@ -108,19 +108,19 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
         {
             // Create a component 2 structure, which contains the body of the CDA, set it's type code to COMP and
             // context conduction indicator (any data with context conduction code of AP will be conducted) to true
-            var retVal = new Component2(ActRelationshipHasComponent.COMP, true);
+            var retVal = new Component2(ActRelationshipHasComponent.HasComponent, true);
             
 
             // Everest provides methods of creating abstract classes through a series of helper methods,
             // here we're creating an observation for asthma
             var asthma = ClinicalStatement.CreateObservation(
-                ActClassObservation.COND,
-                x_ActMoodDocumentObservation.EVN,
-                new CD<ObservationType>(ObservationType._PatientCharacteristicObservationType, "2.16.840.1.113883.6.96", "SNOMED-CT", null, "Asthma", null)
+                ActClass.Observation,
+                x_ActMoodDocumentObservation.Eventoccurrence,
+                new CD<String>("30049385", "2.16.840.1.113883.6.96", "SNOMED-CT", null, "Asthma", null)
             );
             asthma.StatusCode = ActStatus.Completed;
             asthma.EffectiveTime = new IVL<TS>(new TS(DateTime.Now, DatePrecision.Year), null); // In Everest, we can create a date with a precision of year which can be interpreted as any time that year
-            asthma.Reference.Add(new Reference(x_ActRelationshipExternalReference.XCRPT, ExternalActChoice.CreateExternalObservation(ActClassObservation.COND)));
+            asthma.Reference.Add(new Reference(x_ActRelationshipExternalReference.Excerpts, ExternalActChoice.CreateExternalObservation(ActClass.Condition)));
             
             // BodyChoice is a choice of either nonXml content or structured body, how would we know that?
             // Well, whenever a class as a property XChoice and SetXChoice the SetXChoice will contain
@@ -130,19 +130,19 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
                 Component = new List<Component3>() // We can use type initializers to create the components (sections)
                 {
                     // We can create a section for history of present illness
-                    new Component3(ActRelationshipHasComponent.COMP, true, 
+                    new Component3(ActRelationshipHasComponent.HasComponent, true, 
                         new Section() {
                             Code = new CE<string>("10164-2", "2.16.840.1.113883.6.1"),
                             Title = "History of Present Illness",
                             Text = new ED("<content styleCode=\"Bold\">This is bold</content>") { Representation = EncapsulatedDataRepresentation.XML } // In the CDA ED type, we can use content tags to style the content
                         }),
-                    new Component3(ActRelationshipHasComponent.COMP, true,
+                    new Component3(ActRelationshipHasComponent.HasComponent, true,
                         new Section() {
                             Code = new CE<string>("10153-2", "2.16.840.1.113883.6.1"),
                             Title = "Past Medical History",
                             Text = "We can also assign an ED directly as a string",
                             Entry = new List<Entry>() {  // We can also add observations and sub-components
-                                new Entry(x_ActRelationshipEntry.COMP, true, asthma) // See where we defined astma above as a clinical statement
+                                new Entry(x_ActRelationshipEntry.HasComponent, true, asthma) // See where we defined astma above as a clinical statement
                             }
                         })
                 }
@@ -160,7 +160,7 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             //throw new NotImplementedException();
             return new Custodian(
                 new AssignedCustodian(
-                    RoleClassAssignedEntity.ASSIGNED
+                    RoleClass.AssignedEntity
                 )
             );
         }
@@ -174,7 +174,7 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
                 ContextControl.AdditivePropagating,
                 DateTime.Now,
                 new AssignedAuthor(
-                    RoleClassAssignedEntity.ASSIGNED,
+                    RoleClass.AssignedEntity,
                     new SET<II>(new II("1.2.3.4.5.6", "1234"))
                 )
             );

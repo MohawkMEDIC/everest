@@ -30,7 +30,7 @@ namespace DataTypeExplorer
             // Don't worry about these lines right now
             XmlIts1Formatter fmtr = new XmlIts1Formatter();
             fmtr.GraphAides.Add(new DatatypeFormatter());
-            fmtr.GraphObject(xmlWriter, dataType);
+            fmtr.Graph(xmlWriter, dataType);
             // Finish the string
             xmlWriter.WriteEndElement();
             xmlWriter.Close();

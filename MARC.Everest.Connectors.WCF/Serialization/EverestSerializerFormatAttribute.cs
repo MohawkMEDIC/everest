@@ -109,13 +109,20 @@ namespace MARC.Everest.Connectors.WCF.Serialization
         /// </summary>
         private void ReplaceSerializerOperationBehavior(ContractDescription contractDescription)
         {
-            foreach(var od in contractDescription.Operations)
+            foreach (var od in contractDescription.Operations)
+            {
+                // Replace Behaviors
                 for (int i = 0; i < od.Behaviors.Count; i++)
                 {
                     DataContractSerializerOperationBehavior dcsob = od.Behaviors[i] as DataContractSerializerOperationBehavior;
                     if (dcsob != null)
                         od.Behaviors[i] = new EverestSerializerOperationBehavior(od, this.CreateFormatter());
                 }
+
+                // Replace message wrappers
+                foreach(var md in od.Messages)
+                    md.Body.WrapperName = null;
+            }
         }
 
         /// <summary>
@@ -133,6 +140,9 @@ namespace MARC.Everest.Connectors.WCF.Serialization
         /// </summary>
         private void ValidateIsIGraphable(Type type)
         {
+            if (type == typeof(IGraphable))
+                return;
+
             var ci = type.GetConstructor(Type.EmptyTypes);
             if (ci == null)
                 throw new InvalidOperationException("Type must have a parameterless constructor");

@@ -1,16 +1,16 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MARC-HI Everest Framework JSON Formatter")]
-[assembly: AssemblyDescription("JSON Formatter for HL7v3 Messages")]
+[assembly: AssemblyTitle("Samples.Everest.Connectors.WcfServiceSerializer")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Mohawk College of Applied Arts and Technology")]
-[assembly: AssemblyProduct("MARC-HI Everest Framework")]
-[assembly: AssemblyCopyright("Copyright ©  2012 Mohawk College of Applied Arts and Technology")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Samples.Everest.Connectors.WcfServiceSerializer")]
+[assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("2b76b4b5-c2e9-4fdf-97c2-7d1c33361166")]
+[assembly: Guid("a58d80c9-e2b3-47b7-a5f1-81db2fa3787a")]
 
 // Version information for an assembly consists of the following four values:
 //
