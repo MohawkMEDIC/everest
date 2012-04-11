@@ -101,8 +101,8 @@ namespace MARC.Everest.Test.Manual.Formatters
             {
                 ValidateConformance = false
             };
-            structureFormatter.GraphAides.Add(new DatatypeFormatter());
 
+            structureFormatter.GraphAides.Add(new DatatypeFormatter());
 
             // Print current path of the xmlwriter before formatting instance
             var writeStatePreFormat = xsw.WriteState;
