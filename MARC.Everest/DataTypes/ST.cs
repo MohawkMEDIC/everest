@@ -291,7 +291,7 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public override bool Equals(object obj)
         {
-            if (obj is ST)
+            if (obj is ST || obj is string)
                 return Equals(obj as ST);
             return base.Equals(obj);
         }

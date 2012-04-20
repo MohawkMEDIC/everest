@@ -85,6 +85,31 @@ namespace MARC.Everest.DataTypes
         {
             this.Use = new SET<CS<TelecommunicationAddressUse>>(use);
         }
+        /// <summary>
+        /// Creates a new telecommunications address with the specified <paramref name="value"/> 
+        /// </summary>
+        /// <param name="value">The initial value of the telecommunications address</param>
+        public TEL(Uri value)
+            : this(value.ToString())
+        { }
+        /// <summary>
+        /// Creates a new telecommunications address with the specified <paramref name="value"/> and
+        /// <paramref name="use"/> set.
+        /// </summary>
+        /// <param name="value">The initial value of the telecommunications address</param>
+        /// <param name="use">A set of unique values describing the use of the telecommunications address</param>
+        public TEL(Uri value, TelecommunicationAddressUse use)
+            : this(value.ToString(), use)
+        { }
+        /// <summary>
+        /// Creates a new telecommunications address with the specified <paramref name="value"/> and
+        /// <paramref name="use"/> set.
+        /// </summary>
+        /// <param name="value">The initial value of the telecommunications address</param>
+        /// <param name="use">A set of unique values describing the use of the telecommunications address</param>
+        public TEL(Uri value, IEnumerable<CS<TelecommunicationAddressUse>> use)
+            : this(value.ToString(), use)
+        { }
 
         /// <summary>
         /// Identifies the value of the telecommunications address. Note that valid telecommunications
@@ -215,7 +240,20 @@ namespace MARC.Everest.DataTypes
         {
             return o.Value;
         }
-
+        /// <summary>
+        /// Converts a <see cref="T:TEL"/> to a <see cref="T:System.String"/>
+        /// </summary>
+        public static explicit operator Uri(TEL o)
+        {
+            return new Uri(o);
+        }
+        /// <summary>
+        /// Converts a <see cref="T:System.Uri"/> to a <see cref="T:TEL"/>
+        /// </summary>
+        public static implicit operator TEL(Uri o)
+        {
+            return new TEL(o);
+        }
         /// <summary>
         /// Converets a <see cref="String"/> to a <see cref="TEL"/>
         /// </summary>
@@ -251,8 +289,9 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public override bool Equals(object obj)
         {
-            if (obj is TEL)
+            if (obj is TEL || obj is string || obj is Uri)
                 return Equals(obj as TEL);
+            
             return base.Equals(obj);
         }
 

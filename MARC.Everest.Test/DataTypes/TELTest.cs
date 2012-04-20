@@ -78,7 +78,26 @@ namespace MARC.Everest.Test
             String emailString = email;
             Assert.AreEqual("mailto:test@google.com", emailString);
         }
-
+        /// <summary>
+        /// Emsures that TEL can be cast from a Uri.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TEL"), TestMethod]
+        public void TELCastFromUriTest()
+        {
+            Uri email2 = new Uri("mailto:test@google.com");
+            TEL email = email2;
+            Assert.AreEqual(email, email2);
+        }
+        /// <summary>
+        /// Ensures that TEL can be cast to a Uri.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TEL"), TestMethod]
+        public void TELCastToUrlTest()
+        {
+            TEL email = "mailto:test@google.com";
+            Uri emailString = (Uri)email;
+            Assert.AreEqual(email, emailString);
+        }
         /// <summary>
         /// Ensures that Validation fails (returns FALSE)
         /// When the following values are being populated:

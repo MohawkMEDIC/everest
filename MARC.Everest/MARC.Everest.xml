@@ -9270,6 +9270,28 @@
             <param name="value">The initial value of the telecommunications address, adhere to RFC2396 <a href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a></param>
             <param name="use">A set of unique values describing the use of the telecommunications address</param>
         </member>
+        <member name="M:MARC.Everest.DataTypes.TEL.#ctor(System.Uri)">
+            <summary>
+            Creates a new telecommunications address with the specified <paramref name="value"/> 
+            </summary>
+            <param name="value">The initial value of the telecommunications address</param>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.TEL.#ctor(System.Uri,MARC.Everest.DataTypes.Interfaces.TelecommunicationAddressUse)">
+            <summary>
+            Creates a new telecommunications address with the specified <paramref name="value"/> and
+            <paramref name="use"/> set.
+            </summary>
+            <param name="value">The initial value of the telecommunications address</param>
+            <param name="use">A set of unique values describing the use of the telecommunications address</param>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.TEL.#ctor(System.Uri,System.Collections.Generic.IEnumerable{MARC.Everest.DataTypes.CS{MARC.Everest.DataTypes.Interfaces.TelecommunicationAddressUse}})">
+            <summary>
+            Creates a new telecommunications address with the specified <paramref name="value"/> and
+            <paramref name="use"/> set.
+            </summary>
+            <param name="value">The initial value of the telecommunications address</param>
+            <param name="use">A set of unique values describing the use of the telecommunications address</param>
+        </member>
         <member name="M:MARC.Everest.DataTypes.TEL.IsValidUrlFlavor(MARC.Everest.DataTypes.TEL)">
             <summary>
             TEL.URL Validator
@@ -9305,6 +9327,16 @@
             </summary>
             <param name="o">TEL to convert</param>
             <returns>Converted String</returns>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.TEL.op_Explicit(MARC.Everest.DataTypes.TEL)~System.Uri">
+            <summary>
+            Converts a <see cref="T:TEL"/> to a <see cref="T:System.String"/>
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.TEL.op_Implicit(System.Uri)~MARC.Everest.DataTypes.TEL">
+            <summary>
+            Converts a <see cref="T:System.Uri"/> to a <see cref="T:TEL"/>
+            </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.TEL.op_Implicit(System.String)~MARC.Everest.DataTypes.TEL">
             <summary>
