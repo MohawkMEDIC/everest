@@ -309,7 +309,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta
 
             // Map the SCREAMING CAPS to ScreamingCaps
             string friendlyValue = String.Format("{0}{1}", stConstraint.New[0], stConstraint.New.Substring(1).ToLower());
-
+            if (friendlyValue == "Not_allowed")
+                friendlyValue = "NotAllowed";
             // 3. Verify a constraint for the same jurisdication has not already been added
             if (feature.Annotations.Exists(o => o is ConformanceConstraintAnnotation && (o as ConformanceConstraintAnnotation).RealmCode == this.m_deltaSet.Realm.Code))
             {

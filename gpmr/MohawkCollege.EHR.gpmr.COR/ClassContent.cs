@@ -121,6 +121,7 @@ namespace MohawkCollege.EHR.gpmr.COR
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public enum ConformanceKind
         {
+            NotAllowed = 0,
             Optional = 1,
             Required = 2,
             Mandatory = 4,

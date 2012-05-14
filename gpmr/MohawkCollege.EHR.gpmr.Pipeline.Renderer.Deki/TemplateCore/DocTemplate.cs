@@ -234,16 +234,16 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki.TemplateCore
                 else return a.GetType().Name.CompareTo(b.GetType().Name);
             });
 
-            var vocabArticle = new MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki.Article.Article()
-            {
-                Title = "Vocabulary",
-                Children = new ArticleCollection()
-            };
-            vocabArticle.Children.Add(new Article.Article() { Title = "Code Systems" });
-            vocabArticle.Children.Add(new Article.Article() { Title = "Concept Domains" });
-            vocabArticle.Children.Add(new Article.Article() { Title = "Value Sets" });
+            //var vocabArticle = new MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki.Article.Article()
+            //{
+            //    Title = "Vocabulary",
+            //    Children = new ArticleCollection()
+            //};
+            //vocabArticle.Children.Add(new Article.Article() { Title = "Code Systems" });
+            //vocabArticle.Children.Add(new Article.Article() { Title = "Concept Domains" });
+            //vocabArticle.Children.Add(new Article.Article() { Title = "Value Sets" });
 
-            artc.Add(vocabArticle);
+            //artc.Add(vocabArticle);
             WaitThreadPool wtp = new WaitThreadPool();
 
             // A thread that does the doohickey thing

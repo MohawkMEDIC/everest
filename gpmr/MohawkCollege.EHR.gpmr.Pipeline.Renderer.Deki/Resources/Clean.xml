@@ -1154,10 +1154,10 @@
   <!-- Type Refernece -->
   <featureTemplate feature="MohawkCollege.EHR.gpmr.COR.TypeReference">
     <propertyTemplate name="ClassRef" property="Class">
-      <![CDATA[<a href="~/Sub Systems/$ContainerName$/$Name$.deki">]]>
+      <![CDATA[href="~/Sub Systems/$ContainerName$/$Name$.deki"]]>
     </propertyTemplate>
     <propertyTemplate name="DataTypeRef" property="CoreDatatypeName">
-      <![CDATA[<a href="~/Datatypes/$value$.deki">]]>
+      <![CDATA[href="~/Datatypes/$value$.deki"]]>
     </propertyTemplate>
     <propertyTemplate name="GenericSupplier" property="GenericSupplier">
       <![CDATA[&lt;$feature$&gt;]]>
@@ -1166,8 +1166,8 @@
       <![CDATA[($value$)]]>
     </propertyTemplate>
     <![CDATA[
-     $ClassRef$
-     $DataTypeRef$
+     <a $ClassRef$
+     $DataTypeRef$>
       $Name$ $Flavor$</a>
       @GenericSupplier@
      ]]>
@@ -1489,6 +1489,9 @@
     <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='Populated']">
       Implementers must support and must always send a value, however a null flavor is permitted as a value
     </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='NotAllowed']">
+      Implementers cannot use this element
+    </xmlElementTemplate>
     <propertyTemplate property="Content">
       <![CDATA[
         $feature$
@@ -1673,6 +1676,9 @@
     </xmlElementTemplate>
     <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='Populated']">
       Implementers must support and must always send a value, however a null flavor is permitted as a value
+    </xmlElementTemplate>
+    <xmlElementTemplate match="//*[local-name() = 'conformDef'][@value='NotAllowed']">
+      Implementers cannot use this element
     </xmlElementTemplate>
 
     <!-- Multiplicity -->
