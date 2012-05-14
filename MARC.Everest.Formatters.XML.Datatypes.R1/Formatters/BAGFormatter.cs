@@ -23,6 +23,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         {
             SETFormatter formatter = new SETFormatter();
             formatter.Host = this.Host;
+            formatter.GenericArguments = this.GenericArguments;
             formatter.Graph(s, o, result);
         }
 

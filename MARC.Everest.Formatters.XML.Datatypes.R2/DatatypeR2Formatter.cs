@@ -418,6 +418,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
                 return "RTO";
             else if (tc == typeof(SET<>)) // HACK: In R2, a SET is actually known as a DSET
                 return String.Format("D{0}", Util.CreateXSITypeName(type, CreateXSITypeName));
+            else if (tc == typeof(ON) || tc == typeof(PN) || tc == typeof(TN))
+                return "EN";
             else
                 return Util.CreateXSITypeName(type);
         }

@@ -381,6 +381,7 @@ namespace MARC.Everest.Connectors
             else
             {
                 object[] stAtt = compType.GetCustomAttributes(typeof(StructureAttribute), false);
+                
                 if (stAtt.Length > 0)
                     xsiTypeName.Append((stAtt[0] as StructureAttribute).Name);
             }
