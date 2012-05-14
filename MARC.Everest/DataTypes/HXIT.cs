@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.Attributes;
 using MARC.Everest.Interfaces;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -164,6 +165,19 @@ namespace MARC.Everest.DataTypes
         {
             return this.ControlActRoot == null && this.ControlActExt == null ||
                 this.ControlActRoot != null && this.ControlActExt != null;
+        }
+
+        /// <summary>
+        /// Validates the structure is conformant, returning the result details that are in violation
+        /// </summary>
+        public virtual IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>();
+            if ((this.ControlActRoot == null) ^ (this.ControlActExt == null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "HXIT",
+                    this.ControlActExt == null ? "ControlActExt must be populated when ControlActRoot is populated" :
+                    "ControlActRoot must be populated when ControlActExt is populated", null));
+            return retVal;
         }
 
         #endregion

@@ -416,16 +416,18 @@ namespace MARC.Everest.Connectors
         public string DatatypeName { get; private set; }
 
         /// <summary>
-        /// Gets the message
+        /// Gets the error message
         /// </summary>
         public override string Message
         {
             get
             {
-                return string.Format("Datatype '{0}' failed basic validation. Please refer to development guide for validation rules", this.DatatypeName);
+                if (String.IsNullOrEmpty(base.Message))
+                    return string.Format("Data type '{0}' failed basic validation, please refer to the developer's guide for more detail", this.DatatypeName);
+                else
+                    return string.Format("Data type '{0}' failed basic validation, the violation was : {1}", this.DatatypeName, base.Message);
             }
         }
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -440,6 +442,17 @@ namespace MARC.Everest.Connectors
         /// <param name="location">The location within the instance that that is not supported</param>
         public DatatypeValidationResultDetail(ResultDetailType type, string datatypeName, string location) : 
             base(type, null, location)
+        {
+            this.DatatypeName = datatypeName;
+        }
+        /// <summary>
+        /// Creates a new instance of the datatype validation result detail class with the specified parameters
+        /// </summary>
+        /// <param name="type">The type of result detail</param>
+        /// <param name="datatypeName">The name of the datatype that is not supported</param>
+        /// <param name="location">The location within the instance that that is not supported</param>
+        public DatatypeValidationResultDetail(ResultDetailType type, string datatypeName, string message, string location) :
+            base(type, message, location)
         {
             this.DatatypeName = datatypeName;
         }

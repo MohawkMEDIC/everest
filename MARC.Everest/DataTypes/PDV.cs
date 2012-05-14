@@ -72,6 +72,17 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
+        /// Validate the PDV passes conformance and return the detected issues
+        /// </summary>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (!((this.NullFlavor != null) ^ (this.Value != null)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PDV", "Value and NullFlavor must be used exclusively", null));
+            return retVal;
+        }
+
+        /// <summary>
         /// Return this PDV as a string
         /// </summary>
         public override string ToString()

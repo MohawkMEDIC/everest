@@ -27,6 +27,7 @@ using System.ComponentModel;
 using MARC.Everest.Design;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -201,6 +202,23 @@ namespace MARC.Everest.DataTypes
 
             return base.Validate() &&
                 !isAny || (isAny && isNullFlavorSet && !isNullFlavorINV);
+        }
+
+        /// <summary>
+        /// Validate the ANY meets validaton criteria and identifies the problems
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            bool isAny = this.GetType() == typeof(ANY),
+                isNullFlavorSet = this.NullFlavor != null,
+                isNullFlavorINV = isNullFlavorSet && ((NullFlavor)this.NullFlavor).IsChildConcept(MARC.Everest.DataTypes.NullFlavor.Invalid);
+
+            if (isAny && !isNullFlavorSet)
+                retVal.Add(new DatatypeFlavorValidationResultDetail(ResultDetailType.Error, "ANY", "When ANY is used it must carry a NullFlavor", null));
+            else if (isAny && !isNullFlavorINV)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ANY", "NullFlavor must imply 'Invalid'", null));
+            return retVal;
         }
     }
 }

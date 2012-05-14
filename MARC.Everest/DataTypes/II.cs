@@ -23,6 +23,8 @@ using System.Xml.Serialization;
 using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.DataTypes.Primitives;
+using System.Collections.Generic;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -285,6 +287,20 @@ namespace MARC.Everest.DataTypes
             if ((Root != null) ^ (NullFlavor != null))
                 return IsRootOid(this) ^ IsRootGuid(this);
             return false;
+        }
+
+        /// <summary>
+        /// Validate the instance identifier is valid, returning the detected issues
+        /// </summary>
+        public override System.Collections.Generic.IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>( base.ValidateEx());
+
+            if (!((Root != null) ^ (NullFlavor != null)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", "Root and NullFlavor must be used exclusively", null));
+            else if (!(IsRootOid(this) ^ IsRootGuid(this)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", "Root must be a GUID or OID in form x.x.x.x", null));
+            return retVal;
         }
 
         /// <summary>

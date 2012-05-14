@@ -228,6 +228,11 @@
             neither ControlActRoot and ControlActExt are populated.
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.HXIT.ValidateEx">
+            <summary>
+            Validates the structure is conformant, returning the result details that are in violation
+            </summary>
+        </member>
         <member name="P:MARC.Everest.DataTypes.HXIT.ValidTimeLow">
             <summary>
             Identifies the time that the given information has or will become valid
@@ -327,6 +332,11 @@
             </summary>
             <remarks>An ANY is valid if the type is not ANY (is a subclass of ANY), or
             is an ANY, has a nullFlavor and the nullFlavor is not a child of Invalid</remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.ANY.ValidateEx">
+            <summary>
+            Validate the ANY meets validaton criteria and identifies the problems
+            </summary>
         </member>
         <member name="P:MARC.Everest.DataTypes.ANY.NullFlavor">
             <summary>
@@ -1863,6 +1873,11 @@
             The instance is valid if either the nullFlavor is set XOR the value is set and all 
             validation rules from the base class are succeed.
             </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.PDV`1.ValidateEx">
+            <summary>
+            Validate the PDV passes conformance and return the detected issues
+            </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.PDV`1.ToString">
             <summary>
@@ -3949,6 +3964,14 @@
             <param name="datatypeName">The name of the datatype that is not supported</param>
             <param name="location">The location within the instance that that is not supported</param>
         </member>
+        <member name="M:MARC.Everest.Connectors.DatatypeValidationResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.String,System.String)">
+            <summary>
+            Creates a new instance of the datatype validation result detail class with the specified parameters
+            </summary>
+            <param name="type">The type of result detail</param>
+            <param name="datatypeName">The name of the datatype that is not supported</param>
+            <param name="location">The location within the instance that that is not supported</param>
+        </member>
         <member name="P:MARC.Everest.Connectors.DatatypeValidationResultDetail.DatatypeName">
             <summary>
             Gets the name of the datatype where validation failed
@@ -3956,7 +3979,7 @@
         </member>
         <member name="P:MARC.Everest.Connectors.DatatypeValidationResultDetail.Message">
             <summary>
-            Gets the message
+            Gets the error message
             </summary>
         </member>
         <member name="T:MARC.Everest.Connectors.DatatypeFlavorValidationResultDetail">
@@ -6314,6 +6337,11 @@
                 </item>
             </list>
             </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.CS`1.ValidateEx">
+            <summary>
+            Validate the CS is valid, returning the detected issues
+            </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.CS`1.Parse(MARC.Everest.DataTypes.CS{System.String})">
             <summary>
@@ -10762,6 +10790,11 @@
         <member name="M:MARC.Everest.DataTypes.II.Validate">
             <summary>
             Validate
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.II.ValidateEx">
+            <summary>
+            Validate the instance identifier is valid, returning the detected issues
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.II.IsValidTokenFlavor(MARC.Everest.DataTypes.II)">
