@@ -251,7 +251,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
                 //// the --ignore-cmet flag
                 if (MifCompiler.hostContext.Mode == Pipeline.OperationModeType.Quirks)
                 {
-                    System.Diagnostics.Trace.WriteLine(string.Format("can't make type reference to CMET '{0}' as it wasn't found in the classes. The user has specified the --quirks flag so this error won't be classified as fatal...", ae.Name), "quirks");
+                    System.Diagnostics.Trace.WriteLine(string.Format("can't make type reference to CMET '{0}' as it wasn't found in the classes. The user has specified the --quirks flag so this error won't be classified as fatal...", (cel.Choice as CommonModelElementRef).CmetName), "quirks");
                     tr.Name = null;
                 }
                 else 
