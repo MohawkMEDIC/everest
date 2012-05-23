@@ -327,6 +327,17 @@ namespace MARC.Everest.DataTypes
             return isValid && base.Validate();
         }
 
+        /// <summary>
+        /// Validates the data type returning the validation errors that occur
+        /// </summary>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (this.Qualifier != null && this.Code == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CD", "Qualifier can only be specified when a primary Code is assigned", null));
+            return retVal;
+        }
+
         #region Operators
 
         /// <summary>

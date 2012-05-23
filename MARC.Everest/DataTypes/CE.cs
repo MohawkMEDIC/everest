@@ -180,6 +180,24 @@ namespace MARC.Everest.DataTypes
             return isValid;
         }
 
+        /// <summary>
+        /// Validate the data type returning the results of valiation
+        /// </summary>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+
+            if (this.Translation != null && this.Code == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", "Translation can only be specified when a primary Code is present", null));
+            foreach (var t in this.Translation ?? new SET<CD<T>>())
+            {
+                retVal.AddRange(t.ValidateEx());
+                if (t.OriginalText != null || t.Translation != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", "Translations may not contain either OriginalText or Translations", null));
+            }
+            return retVal;
+        }
+
 
         #region Operators
         /// <summary>

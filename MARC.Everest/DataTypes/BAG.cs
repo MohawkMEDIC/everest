@@ -282,6 +282,7 @@ namespace MARC.Everest.DataTypes
             return (this.NullFlavor != null) ^ (Items.Count > 0);
         }
 
+
         /// <summary>
         /// Create a bag of T from Array o (shallow copy)
         /// </summary>

@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -99,6 +100,32 @@ namespace MARC.Everest.DataTypes
         {
             bool isValid = (NullFlavor != null) ^ (Value != null && Name != null && Value.OriginalText == null && Value.Validate() && Name.Validate());
             return isValid;
+        }
+
+        /// <summary>
+        /// Validates this instance of the data type and returns the validations errors
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+
+            if (this.NullFlavor == null)
+            {
+                // Name
+                if (Name == null || !this.Name.Validate())
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", "Name must be populated and must carry a valid instance of CV", null));
+                else
+                    retVal.AddRange(this.Name.ValidateEx());
+
+                // Value
+                if (Value == null || !this.Value.Validate())
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", "Value must be populated and must carry a valid instance of CD", null));
+                else
+                    retVal.AddRange(this.Value.ValidateEx());
+            }
+            else if (this.Value != null || this.Name != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", "When NullFlavor is populated, neither Name nor Value can be populated", null));
+            return retVal;
         }
 
         #region IConceptQualifier Members

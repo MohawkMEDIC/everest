@@ -21,6 +21,8 @@ using System;
 using System.Xml.Serialization;
 using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
+using System.Collections.Generic;
 
 namespace MARC.Everest.DataTypes
 {
@@ -88,6 +90,20 @@ namespace MARC.Everest.DataTypes
         {
             return (NullFlavor != null) ^ (Code != null || Value != null && Value.HasValue) &&
                 ((Code != null && Code.Validate()) || Code == null);
+        }
+
+        /// <summary>
+        /// Validate the data type returning the validation errors that occur
+        /// </summary>
+        public override System.Collections.Generic.IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            retVal.AddRange(this.Code.ValidateEx());
+            if (this.Code != null && !this.Code.Validate())
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CO", "Code property must be populated with a valid instance of CV", null));
+            if (!((this.NullFlavor != null) ^ (this.Code != null || this.Value != null && this.Value.HasValue)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CO", "NullFlavor or Value and/or Code must be present", null));
+            return retVal;
         }
 
         #region IEquatable<CO> Members

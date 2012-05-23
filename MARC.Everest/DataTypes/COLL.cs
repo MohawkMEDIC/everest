@@ -77,6 +77,18 @@ namespace MARC.Everest.DataTypes
         {
             return (this.NullFlavor != null) ^ (!this.IsEmpty);
         }
+
+
+        /// <summary>
+        /// Validate the data type returning the validation errors that occur
+        /// </summary>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (!((this.NullFlavor != null) ^ (this.Items.Count > 0)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "COLL", "NullFlavor must be specified, or more than one Item must be present", null));
+            return retVal;
+        }
         #endregion
 
         #region IList<T> Members

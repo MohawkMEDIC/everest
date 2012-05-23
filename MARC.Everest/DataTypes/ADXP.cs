@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -333,6 +334,20 @@ namespace MARC.Everest.DataTypes
                 ((CodeSystemVersion != null && CodeSystem != null) || CodeSystemVersion == null));
         }
 
+        /// <summary>
+        /// Extended validation which returns the results of the validation
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (this.CodeSystemVersion != null && this.CodeSystem == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", "When CodeSystemVersion is specified, a CodeSystem must also be specified", null));
+            if (this.Code != null && this.CodeSystem == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", "When Code is specified, CodeSystem must be specified", null));
+            if (!((this.NullFlavor != null) ^ (this.Value != null)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", "Either Value or NullFlavor must be specified and must be used exclusively", null));
+            return retVal;
+        }
         #region IEquatable<ADXP> Members
 
         /// <summary>
