@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MARC.Everest.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes.Interfaces
 {
@@ -30,5 +31,11 @@ namespace MARC.Everest.DataTypes.Interfaces
         /// Gets or sets the flavor of the type
         /// </summary>
         string Flavor { get; set; }
+
+        /// <summary>
+        /// Validates the type and returns the detected issues with the data type instance.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<IResultDetail> ValidateEx();
     }
 }

@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -316,6 +317,21 @@ namespace MARC.Everest.DataTypes
         {
             return (this.Hull != null) ^ (this.NullFlavor != null) &&
                 ((this.Hull != null && this.Hull.Validate()) || this.Hull == null);
+        }
+
+        /// <summary>
+        /// Validates the GTS and returns the detected issues with the data type instance
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<Connectors.IResultDetail>;
+            if (this.NullFlavor != null && this.Hull != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "GTS", "When NullFlavor is populated, the Hull property must be null", null));
+            if (this.Hull == null && this.NullFlavor == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "GTS", "A NullFlavor must be present if the Hull property is not populated", null));
+            if(this.Hull != null)
+                retVal.AddRange(this.Hull.ValidateEx());
+            return retVal;
         }
 
         /// <summary>

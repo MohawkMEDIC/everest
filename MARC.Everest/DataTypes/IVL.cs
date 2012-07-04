@@ -27,6 +27,7 @@ using System.ComponentModel;
 using MARC.Everest.Design;
 using System.Drawing.Design;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -234,6 +235,24 @@ namespace MARC.Everest.DataTypes
                 //(Low != null && High != null) || Value != null || High != null)
                 //((LowClosed != null && Low != null) || LowClosed == null) &&
                 //((HighClosed != null && High != null) || HighClosed == null));
+        }
+
+        /// <summary>
+        /// Validates the instance of IVL and returns the detected issues
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+
+            // Validation
+            if (NullFlavor != null && (Low != null || High != null || Width != null || Value != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", "When NullFlavor is provided the Width, Value, Low and High properties must be null", null));
+            if (LowClosed != null && Low == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", "When LowClosed is populated the Low property must also be populated", null));
+            if (HighClosed != null && High == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", "When HighClosed is populated the High property must also be populated", null));
+
+            return retVal;
         }
 
         #region IEquatable<IVL<T>> Members

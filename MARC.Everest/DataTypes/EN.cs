@@ -24,6 +24,7 @@ using MARC.Everest.Attributes;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -238,6 +239,24 @@ namespace MARC.Everest.DataTypes
         public override bool Validate()
         {
             return (Part.Count > 0) ^ (NullFlavor != null);
+        }
+
+        /// <summary>
+        /// Extended validation function which returns the details of the validation
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+            if (this.NullFlavor != null && this.Part.Count > 0)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EN", "When NullFlavor is populated the name cannot contain any parts", null));
+            else if (this.Part.Count == 0 && this.NullFlavor == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EN", "A name instance with no parts must carry a NullFlavor", null));
+
+            // Validate parts
+            foreach (var pt in this.Part)
+                retVal.AddRange(pt.ValidateEx());
+
+            return retVal;
         }
 
         /// <summary>

@@ -14,7 +14,7 @@
  * the License.
 
  * 
- * User: Justin Fyfed
+ * User: Justin Fyfe
  * Date: 01-09-2009
  */
 using System;
@@ -391,6 +391,15 @@ namespace MARC.Everest.DataTypes
 
             return isValid;
 
+        }
+
+        /// <summary>
+        /// Extended validation function. Validates the datatype and returns the 
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            return base.ValidateEx();
         }
 
         #region Operators

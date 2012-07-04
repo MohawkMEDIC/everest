@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.Interfaces;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -322,7 +323,24 @@ namespace MARC.Everest.DataTypes
                     retVal &= validation[qlfr].Contains(this.Type);
             }
             return retVal;
-            
+        }
+
+        /// <summary>
+        /// Extended validation function which returns the details of the validation
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+
+            if (NullFlavor != null && Value != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", "When a NullFlavor is specified, the ENXP instance cannot contain a Value", null));
+            if (CodeSystem != null && Code == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", "Code property must be supplied when CodeSystem property is populated", null));
+            foreach (var q in this.Qualifier ?? new SET<CS<EntityNamePartQualifier>>())
+                if (!q.Code.IsAlternateCodeSpecified && !validation[q].Contains(this.Type))
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format("Qualifier must be one of '{0}' when type is populated with '{1}'", Util.ToWireFormat(validation[q]), this.Type), null));
+
+            return retVal;                
         }
 
         #region IEquatable<ENXP> Members
