@@ -246,11 +246,11 @@ namespace MARC.Everest.DataTypes
 
             // Validation
             if (NullFlavor != null && (Low != null || High != null || Width != null || Value != null))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", "When NullFlavor is provided the Width, Value, Low and High properties must be null", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             if (LowClosed != null && Low == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", "When LowClosed is populated the Low property must also be populated", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "LowClosed", "Low"), null));
             if (HighClosed != null && High == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", "When HighClosed is populated the High property must also be populated", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "HighClosed", "High"), null));
 
             return retVal;
         }

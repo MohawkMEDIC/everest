@@ -113,18 +113,18 @@ namespace MARC.Everest.DataTypes
             {
                 // Name
                 if (Name == null || !this.Name.Validate())
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", "Name must be populated and must carry a valid instance of CV", null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", String.Format(ValidationMessages.MSG_PROPERTY_NOT_POPULATED, "Name", "CV"), null));
                 else
                     retVal.AddRange(this.Name.ValidateEx());
 
                 // Value
                 if (Value == null || !this.Value.Validate())
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", "Value must be populated and must carry a valid instance of CD", null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", String.Format(ValidationMessages.MSG_PROPERTY_NOT_POPULATED, "Value", "CD"), null));
                 else
                     retVal.AddRange(this.Value.ValidateEx());
             }
             else if (this.Value != null || this.Name != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", "When NullFlavor is populated, neither Name nor Value can be populated", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             return retVal;
         }
 

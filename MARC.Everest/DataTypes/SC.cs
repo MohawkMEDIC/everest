@@ -28,6 +28,7 @@ using System.ComponentModel;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Primitives;
 using System.Globalization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -161,6 +162,26 @@ namespace MARC.Everest.DataTypes
             isValid &= this.Code != null && this.Code.OriginalText == null || this.Code == null;
             isValid &= this.Code != null && this.Code.Validate() || this.Code == null;
             return isValid;
+        }
+
+        /// <summary>
+        /// Extended validation routine which returns the detected issues with the data type
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+
+            if (this.Code != null && Value == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", "When Code is specified, Value must also be specified", null));
+            if (this.Code != null && this.Code.IsNull)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "NullFlavor", "Code"), null));
+            if (this.NullFlavor != null && (this.Code != null || this.Value != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.Code != null && this.Code.OriginalText != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "OriginalText", "Code"), null));
+            if(this.Code != null)
+                retVal.AddRange(this.Code.ValidateEx());
+            return retVal;
         }
 
         #endregion

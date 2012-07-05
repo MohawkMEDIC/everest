@@ -85,8 +85,10 @@ namespace MARC.Everest.DataTypes
         public override IEnumerable<IResultDetail> ValidateEx()
         {
             var retVal = new List<IResultDetail>(base.ValidateEx());
-            if (!((this.NullFlavor != null) ^ (this.Items.Count > 0)))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "COLL", "NullFlavor must be specified, or more than one Item must be present", null));
+            if (this.NullFlavor != null && this.Items.Count > 0)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "COLL", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.NullFlavor == null && this.Items.Count == 0)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "COLL", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             return retVal;
         }
         #endregion

@@ -101,8 +101,10 @@ namespace MARC.Everest.DataTypes
             retVal.AddRange(this.Code.ValidateEx());
             if (this.Code != null && !this.Code.Validate())
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CO", "Code property must be populated with a valid instance of CV", null));
-            if (!((this.NullFlavor != null) ^ (this.Code != null || this.Value != null && this.Value.HasValue)))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CO", "NullFlavor or Value and/or Code must be present", null));
+            if (this.NullFlavor != null && (this.Code != null || this.Value != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CO", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.NullFlavor == null && this.Code == null && this.Value == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CO", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             return retVal;
         }
 

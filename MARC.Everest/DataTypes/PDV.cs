@@ -77,8 +77,10 @@ namespace MARC.Everest.DataTypes
         public override IEnumerable<IResultDetail> ValidateEx()
         {
             var retVal = new List<IResultDetail>(base.ValidateEx());
-            if (!((this.NullFlavor != null) ^ (this.Value != null)))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PDV", "Value and NullFlavor must be used exclusively", null));
+            if (this.NullFlavor != null && this.Value != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PDV", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            else if (this.NullFlavor == null && this.Value == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PDV", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             return retVal;
         }
 

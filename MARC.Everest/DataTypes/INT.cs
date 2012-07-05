@@ -559,7 +559,7 @@ namespace MARC.Everest.DataTypes
                 return true;
             else if (this.IsNull ^ other.IsNull)
                 return false;
-
+            
             // Values are equal?
             INT intOther = other as INT;
             if (intOther == null)

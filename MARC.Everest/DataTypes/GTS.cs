@@ -326,9 +326,9 @@ namespace MARC.Everest.DataTypes
         {
             var retVal = base.ValidateEx() as List<Connectors.IResultDetail>;
             if (this.NullFlavor != null && this.Hull != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "GTS", "When NullFlavor is populated, the Hull property must be null", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "GTS", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             if (this.Hull == null && this.NullFlavor == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "GTS", "A NullFlavor must be present if the Hull property is not populated", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "GTS", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             if(this.Hull != null)
                 retVal.AddRange(this.Hull.ValidateEx());
             return retVal;

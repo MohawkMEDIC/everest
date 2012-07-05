@@ -297,9 +297,9 @@ namespace MARC.Everest.DataTypes
             var retVal = new List<IResultDetail>( base.ValidateEx());
 
             if (!((Root != null) ^ (NullFlavor != null)))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", "Root and NullFlavor must be used exclusively", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             else if (!(IsRootOid(this) ^ IsRootGuid(this)))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", "Root must be a GUID or OID in form x.x.x.x", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", String.Format(ValidationMessages.MSG_INVALID_VALUE, "Root", this.Root), null));
             return retVal;
         }
 

@@ -248,9 +248,9 @@ namespace MARC.Everest.DataTypes
         {
             var retVal = base.ValidateEx() as List<IResultDetail>;
             if (this.NullFlavor != null && this.Part.Count > 0)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EN", "When NullFlavor is populated the name cannot contain any parts", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EN", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             else if (this.Part.Count == 0 && this.NullFlavor == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EN", "A name instance with no parts must carry a NullFlavor", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EN", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
 
             // Validate parts
             foreach (var pt in this.Part)

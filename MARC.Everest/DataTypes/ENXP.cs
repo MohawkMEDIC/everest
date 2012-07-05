@@ -333,9 +333,9 @@ namespace MARC.Everest.DataTypes
             var retVal = base.ValidateEx() as List<IResultDetail>;
 
             if (NullFlavor != null && Value != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", "When a NullFlavor is specified, the ENXP instance cannot contain a Value", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             if (CodeSystem != null && Code == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", "Code property must be supplied when CodeSystem property is populated", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystem", "Code"), null));
             foreach (var q in this.Qualifier ?? new SET<CS<EntityNamePartQualifier>>())
                 if (!q.Code.IsAlternateCodeSpecified && !validation[q].Contains(this.Type))
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format("Qualifier must be one of '{0}' when type is populated with '{1}'", Util.ToWireFormat(validation[q]), this.Type), null));

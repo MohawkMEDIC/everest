@@ -188,12 +188,14 @@ namespace MARC.Everest.DataTypes
             var retVal = new List<IResultDetail>(base.ValidateEx());
 
             if (this.Translation != null && this.Code == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", "Translation can only be specified when a primary Code is present", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Translation", "Code"), null));
             foreach (var t in this.Translation ?? new SET<CD<T>>())
             {
                 retVal.AddRange(t.ValidateEx());
-                if (t.OriginalText != null || t.Translation != null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", "Translations may not contain either OriginalText or Translations", null));
+                if (t.OriginalText != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "OriginalText", "Translation"), null));
+                if (t.Translation != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Translation", "Translation"), null));
             }
             return retVal;
         }

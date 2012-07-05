@@ -343,9 +343,11 @@ namespace MARC.Everest.DataTypes
             if (this.CodeSystemVersion != null && this.CodeSystem == null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", "When CodeSystemVersion is specified, a CodeSystem must also be specified", null));
             if (this.Code != null && this.CodeSystem == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", "When Code is specified, CodeSystem must be specified", null));
-            if (!((this.NullFlavor != null) ^ (this.Value != null)))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", "Either Value or NullFlavor must be specified and must be used exclusively", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", ValidationMessages.MSG_CODE_REQUIRES_CODESYSTEM, null));
+            if (this.NullFlavor != null && this.Value == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.Value == null && this.NullFlavor == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             return retVal;
         }
         #region IEquatable<ADXP> Members

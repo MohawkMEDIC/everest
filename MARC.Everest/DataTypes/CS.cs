@@ -190,7 +190,7 @@ namespace MARC.Everest.DataTypes
             if (this is CV<T>)
                 return retVal;
             else if (!((this.Code == null) ^ (this.NullFlavor == null)))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CS", "Code and NullFlavor must be used exclusively", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CS", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             else if (this.Code.IsAlternateCodeSpecified)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CS", string.Format("Code must be drawn from '{0}'", typeof(T).Name), null));
             return retVal;

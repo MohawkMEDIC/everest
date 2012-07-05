@@ -334,7 +334,7 @@ namespace MARC.Everest.DataTypes
         {
             var retVal = new List<IResultDetail>(base.ValidateEx());
             if (this.Qualifier != null && this.Code == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CD", "Qualifier can only be specified when a primary Code is assigned", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CD", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Qualifier", "Code"), null));
             return retVal;
         }
 
