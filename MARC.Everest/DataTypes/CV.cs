@@ -388,7 +388,7 @@ namespace MARC.Everest.DataTypes
             else // Null flavor is not null
                 isValid &= Code == null && DisplayName == null && CodeSystem == null && CodeSystemName == null && CodeSystemVersion == null &&
                     OriginalText == null && ValueSet == null && ValueSetVersion == null;
-
+            
             return isValid;
             
         }
