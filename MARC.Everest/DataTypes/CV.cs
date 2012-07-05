@@ -390,7 +390,7 @@ namespace MARC.Everest.DataTypes
                     OriginalText == null && ValueSet == null && ValueSetVersion == null;
 
             return isValid;
-
+            
         }
 
         /// <summary>
