@@ -25,6 +25,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -500,6 +501,16 @@ namespace MARC.Everest.DataTypes
             return (NullFlavor != null) ^ (Part.Count > 0);
         }
 
+        /// <summary>
+        /// Extended validation method that returns the results of validation
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (!((this.NullFlavor != null) ^ (this.Part.Count > 0)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "AD", "NullFlavor must be specified, or more than one Part must be present", null));
+            return retVal;
+        }
 
         #region IEquatable<AD> Members
 

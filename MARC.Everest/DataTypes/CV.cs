@@ -394,12 +394,50 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
-        /// Extended validation function. Validates the datatype and returns the 
+        /// Validate the data type and return the validation errors that have been detected in the validation
         /// </summary>
         /// <returns></returns>
         public override IEnumerable<IResultDetail> ValidateEx()
         {
-            return base.ValidateEx();
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+
+            if (this.NullFlavor == null || ((DataTypes.NullFlavor)NullFlavor).IsChildConcept(DataTypes.NullFlavor.Other))
+            { 
+                if(Code != null &&NullFlavor != null )
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+                if(CodeSystemName != null && CodeSystem == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemName", "CodeSystem"), null));
+                if(CodeSystemVersion != null && CodeSystem == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemVersion", "CodeSystem"), null));
+                if(CodeSystem != null && (Code == null || ((NullFlavor)NullFlavor).IsChildConcept(DataTypes.NullFlavor.Other)))
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystem can only be used when Code is populated or NullFlavor does implies Other", null));
+                if(DisplayName != null && Code == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "DisplayName", "CodeSystem"), null));
+                if(Code != null && Code.IsAlternateCodeSpecified && CodeSystem == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "When Code has an alternate code specified, CodeSystem must be populated", null));
+                if(ValueSetVersion != null && ValueSet == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "ValueSetVersion", "ValueSet"), null));
+            }
+            else // NullfLavor is something other than OTHER
+            { 
+                if(Code != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "Code may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(CodeSystem != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystem may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(CodeSystemVersion != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystemVersion may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(CodeSystemName != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystemName may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(OriginalText != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "OriginalText may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(ValueSet != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "ValueSet may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(ValueSetVersion != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "ValueSetVersion may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+
+            }
+            return retVal ;
+
         }
 
         #region Operators

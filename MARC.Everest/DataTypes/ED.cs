@@ -32,6 +32,7 @@ using System.Security.Cryptography;
 using MARC.Everest.Exceptions;
 using System.IO.Compression;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -697,6 +698,31 @@ namespace MARC.Everest.DataTypes
                 this.Translation == null) &&
                 (this.Reference == null || TEL.IsValidUrlFlavor(this.Reference)) &&
                 (this.Thumbnail == null || this.Thumbnail.Thumbnail == null && this.Thumbnail.Reference == null);
+        }
+
+        /// <summary>
+        /// Validatethe data type returning the validation errors that occurred
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+
+            if (!((this.Data != null) ^ (this.Reference != null)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", "The Data and Reference properties must be used exclusive of each other", null));
+            if (this.NullFlavor != null && (this.Data != null || this.Reference != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE));
+            else if (this.NullFlavor == null && this.Data == null && this.Reference == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", ValidationMessages.MSG_NULLFLAVOR_MISSING));
+            if (this.Translation != null && this.Translation.FindAll(o => o.Translation != null).Count > 0)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Translation", "Translation"), null));
+            if (this.Reference != null && !TEL.IsValidUrlFlavor(this.Reference))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", "When populated, Reference must be a valid instance of TEL.URL", null));
+            if (this.Thumbnail != null && this.Thumbnail.Thumbnail != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Thumbnail", "Thumbnail"), null));
+            if (this.Thumbnail != null && this.Thumbnail.Reference != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Thumbnail", "Reference"), null));
+            
+            return retVal;
         }
 
         #region Operators
