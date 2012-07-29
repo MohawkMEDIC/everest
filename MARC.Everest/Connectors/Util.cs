@@ -137,8 +137,18 @@ namespace MARC.Everest.Connectors
         /// <exception cref="T:MARC.Everest.Exceptions.FormatterException">When no method to convert <paramref name="object"/> to <typeparamref name="T"/> could be found</exception>
         public static T Convert<T>(object value)
         {
+            return Convert<T>(value, false);
+        }
+
+        /// <summary>
+        /// Soft-convert
+        /// </summary>
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static T Convert<T>(object value, bool throwOnError)
+        {
             object retVal = null;
-            if (!TryFromWireFormat(value, typeof(T), out retVal))
+            if (!TryFromWireFormat(value, typeof(T), out retVal) && throwOnError)
                 throw new FormatterException(String.Format("Can't find valid cast to from '{0}' to '{1}'", value.GetType(), typeof(T)));
             return (T)retVal;
         }
