@@ -137,7 +137,7 @@ namespace MARC.Everest.Connectors
         /// <exception cref="T:MARC.Everest.Exceptions.FormatterException">When no method to convert <paramref name="object"/> to <typeparamref name="T"/> could be found</exception>
         public static T Convert<T>(object value)
         {
-            return Convert<T>(value, false);
+            return Convert<T>(value, true);
         }
 
         /// <summary>
