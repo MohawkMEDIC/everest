@@ -58,7 +58,7 @@ namespace MARC.Everest.Connectors
         {
             get
             {
-                return m_location ?? (exception == null ? null : exception.StackTrace);
+                return m_location ;// ?? (exception == null ? null : exception.StackTrace);
             }
             set
             {

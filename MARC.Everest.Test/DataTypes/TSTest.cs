@@ -97,8 +97,8 @@ namespace MARC.Everest.Test.DataTypes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TSDATETIME"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.DateTime.Parse(System.String)"), TestMethod]
         public void TSDATETIMEFlavorTest()
         {
-            TS test = DateTime.Parse("September 17, 2009 10:09 AM");
-            test.Flavor = "DATETIME";
+            TS test = new TS(DateTime.Parse("September 17, 2009 10:09 AM"));
+            test.Flavor = "TS.DATETIME";
             Assert.AreEqual("20090917100900-0400", test.ToString());
         }
 
@@ -126,7 +126,7 @@ namespace MARC.Everest.Test.DataTypes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TSDATE"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.DateTime.Parse(System.String)"), TestMethod]
         public void TSDATEFlavorTest()
         {
-            TS test = DateTime.Parse("September 17, 2009 10:09 AM");
+            TS test = new TS(DateTime.Parse("September 17, 2009 10:09 AM"));
             test.Flavor = "DATE";
             Assert.AreEqual("20090917", test.ToString());
         }
@@ -189,7 +189,7 @@ namespace MARC.Everest.Test.DataTypes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TSDATETIME"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.DateTime.Parse(System.String)"), TestMethod]
         public void TSDATETIMEFlavorTestWrong2Test()
         {
-            TS test = DateTime.Parse("September 17, 2009 10:09 AM");
+            TS test = new TS(DateTime.Parse("September 17, 2009 10:09 AM"));
             test.Flavor = "FULLDATETIME";
             Assert.AreNotEqual("20090917100900", test.ToString());
         }

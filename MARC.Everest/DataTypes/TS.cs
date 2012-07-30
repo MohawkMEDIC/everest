@@ -346,6 +346,7 @@ namespace MARC.Everest.DataTypes
         {
             TS retVal = new TS();
             retVal.DateValue = o;
+            retVal.DateValuePrecision = DatePrecision.Full;
             return retVal;
         }
 

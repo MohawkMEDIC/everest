@@ -609,13 +609,16 @@ namespace MARC.Everest.Connectors.WCF
             epContract = typeof(IConnectorContract).FullName;
 
             // Service host
-            svcHost = new WcfServiceHost(typeof(ConnectorService));
-            
+            svcHost = null;
+
             if (String.IsNullOrEmpty(epAddress))
-                svcHost.ServiceName = serviceName;
+            {
+                svcHost = new WcfServiceHost(serviceName, typeof(ConnectorService));
+            }
             else
             {
-                if(!String.IsNullOrEmpty(epBindingConfig ))
+                svcHost = new WcfServiceHost(null, typeof(ConnectorService));
+                if (!String.IsNullOrEmpty(epBindingConfig))
                     svcHost.AddServiceEndpoint(
                         epContract,
                         epBinding == "basicHttpBinding" ? (Binding)(new BasicHttpBinding(epBindingConfig)) : epBinding == "wsHttpBinding" ? (Binding)(new WSHttpBinding(epBindingConfig)) : null,
@@ -628,6 +631,7 @@ namespace MARC.Everest.Connectors.WCF
                         epAddress
                     );
             }
+            
             svcHost.ConnectorHost = this;
         }
 

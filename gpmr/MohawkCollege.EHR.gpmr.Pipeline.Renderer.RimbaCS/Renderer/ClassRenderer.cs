@@ -640,11 +640,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                             sw.WriteLine(" get {{ return __{3}; }} set {{ __{3} = value; }} }}\r\n\t\tprivate {2} __{3} = {0}.{1};",
                             Util.Util.MakeFriendly(EnumerationRenderer.WillRender(bindingDomain)), Util.Util.PascalCase(ev.BusinessName ?? ev.Name), dt, Util.Util.MakeFriendly(cc.Name));
                         else // Fixed value is known but it is some sort of collection
-                            sw.WriteLine(" get {{ return __{2}; }} set {{ __{2} = value; }} }}\r\n\t\tprivate {1} __{2} = MARC.Everest.Connectors.Util.Convert<{1}>(\"{0}\");",
+                            sw.WriteLine(" get {{ return __{2}; }} set {{ __{2} = value; }} }}\r\n\t\tprivate {1} __{2} = MARC.Everest.Connectors.Util.Convert<{1}>(\"{0}\", false);",
                             property.FixedValue ?? property.DefaultValue, CreateDatatypeRef(property.Type, property), Util.Util.MakeFriendly(cc.Name));
                     }
                     else if (property.Type.Class == null)
-                        sw.WriteLine(" get {{ return __{2}; }} set {{ __{2} = value; }} }}\r\n\t\tprivate {1} __{2} = MARC.Everest.Connectors.Util.Convert<{1}>(\"{0}\");",
+                        sw.WriteLine(" get {{ return __{2}; }} set {{ __{2} = value; }} }}\r\n\t\tprivate {1} __{2} = MARC.Everest.Connectors.Util.Convert<{1}>(\"{0}\", false);",
                             property.FixedValue ?? property.DefaultValue, CreateDatatypeRef(property.Type, property), Util.Util.MakeFriendly(cc.Name));
                     else
                         sw.Write(" get; set; }");  // Can't be cast
