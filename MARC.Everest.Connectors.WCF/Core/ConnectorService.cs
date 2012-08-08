@@ -111,7 +111,12 @@ namespace MARC.Everest.Connectors.WCF.Core
                 else
                 {
                     retVal = processResult.Message;
-                    retVal.Headers.Action = m.Headers.Action;
+
+                    if (processResult.Headers != null)
+                    {
+                        retVal.Headers.Clear();
+                        retVal.Headers.CopyHeadersFrom(processResult.Headers);
+                    }
                 }
                                 
                 #if DEBUG

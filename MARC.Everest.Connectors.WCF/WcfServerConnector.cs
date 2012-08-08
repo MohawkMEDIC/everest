@@ -163,6 +163,10 @@ namespace MARC.Everest.Connectors.WCF
             /// Occurs when an invalid response is received. This gives a handler the ability to correct the message.
             /// </summary>
             internal EventHandler<MessageEventArgs> InvalidResponse;
+            /// <summary>
+            /// Headers to include in the result
+            /// </summary>
+            public MessageHeaders ResponseHeaders { get; set; }
 
             /// <summary>
             /// Performs a send operation.
@@ -182,7 +186,8 @@ namespace MARC.Everest.Connectors.WCF
                 {
                     // Graph the object
                     result.Message = Message.CreateMessage(MessageVersion, "", data, surrogate);
-                    result.MessageId = MessageId;
+                    result.MessageId = this.MessageId;
+                    result.Headers = this.ResponseHeaders;
 
                     // Validate
                     surrogate.WriteObject(new MemoryStream(), data);
@@ -292,6 +297,7 @@ namespace MARC.Everest.Connectors.WCF
                 // Fire completed event
                 if (Completed != null) Completed(this);
             }
+
         }
 
         /// <summary>
@@ -695,7 +701,7 @@ namespace MARC.Everest.Connectors.WCF
             w.MessageId = cresult.MessageIdentifier;
             w.MessageVersion = cresult.MessageVersion; // Prepare
             w.Formatter = (IXmlStructureFormatter)Formatter;
-
+            w.ResponseHeaders = cresult.ResponseHeaders;
             w.InvalidResponse = InvalidResponse;
 
             w.WorkSend(data); // Work
@@ -730,10 +736,11 @@ namespace MARC.Everest.Connectors.WCF
 
             // Create a new instance of the formatter
             w.Formatter = (IXmlStructureFormatter)Formatter;
-
+            var cresult = correlate as WcfReceiveResult;
             w.MessageId = (correlate as WcfReceiveResult).MessageIdentifier;
             w.MessageVersion = (correlate as WcfReceiveResult).MessageVersion;
             w.InvalidResponse = InvalidResponse;
+            w.ResponseHeaders = cresult.ResponseHeaders;
 
             // Set async result
             IAsyncResult Result = new SendResultAsyncResult(state, new AutoResetEvent(false));
