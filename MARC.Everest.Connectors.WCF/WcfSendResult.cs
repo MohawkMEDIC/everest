@@ -30,6 +30,13 @@ namespace MARC.Everest.Connectors.WCF
     [Serializable]
     public class WcfSendResult : ISendResult
     {
+        /// <summary>
+        /// New WcfSendResult
+        /// </summary>
+        public WcfSendResult()
+        {
+        }
+
         #region ISendResult Members
 
         /// <summary>
@@ -52,5 +59,10 @@ namespace MARC.Everest.Connectors.WCF
         /// </summary>
         internal Guid MessageId { get; set; }
         #endregion
+
+        /// <summary>
+        /// Gets or sets message headers to send back to the client
+        /// </summary>
+        internal MessageHeaders Headers { get; set; }
     }
 }

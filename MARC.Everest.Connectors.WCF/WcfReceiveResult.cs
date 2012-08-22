@@ -57,10 +57,16 @@ namespace MARC.Everest.Connectors.WCF
         [NonSerialized]
         private MessageVersion messageVersion;
         /// <summary>
-        /// Gets or sets the message headers
+        /// Gets the headers that were sent from the soliciting applciation
         /// </summary>
-        public MessageHeaders Headers { get; set; }
-
+        public MessageHeaders Headers { get; internal set; }
+        /// <summary>
+        /// Gets or sets a series of message headers that should be included in responses to 
+        /// clients
+        /// </summary>
+        /// <remarks>This property is intended to be used by users of the <see cref="T:MARC.HI.Everest.Connectors.WCF.WcfServerConnector"/> connector. For
+        /// sending headers via the client connector, see the <see cref="M:MARC.HI.Everest.Connectors.WCF.WcfReceiveConnector.Send(MARC.Everest.Interfaces.IGraphable, System.ServiceModel.MessageHeaders)"/> method</remarks>
+        public MessageHeaders ResponseHeaders { get; set; }
         #endregion
     }
 }

@@ -357,6 +357,8 @@ namespace MARC.Everest.DataTypes
         [Flavor(Name = "TS.DATE")]
         public static bool IsValidDateFlavor(TS ts)
         {
+            if (ts.NullFlavor != null)
+                return true;
             return ts.DateValuePrecision <= DatePrecision.Day;
         }
 
@@ -367,6 +369,8 @@ namespace MARC.Everest.DataTypes
         [Flavor(Name = "TS.DATETIME")]
         public static bool IsValidDateTimeFlavor(TS ts)
         {
+            if (ts.NullFlavor != null)
+                return true;
             // Correct the date time
             return ts.DateValuePrecision <= DatePrecision.MinuteNoTimezone ||
                 ts.Value.Contains("-") && ts.DateValuePrecision <= DatePrecision.Minute;
@@ -380,7 +384,8 @@ namespace MARC.Everest.DataTypes
         [Flavor(Name = "TS.DATETIME.FULL")]
         public static bool IsValidFullDateTimeFlavor(TS ts)
         {
-            return ts.DateValuePrecision >= DatePrecision.Second;
+            if (ts.NullFlavor != null)
+                return true; return ts.DateValuePrecision >= DatePrecision.Second;
         }
 
         /// <summary>
@@ -389,6 +394,8 @@ namespace MARC.Everest.DataTypes
         [Flavor(Name = "TS.INSTANT")]
         public static bool IsValidInstantFlavor(TS ts)
         {
+            if (ts.NullFlavor != null)
+                return true;
             return ts.DateValuePrecision == DatePrecision.Full;
         }
         /// <summary>
@@ -398,6 +405,8 @@ namespace MARC.Everest.DataTypes
         [Flavor(Name = "TS.DATE.FULL")]
         public static bool IsValidFullDateFlavor(TS ts)
         {
+            if (ts.NullFlavor != null)
+                return true;
             return ts.DateValuePrecision == DatePrecision.Day;
         }
 
