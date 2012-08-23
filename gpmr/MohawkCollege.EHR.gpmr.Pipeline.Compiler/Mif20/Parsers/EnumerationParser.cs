@@ -853,9 +853,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Parsers
                             CodeSystem = eg.CodeSystem,
                             BusinessName = eg.CodePrintName
                         };
-                    enumeration.Literals.Add(ev);
+                    enumeration.SampleLiterals.Add(ev);
                 }
-                enumeration.IsPartial = true;
+                //enumeration.IsPartial = true;
             }
 
             // Sort the enumeration literals according to name
