@@ -27,6 +27,9 @@ import ca.marc.everest.annotations.StructureType;
 import ca.marc.everest.datatypes.generic.CS;
 import ca.marc.everest.datatypes.generic.SET;
 import ca.marc.everest.datatypes.NullFlavor;
+import ca.marc.everest.interfaces.IResultDetail;
+import ca.marc.everest.interfaces.ResultDetailType;
+import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -41,9 +44,6 @@ import java.util.List;
 @Structure(name="AD", structureType=StructureType.DATATYPE)
 public class AD extends ANY {
 
-	/** Address part type map with the AddressPartType code as the key. */
-	private static HashMap<String, AddressPartType> partTypeMap;
-	
 	/** A sequence of address parts that makes up an address */
 	private List<ADXP> parts;
 	
@@ -85,15 +85,6 @@ public class AD extends ANY {
 		this.use = new SET<CS<PostalAddressUse>>(use);
 	}
 	
-	static {
-		// Initialize the address part type map.
-		partTypeMap = new HashMap<String, AddressPartType>();
-		
-		for(AddressPartType partType : AddressPartType.values())
-		{
-			partTypeMap.put(partType.getCode(), partType);
-		}
-	}
 	
 	@Override
 	public CS<NullFlavor> getNullFlavor() {
@@ -128,8 +119,6 @@ public class AD extends ANY {
 	public SET<CS<PostalAddressUse>> getUse()
 	{
 		return this.use;
-		
-		
 	}
 	
 	/**
@@ -158,7 +147,7 @@ public class AD extends ANY {
 	 * @param n The AD to check for AD.Basic conformance.
 	 * @return true if the AD conforms to the AD.Basic flavor, false otherwise.
 	 */
-	public static boolean isBasic(AD n)
+	public static boolean isValidBasicFlavor(AD n)
 	{
 		boolean isBasic = true;
 		
@@ -214,8 +203,21 @@ public class AD extends ANY {
 	 * Validate the address.
 	 * @return True if there is at least one address part or, alternatively, a null flavor is set.
 	 */
-	public boolean Validate()
+	public boolean validate()
 	{
 		return (getNullFlavor()!= null)^(parts.size() > 0);
 	}
+	
+	/**
+	 * Extended validation function that returns the detected issues with a particular
+	 * instance of the AD data type
+	 */
+	public Collection<IResultDetail> validateEx()
+	{
+		ArrayList<IResultDetail> retVal = new ArrayList<IResultDetail>();
+		if(!((this.getNullFlavor() != null) ^ (this.parts.size() > 0)))
+				retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "AD", "NullFlavor must be specified, or more than one Part must be present", null));
+		return retVal;
+	}
+	
 }

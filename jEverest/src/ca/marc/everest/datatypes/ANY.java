@@ -90,6 +90,9 @@ public class ANY extends HXIT implements IImplementsNullFlavor, Cloneable {
 	 */
 	public boolean isNull() { return this.m_nullFlavor != null; }
 	
+	/** 
+	 * Hashcode
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
