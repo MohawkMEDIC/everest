@@ -18,10 +18,7 @@
  */
 package ca.marc.everest.datatypes;
 
-import java.security.InvalidParameterException;
 import java.util.Locale;
-
-import org.w3c.dom.ranges.RangeException;
 
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.generic.*;

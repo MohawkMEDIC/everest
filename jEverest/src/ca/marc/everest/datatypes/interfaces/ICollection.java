@@ -19,7 +19,6 @@
 package ca.marc.everest.datatypes.interfaces;
 
 import java.util.Collection;
-import java.util.List;
 import ca.marc.everest.datatypes.*;
 
 public interface ICollection<T> extends Iterable<T>, Collection<T> {

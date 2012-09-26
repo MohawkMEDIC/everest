@@ -40,6 +40,7 @@ public interface IAny extends ISemanticEquals, Cloneable, IImplementsNullFlavor 
 	/**
 	 * Gets the datatype class of the instance
 	 */
+	@SuppressWarnings("rawtypes")
 	Class getDataType();
 	
 	/**

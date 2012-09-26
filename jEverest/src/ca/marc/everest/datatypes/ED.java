@@ -20,8 +20,6 @@ package ca.marc.everest.datatypes;
 
 import ca.marc.everest.datatypes.generic.*;
 import ca.marc.everest.annotations.*;
-import ca.marc.everest.interfaces.*;
-
 import java.io.*;
 import java.util.*;
 
@@ -145,7 +143,6 @@ public class ED extends ANY {
 		
 		Source source = new DOMSource(value);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		StringWriter writer = new StringWriter();
 		Result result = new StreamResult(out);
 		TransformerFactory factory = TransformerFactory.newInstance();
 		Transformer transformer = factory.newTransformer();
@@ -277,6 +274,8 @@ public class ED extends ANY {
 			case GZip:
 				decompressionStream = new GZIPInputStream(bin);
 				break;
+			default:
+				throw new NoSuchAlgorithmException();
 		}
 		
 		// Decompress

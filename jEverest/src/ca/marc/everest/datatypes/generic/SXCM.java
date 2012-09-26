@@ -76,7 +76,7 @@ public class SXCM<T> extends PDV<T> {
 		if (!(obj instanceof SXCM)) {
 			return false;
 		}
-		SXCM other = (SXCM) obj;
+		SXCM<?> other = (SXCM<?>) obj;
 		if (m_setOperator != other.m_setOperator) {
 			return false;
 		}

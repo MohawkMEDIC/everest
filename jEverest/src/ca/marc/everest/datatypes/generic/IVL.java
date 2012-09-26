@@ -20,7 +20,6 @@ package ca.marc.everest.datatypes.generic;
 
 import ca.marc.everest.datatypes.*;
 import ca.marc.everest.annotations.*;
-import ca.marc.everest.interfaces.*;
 
 /**
  * A set of consecutive values of an ordered base datatype. Any ordered type can be the basis of an IVL

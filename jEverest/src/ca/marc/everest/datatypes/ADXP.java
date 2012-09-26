@@ -19,15 +19,11 @@
 
 package ca.marc.everest.datatypes;
 
-import ca.marc.everest.datatypes.generic.*;
 import ca.marc.everest.annotations.ConformanceType;
 import ca.marc.everest.annotations.Property;
 import ca.marc.everest.annotations.PropertyType;
 import ca.marc.everest.annotations.Structure;
 import ca.marc.everest.annotations.StructureType;
-import ca.marc.everest.datatypes.generic.CS;
-import ca.marc.everest.interfaces.IGraphable;
-import ca.marc.everest.datatypes.NullFlavor;
 
 
 /**

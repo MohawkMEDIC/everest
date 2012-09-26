@@ -21,7 +21,6 @@ package ca.marc.everest.datatypes;
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.generic.*;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

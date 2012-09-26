@@ -19,7 +19,6 @@
 package ca.marc.everest.datatypes;
 
 import ca.marc.everest.annotations.*;
-import ca.marc.everest.datatypes.interfaces.*;
 import java.util.*;
 import java.util.regex.*;
 
@@ -153,47 +152,16 @@ public class II extends ANY {
 	private static boolean isRootUuid(II ii)
 	{
 		Pattern rp = Pattern.compile("[{]?[A-F0-9]{8}-?([A-F0-9]{4}-?){3}[A-F0-9]{12}");
-		// Does this next line create a matcher? I dunno... Apparently the Java SL can't pick
-		// one pattern and stick to it. Why do I call a static method on Pattern, but 
-		// then call a completely different method that creates something that doesn't 
-		// have the word create, then for other patterns I use newInstance, or createInstance,
-		// or getInstance, or a constructor, or some other flavor du jour... This is one of my 
-		// biggest complaints about Java.. Lack of consistency even in the standard library? Why? 
-		// There is no excuse for this, Sun developed and was in control of the SL so why couldn't 
-		// they just pick one pattern and stick to it or at least be consistent about how they chose 
-		// to use patterns. These same Sun biggots are the ones who will argue that operator overloading
-		// can be abused therefore it is not included in the Language spec? What? So I can't have a +
-		// operator on BigDecimal but I call matcher() which is really a create method?!?!?!?!?!?!
-		//
-		// The SL appears to be a mish-mash of patterns that are neither compatible
-		// nor consistent with each other. This leads to the Java coding cycle, let me 
-		// explain the regular coding cycle (C#, VB, Delphi, most modern languages):
-		//  	Code X
-		//		Code Y
-		//		Code Z
-		//		Compile
-		//		Run
-		//		Repeat
-		//
-		// The Java coding cycle:
-		//		Code ... 
-		//		Hmm.. well maybe to do X, I use this... no.. ok..
-		//		Google...
-		//		Ok, now I have to Y, is it the same as X? ... let's try...
-		//		Hmm... nope.. ok... 
-		//		Google...
-		//		Ok, now I want to do Z, is it the same as X? ... try
-		//		Hmm... nope.. same as Y?
-		//		Hmm... nope.. ok...
-		//		Google...
-		//		Compile
-		//		Run
-		//		Google...
-		// 
-		// Java is tedious...
-		// </rant>
 		Matcher matcher = rp.matcher(ii.getRoot()); 
- 
-		return matcher.find();
+ 		return matcher.find();
+	}
+	
+	/**
+	 * Determines if the II instance is a valid TOKEN flavor
+	 */
+	@Flavor(name = "II.TOKEN")
+	public boolean isValidTokenFlavor(II ii)
+	{
+		return isRootUuid(ii) && ii.getExtension() == null;
 	}
 }

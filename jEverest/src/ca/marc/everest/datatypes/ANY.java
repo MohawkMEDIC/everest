@@ -47,6 +47,7 @@ public class ANY extends HXIT implements IImplementsNullFlavor, Cloneable {
 	 * Gets the exceptional code that identifies why the contents of the datatype are not 
 	 * being passed within a message instance.
 	 */
+	@Override
 	@Property(name = "nullFlavor", conformance = ConformanceType.REQUIRED, propertyType = PropertyType.STRUCTURAL, genericSupplier = { NullFlavor.class })
 	public CS<NullFlavor> getNullFlavor() { return this.m_nullFlavor; }
 	/**
@@ -88,6 +89,7 @@ public class ANY extends HXIT implements IImplementsNullFlavor, Cloneable {
 	/**
 	 * Gets the datatype of this class instance
 	 */
+	@SuppressWarnings("rawtypes")
 	public Class getDataType() { return this.getClass(); }
 
 	/**
@@ -187,6 +189,7 @@ public class ANY extends HXIT implements IImplementsNullFlavor, Cloneable {
 	/**
 	 * Extended validation returning the errors encountered during validation
 	 */
+	@Override
 	public Collection<IResultDetail> validateEx()
 	{
 		Collection<IResultDetail> retVal = new ArrayList<IResultDetail>(super.validateEx());

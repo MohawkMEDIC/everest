@@ -18,9 +18,6 @@
  */
 package ca.marc.everest.datatypes.generic;
 
-import java.util.Comparator;
-
-import ca.marc.everest.interfaces.*;
 import ca.marc.everest.datatypes.*;
 import ca.marc.everest.annotations.*;
 

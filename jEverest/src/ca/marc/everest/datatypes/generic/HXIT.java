@@ -97,7 +97,7 @@ public abstract class HXIT<T extends ANY> extends ca.marc.everest.datatypes.HXIT
 		if (!(obj instanceof HXIT)) {
 			return false;
 		}
-		HXIT other = (HXIT) obj;
+		HXIT<?> other = (HXIT<?>) obj;
 		if (m_value == null) {
 			if (other.m_value != null) {
 				return false;

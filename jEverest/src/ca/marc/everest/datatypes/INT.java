@@ -19,11 +19,8 @@
 
 package ca.marc.everest.datatypes;
 
-import java.math.BigDecimal;
-
 import ca.marc.everest.datatypes.generic.*;
 import ca.marc.everest.annotations.*;
-import ca.marc.everest.interfaces.*;
 
 /**
  * Integer numbers are precise numbers that are results of counting and enumerating

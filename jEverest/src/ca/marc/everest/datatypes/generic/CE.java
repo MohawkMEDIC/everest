@@ -20,10 +20,8 @@ package ca.marc.everest.datatypes.generic;
 
 import java.io.UnsupportedEncodingException;
 
-import ca.marc.everest.datatypes.*;
 import ca.marc.everest.datatypes.interfaces.ICodedExtended;
 import ca.marc.everest.annotations.*;
-import ca.marc.everest.interfaces.*;
 
 /**
  * Represents a codified value with translations to other possible code systems
@@ -88,6 +86,7 @@ public class CE<T> extends CV<T> implements ICodedExtended<T> {
 	 * Gets the set of other concept descriptors that provide a translation of this concept descriptor to other
 	 * code systems or a synonym to the code
 	 */
+	@Override
 	@Property(name = "translation", propertyType = PropertyType.NONSTRUCTURAL ,conformance = ConformanceType.REQUIRED)
 	public SET<CD<T>> getTranslation() { return this.m_translation; }
 	
@@ -95,6 +94,7 @@ public class CE<T> extends CV<T> implements ICodedExtended<T> {
 	 * Sets the set of other concept descriptors that provide a translation of this concept descriptor to other
 	 * code systems or a synonym to the code
 	 */
+	@Override
 	public void setTranslation(SET<CD<T>> value) { this.m_translation = value; }
 
 	/**

@@ -57,8 +57,7 @@ public enum IdentifierReliability implements IEnumeratedVocabulary {
 	 */
 	@Override
 	public String getCode() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.m_code;
 	}
 
 	/**
@@ -66,7 +65,6 @@ public enum IdentifierReliability implements IEnumeratedVocabulary {
 	 */
 	@Override
 	public String getCodeSystem() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

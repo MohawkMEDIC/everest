@@ -19,7 +19,6 @@
 package ca.marc.everest.datatypes.generic;
 
 import ca.marc.everest.datatypes.*;
-import ca.marc.everest.datatypes.interfaces.*;
 import ca.marc.everest.annotations.*;
 
 /**

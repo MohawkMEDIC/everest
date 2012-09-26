@@ -20,9 +20,6 @@ package ca.marc.everest.datatypes.generic;
 
 import java.io.UnsupportedEncodingException;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-
 import ca.marc.everest.datatypes.*;
 import ca.marc.everest.datatypes.interfaces.ICodedValue;
 import ca.marc.everest.annotations.*;
@@ -98,29 +95,35 @@ public class CV<T> extends CS<T> implements ICodedValue<T> {
 	/**
 	 * Gets a human readable name for the code mnemonic
 	 */
+	@Override
 	@Property(name = "displayName", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.STRUCTURAL)
 	public String getDisplayName() { return this.m_displayName; }
 	/**
 	 * Sets the human readable name for the code mnemonic
 	 */
+	@Override
 	public void setDisplayName(String value) { this.m_displayName = value; }
 	/**
 	 * Gets the text as seen and or selected by the user who entered the data
 	 */
+	@Override
 	@Property(name = "originalText", conformance = ConformanceType.REQUIRED, propertyType = PropertyType.NONSTRUCTURAL)
 	public ED getOriginalText() { return this.m_originalText; }
 	/**
 	 * Sets the text as seen and or selected by the user who entered the data
 	 */
+	@Override
 	public void setOriginalText(ED value) { this.m_originalText = value; }
 	/**
 	 * Gets the reason the code was provided
 	 */
+	@Override
 	@Property(name = "codingRationale", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.STRUCTURAL, genericSupplier = { CodingRationale.class })
 	public SET<CodingRationale> getCodingRationale() { return this.m_codingRationale; }
 	/**
 	 * Sets the reason the code was provided
 	 */
+	@Override
 	public void setCodingRationale(SET<CodingRationale> value) { this.m_codingRationale = value; }
 	
 	/**
@@ -143,6 +146,7 @@ public class CV<T> extends CS<T> implements ICodedValue<T> {
 	/**
 	 * Gets the value of the codeSystem.
 	*/
+	@Override
 	@Property(name = "codeSystem", conformance = ConformanceType.REQUIRED, propertyType = PropertyType.STRUCTURAL)
 	public String getCodeSystem() { return this.m_codeSystem; }
 	/**
@@ -156,14 +160,19 @@ public class CV<T> extends CS<T> implements ICodedValue<T> {
 	 * </p>
 	 * @param value The new value of the codeSystem field
 	 */
+	@Override
 	public void setCodeSystem(String value) { this.m_codeSystem = value; }
 	
+	@Override
 	@Property(name = "codeSystemName", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.STRUCTURAL)
 	public String getCodeSystemName() { return this.m_codeSystemName; }
+	@Override
 	public void setCodeSystemName(String value) { this.m_codeSystemName = value; }
 	
+	@Override
 	@Property(name = "codeSystemVersion", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.STRUCTURAL)
 	public String getCodeSystemVersion() { return this.m_codeSystemVersion; }
+	@Override
 	public void setCodeSystemVersion(String value) { this.m_codeSystemVersion = value; }
 	
 	@Property(name = "valueSet", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.STRUCTURAL)
