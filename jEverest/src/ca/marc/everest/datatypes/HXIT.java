@@ -17,7 +17,11 @@
  * Date: 06-24-2011
  */
 package ca.marc.everest.datatypes;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import ca.marc.everest.interfaces.*;
+import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
 import ca.marc.everest.annotations.*;
 
 /**
@@ -150,4 +154,18 @@ public abstract class HXIT implements IGraphable
 		}
 		return true;
 	}
+	
+	/**
+	 * Extended validation which returns details about the validation
+	 */
+	public Collection<IResultDetail> validateEx()
+	{
+		Collection<IResultDetail> retVal = new ArrayList<IResultDetail>();
+        if ((this.m_controlActRoot == null) ^ (this.m_controlActExt == null))
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "HXIT",
+                this.m_controlActExt == null ? "ControlActExt must be populated when ControlActRoot is populated" :
+                "ControlActRoot must be populated when ControlActExt is populated", null));
+        return retVal;
+	}
+	
 }

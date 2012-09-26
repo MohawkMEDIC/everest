@@ -32,7 +32,7 @@ public abstract class PDV <T> extends ANY implements Comparable<PDV<T>> {
 
 	// Backing field for the value property
 	private T m_value;
-	
+
 	// Identifies the floating point precision whereby equality can be determined
 	protected double p_floatingPointEqualityTolerance = 1e-15;
 	
@@ -47,7 +47,6 @@ public abstract class PDV <T> extends ANY implements Comparable<PDV<T>> {
 	public PDV(T value) { 
 		
 		this.m_value = value;
-		
 
 	}
 	

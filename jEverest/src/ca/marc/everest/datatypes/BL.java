@@ -27,6 +27,10 @@ import ca.marc.everest.annotations.*;
 @Structure(name = "BL", structureType = StructureType.DATATYPE)
 public class BL extends PDV<Boolean> {
 
+	// True constant
+	public static final BL TRUE = BL.fromBoolean(true);
+	// False constant
+	public static final BL FALSE = BL.fromBoolean(false);
 	/**
 	 * Creates a new instance of BL
 	 */
@@ -164,5 +168,21 @@ public class BL extends PDV<Boolean> {
 	public String toString()
 	{
 		return this.getValue() == null ? null : this.getValue().toString();
+	}
+	
+	/**
+	 * Cast operator from boolean
+	 */
+	public static BL fromBoolean(Boolean b)
+	{
+		return new BL(b);
+	}
+
+	/**
+	 * Cast to boolean
+	 */
+	public Boolean toBoolean()
+	{
+		return this.getValue();
 	}
 }

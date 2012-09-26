@@ -57,7 +57,7 @@ public class SET<T> extends ANY implements ICollection<T>, Set<T> {
 	 * Creates a new instance of the set with the specified iterable
 	 * instance forming the content of the set
 	 */
-	public SET(Collection<T> collection)
+	public SET(Iterable<T> collection)
 	{
 		this();
 		for(T item : collection)

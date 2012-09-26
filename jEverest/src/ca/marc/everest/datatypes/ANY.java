@@ -18,8 +18,13 @@
  */
 package ca.marc.everest.datatypes;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import ca.marc.everest.interfaces.*;
+import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
 import ca.marc.everest.datatypes.generic.*;
+import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.annotations.*;
 
 /**
@@ -142,5 +147,57 @@ public class ANY extends HXIT implements IImplementsNullFlavor, Cloneable {
 		return true;
 	}
 	
-	
+	/**
+	 * Determines if this instance of ANY semantically equals another instance
+	 * <p>
+	 * Two instances of ANY are semantically equal if:
+	 * </p>
+	 * <ul>
+	 * 	<li>The two instances carry the same data type</li>
+	 * </ul>
+	 * <p>When both instance carry a null flavor the result is the most common nullFlavor</p>
+	 * <p>This method uses the following rules for the return value:</p>
+	 * <ul>
+	 * 	<li>If other is null, then the result is null</li>
+	 *  <li>If other has a nullflavor or if this instance carries a null flavor then the result is a nullFlavor of NotApplicable</li>
+	 *  <li>If other does not carry the exact datatype as this instnace the result is false</li>
+	 *  <li>If other and this instance both carry a nullFlavor, then the most common nullFlavor</li>
+	 * </ul>
+	 */
+	public BL semanticEquals(IAny other)
+	{
+		if(other == null)
+			return null;
+		else if(this.isNull() && other.isNull())
+		{
+			BL retVal = new BL();
+			retVal.setNullFlavor(this.getNullFlavor().getCode().getCommonParent(other.getNullFlavor().getCode()));
+			return retVal;
+		}
+		else if(this.isNull() ^ other.isNull())
+		{
+			BL retVal = new BL();
+			retVal.setNullFlavor(NullFlavor.NotApplicable);
+			return retVal;
+		}
+		
+		return BL.fromBoolean(other.getDataType().equals(this.getDataType()));
+	}
+
+	/**
+	 * Extended validation returning the errors encountered during validation
+	 */
+	public Collection<IResultDetail> validateEx()
+	{
+		Collection<IResultDetail> retVal = new ArrayList<IResultDetail>(super.validateEx());
+		boolean isAny = this.getDataType().equals(ANY.class), 
+				isNullFlavorSet = this.getNullFlavor() != null,
+				isNullFlavorINV = isNullFlavorSet && this.getNullFlavor().getCode().isChildConcept(NullFlavor.Invalid);
+		
+		if(isAny && !isNullFlavorSet)
+			retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ANY", "When ANY is used, it must carry a NullFlavor", null));
+		else if(isAny && !isNullFlavorINV)
+			retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ANY", "NullFlavor on ANY instance must imply 'Invalid'", null));
+		return retVal;
+	}
 }

@@ -26,6 +26,7 @@ import ca.marc.everest.annotations.Structure;
 import ca.marc.everest.annotations.StructureType;
 import ca.marc.everest.datatypes.generic.CS;
 import ca.marc.everest.datatypes.generic.SET;
+import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.NullFlavor;
 import ca.marc.everest.interfaces.IResultDetail;
 import ca.marc.everest.interfaces.ResultDetailType;
@@ -34,12 +35,12 @@ import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Mailing at a home or office addresses is primarily used to communicate data that will allow printing mail labels.
+ * <h3>Validation</h3>
+ * <p>An instance of the AD type is considered valid when either NullFlavor is populated or it has one or more Part instances</p>
  */
 @Structure(name="AD", structureType=StructureType.DATATYPE)
 public class AD extends ANY {
@@ -53,7 +54,7 @@ public class AD extends ANY {
 	/** Specifies whether or not the order of the address parts is known. **/
 	private boolean isNotOrdered;
 	
-	/** Specifies the useable period for the address **/
+	/** Specifies the usable period for the address **/
 	private GTS useablePeriod;
 	
 	/**
@@ -80,15 +81,32 @@ public class AD extends ANY {
 	 * @param parts parts that make up the address.
 	 */
 	public AD(CS<PostalAddressUse> use, Collection<ADXP> parts) {
-		super();
-		this.parts = new ArrayList<ADXP>(parts);
-		this.use = new SET<CS<PostalAddressUse>>(use);
+		this(new SET<CS<PostalAddressUse>>(use), new ArrayList<ADXP>(parts));
 	}
 	
+	/**
+	 * Instantiate a new instance of AD with the specified use
+	 * @param use The use of the address
+	 */
+	public AD(PostalAddressUse use)
+	{
+		this(new CS<PostalAddressUse>(use), null);
+	}
+
+	/**
+	 * Creates a new instance of the AD datatype with the specified use, and parts
+	 * @param use The uses of the address
+	 * @param parts The component parts of the parts
+	 */
+	public AD(SET<CS<PostalAddressUse>> use, Collection<ADXP> parts)
+	{
+		super();
+		this.parts = new ArrayList<ADXP>(parts);
+		this.use = use;
+	}
 	
 	@Override
 	public CS<NullFlavor> getNullFlavor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -203,6 +221,7 @@ public class AD extends ANY {
 	 * Validate the address.
 	 * @return True if there is at least one address part or, alternatively, a null flavor is set.
 	 */
+	@Override
 	public boolean validate()
 	{
 		return (getNullFlavor()!= null)^(parts.size() > 0);
@@ -220,4 +239,35 @@ public class AD extends ANY {
 		return retVal;
 	}
 	
+	/**
+	 * Determines if the current instance of AD is semantically equal to other
+	 * <p>Two instance of AD are semantically equal when:</p>
+	 * <ul>
+	 * 	<li>Both are non-null and non null-flavored</li>
+	 * <li>Both contain the same parts, regardless of order</li>
+	 * <li>The Use and IsNotOrdered properties pass equality test</li>
+	 * </ul>
+	 * @param other The other AD to test
+	 * @return True if this instance is semantically equal to other, false if not, or nullFlavor if semantic equality cannot be determined
+	 */
+	public BL semanticEquals(IAny other)
+	{
+		BL baseSem = super.semanticEquals(other);
+		if(!baseSem.toBoolean())
+			return baseSem;
+		
+		// PRocess semantic equality
+		boolean result = true;
+		AD otherAd = (AD)other;
+		if((this.getPart() == null) ^ (otherAd.getPart() == null))
+				return BL.FALSE;
+		else if(this.getPart() == otherAd.getPart())
+			return BL.TRUE;
+		else
+		{
+			for(ADXP part : this.getPart())
+				result &= otherAd.getPart().contains(part);
+			return BL.fromBoolean(result && this.getPart().size() == otherAd.getPart().size());
+		}
+	}
 }

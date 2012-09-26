@@ -446,7 +446,7 @@ public class ED extends ANY {
 	 * Flavor validation for ED.TEXT
 	 */
 	@Flavor(name = "ED.TEXT")
-	public static boolean isTextFlavor(ED ed)
+	public static boolean isValidTextFlavor(ED ed)
 	{
 		return ed.getRepresentation() == EncapsulatedDataRepresentation.Text &&
 			ed.getCompression() == null &&
@@ -457,7 +457,7 @@ public class ED extends ANY {
 	 * Flavor validation for ED.IMAGE
 	 */
 	@Flavor(name = "ED.IMAGE")
-	public static boolean isImageFlavor(ED ed)
+	public static boolean isValidImageFlavor(ED ed)
 	{
 		return ed.getMediaType() != null && 
 			ed.getMediaType().startsWith("image/");
@@ -466,7 +466,7 @@ public class ED extends ANY {
 	 * Flavor validator for ED.SIGNATURE
 	 */
 	@Flavor(name = "ED.SIGNATURE")
-	public static boolean isSignatureFlavor(ED ed)
+	public static boolean isValidSignatureFlavor(ED ed)
 	{
 		return ed.getRepresentation() == EncapsulatedDataRepresentation.Xml &&
 			ed.getIntegrityCheck() == null && ed.getThumbnail() == null &&
