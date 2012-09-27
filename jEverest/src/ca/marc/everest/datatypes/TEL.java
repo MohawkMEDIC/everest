@@ -99,7 +99,7 @@ public class TEL extends PDV<String> {
 	 * Validate an instance of TEL to TEL.URL
 	 */
 	@Flavor(name = "TEL.URL")
-    public static boolean isUrlFlavor(TEL tel)
+    public static boolean isValidUrlFlavor(TEL tel)
     {
         // Nothing to validate
         if (tel.getValue() == null) return true;
@@ -116,25 +116,25 @@ public class TEL extends PDV<String> {
      * Validate an instance of TEL to TEL.URI
      */
     @Flavor(name = "TEL.URI")
-    public static boolean isUriFlavor(TEL tel)
+    public static boolean isValidUriFlavor(TEL tel)
     {
-        return isUrlFlavor(tel);
+        return isValidUrlFlavor(tel);
     }
 
     /**
      * TEL.Person Validator
      */
     @Flavor(name = "TEL.PERSON")
-    public static boolean isPersonFlavor(TEL tel)
+    public static boolean isValidPersonFlavor(TEL tel)
     {
-        return isPhoneFlavor(tel) || isEMailFlavor(tel);
+        return isValidPhoneFlavor(tel) || isValidEMailFlavor(tel);
     }
 
     /**
      * TEL.Phone validator
      */
     @Flavor(name = "TEL.PHONE")
-    public static boolean isPhoneFlavor(TEL tel)
+    public static boolean isValidPhoneFlavor(TEL tel)
     {
         String[] validSchemes = { "tel", "x-text-fax", "x-text-tel" };
         for (String s : validSchemes)
@@ -147,7 +147,7 @@ public class TEL extends PDV<String> {
      * TEL.Email validator
      */
     @Flavor(name = "TEL.EMAIL")
-    public static boolean isEMailFlavor(TEL tel)
+    public static boolean isValidEMailFlavor(TEL tel)
     {
         return tel.getValue() != null && tel.getValue().startsWith("mailto:");
     }

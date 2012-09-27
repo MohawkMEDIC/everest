@@ -19,11 +19,17 @@
 package ca.marc.everest.datatypes;
 
 import ca.marc.everest.datatypes.generic.*;
+import ca.marc.everest.datatypes.interfaces.IAny;
+import ca.marc.everest.interfaces.IResultDetail;
+import ca.marc.everest.interfaces.ResultDetailType;
+import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
 import ca.marc.everest.annotations.*;
 import java.io.*;
 import java.util.*;
 
 import org.w3c.dom.*;
+
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import javax.xml.transform.*;
@@ -482,7 +488,7 @@ public class ED extends ANY {
 	{
 		boolean isValid = (((this.getData() != null || this.getReference() != null) ) ^ (this.getNullFlavor() != null)) &&
 	        (((this.getData() != null || this.getReference() != null)) || (this.getData() == null && this.getReference() == null)) &&
-	        (this.getReference() == null || TEL.isUrlFlavor(this.getReference())) &&
+	        (this.getReference() == null || TEL.isValidUrlFlavor(this.getReference())) &&
 	        (this.getThumbnail() == null || this.getThumbnail().getThumbnail() == null && this.getThumbnail().getReference() == null);
 
 	     // Validate the no translation has a translation
@@ -560,4 +566,142 @@ public class ED extends ANY {
 			return false;
 		return true;
 	}
+	
+	/**
+	 * Cast operator to byte array
+	 */
+	public byte[] toByteArray()
+	{
+		return this.m_data;
+	}
+	
+	/**
+	 * Represent this as a string
+	 */
+	@Override
+	public String toString() {
+		if (this.m_representation == EncapsulatedDataRepresentation.Text && this.m_data != null)
+            return new String(this.m_data);
+        else if (this.m_representation == EncapsulatedDataRepresentation.Base64 && this.m_data != null)
+            return DatatypeConverter.printBase64Binary(this.m_data);
+        else if(this.m_representation == EncapsulatedDataRepresentation.Xml && this.m_data != null)
+        	return new String(this.m_data);
+        return "";
+	}
+	
+	/**
+	 * Extended validation method returning the details of the validation
+	 */
+	@Override
+	public Collection<IResultDetail> validateEx() {
+		Collection<IResultDetail> retVal = new ArrayList<IResultDetail>(super.validateEx());
+
+        if (!((this.m_data != null) ^ (this.m_reference != null)))
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", "The Data and Reference properties must be used exclusive of each other", null));
+        if (this.getNullFlavor() != null && (this.m_data != null || this.m_reference != null))
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE));
+        else if (this.getNullFlavor() == null && this.m_data == null && this.m_reference == null)
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", ValidationMessages.MSG_NULLFLAVOR_MISSING));
+        if (this.m_translation != null)
+        {
+        	for(ED trans : this.m_translation)
+        		if(trans.getTranslation() != null)
+        			retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", String.format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Translation", "Translation"), null));
+        }
+        if (this.m_reference != null && !TEL.isValidUrlFlavor(this.m_reference))
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", "When populated, Reference must be a valid instance of TEL.URL", null));
+        if (this.m_thumbnail != null && this.m_thumbnail.m_thumbnail != null)
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", String.format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Thumbnail", "Thumbnail"), null));
+        if (this.m_thumbnail != null && this.m_thumbnail.m_reference != null)
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", String.format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Thumbnail", "Reference"), null));
+        
+        return retVal;
+	}
+	
+	/**
+	 * Determines if a is equal to b on a byte level
+	 */
+	private static boolean byteEquals(byte[] a, byte[] b)
+	{
+		if (a == null && b == null)
+            return true;
+        else if ((a == null) ^ (b == null))
+            return false;
+
+        boolean valid = a.length == b.length;
+        int i = 0;
+        if (valid)  // Compare data
+            while (i < b.length && a[i] == b[i])
+                i++;
+        valid &= i == a.length; // ensure that data is equal
+
+        return valid;
+	}
+	
+	/** 
+	 * Determine semantic equality between this instance of ED and other
+	 * <p>
+	 * Two non-null flavored instances of ED are semantically equal when their MediaType and raw data properties are equal. 
+	 * When performing semantic equality between compressed instances of ED, the equality will be performed on the uncompressed data.
+	 * </p>
+	 * <p>
+	 * Instances of ED can be semantically equal to instances of ST or SC if the mediaType of the ED it "text/plain" and 
+	 * the binary contents of the ED and ST/SC match.
+	 * </p>
+	 */
+	@Override
+	public BL semanticEquals(IAny other) {
+		BL baseSem = super.semanticEquals(other);
+        if (!baseSem.toBoolean())
+            return baseSem;
+
+        // Null-flavored
+        if (this.isNull() && other.isNull())
+            return BL.TRUE;
+        else if (this.isNull() ^ other.isNull())
+            return BL.FALSE;
+
+        ED thisEd, otherEd;
+
+        // Other is ST?
+        if (this.m_mediaType == "text/plain" && other instanceof ST)
+            return ((ST)other).semanticEquals((IAny)this);
+
+        // Get other as an ED
+        try
+        {
+	        if (!(other instanceof ED))
+	            return BL.FALSE;
+	        else
+        	{
+	        	otherEd = (ED)other;
+	        	if (otherEd.m_data != null && otherEd.m_compression != null)
+	        	otherEd = otherEd.unCompress();
+        	}
+	        
+	        // Compressed data for this reference
+	        if (this.m_data != null && this.m_compression != null)
+	            thisEd = this.unCompress();
+	        else
+	            thisEd = this;
+	
+	        if (thisEd.m_data != null && otherEd.m_data != null)
+	            return BL.fromBoolean(ED.byteEquals(thisEd.m_data, otherEd.m_data) && thisEd.m_mediaType.equals(otherEd.m_mediaType));
+	        else
+	            return BL.FALSE;
+        }
+        catch(NoSuchAlgorithmException e)
+        {
+        	BL retVal = new BL();
+        	retVal.setNullFlavor(NullFlavor.NoInformation);
+        	return retVal;
+        } catch (IOException e) {
+        	BL retVal = new BL();
+        	retVal.setNullFlavor(NullFlavor.NoInformation);
+        	return retVal;
+		}
+	}
+
+	
+	
 }

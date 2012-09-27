@@ -166,7 +166,7 @@ public class ANY extends HXIT implements IImplementsNullFlavor, Cloneable {
 	 *  <li>If other and this instance both carry a nullFlavor, then the most common nullFlavor</li>
 	 * </ul>
 	 */
-	public BL semanticEquals(IAny other)
+	public BL semanticEquals(IAny other)  
 	{
 		if(other == null)
 			return null;
