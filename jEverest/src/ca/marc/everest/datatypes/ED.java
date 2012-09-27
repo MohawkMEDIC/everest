@@ -599,21 +599,21 @@ public class ED extends ANY {
         if (!((this.m_data != null) ^ (this.m_reference != null)))
             retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", "The Data and Reference properties must be used exclusive of each other", null));
         if (this.getNullFlavor() != null && (this.m_data != null || this.m_reference != null))
-            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE));
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", EverestValidationMessages.MSG_NULLFLAVOR_WITH_VALUE));
         else if (this.getNullFlavor() == null && this.m_data == null && this.m_reference == null)
-            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", ValidationMessages.MSG_NULLFLAVOR_MISSING));
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", EverestValidationMessages.MSG_NULLFLAVOR_MISSING));
         if (this.m_translation != null)
         {
         	for(ED trans : this.m_translation)
         		if(trans.getTranslation() != null)
-        			retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", String.format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Translation", "Translation"), null));
+        			retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", String.format(EverestValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Translation", "Translation"), null));
         }
         if (this.m_reference != null && !TEL.isValidUrlFlavor(this.m_reference))
             retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", "When populated, Reference must be a valid instance of TEL.URL", null));
         if (this.m_thumbnail != null && this.m_thumbnail.m_thumbnail != null)
-            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", String.format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Thumbnail", "Thumbnail"), null));
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", String.format(EverestValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Thumbnail", "Thumbnail"), null));
         if (this.m_thumbnail != null && this.m_thumbnail.m_reference != null)
-            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", String.format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Thumbnail", "Reference"), null));
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ED", String.format(EverestValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Thumbnail", "Reference"), null));
         
         return retVal;
 	}

@@ -18,8 +18,6 @@
  */
 package ca.marc.everest.exceptions;
 
-import ca.marc.everest.interfaces.IDisposable;
-
 /**
  * This exception indicates that an object that has already
  * been disposed was accessed.
@@ -30,6 +28,9 @@ import ca.marc.everest.interfaces.IDisposable;
  */
 public final class ObjectDisposedException extends RuntimeException {
 
+	// Serialization version identifier 
+	private static final long serialVersionUID = 1L;
+	
 	// backing field for object name
 	private String m_objectName;
 
@@ -46,4 +47,9 @@ public final class ObjectDisposedException extends RuntimeException {
 		super("Attempt to access disposed object " + objectName);
 		this.m_objectName = objectName;
 	}
+	
+	/**
+	 * Gets the object name that was in error
+	 */
+	public String getObjectName() { return this.m_objectName; }
 }

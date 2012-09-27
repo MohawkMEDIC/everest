@@ -24,6 +24,9 @@ package ca.marc.everest.exceptions;
  */
 public class FormatterException extends RuntimeException {
 
+	// Serialization verison unique identifier
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * Creates a new instance of the FormatterException class
 	 */
@@ -39,6 +42,6 @@ public class FormatterException extends RuntimeException {
 	 * @param message
 	 * @param innerException
 	 */
-	public FormatterException(String message, Exception innerException) { super(message, innerException); )
+	public FormatterException(String message, Exception innerException) { super(message, innerException); }
 	
 }

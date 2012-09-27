@@ -14,20 +14,20 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 08-24-2011
+ * Date: 09-27-2012
  */
 package ca.marc.everest.datatypes.interfaces;
 
-import ca.marc.everest.datatypes.*;
-
 /**
- * Defines a structure for determining if one instance of a datatype is
- * semantically equal to another
+ * A Java implementation of the .NET Predicate<> interface. Used for searching sets
  */
-public interface ISemanticEquals {
-
+public interface IPredicate<T> {
+	
 	/**
-	 * Returns true if this instance is semantically equal to another
+	 * Returns true if the predicate function matches the 
+	 * @param i
+	 * @return
 	 */
-	public BL semanticEquals(ANY other);
+	boolean match(T i);
+	
 }

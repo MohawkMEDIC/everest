@@ -23,9 +23,9 @@ import java.util.*;
 import ca.marc.everest.annotations.Structure;
 import ca.marc.everest.annotations.StructureType;
 import ca.marc.everest.datatypes.ANY;
-import ca.marc.everest.datatypes.BL;
-import ca.marc.everest.datatypes.interfaces.ICollection;
+import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.ISemanticEquals;
+import ca.marc.everest.exceptions.DuplicateItemException;
 
 
 /**
@@ -34,24 +34,58 @@ import ca.marc.everest.datatypes.interfaces.ISemanticEquals;
  * @param <E> the element type
  */
 @Structure(name="SET", structureType=StructureType.DATATYPE)
-public class SET<T> extends ANY implements ICollection<T>, Set<T> {
+public class SET<T> extends COLL<T> implements Set<T> {
 
-	// Backing field for set items
-	private Set<T> m_items = null;
+	/**
+	 * Represents a default comparator
+	 */
+	private static final Comparator<Object> f_defaultComparator = new Comparator<Object>() {
+
+		/**
+		 * Default comparison works on Semantic Equality (if available) followed
+		 * by value comparison
+		 */
+		@Override
+		public int compare(Object a, Object b) {
+			if(a instanceof ISemanticEquals && b instanceof ANY)
+				return ((ISemanticEquals)a).semanticEquals((ANY)b).toBoolean() ? 0 : 1;
+			else if(a != null && a.equals(b) || 
+					b != null && b.equals(a) ||
+					a == null && b == null)
+				return 0;
+			else
+				return 1;
+		}
+			
+	};
+
+	// Backing set
+	private Set<T> m_set = new HashSet<T>();
+	// Backing comparator
+	private Comparator<Object> m_comparator = f_defaultComparator;
+	
+	/**
+	 * Gets the comparator that is currently being used by this instance of
+	 * SET to determie duplicate entries
+	 */
+	public Comparator<Object> getComparator() { return this.m_comparator; }
+	/**
+	 * Sets a custom comparator for determining if duplicate entries have been
+	 * entered into this type
+	 */
+	public void setComparator(Comparator<Object> value) { this.m_comparator = value; }
 	
 	/**
 	 * Create a new instance of the set
 	 */
 	public SET() { 
 		super();
-		this.m_items = new HashSet();
 	}
 	/**
 	 * Create a new instance of the set with the specified capacity
 	 */
 	public SET(int capacity) {
 		this();
-		this.m_items = new HashSet(capacity);
 	}
 	/**
 	 * Creates a new instance of the set with the specified iterable
@@ -59,10 +93,9 @@ public class SET<T> extends ANY implements ICollection<T>, Set<T> {
 	 */
 	public SET(Iterable<T> collection)
 	{
-		this();
-		for(T item : collection)
-			this.m_items.add(item);
+		this(collection, f_defaultComparator);
 	}
+	
 	/**
 	 * Creates a new instance of the set containing only the specified
 	 * first item
@@ -70,152 +103,150 @@ public class SET<T> extends ANY implements ICollection<T>, Set<T> {
 	public SET(T firstItem)
 	{
 		this();
-		this.m_items.add(firstItem);
+		this.add(firstItem);
 		
 	}
+	/**
+	 * Creates a new instance of a set using the custom comparator
+	 * @param comparator The custom comparator to use for detecting duplicates within the set
+	 */
+	public SET(Comparator<Object> comparator)
+	{
+		this();
+		this.m_comparator = comparator;
+	}
+	/**
+	 * Creates a new instance of a set using the custom comparator and the initial set identified
+	 * @param comparator The custom comparator to use for detecting duplicates within the set
+	 * @param collection The initial collection
+	 */
+	public SET(Iterable<T> collection, Comparator<Object> comparator)
+	{
+		this();
+		this.m_comparator = comparator;
+		for(T item : collection)
+			this.add(item);
+	}
+	/**
+	 * Get items collection
+	 */
+	@Override
+	public Collection<T> getItems() {
+		return this.m_set;
+	}
 	
-	/** 
-	 * Get the iterator for the set
-	 */
-	@Override
-	public Iterator<T> iterator() {
-		return this.m_items.iterator();
-	}
-
 	/**
-	 * Determines if this set contains all 
+	 * Add an item to the collection.
 	 */
 	@Override
-	public BL includesAll(ICollection<T> other) {
-		return new BL(this.containsAll(other));
+	public boolean add(T e) throws DuplicateItemException, IllegalArgumentException {
+		if(e == null)
+			throw new IllegalArgumentException("e");
+		else if(this.contains(e))
+			throw new DuplicateItemException("Item already exists in the SET");
+		return super.add(e);
 	}
-
 	/**
-	 * Determines if this set contains none of the other set
+	 * Add all items to the collection
 	 */
 	@Override
-	public BL excludesAll(ICollection<T> other) {
-		boolean includesOne = false;
-        for (T item : other)
-            includesOne |= this.contains(item);
-        return new BL(!includesOne);
-	}
-
-	/**
-	 * Returns true if this collection is empty
-	 */
-	@Override
-	public boolean isEmpty() {
-		return this.m_items.size() == 0;
-	}
-
-	/**
-	 * Gets an item from the collection
-	 */
-	@Override
-	public T getItem(int index) throws IndexOutOfBoundsException {
-		if(index >= this.m_items.size())
-			throw new IndexOutOfBoundsException();
-		Iterator<T> iterator = this.m_items.iterator();
-		T retItem = null;
-		for(int i = 0; i <= index; i++)
-			retItem = iterator.next();
-		return retItem;
-	}
-
-	/**
-	 * Add an item to the collection
-	 */
-	@Override
-	public boolean add(T e) {
-		return this.m_items.add(e);
-	}
-
-	/**
-	 * Add all items from the collection to the set
-	 */
-	@Override
-	public boolean addAll(Collection<? extends T> c) {
-		return this.m_items.addAll(c);
-	}
-
-	/**
-	 * Clears the set
-	 */
-	@Override
-	public void clear() {
-		this.m_items.clear();
+	public boolean addAll(Collection<? extends T> c) throws DuplicateItemException, IllegalArgumentException {
+		if(c == null)
+			throw new IllegalArgumentException("c");
 		
+		for(T o : c)
+			if(this.contains(o))
+				throw new DuplicateItemException("Item already exists in the SET");
+		
+		return super.addAll(c);
+	}
+	
+	/**
+	 * Determines if this set contains the specified object
+	 */
+	@SuppressWarnings({ "unchecked" })
+	@Override
+	public boolean contains(Object o) throws NullPointerException {
+		if(this.getComparator() == null)
+			throw new NullPointerException("Comparator is null");
+		for(T i : this)
+			if(this.getComparator().compare(i, (T)o) == 0)
+				return true;
+		return false;
 	}
 
 	/**
-	 * Returns true if the item specified is contained within this set.
-	 * Uses the SemanticallyEqual definition of equality for determining 
-	 * containment
+	 * Returns all the items in this set except the items in the otherSet
 	 */
-	@Override
-	public boolean contains(Object o) {
-			
-		boolean contains = false;
-		for(T item : this)
-			if(o instanceof ISemanticEquals)
-				contains |= ((ISemanticEquals)o).semanticEquals((ANY)item);
-			else
-				contains |= (o != null && o.equals(item) ||
-					item != null && item.equals(o) ||
-					o == null && item == null);
-		return contains;
+	public SET<T> except(SET<T> otherSet)
+	{
+		SET<T> retVal = new SET<T>();
+        for(T item : this)
+            if(!otherSet.contains(item))
+                retVal.add(item);
+        return retVal;
 	}
-
+		
 	/**
-	 * Determines if this instance contains all of the objects in the target collection
+	 * Returns all the items in this set except the specified element
 	 */
-	@Override
-	public boolean containsAll(Collection<?> c) {
-		boolean includesAll = true;
-        for(Object item : c)
-            includesAll &= this.contains(item);
-        return includesAll;
+	public SET<T> except(T element)
+	{
+		SET<T> retVal = new SET<T>();
+        for(T item : this)
+            if(this.getComparator().compare(element, item) != 0)
+                retVal.add(item);
+        return retVal;
 	}
-
-	@Override
-	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean retainAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <T> T[] toArray(T[] a) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	
+	/**
+	 * Return an intersection of all items in this set with the items in the otherSet
+	 */
+	public SET<T> intersect(SET<T> otherSet)
+	{
+		SET<T> retVal = new SET<T>(this.m_comparator);
+        for(T item : this)
+            if(otherSet.contains(item))
+                retVal.add(item);
+        return retVal;
+	}
 	
+	/**
+	 * Return an intersection of all items in this set with the element item
+	 */
+	public SET<T> intersect(T element)
+	{
+		SET<T> retVal = new SET<T>(this.m_comparator);
+        for(T item : this)
+            if(this.m_comparator.compare(item, element) == 0)
+                retVal.add(item);
+        return retVal;
+	}
 	
+	/**
+	 * Return an union of all items in this set with the items in the otherSet
+	 */
+	public SET<T> union(SET<T> otherSet)
+	{
+        SET<T> retVal = new SET<T>();
+        for(T item : this)
+            retVal.add(item);
+        for(T item : otherSet)
+            if(!retVal.contains(item))
+                retVal.add(item);
+        return retVal;
+	}
 	
+	/**
+	 * Return an union of all items in this set with the element item
+	 */
+	public SET<T> union(T element)
+	{
+        SET<T> retVal = new SET<T>();
+        for(T item : this)
+            retVal.add(item);
+        if(!retVal.contains(element))
+            retVal.add(element);
+        return retVal;
+	}
 }
