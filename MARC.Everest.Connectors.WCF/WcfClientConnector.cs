@@ -262,13 +262,13 @@ namespace MARC.Everest.Connectors.WCF
         #region ISendReceiveConnector Members
 
         /// <summary>
-        /// Allows custom SOAP headers to be added to the oubound message prior to sending the message
+        /// Allows custom SOAP headers to be added to the oubound messages prior to sending the message
         /// </summary>
         /// <remarks>This array should not be used to append WS-RM or WS-SEC data to your message as these are handled
         /// by the WCF layer automatically and should be done at the Configuration level. 
         /// <para>This array exists to facilitate the addition of custom SOAP headers required by some jurisidictions. This can include 
         /// custom authentication tokens, test ticket identifiers, etc...</para></remarks>
-        public MessageHeaders Headers { get; set; }
+        //public MessageHeaders Headers { get; set; }
 
         /// <summary>
         /// The client that is servicing requests.
@@ -423,6 +423,7 @@ namespace MARC.Everest.Connectors.WCF
                     ReceiveResult.Structure = (state as Message).GetBody<IGraphable>(surrogate);
                     ReceiveResult.Details = surrogate.Details;
                     ReceiveResult.Code = ResultCode.Accepted;
+                    ReceiveResult.Headers = ReceiveResult.ResponseHeaders = (state as Message).Headers;
                     if (Array.Find<IResultDetail>(ReceiveResult.Details, o => o.Type == ResultDetailType.Error) != null)
                         ReceiveResult.Code = ResultCode.AcceptedNonConformant;
                     else if (ReceiveResult.Structure == null)
@@ -550,6 +551,17 @@ namespace MARC.Everest.Connectors.WCF
         /// <param name="data">The IGraphable data to send.</param>
         public ISendResult Send(MARC.Everest.Interfaces.IGraphable data)
         {
+            return Send(data, null);
+        }
+
+        /// <summary>
+        /// Send a request to the remote endpoint with the specified message headers
+        /// </summary>
+        /// <param name="data">The data to be sent to the remote endpoint</param>
+        /// <param name="headers">The SOAP headers to append to the request</param>
+        /// <returns>A <see cref="T:MARC.Everest.Connectors.WCF.WcfSendResult"/> instance containing the result of the send operation</returns>
+        public ISendResult Send(MARC.Everest.Interfaces.IGraphable data, MessageHeaders headers)
+        {
             //TODO: Convert this into a method call for reuability.
             // Formatter check
             if (!IsOpen())
@@ -560,7 +572,7 @@ namespace MARC.Everest.Connectors.WCF
             w.Formatter = (IXmlStructureFormatter)Formatter;
             w.WcfConfiguration = wcfConfiguration;
             w.MessageVersion = wcfClient.Endpoint.Binding.MessageVersion;
-
+            w.CustomHeaders = headers;
             // Work
             w.WorkSend(data);
 

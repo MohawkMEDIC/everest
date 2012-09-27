@@ -29,6 +29,12 @@ namespace MohawkCollege.EHR.gpmr.COR
     public abstract class Enumeration : Feature
     {
 
+        // Sample literals
+        public Enumeration()
+        {
+            this.SampleLiterals = new List<EnumerationValue>();
+        }
+
         /// <summary>
         /// This is used when this enumeration merely points to another valueset or code system from
         /// which this reference draws its values.
@@ -139,6 +145,16 @@ namespace MohawkCollege.EHR.gpmr.COR
         {
             get { return literals; }
             set { literals = value; }
+        }
+
+        /// <summary>
+        /// Identifies the literals for this enumeration
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        public List<EnumerationValue> SampleLiterals
+        {
+            get;
+            set;
         }
 
         /// <summary>

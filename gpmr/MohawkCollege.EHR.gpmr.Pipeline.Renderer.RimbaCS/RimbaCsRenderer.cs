@@ -60,6 +60,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
         public static bool GenerateRim = false;
+
+        /// <summary>
+        /// When true, render  partials
+        /// </summary>
+        public static bool RenderPartials = false;
         /// <summary>
         /// Suppress documentation
         /// </summary>
@@ -91,6 +96,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
                 new string[] {"--rimbapi-gen-its","Specifies a formatter assembly for which\r\n\t\t\t a type cache should be created."},
                 new string[] {"--rimbapi-realm-pref", "When there is a conflict of names\r\n\t\t\tdetermines which 'realm' is preferred" },
                 new string[] {"--rimbapi-max-literals", "Specifies the maximum size of an\r\n\t\t\tenumeration. Default is 100" },
+                new string[] {"--rimbapi-partials", "When true, specifies that GPMR should\r\n\t\t\tenumerate partial vocabularies" },
                 new string[] {"--rimbapi-suppress-doc", "Supresses documentation generation" }
             };
 
@@ -176,6 +182,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
             string ProjectFileName = "output.csproj"; // Set the output file name
             if (parameters.ContainsKey("rimbapi-target-ns"))
                 ProjectFileName = parameters["rimbapi-target-ns"][0];
+            if(parameters.ContainsKey("rimbapi-partials"))
+                RenderPartials = Boolean.Parse(parameters["rimbapi-partials"][0]);
             if (parameters.ContainsKey("rimbapi-realm-pref"))
                 prefRealm = parameters["rimbapi-realm-pref"][0];
             if (parameters.ContainsKey("rimbapi-max-literals"))

@@ -189,8 +189,6 @@ namespace MARC.Everest.DataTypes
 
             return valid;
 
-
-            
         }
 
         /// <summary>

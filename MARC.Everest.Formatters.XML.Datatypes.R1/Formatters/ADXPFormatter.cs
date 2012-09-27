@@ -95,7 +95,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             {
                 if (s.GetAttribute("code") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
                     retVal.Code = s.GetAttribute("code");
-                else
+                else if(s.GetAttribute("code") != null)
                     result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "code", "ADXP", s.ToString()));
 
                 // Read next for text elemnt

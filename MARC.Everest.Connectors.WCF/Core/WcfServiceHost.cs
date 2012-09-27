@@ -33,12 +33,23 @@ namespace MARC.Everest.Connectors.WCF.Core
     {
 
         /// <summary>
+        /// WCF Service host
+        /// </summary>
+        public WcfServiceHost()
+        {
+        }
+
+        /// <summary>
         /// Creates a new instance of the WcfServiceHost.
         /// </summary>
         /// <param name="serviceType">The type of service that this WcfServiceHost should host.</param>
         /// <param name="baseAddresses">A list of addresses that this service should bind to.</param>
-        public WcfServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses) { }
+        public WcfServiceHost(String serviceName, Type serviceType, params Uri[] baseAddresses)
+        {
+            this.ServiceName = serviceName;
+            this.InitializeDescription(serviceType, new UriSchemeKeyedCollection(baseAddresses));
+            
+        }
 
         //TODO: Why is this set only, and not gettable.
         /// <summary>
@@ -46,11 +57,8 @@ namespace MARC.Everest.Connectors.WCF.Core
         /// </summary>
         internal string ServiceName
         {
-            set
-            {
-                this.Description.ConfigurationName = value;
-                ApplyConfiguration();
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -58,5 +66,61 @@ namespace MARC.Everest.Connectors.WCF.Core
         /// </summary>
         public WcfServerConnector ConnectorHost { get; set; }
 
+        /// <summary>
+        /// Apply configuration
+        /// </summary>
+        protected override void ApplyConfiguration()
+        {
+
+            this.Description.ConfigurationName = this.ServiceName;
+            base.ApplyConfiguration();
+
+            ServiceMetadataBehavior mexBehavior = this.Description.Behaviors.Find<ServiceMetadataBehavior>();
+            if (mexBehavior == null)
+            {
+                mexBehavior = new ServiceMetadataBehavior();
+                this.Description.Behaviors.Add(mexBehavior);
+            }
+            else
+            {
+                //Metadata behavior has already been configured, 
+                //so we don't have any work to do.
+                return;
+            }
+
+            //Add a metadata endpoint at each base address
+            //using the "/mex" addressing convention
+            foreach (Uri baseAddress in this.BaseAddresses)
+            {
+                if (baseAddress.Scheme == Uri.UriSchemeHttp)
+                {
+                    mexBehavior.HttpGetEnabled = true;
+                    this.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
+                                            MetadataExchangeBindings.CreateMexHttpBinding(),
+                                            "mex");
+                }
+                else if (baseAddress.Scheme == Uri.UriSchemeHttps)
+                {
+                    mexBehavior.HttpsGetEnabled = true;
+                    this.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
+                                            MetadataExchangeBindings.CreateMexHttpsBinding(),
+                                            "mex");
+                }
+                else if (baseAddress.Scheme == Uri.UriSchemeNetPipe)
+                {
+                    this.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
+                                            MetadataExchangeBindings.CreateMexNamedPipeBinding(),
+                                            "mex");
+                }
+                else if (baseAddress.Scheme == Uri.UriSchemeNetTcp)
+                {
+                    this.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
+                                            MetadataExchangeBindings.CreateMexTcpBinding(),
+                                            "mex");
+                }
+            }
+
+        }
+   
     }
 }

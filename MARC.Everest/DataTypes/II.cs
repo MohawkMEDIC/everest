@@ -284,9 +284,9 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public override bool Validate()
         {
-            if ((Root != null) ^ (NullFlavor != null))
+            if(NullFlavor == null)
                 return IsRootOid(this) ^ IsRootGuid(this);
-            return false;
+            return ((Root != null) ^ (NullFlavor != null));
         }
 
         /// <summary>

@@ -452,7 +452,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
 
             IGraphable context = null;
             // Clear out result cache
-            if (s.WriteState == WriteState.Start || String.IsNullOrEmpty(s.ToString()))
+            if (s.WriteState == WriteState.Start || String.IsNullOrEmpty(s.ToString()) || o is IInteraction)
                 context = o;
 
             if (!(s is XmlStateWriter))

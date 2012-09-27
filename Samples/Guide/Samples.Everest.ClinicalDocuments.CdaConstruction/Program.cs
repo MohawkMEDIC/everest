@@ -78,7 +78,7 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
                 xsw.Flush();
                 Console.WriteLine("Render #{1} Took {0} ms to render", DateTime.Now.Subtract(start).TotalMilliseconds, i);
             }
-            
+
             Console.ReadKey();
         }
 
@@ -90,12 +90,12 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
         {
             Console.Write(prompt);
             string response = default(string);
-            while(true)
+            while (true)
             {
                 response = Console.ReadLine();
                 if (String.IsNullOrEmpty(response))
                     Console.Write("Invalid response! {0}", prompt);
-                else 
+                else
                     break;
             }
             return new T() { Value = response };
@@ -110,6 +110,7 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             // context conduction indicator (any data with context conduction code of AP will be conducted) to true
             var retVal = new Component2(ActRelationshipHasComponent.HasComponent, true);
             
+
 
             // Everest provides methods of creating abstract classes through a series of helper methods,
             // here we're creating an observation for asthma
@@ -149,7 +150,7 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             });
 
             return retVal;
-            
+
         }
 
         /// <summary>

@@ -94,7 +94,7 @@ namespace MARC.Everest.DataTypes
             if (other == null)
                 return null;
             else if (other.IsNull && this.IsNull)
-                return new ST() { NullFlavor = this.NullFlavor.CommonAncestorWith(other.NullFlavor) };
+                return new ST() { NullFlavor = this.NullFlavor.GetCommonParent(other.NullFlavor) };
             else if (other.IsNull)
                 return new ST() { NullFlavor = MARC.Everest.DataTypes.NullFlavor.NoInformation };
             else
@@ -384,7 +384,7 @@ namespace MARC.Everest.DataTypes
             if (other == null)
                 return null;
             else if (this.IsNull && other.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, other.NullFlavor) };
+                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, other.NullFlavor) };
             else if (this.IsNull ^ other.IsNull)
                 return new BL() { NullFlavor = DataTypes.NullFlavor.NotApplicable };
 

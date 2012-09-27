@@ -113,7 +113,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                     // Output rationale
                     vsNew.Documentation.Rationale.Add(String.Format("<p>- {0} ({1})</p>", vs.Name, vs.EnumerationType));
                     // Add literals
-                    vsNew.GetEnumeratedLiterals().AddRange(vs.GetEnumeratedLiterals());
+                    vsNew.Literals.AddRange(vs.GetEnumeratedLiterals());
                 }
                 
                 // Now fire parse to add to the domain
@@ -131,7 +131,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                 return String.Empty;
 
             // Partial enumerations or suppressed enumerations are not to be included
-            if (enu.IsPartial)
+            if (enu.IsPartial && !RimbaCsRenderer.RenderPartials)
                 return String.Empty;
 
             // Too big

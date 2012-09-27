@@ -451,7 +451,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
 
                     // Warn
                     if (trf.Class == null)
-                        throw new InvalidOperationException(String.Format("Cannot make association to class '{0}' as it was not defined!", trf.Name));
+                        throw new InvalidOperationException(String.Format("Cannot make association to class '{0}' as it was not defined!", ae.ParticipantClassName));
                     if (ae.ChoiceItem.Count != trf.Class.SpecializedBy.Count)
                         System.Diagnostics.Trace.WriteLine(string.Format("Number of choices on property does not match the number of child classes for its data type for association '{0}'", cc.Name), "warn");
 

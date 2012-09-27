@@ -239,6 +239,9 @@ namespace MARC.Everest.DataTypes
     /// Although not recommended, the AD data type can also be used, in some cases, to facilitate the location
     /// of points of interest on a map (which require additional geocoding)
     /// </para>
+    /// <para>An AD instance is considered valid when either the <see cref="P:ANY.NullFlavor"/> property is null
+    /// or there is at least one <see cref="P:Part"/>.
+    /// </para>
     /// </remarks>
     [XmlType("AD",Namespace="urn:hl7-org:v3")]
     [Serializable][Structure(Name = "AD", StructureType = StructureAttribute.StructureAttributeType.DataType)]
@@ -549,6 +552,8 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Determines if this AD is semantically equal to <paramref name="other"/>
         /// </summary>
+        /// <remarks>Two non-null, non-null flavored instances of AD are semantically equal when they contain
+        /// the same parts regardless of order, and the <see cref="P:IsNotOrdered"/> and <see cref="P:Use"/> properties are equal to <paramref name="other"/></remarks>
         public override BL SemanticEquals(IAny other)
         {
             var baseSem = base.SemanticEquals(other);

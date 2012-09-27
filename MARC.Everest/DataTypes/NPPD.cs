@@ -83,7 +83,7 @@ namespace MARC.Everest.DataTypes
             if (other == null)
                 return null;
             else if (this.IsNull && other.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, other.NullFlavor) };
+                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, other.NullFlavor) };
             else if (this.IsNull ^ other.IsNull)
                 return new BL() { NullFlavor = DataTypes.NullFlavor.NotApplicable };
             else if (!other.GetType().IsGenericType ||

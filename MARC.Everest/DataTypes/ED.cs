@@ -837,8 +837,15 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
-        /// Semantic equals
-        /// </summary>
+	    /// Determine semantic equality between this instance of ED and other
+	    /// </summary>
+	    /// <remarks>Two non-null flavored instances of ED are semantically equal when their MediaType and raw data properties are equal. 
+	    ///When performing semantic equality between compressed instances of ED, the equality will be performed on the uncompressed data.
+	    ///<para>
+        /// Instances of ED can be semantically equal to instances of ST or SC if the mediaType of the ED it "text/plain" and 
+	    /// the binary contents of the ED and ST/SC match.
+	    /// </para>
+        /// </remarks>
         public override BL SemanticEquals(IAny other)
         {
             var baseSem = base.SemanticEquals(other);

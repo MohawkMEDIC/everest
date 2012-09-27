@@ -199,7 +199,7 @@ namespace MARC.Everest.DataTypes
         {
 
             if(this.IsNull && b1.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, b1.NullFlavor) };
+                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, b1.NullFlavor) };
 
             // Truth table
             // b1 > f t n
@@ -269,7 +269,7 @@ namespace MARC.Everest.DataTypes
         {
 
              if(this.IsNull && b1.IsNull)
-                 return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, b1.NullFlavor) };
+                 return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, b1.NullFlavor) };
 
             // Truth table
             // b1 > f t n

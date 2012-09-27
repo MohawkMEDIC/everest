@@ -170,7 +170,7 @@ namespace MARC.Everest.DataTypes
         /// <item><description>If <paramref name="other"/> is null the result is null</description></item>
         /// <item><description>If <paramref name="other"/> has a nullFlavor or this instance has a nullflavor the result is a BL with a nullFlavor of NA (as per 7.1.4 of reference guide) or the most common null flavor between the two. </description></item>
         /// <item><description>If <paramref name="other"/>'s data type does not equal this instance's data type the result is false</description></item>
-        /// <item><description>If <paramref name="other"/> and this instance have a null flavor </description></item>
+        /// <item><description>If <paramref name="other"/> and this instance have a null flavor, the common anscestor </description></item>
         /// </list>
         /// </para></remarks>
         public virtual BL SemanticEquals(IAny other)
@@ -178,7 +178,7 @@ namespace MARC.Everest.DataTypes
             if (other == null)
                 return null;
             else if (this.IsNull && other.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, other.NullFlavor) };
+                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, other.NullFlavor) };
             else if (this.IsNull ^ other.IsNull)
                 return new BL() { NullFlavor = DataTypes.NullFlavor.NotApplicable };
             // Have the same type
@@ -215,7 +215,7 @@ namespace MARC.Everest.DataTypes
                 isNullFlavorINV = isNullFlavorSet && ((NullFlavor)this.NullFlavor).IsChildConcept(MARC.Everest.DataTypes.NullFlavor.Invalid);
 
             if (isAny && !isNullFlavorSet)
-                retVal.Add(new DatatypeFlavorValidationResultDetail(ResultDetailType.Error, "ANY", "When ANY is used it must carry a NullFlavor", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ANY", "When ANY is used it must carry a NullFlavor", null));
             else if (isAny && !isNullFlavorINV)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ANY", "NullFlavor must imply 'Invalid'", null));
             return retVal;
