@@ -308,6 +308,18 @@ namespace MARC.Everest.DataTypes
 
         #endregion
 
+        /// <summary>
+        /// Determine if this instance of QTY semantically equals <paramref name="other"/>
+        /// </summary>
+        /// <param name="other">The other datatype to compare for semantic equality</param>
+        /// <remarks>There are not specific restrictions on QTY and semantic equality however 
+        /// because QTY is described as a generic type in Everest, the semantic equality check 
+        /// must be performed to ensure the type of encapsulated data matches</remarks>
+        /// <returns></returns>
+        public override BL SemanticEquals(IAny other)
+        {
+            return base.SemanticEquals(other);
+        }
 
     }
 }
