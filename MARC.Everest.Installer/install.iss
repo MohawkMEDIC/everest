@@ -182,7 +182,7 @@ Source: ..\Solution Items\ICSharpCode.SharpZipLib.dll; DestDir: {tmp}; Component
 
 
 [INI]
-FileName: "{app}\everest.version"; Section: "Everest"; Key: "Version"; String: "1.0";
+FileName: "{app}\everest.version"; Section: "Everest"; Key: "Version"; String: "1.0.1";
 
 
 [Icons]
