@@ -21,9 +21,16 @@ package ca.marc.everest.datatypes.generic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import ca.marc.everest.annotations.ConformanceType;
+import ca.marc.everest.annotations.Property;
+import ca.marc.everest.annotations.PropertyType;
+import ca.marc.everest.annotations.Structure;
+import ca.marc.everest.annotations.StructureType;
 import ca.marc.everest.datatypes.ANY;
 import ca.marc.everest.datatypes.BL;
 import ca.marc.everest.datatypes.EverestValidationMessages;
+import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.ICollection;
 import ca.marc.everest.datatypes.interfaces.IPredicate;
 import ca.marc.everest.datatypes.interfaces.ISemanticEquals;
@@ -35,12 +42,13 @@ import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
  * An abstract type intended to collect common functionality related
  * to collections
  */
+@Structure(name = "COLL", structureType = StructureType.DATATYPE)
 public abstract class COLL<T> extends ANY implements ICollection<T> {
 
-	
 	/**
 	 * Gets the list of items
 	 */
+	@Property(name = "item", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.NONSTRUCTURAL)
 	public abstract Collection<T> getItems();
 	
 	/**
@@ -83,7 +91,7 @@ public abstract class COLL<T> extends ANY implements ICollection<T> {
 	 * Gets an item from the collection
 	 */
 	@Override
-	public T getItem(int index) throws IndexOutOfBoundsException {
+	public T get(int index) throws IndexOutOfBoundsException {
 		if(index >= this.size())
 			throw new IndexOutOfBoundsException();
 		Iterator<T> iterator = this.iterator();
@@ -129,7 +137,7 @@ public abstract class COLL<T> extends ANY implements ICollection<T> {
 		boolean contains = false;
 		for(T item : this)
 			if(o instanceof ISemanticEquals)
-				contains |= ((ISemanticEquals)o).semanticEquals((ANY)item).toBoolean();
+				contains |= ((ISemanticEquals)o).semanticEquals((IAny)item).toBoolean();
 			else
 				contains |= (o != null && o.equals(item) ||
 					item != null && item.equals(o) ||
@@ -254,4 +262,5 @@ public abstract class COLL<T> extends ANY implements ICollection<T> {
 				return item;
 		return null;
 	}
+
 }

@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2011 Mohawk College of Applied Arts and Technology
+ * Copyright 2008/2011 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -14,35 +14,24 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 08-24-2011
+ * Date: 09-27-2012
  */
 package ca.marc.everest.datatypes.interfaces;
 
-import java.util.Collection;
-import ca.marc.everest.datatypes.*;
+import java.util.Comparator;
 
-public interface ICollection<T> extends Iterable<T>, Collection<T> {
-
-	/**
-	 * Gets the item at the specified index
-	 */
-	T get(int index);
-	
-	/**
-	 * Returns a BL indicating whether this collection includes
-	 * all of the items in the other collection
-	 */
-	BL includesAll(ICollection<T> other);
-	
-	/**
-	 * Returns a BL indicating whether this collection excludes
-	 * all of the items in the other collection
-	 */
-	BL excludesAll(ICollection<T> other);
+/**
+ * An interface which identifies sets
+ */
+public interface ISet<T> extends ICollection<T> {
 
 	/**
-	 * Returns true if the collection is empty
+	 * Gets the current comparator
 	 */
-	boolean isEmpty();
+	public Comparator<T> getComparator();
 	
+	/**
+	 * Sets the comparator for the SET
+	 */
+	public void setComparator(Comparator<T> value);
 }

@@ -18,6 +18,8 @@
  */
 package ca.marc.everest.interfaces;
 
+import ca.marc.everest.datatypes.II;
+
 /**
  * Identifies a class as being identifiable using an instance identifier
  */

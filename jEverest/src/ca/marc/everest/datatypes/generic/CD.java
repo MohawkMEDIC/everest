@@ -18,6 +18,8 @@
  */
 package ca.marc.everest.datatypes.generic;
 
+import java.io.UnsupportedEncodingException;
+
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.*;
 import ca.marc.everest.interfaces.*;
@@ -76,7 +78,8 @@ public class CD<T> extends CE<T>  {
 	 * @param displayName A human readable display name for the code mnemonic
 	 * @param originalText The text that the user used to select the mnemonic
 	 */
-	public CD(T code, String codeSystem, String codeSystemName, String codeSystemVersion, String displayName, String originalText) {
+	public CD(T code, String codeSystem, String codeSystemName, String codeSystemVersion, String displayName, String originalText)  throws UnsupportedEncodingException
+	{
 		super(code, codeSystem, codeSystemName, codeSystemVersion, displayName, originalText);
 	}
 	/**

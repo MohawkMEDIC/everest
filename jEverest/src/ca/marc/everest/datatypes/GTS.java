@@ -99,7 +99,7 @@ public class GTS extends ANY {
 	@Flavor(name = "GTS.BOUNDEDPIVL")
 	public static boolean IsBoundedPivlFlavor(GTS gts)
 	{
-		return (gts.getHull() instanceof PIVL<TS>) ^ (gts.getNullFlavor() != null);
+		return (gts.getHull() instanceof PIVL<?>) ^ (gts.getNullFlavor() != null);
 	}
 	
 	/**

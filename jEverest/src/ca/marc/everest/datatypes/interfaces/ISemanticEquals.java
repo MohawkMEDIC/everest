@@ -29,5 +29,5 @@ public interface ISemanticEquals {
 	/**
 	 * Returns true if this instance is semantically equal to another
 	 */
-	public BL semanticEquals(ANY other);
+	public BL semanticEquals(IAny other);
 }

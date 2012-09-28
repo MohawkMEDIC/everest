@@ -20,35 +20,40 @@ package ca.marc.everest.datatypes.generic;
 
 import java.util.*;
 
+import ca.marc.everest.annotations.ConformanceType;
+import ca.marc.everest.annotations.Property;
+import ca.marc.everest.annotations.PropertyType;
 import ca.marc.everest.annotations.Structure;
 import ca.marc.everest.annotations.StructureType;
 import ca.marc.everest.datatypes.ANY;
+import ca.marc.everest.datatypes.BL;
 import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.ISemanticEquals;
+import ca.marc.everest.datatypes.interfaces.ISet;
 import ca.marc.everest.exceptions.DuplicateItemException;
 
 
 /**
- * A collection that contains other distinct and discrete values in no particular order.
+ * A collection that contains other distinct and discrete values in where the sequence of items has meaning.
  * This class is intended to be a wrapper for the standard Set classes.
  * @param <E> the element type
  */
 @Structure(name="SET", structureType=StructureType.DATATYPE)
-public class SET<T> extends COLL<T> implements Set<T> {
+public class SET<T> extends COLL<T> implements Set<T>, ISet<T> {
 
 	/**
 	 * Represents a default comparator
 	 */
-	private static final Comparator<Object> f_defaultComparator = new Comparator<Object>() {
+	private final Comparator<T> f_defaultComparator = new Comparator<T>() {
 
 		/**
 		 * Default comparison works on Semantic Equality (if available) followed
 		 * by value comparison
 		 */
 		@Override
-		public int compare(Object a, Object b) {
-			if(a instanceof ISemanticEquals && b instanceof ANY)
-				return ((ISemanticEquals)a).semanticEquals((ANY)b).toBoolean() ? 0 : 1;
+		public int compare(T a, T b) {
+			if(a instanceof ISemanticEquals && b instanceof IAny)
+				return ((ISemanticEquals)a).semanticEquals((IAny)b).toBoolean() ? 0 : 1;
 			else if(a != null && a.equals(b) || 
 					b != null && b.equals(a) ||
 					a == null && b == null)
@@ -62,18 +67,18 @@ public class SET<T> extends COLL<T> implements Set<T> {
 	// Backing set
 	private Set<T> m_set = new HashSet<T>();
 	// Backing comparator
-	private Comparator<Object> m_comparator = f_defaultComparator;
+	private Comparator<T> m_comparator = f_defaultComparator;
 	
 	/**
 	 * Gets the comparator that is currently being used by this instance of
 	 * SET to determie duplicate entries
 	 */
-	public Comparator<Object> getComparator() { return this.m_comparator; }
+	public Comparator<T> getComparator() { return this.m_comparator; }
 	/**
 	 * Sets a custom comparator for determining if duplicate entries have been
 	 * entered into this type
 	 */
-	public void setComparator(Comparator<Object> value) { this.m_comparator = value; }
+	public void setComparator(Comparator<T> value) { this.m_comparator = value; }
 	
 	/**
 	 * Create a new instance of the set
@@ -93,7 +98,7 @@ public class SET<T> extends COLL<T> implements Set<T> {
 	 */
 	public SET(Iterable<T> collection)
 	{
-		this(collection, f_defaultComparator);
+		this(collection, null);
 	}
 	
 	/**
@@ -110,7 +115,7 @@ public class SET<T> extends COLL<T> implements Set<T> {
 	 * Creates a new instance of a set using the custom comparator
 	 * @param comparator The custom comparator to use for detecting duplicates within the set
 	 */
-	public SET(Comparator<Object> comparator)
+	public SET(Comparator<T> comparator)
 	{
 		this();
 		this.m_comparator = comparator;
@@ -120,17 +125,27 @@ public class SET<T> extends COLL<T> implements Set<T> {
 	 * @param comparator The custom comparator to use for detecting duplicates within the set
 	 * @param collection The initial collection
 	 */
-	public SET(Iterable<T> collection, Comparator<Object> comparator)
+	public SET(Iterable<T> collection, Comparator<T> comparator)
 	{
 		this();
-		this.m_comparator = comparator;
+		this.m_comparator = comparator == null ? this.f_defaultComparator : comparator;
 		for(T item : collection)
 			this.add(item);
 	}
+
+	/**
+	 * Create a set helper method
+	 */
+	public static <T> SET<T> createSET(T... items)
+	{
+		return new SET<T>(Arrays.asList(items));
+	}
+	
 	/**
 	 * Get items collection
 	 */
 	@Override
+	@Property(name = "item", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.NONSTRUCTURAL)
 	public Collection<T> getItems() {
 		return this.m_set;
 	}
@@ -249,4 +264,64 @@ public class SET<T> extends COLL<T> implements Set<T> {
             retVal.add(element);
         return retVal;
 	}
+	
+	/**
+	 * Calculate hash code
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((m_set == null) ? 0 : m_set.hashCode());
+		return result;
+	}
+	/**
+	 * Determine equality between this instance of SET and another
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SET other = (SET) obj;
+		if (m_set == null) {
+			if (other.m_set != null)
+				return false;
+		} else if (!m_set.equals(other.m_set))
+			return false;
+		return true;
+	}
+	
+	/**
+	 * Determines semantic equality between this instance of SET and another datatype
+	 * <p>Two instances of SET are considered semantically equal when both contain the same items in the sequence</p>
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public BL semanticEquals(IAny other) {
+		BL baseSem = super.semanticEquals(other);
+        if (!baseSem.toBoolean())
+            return baseSem;
+
+        // Other is not a LIST
+        if(!(other instanceof LIST<?>))
+        	return BL.FALSE;
+        
+        SET<T> otherList = (SET<T>)other;
+        if (otherList.isEmpty() && this.isEmpty())
+            return BL.TRUE;
+        else
+        {
+            boolean isEqual = this.size() == otherList.size();
+            for (int i = 0; i < this.size() && isEqual; i++)
+                isEqual &= ((ISemanticEquals)otherList.get(i)).semanticEquals((IAny)this.get(i)).toBoolean();
+            return BL.fromBoolean(isEqual);
+        }
+	}
+	
+	
 }
