@@ -91,6 +91,8 @@ namespace MARC.Everest.DataTypes
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "COLL", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             return retVal;
         }
+
+
         #endregion
 
         #region IList<T> Members

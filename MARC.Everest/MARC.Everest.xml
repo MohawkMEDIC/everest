@@ -1227,7 +1227,7 @@
         </member>
         <member name="T:MARC.Everest.DataTypes.Interfaces.ISequence`1">
             <summary>
-            Identifies a class as implementing the sequence
+            Identifies a class as implementing a sequence of items whereby the order of items has meaning
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.Interfaces.ISequence`1.SubSequence(System.Int32,System.Int32)">
@@ -1384,18 +1384,11 @@
             Get this set's enumerator
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.LIST`1.Validate">
-            <summary>
-            Validate
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:MARC.Everest.DataTypes.LIST`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
             <summary>
             Determine if the two items are semantically equal
             </summary>
-            <param name="other"></param>
-            <returns></returns>
+            <remarks>Two instances of LIST are semantically equal when they contain the same items in the same sequence</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.LIST`1.Parse(MARC.Everest.DataTypes.LIST{MARC.Everest.Interfaces.IGraphable})">
             <summary>
@@ -1440,16 +1433,6 @@
             items in this list
             </summary>
         </member>
-        <member name="P:MARC.Everest.DataTypes.LIST`1.First">
-            <summary>
-            Get the first item from the list
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.LIST`1.Last">
-            <summary>
-            Get the last item from the list
-            </summary>
-        </member>
         <member name="P:MARC.Everest.DataTypes.LIST`1.IsEmpty">
             <summary>
             Determine if the collection is empty
@@ -1474,6 +1457,16 @@
         <member name="P:MARC.Everest.DataTypes.LIST`1.Items">
             <summary>
             Items contained in this set
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.LIST`1.First">
+            <summary>
+            Get the first item from the collection
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.LIST`1.Last">
+            <summary>
+            Get the last item from the collection
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.HIST`1.#ctor">
@@ -1990,6 +1983,16 @@
             <summary>
             Override of base equals
             </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QTY`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
+            <summary>
+            Determine if this instance of QTY semantically equals <paramref name="other"/>
+            </summary>
+            <param name="other">The other datatype to compare for semantic equality</param>
+            <remarks>There are not specific restrictions on QTY and semantic equality however 
+            because QTY is described as a generic type in Everest, the semantic equality check 
+            must be performed to ensure the type of encapsulated data matches</remarks>
+            <returns></returns>
         </member>
         <member name="P:MARC.Everest.DataTypes.QTY`1.Expression">
             <summary>
@@ -6103,18 +6106,13 @@
             Get this set's enumerator
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.SET`1.Validate">
-            <summary>
-            Validate set
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:MARC.Everest.DataTypes.SET`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
             <summary>
             Determine if the two items are semantically equal
             </summary>
             <param name="other"></param>
             <returns></returns>
+            <remarks>Two instances of SET are semantically equal when they contain the same elements in the same sequence</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.SET`1.op_Explicit(MARC.Everest.DataTypes.LIST{`0})~MARC.Everest.DataTypes.SET{`0}">
             <summary>
@@ -6156,6 +6154,39 @@
             Override of base equals
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.SET`1.SubSequence(System.Int32)">
+            <summary>
+            Return a portion of the set starting from the specified item
+            </summary>
+            <param name="start">The start index</param>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.SET`1.SubSequence(System.Int32,System.Int32)">
+            <summary>
+            Return a portion of the set
+            </summary>
+            <param name="Start">The first item to include</param>
+            <param name="End">The last item to include</param>
+            <example>
+            <code title="Using sub-sequence" lang="cs">
+            <![CDATA[
+            // Create list of identifiers (Person, Place, or Thing)
+            // The first Item in the list has a zero Index
+            SET<II> set1 = new SET<II>(new II[] 
+            { 
+                new II("1.1.1.1","1"), // set1[0] 
+                new II("1.1.1.1","2"), 
+                new II("1.1.1.1","3"), 
+                new II("1.1.1.1","3"), 
+                new II("1.1.1.1","4") 
+            }); 
+            SET<II> set2 = (SET<II>)set1.SubSequence(1, 2); // contains 1 items 
+            set2 = (SET<II>)set1.SubSequence(1); // set2 will hold the last four identifiers in the list       
+            ]]>
+            </code>
+            </example>
+            <exception cref="T:System.IndexOutOfRangeException">Thrown when either <paramref name="start"/> or <paramref name="end"/> are outside the bounds of the array</exception>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="start"/> is greater than <paramref name="end"/></exception>
+        </member>
         <member name="P:MARC.Everest.DataTypes.SET`1.Comparator">
             <summary>
             Get or set the predicate that will determine an object's involvement into the set
@@ -6185,6 +6216,16 @@
         <member name="P:MARC.Everest.DataTypes.SET`1.Items">
             <summary>
             Get or set the items that make up this set
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.SET`1.First">
+            <summary>
+            Get the first item from the collection
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.SET`1.Last">
+            <summary>
+            Get the last item from the collection
             </summary>
         </member>
         <member name="T:MARC.Everest.DataTypes.QSS`1">
@@ -12100,9 +12141,16 @@
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.ED.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
-            <summary>
-            Semantic equals
-            </summary>
+             <summary>
+             Determine semantic equality between this instance of ED and other
+             </summary>
+             <remarks>Two non-null flavored instances of ED are semantically equal when their MediaType and raw data properties are equal. 
+            When performing semantic equality between compressed instances of ED, the equality will be performed on the uncompressed data.
+            <para>
+             Instances of ED can be semantically equal to instances of ST or SC if the mediaType of the ED it "text/plain" and 
+             the binary contents of the ED and ST/SC match.
+             </para>
+             </remarks>
         </member>
         <member name="P:MARC.Everest.DataTypes.ED.Data">
             <summary>
