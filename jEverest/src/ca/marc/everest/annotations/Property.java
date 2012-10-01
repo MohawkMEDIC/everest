@@ -57,18 +57,21 @@ public @interface Property {
 	 * is to be used on serialization. This is used when conditional serialization is 
 	 * desired.
 	 */
+	@SuppressWarnings("rawtypes")
 	Class type() default java.lang.Object.class;
 
 	/**
 	 * Identifies which property annotation should be used when alternate traversal names are dependent
 	 * upon the interaction type.  
 	 */
+	@SuppressWarnings("rawtypes")
 	Class interactionOwner() default java.lang.Object.class;
 
 	/**
 	 * Identifies the generic suppliers for the type to get around Java's lack
 	 * of reified generics
 	 */
+	@SuppressWarnings("rawtypes")
 	Class[] genericSupplier() default {};
 	
 	/**

@@ -21,8 +21,6 @@ package ca.marc.everest.datatypes.generic;
 import java.io.UnsupportedEncodingException;
 
 import ca.marc.everest.annotations.*;
-import ca.marc.everest.datatypes.*;
-import ca.marc.everest.interfaces.*;
 
 /**
  * Represents any kind of concept usually by giving a code defined in a code system.

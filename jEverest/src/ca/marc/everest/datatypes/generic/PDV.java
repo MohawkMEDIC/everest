@@ -79,6 +79,7 @@ public abstract class PDV <T> extends ANY implements Comparable<PDV<T>> {
 	/**
 	 * Compare this instance of PDV to the other instance of PDV
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public int compareTo(PDV<T> o) throws IllegalArgumentException
 	{
@@ -119,7 +120,7 @@ public abstract class PDV <T> extends ANY implements Comparable<PDV<T>> {
 		if (!(obj instanceof PDV)) {
 			return false;
 		}
-		PDV other = (PDV) obj;
+		PDV<?> other = (PDV<?>) obj;
 		if (m_value == null && other.m_value != null)
 			return false;
 		else if (this.m_value instanceof Float || this.m_value instanceof Double)
@@ -134,10 +135,11 @@ public abstract class PDV <T> extends ANY implements Comparable<PDV<T>> {
 			else if(otherValue == 0) result &= thisValue == 0;
 			else // Tolerance is the same (ie: precision is the same)
 				result &= Math.abs(otherValue - thisValue) <= Math.abs(otherValue * this.p_floatingPointEqualityTolerance);
+			return result;
+
 		}
 		else if (!m_value.equals(other.m_value)) 
 			return false;
-		
 		return true;
 	}
 	

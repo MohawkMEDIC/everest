@@ -82,6 +82,7 @@ public class BAG<T> extends COLL<T> implements IBag<T> {
 	 * <p>Two non-null non null-flavored instances of BAG are semantically equal when both instances are empty or
 	 * if both instances contain the same items regardless of order</p>
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public BL semanticEquals(IAny other) {
 		BL baseSem = super.semanticEquals(other);
