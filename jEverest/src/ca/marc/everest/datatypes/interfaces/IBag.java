@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2011 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -19,16 +19,8 @@
 package ca.marc.everest.datatypes.interfaces;
 
 /**
- * A Java implementation of the .NET Predicate<> interface. Used for searching sets
+ * Identifies classes that contain an unordered list of values
  */
-public interface IPredicate<T> {
-	
-	
-	/**
-	 * Returns true if the predicate function matches the 
-	 * @param i
-	 * @return
-	 */
-	abstract boolean match(T i);
-	
+public interface IBag<T> extends ICollection<T> {
+
 }

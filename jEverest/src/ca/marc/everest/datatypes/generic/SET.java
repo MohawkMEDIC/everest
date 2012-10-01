@@ -25,7 +25,6 @@ import ca.marc.everest.annotations.Property;
 import ca.marc.everest.annotations.PropertyType;
 import ca.marc.everest.annotations.Structure;
 import ca.marc.everest.annotations.StructureType;
-import ca.marc.everest.datatypes.ANY;
 import ca.marc.everest.datatypes.BL;
 import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.ISemanticEquals;
