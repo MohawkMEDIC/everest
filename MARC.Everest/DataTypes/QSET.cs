@@ -220,8 +220,7 @@ namespace MARC.Everest.DataTypes
         }
 
         #endregion
-
-
+        
         #region INormalizable Members
 
         /// <summary>

@@ -82,6 +82,25 @@ namespace MARC.Everest.DataTypes
             return isValid;
         }
 
+        /// <summary>
+        /// Extended validation routine which returns a list of detected issues
+        /// </summary>
+        /// <remarks>An instance of QSET is considered valid when it contains at least two items and no property contains
+        /// a null component</remarks>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            List<IResultDetail> retVal = new List<IResultDetail>();
+
+            if (!((this.NullFlavor != null) ^ (this.Terms.Count > 0)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            else if(this.Terms.Count < 2)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSI must contain at least two items for intersection", null));
+            foreach (var qs in Terms ?? new List<ISetComponent<T>>())
+                if (qs == null || qs.IsNull)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, ValidationMessages.MSG_NULL_COLLECTION_VALUE, null));
+            return retVal;
+        }
+
         #region IEquatable<QSI<T>> Members
 
         /// <summary>

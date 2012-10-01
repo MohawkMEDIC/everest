@@ -36,5 +36,6 @@ namespace MARC.Everest.DataTypes
         internal const string MSG_PROPERTY_NOT_POPULATED = "{0} must be populated and must contain a valid instance of {1}";
         internal const string MSG_INVALID_VALUE = "'{0}' is not a valid value for {1}";
         internal const string MSG_DEPENDENT_VALUE_MISSING = "{0} cannot be populated unless {1} is populated";
+        internal const string MSG_NULL_COLLECTION_VALUE = "Collection item cannot be null or null-flavored";
     }
 }

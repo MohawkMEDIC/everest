@@ -28,7 +28,7 @@ using MARC.Everest.Connectors;
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
-    /// An abstract type intended to collect common attributes related to collections
+    /// An abstract type intended to collect common functionality related to collections
     /// </summary>
     [Structure(Name= "COLL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [Serializable]
@@ -91,8 +91,6 @@ namespace MARC.Everest.DataTypes
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "COLL", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             return retVal;
         }
-
-
         #endregion
 
         #region IList<T> Members

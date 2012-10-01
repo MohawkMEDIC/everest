@@ -157,23 +157,6 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
-        /// Find all items that match the given predicate
-        /// </summary>
-        public T Find(Predicate<T> match)
-        {
-            return items.Find(match);
-        }
-
-        /// <summary>
-        /// Find all occurences of <paramref name="match"/>
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        public List<T> FindAll(Predicate<T> match)
-        {
-            return items.FindAll(match);
-        }
-
-        /// <summary>
         /// Cast any IEnumerable to this list
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]

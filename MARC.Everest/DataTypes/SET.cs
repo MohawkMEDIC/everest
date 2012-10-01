@@ -242,45 +242,6 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
-        /// Find all items that match the given predicate
-        /// </summary>
-        /// <param name="match">The predicate that dictates how matching should be performed</param>
-        /// <example>
-        /// <code lang="cs" title="Finding items in a set">
-        /// <![CDATA[
-        /// // Create set 
-        /// SET<II> set1 = new SET<II>(new II[] 
-        /// { 
-        /// new II("1.1.1.1","1"),  
-        /// new II("1.1.1.1","2"), 
-        /// new II("1.1.1.1","3") 
-        /// }, II.Comparator); 
-        ///              
-        /// // .NET 3.5 and Mono 
-        /// II ii2 = set1.Find(ii => ii.Extension == "2" && ii.Root == "1.1.1.1"); 
-        /// // .NET 2.0 
-        /// ii2 = set1.Find(delegate(II ii) 
-        /// { 
-        /// return ii.Extension == "1" && ii.Root == "1.1.1.1"; 
-        /// }); 
-        /// ]]>
-        /// </code>
-        /// </example>
-        public T Find(Predicate<T> match)
-        {
-            return items.Find(match);
-        }
-
-        /// <summary>
-        /// Find all occurences of <paramref name="match"/>
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        public List<T> FindAll(Predicate<T> match)
-        {
-            return items.FindAll(match);
-        }
-
-        /// <summary>
         /// Union this set with another set
         /// </summary>
         /// <param name="otherset">The set to union with</param>
