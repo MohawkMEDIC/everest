@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2011 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -14,21 +14,23 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 09-27-2012
+ * Date: 10-02-2012
  */
-package ca.marc.everest.datatypes.interfaces;
+package ca.marc.everest.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * A Java implementation of the .NET Predicate<> interface. Used for searching sets
+ * A collection of type maps
  */
-public interface IPredicate<T> {
-	
-	
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface TypeMaps {
 	/**
-	 * Returns true if the predicate function matches the 
-	 * @param i
-	 * @return
+	 * Gets the properties that are contained within this annotation  
 	 */
-	boolean match(T i);
-	
+	TypeMap[] value();
 }

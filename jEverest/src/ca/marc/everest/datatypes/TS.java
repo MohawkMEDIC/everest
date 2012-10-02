@@ -20,6 +20,7 @@ package ca.marc.everest.datatypes;
 
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.generic.*;
+import ca.marc.everest.datatypes.interfaces.IPointInTime;
 
 import java.util.*;
 
@@ -37,7 +38,7 @@ import java.util.*;
  * </p>
  */
 @Structure(name = "TS", structureType = StructureType.DATATYPE)
-public class TS extends PDV<String>
+public class TS extends PDV<String> implements IPointInTime
 {
 
 	/**
@@ -265,4 +266,5 @@ public class TS extends PDV<String>
 		super.setFlavorId(value);
 	}
 	
+
 }

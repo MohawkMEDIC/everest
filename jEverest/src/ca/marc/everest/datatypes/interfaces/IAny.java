@@ -25,7 +25,7 @@ import ca.marc.everest.interfaces.*;
 /**
  * Identifies a type as implementing the ANY attributes (a data type)
  */
-public interface IAny extends ISemanticEquals, Cloneable, IImplementsNullFlavor {
+public interface IAny extends ISemanticEquals, Cloneable, IImplementsNullFlavor, IGraphable {
 
 	/**
 	 * Validates the instance
@@ -46,7 +46,7 @@ public interface IAny extends ISemanticEquals, Cloneable, IImplementsNullFlavor 
 	/**
 	 * Gets the flavor of the instance
 	 */
-	String getFlavor();
+	String getFlavorId();
 	
 	/**
 	 * Validate with details

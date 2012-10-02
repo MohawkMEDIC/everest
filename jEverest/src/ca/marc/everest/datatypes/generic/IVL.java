@@ -19,19 +19,20 @@
 package ca.marc.everest.datatypes.generic;
 
 import ca.marc.everest.datatypes.*;
+import ca.marc.everest.datatypes.interfaces.IAny;
+import ca.marc.everest.datatypes.interfaces.IEncapsulatedData;
+import ca.marc.everest.datatypes.interfaces.IInterval;
 import ca.marc.everest.annotations.*;
 
 /**
  * A set of consecutive values of an ordered base datatype. Any ordered type can be the basis of an IVL
  */
-public class IVL<T extends ANY> extends SXCM<T>  {
+public class IVL<T extends IAny> extends SXCM<T> implements IInterval<T>  {
 
 	// backing field for low inclusive attribute
-	private boolean m_lowInclusive;
-	private boolean m_lowInclusiveSet;
-	// backing field for high inclusive attribute
-	private boolean m_highInclusive;
-	private boolean m_highInclusiveSet;
+	private Boolean m_lowInclusive = null;
+	// backing field for high inclusive
+	private Boolean m_highInclusive = null;
 	// backing field for the width
 	private PQ m_width;
 	// backing field for the lower bound of the set
@@ -69,55 +70,62 @@ public class IVL<T extends ANY> extends SXCM<T>  {
 	 * Gets the original text indicating where the interval was derived
 	 */
 	@Property(name = "originalText", propertyType = PropertyType.NONSTRUCTURAL, conformance = ConformanceType.REQUIRED)
+	@Override
 	public ED getOriginalText() { return this.m_originalText; }
 	/**
 	 * Sets the original text indicating where the interval was derived
 	 */
 	public void setOriginalText(ED value) { this.m_originalText = value; }
 	/**
+	 * Sets the original text indicating where the interval was derived
+	 */
+	@Override
+	public void setOriginalText(IEncapsulatedData value) { this.m_originalText = (ED)value; }
+	/**
 	 * Gets the lower bound of the interval
 	 */
 	@Property(name = "low", propertyType = PropertyType.NONSTRUCTURAL, conformance = ConformanceType.REQUIRED)
+	@Override
 	public T getLow() { return this.m_low; }
 	/**
 	 * Sets the lower bound of the interval
 	 */
+	@Override
 	public void setLow(T value) { this.m_low = value; }
 	/**
 	 * Gets a flag indicating if the lower bound of the interval is inclusive
 	 */
 	@Property(name = "lowClosed", propertyType = PropertyType.STRUCTURAL, conformance = ConformanceType.REQUIRED)
-	public boolean getLowInclusive() { return this.m_lowInclusive; }
+	@Override
+	public Boolean getLowInclusive() {  return this.m_lowInclusive; }
 	/**
 	 * Sets a flag indicating if the lower bound of the interval is inclusive
 	 */
-	public void setLowInclusive(boolean value) { this.m_lowInclusive = value; this.m_lowInclusiveSet = true; }
-	/**
-	 * Gets a value indicating if the lower bound inclusivity flag has been set or is the default value
-	 */
-	public boolean getLowInclusiveSet() { return this.m_lowInclusiveSet; }
+	@Override
+	public void setLowInclusive(Boolean value) { this.m_lowInclusive = value; }
 	/**
 	 * Get the upper bound of the interval
 	 */
 	@Property(name = "high", propertyType = PropertyType.NONSTRUCTURAL, conformance = ConformanceType.REQUIRED)
+	@Override
 	public T getHigh() { return this.m_high; }
 	/**
 	 * Set the upper bound of the interval
 	 */
+	@Override
 	public void setHigh(T value) { this.m_high = value;  }
 	/**
 	 * Gets a flag indicating if the upper bound of the interval is inclusive
 	 */
 	@Property(name = "highClosed", propertyType = PropertyType.STRUCTURAL, conformance = ConformanceType.REQUIRED)
-	public boolean getHighInclusive() { return this.m_highInclusive; }
+	@Override
+	public Boolean getHighInclusive() { return this.m_highInclusive; }
 	/**
 	 * Sets a flag indicating if the upper bound of the interval is inclusive
 	 */
-	public void setHighInclusive(boolean value) { this.m_highInclusive = value; this.m_highInclusiveSet = true; }
-	/**
-	 * Gets a value indicating if the upper bound inclusivity flag has been set or is the default value
-	 */
-	public boolean getHighInclusiveSet() { return this.m_highInclusiveSet; }
+	@Override
+	public void setHighInclusive(Boolean value) { this.m_highInclusive = value; }
+
 	/**
 	 * Gets the width of the interval
 	 */
@@ -140,11 +148,12 @@ public class IVL<T extends ANY> extends SXCM<T>  {
 	public boolean validate()
 	{
 		return (this.getNullFlavor() != null) ^ (this.m_low != null || this.m_width != null || this.m_high != null || this.getValue() != null) &&
-			(this.m_lowInclusiveSet && this.m_low != null || !this.m_lowInclusiveSet) &&
-			(this.m_highInclusiveSet && this.m_high != null || !this.m_highInclusiveSet) &&
+			(this.m_lowInclusive == null && this.m_low != null || this.m_lowInclusive != null) &&
+			(this.m_highInclusive == null && this.m_high != null || this.m_highInclusive != null) &&
 			super.validate();
 		
 	}
+
 	
 
 	

@@ -20,6 +20,7 @@ package ca.marc.everest.datatypes;
 
 import ca.marc.everest.datatypes.generic.*;
 import ca.marc.everest.datatypes.interfaces.IAny;
+import ca.marc.everest.datatypes.interfaces.IEncapsulatedData;
 import ca.marc.everest.interfaces.IResultDetail;
 import ca.marc.everest.interfaces.ResultDetailType;
 import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
@@ -41,7 +42,7 @@ import java.security.*;
  * within an instance
  */
 @Structure(name = "ED", structureType = StructureType.DATATYPE)
-public class ED extends ANY {
+public class ED extends ANY implements IEncapsulatedData {
 
 	// backing field for data
 	private byte[] m_data;
@@ -160,6 +161,7 @@ public class ED extends ANY {
 	 * Gets the reference to the content of this ED
 	 */
 	@Property(name = "reference", conformance = ConformanceType.REQUIRED, propertyType = PropertyType.NONSTRUCTURAL)
+	@Override
 	public TEL getReference() { return this.m_reference; }
 	/**
 	 * Sets the reference to the content of this ED

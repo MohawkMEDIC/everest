@@ -27,7 +27,7 @@ import ca.marc.everest.annotations.*;
  * Used for the storage of a provisioned quantity
  */
 @Structure(name = "PQ", structureType = StructureType.DATATYPE)
-public class PQ extends QTY<BigDecimal> implements IQuantity {
+public class PQ extends QTY<BigDecimal> {
 
 	
 	// backing field for unit

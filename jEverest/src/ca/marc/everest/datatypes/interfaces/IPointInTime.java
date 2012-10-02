@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2011 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -14,21 +14,25 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 09-27-2012
+ * Date: 10-02-2012
  */
 package ca.marc.everest.datatypes.interfaces;
 
+import java.util.Calendar;
+
 /**
- * A Java implementation of the .NET Predicate<> interface. Used for searching sets
+ * Represents a point in time
  */
-public interface IPredicate<T> {
-	
-	
+public interface IPointInTime extends IPrimitiveDataValue<String>
+{
+
 	/**
-	 * Returns true if the predicate function matches the 
-	 * @param i
-	 * @return
+	 * Gets the value of the point in time as a Calendar object
 	 */
-	boolean match(T i);
+	Calendar getDateValue();
+	/**
+	 * Sets the date value in the point in time object using the Calendar object
+	 */
+	void setDateValue(Calendar value);
 	
 }

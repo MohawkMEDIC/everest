@@ -19,6 +19,7 @@
 package ca.marc.everest.datatypes.generic;
 
 import ca.marc.everest.datatypes.*;
+import ca.marc.everest.datatypes.interfaces.ICodedSimple;
 import ca.marc.everest.annotations.*;
 
 /**
@@ -28,7 +29,7 @@ import ca.marc.everest.annotations.*;
  * </p>
  */
 @Structure(name = "CS", structureType = StructureType.DATATYPE, defaultTemplateType = java.lang.String.class)
-public class CS<T> extends ANY {
+public class CS<T> extends ANY implements ICodedSimple<T> {
 
 	// backing field for code
 	private T m_code;

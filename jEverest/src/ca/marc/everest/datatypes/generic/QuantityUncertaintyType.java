@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2011 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -14,48 +14,76 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 09-02-2011
+ * Date: 10-02-2012
  */
 package ca.marc.everest.datatypes.generic;
 
-import ca.marc.everest.interfaces.*;
+import ca.marc.everest.interfaces.IEnumeratedVocabulary;
 
 /**
- * Identifies the type of uncertainty distribution
+ * Uncertainty type
  */
 public enum QuantityUncertaintyType implements IEnumeratedVocabulary {
-	/** The The uniform distribution assigns a constant probability over the entire interval 
-     * of possible outcomes */
-	Uniform ("U"),
-	/** This is the well-known bell-shaped normal distribution */
-	Normal ("N"),
-	/** The logarithmic normal distribution */
-	LogNormal("LN"),
-	/** The gamma-distribution */
-	Gamma("G"),
-	/** Used for data that describes extinction */
-	Exponential("E"),
-	/** Used to describe the sum of squares */
-	X2("X2"),
-	/** Used to describe the quotient of a normal random variable and the square root */
-	TDistribution("T"),
-	/** sed to describe the quotient of two X^2 random variables */
-	F("F"),
-	/** The beta distribution */
-	Beta("B");
 
-	// backing field for code
+	/**
+	 * Assigned constant probability over the entire list of possible outcomes
+	 */
+	Uniform("U"),
+	/**
+	 * The well-known bell-shaped normal distribution
+	 */
+	Normal("N"),
+	/**
+	 * Logarithmic normal distribution
+	 */
+	LogNormal("LN"),
+	/**
+	 * The gamma-distribution used for data that is skewed right
+	 */
+	Gama("G"),
+	/**
+	 * Used for data that describes extinction
+	 */
+	Exponential("E"),
+	/**
+	 * Used to describe the sum of squares of random variables
+	 */
+	X2("X2"),
+	/**
+	 * Used to describe the quotient of a normal random vairable and the square root
+	 */
+	TDistribution("T"),
+	/**
+	 * Used to describe the quotient of two X^2 random variables
+	 */
+	F("F"),
+	/**
+	 * The beta distribution used for data that is bound on both sides 
+	 */
+	Beta("B");
+	
+	/**
+	 * Encapsulated data mnemonic
+	 */
+	QuantityUncertaintyType(String mnemonic)
+	{
+		this.m_code = mnemonic;
+	}
+	
+	// Backing field for code
 	private final String m_code;
 	
 	/**
-	 * Creates a new uncertainty type code
+	 * Gets the code mnemonic
 	 */
-	QuantityUncertaintyType(String code) { this.m_code = code; }
 	@Override
 	public String getCode() {
-		return this.m_code;
+		return this.m_code; 
 	}
 
+	/**
+	 * Gets the code system
+	 */
 	@Override
 	public String getCodeSystem() {
 		return "2.16.840.1.113883.5.1020";

@@ -18,14 +18,37 @@
  */
 package ca.marc.everest.datatypes.interfaces;
 
-import ca.marc.everest.datatypes.*;
 import ca.marc.everest.datatypes.generic.*;
 
 /**
  * An interface that represents the structure of a codified value
  */
-public interface ICodedValue<T> extends ICodedSimple<T> {
+public interface ICodedValue<T> extends ICodedSimple<T>, IOriginalText {
 
+	/**
+	 * Get the code system of the coded simple
+	 */
+	String getCodeSystem();
+	/**
+	 * Set the code system of the coded simple
+	 */
+	void setCodeSystem(String value);
+	/**
+	 * Get the code system name of the coded simple
+	 */
+	String getCodeSystemName();
+	/**
+	 * Set the code system name of the coded simple
+	 */
+	void setCodeSystemName(String value);
+	/**
+	 * Get the code system version of the coded simple
+	 */
+	String getCodeSystemVersion();
+	/**
+	 * Set the code system version of the coded simple
+	 */
+	void setCodeSystemVersion(String value);
 	/**
 	 * Gets the display name of the coded value
 	 */
@@ -34,18 +57,11 @@ public interface ICodedValue<T> extends ICodedSimple<T> {
 	 * Sets the display name of the coded value
 	 */
 	void setDisplayName(String value);
-	/**
-	 * Gets the original text of the coded value
-	 */
-	ED getOriginalText();
-	/**
-	 * Sets the original text of the coded value
-	 */
-	void setOriginalText(ED value);
+
 	/**
 	 * Gets the coding rationale for the coded value
 	 */
-	SET<CodingRationale> getCodingRationale();
+	ISet<CodingRationale> getCodingRationale();
 	/**
 	 * Sets the coding rationale for the coded value
 	 */

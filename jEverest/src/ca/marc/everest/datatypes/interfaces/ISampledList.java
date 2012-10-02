@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2011 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -14,21 +14,24 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 09-27-2012
+ * Date: 10-02-2012
  */
 package ca.marc.everest.datatypes.interfaces;
 
 /**
- * A Java implementation of the .NET Predicate<> interface. Used for searching sets
+ * Represents a list of values whereby the list contains a series of deltas between
+ * an origin
+ * @author fyfej
+ *
  */
-public interface IPredicate<T> {
+public interface ISampledList {
+
+	IQuantity getOrigin();
 	
 	
-	/**
-	 * Returns true if the predicate function matches the 
-	 * @param i
-	 * @return
-	 */
-	boolean match(T i);
+	IQuantity getScale();
 	
+	List<INT> getItems();
+	
+	INT getItem(int index);
 }

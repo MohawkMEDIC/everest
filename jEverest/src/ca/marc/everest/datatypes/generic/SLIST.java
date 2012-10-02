@@ -18,32 +18,15 @@
  */
 package ca.marc.everest.datatypes.generic;
 
-import java.util.Arrays;
 import ca.marc.everest.annotations.*;
+import ca.marc.everest.datatypes.ANY;
 
 /**
- * Represents a collection of items that are ordered based on their history
+ * Represents a list of sampled values with each new term 
+ * scaled and translated from a list of previous samples. Used
+ * to specify sampled biosignals
  */
-@Structure(name = "HIST", structureType = StructureType.DATATYPE)
-public class HIST<T> extends LIST<T> {
+@Structure(name = "SLIST", structureType = StructureType.DATATYPE)
+public class SLIST<T extends IQuantity> extends ANY implements ISequence<INT>, ISampledList {
 
-	/**
-	 * Creates a new instance of HIST 
-	 */
-	public HIST() { super(); }
-	/**
-	 * Creates a new instance of HIST populated with the specified items
-	 * @param items The initial list of items to populate the HIST
-	 */
-	public HIST(Iterable<T> items) { super(items); }
-	
-	/**
-	 * Creates a new instance of HIST with the specified seeded items
-	 * @param items The initial set of items to seed the HIST with
-	 */
-	public static <T> HIST<T> createHIST(T... items)
-	{
-		return new HIST<T>(Arrays.asList(items));
-	}
-	
 }

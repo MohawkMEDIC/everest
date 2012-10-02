@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2011 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -14,22 +14,35 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 06-24-2011
+ * Date: 10-02-2012
  */
 package ca.marc.everest.datatypes.interfaces;
 
+import ca.marc.everest.datatypes.TelecommunicationsAddressUse;
+
 /**
- * Represents the structure of a coded simple value 
+ * Represents a telecommunications address
  */
-public interface ICodedSimple<T> {
+public interface ITelecommunicationsAddress {
 
 	/**
-	 * Get the code mnemonic value of the coded simple
+	 * Gets a value representing the telecommunications address
 	 */
-	T getCode();
+	String getValue();
 	/**
-	 * Set the code mnemonic value of the coded simple
+	 * Sets a value representing the telecommunications address
 	 */
-	void setCode(T value);
+	void setValue(String value);
+
+	/**
+	 * Gets a collection of uses for the telecommunications address
+	 */
+	ISet<TelecommunicationsAddressUse> getUse();
+
+	/**
+	 * Gets a general specification which specifies the time which the use
+	 */
+	ISetComponent<IPointInTime> getUseablePeriod();
+	
 	
 }

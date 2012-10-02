@@ -22,6 +22,8 @@ import java.io.UnsupportedEncodingException;
 
 import ca.marc.everest.datatypes.*;
 import ca.marc.everest.datatypes.interfaces.ICodedValue;
+import ca.marc.everest.datatypes.interfaces.IEncapsulatedData;
+import ca.marc.everest.datatypes.interfaces.IOriginalText;
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.interfaces.*;
 
@@ -112,8 +114,12 @@ public class CV<T> extends CS<T> implements ICodedValue<T> {
 	/**
 	 * Sets the text as seen and or selected by the user who entered the data
 	 */
-	@Override
 	public void setOriginalText(ED value) { this.m_originalText = value; }
+	/**
+	 * Sets the text as seen and or selected by the user who entered the data
+	 */
+	@Override
+	public void setOriginalText(IEncapsulatedData value) { this.m_originalText = (ED)value; }
 	/**
 	 * Gets the reason the code was provided
 	 */

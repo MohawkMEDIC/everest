@@ -22,13 +22,14 @@ import java.util.*;
 
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.generic.*;
+import ca.marc.everest.datatypes.interfaces.*;
 
 /**
  * A general timing specification represents a set of points in time specifying
  * the timing of events and actions.
  */
 @Structure(name = "GTS", structureType = StructureType.DATATYPE)
-public class GTS extends ANY {
+public class GTS extends ANY implements ISetComponent<IPointInTime> {
 
 	// backing field for hull
 	private SXCM<TS> m_hull;

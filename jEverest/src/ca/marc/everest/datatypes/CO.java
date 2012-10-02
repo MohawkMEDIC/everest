@@ -27,7 +27,7 @@ import ca.marc.everest.annotations.*;
  * Represents data where coded values are associated with a specific order
  */
 @Structure(name = "CO", structureType = StructureType.DATATYPE)
-public class CO extends QTY<BigDecimal> implements IQuantity {
+public class CO extends QTY<BigDecimal> {
 
 	// Backing code
 	private CD<String> m_code;

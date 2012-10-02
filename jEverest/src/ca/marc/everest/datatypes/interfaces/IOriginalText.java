@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2011 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -14,21 +14,20 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 09-27-2012
+ * Date: 10-02-2012
  */
 package ca.marc.everest.datatypes.interfaces;
 
 /**
- * A Java implementation of the .NET Predicate<> interface. Used for searching sets
+ * Represents objects which carry original text data
  */
-public interface IPredicate<T> {
-	
-	
+public interface IOriginalText {
 	/**
-	 * Returns true if the predicate function matches the 
-	 * @param i
-	 * @return
+	 * Gets the original text of the coded value
 	 */
-	boolean match(T i);
-	
+	IEncapsulatedData getOriginalText();
+	/**
+	 * Sets the original text of the coded value
+	 */
+	void setOriginalText(IEncapsulatedData value);
 }

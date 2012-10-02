@@ -20,13 +20,15 @@ package ca.marc.everest.datatypes.generic;
 
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.*;
+import ca.marc.everest.datatypes.interfaces.IEncapsulatedData;
+import ca.marc.everest.datatypes.interfaces.IQuantity;
 
 /**
  * The quantity data type is an abstract generalization for all data types whose value set has an
  * order relation and where difference is defined in all of the data type's totally ordered value.
  */
 @Structure(name = "QTY", structureType = StructureType.DATATYPE)
-public class QTY<T> extends PDV<T> {
+public abstract class QTY<T> extends PDV<T> implements IQuantity {
 
 	// backing field for expression
 	private ED m_expression;
@@ -35,11 +37,11 @@ public class QTY<T> extends PDV<T> {
 	// backing field for original text
 	private ED m_originalText;
 	// backing field for uncertainty
-	private QTY<T> m_uncertainty;
+	private IQuantity m_uncertainty;
 	// backing field for uncertainty type
 	private QuantityUncertaintyType m_uncertaintyType;
 	// backing field for uncertainty range
-	private IVL<QTY<T>> m_uncertaintyRange;
+	private IVL<IQuantity> m_uncertaintyRange;
 	
 	/**
 	 * Creates a new instance of QTY
@@ -56,14 +58,22 @@ public class QTY<T> extends PDV<T> {
 	/**
 	 * Gets an expression that represents the value of the quantity
 	 */
+	@Property(name = "expression", propertyType = PropertyType.NONSTRUCTURAL, conformance = ConformanceType.OPTIONAL)
+	@Override
 	public ED getExpression() { return this.m_expression; }
 	/**
 	 * Sets an expression that represents the value of the quantity
 	 */
 	public void setExpression(ED value) { this.m_expression = value; }
 	/**
+	 * Sets an expression that represents the value of the quantity
+	 */
+	@Override
+	public void setExpression(IEncapsulatedData value) { this.m_expression = (ED)value; }
+	/**
 	 * Gets the language used for the expression
 	 */
+	@Property(name="expressionLanguage", propertyType = PropertyType.NONSTRUCTURAL, conformance = ConformanceType.REQUIRED)
 	public String getExpressionLanguage() { return this.m_expressionLanguage; }
 	/**
 	 * Sets the language used for the expression
@@ -72,6 +82,7 @@ public class QTY<T> extends PDV<T> {
 	/**
 	 * Gets a value that represents the original text that was used to derive the quantity 
 	 */
+	@Property(name = "originalText", propertyType = PropertyType.NONSTRUCTURAL, conformance = ConformanceType.REQUIRED)
 	public ED getOriginalText() { return this.m_originalText; }
 	/**
 	 * Sets the original text that was used to derive the quantity
@@ -81,27 +92,38 @@ public class QTY<T> extends PDV<T> {
 	 * Gets a value that represents the uncertainty of the quantity using a distribution function
 	 * and its parameters
 	 */
-	public QTY<T> getUncertainty() { return this.m_uncertainty; }
+	@Property(name = "uncertainty", propertyType = PropertyType.NONSTRUCTURAL, conformance = ConformanceType.REQUIRED)
+	@Override
+	public IQuantity getUncertainty() { return this.m_uncertainty; }
 	/**
 	 * Sets a value that represents the uncertainty of the quantity using a distribution function
 	 * and its parameters
 	 */
-	public void setUncertainty(QTY<T> value) { this.m_uncertainty = value; }
+	public void setUncertainty(IQuantity value) { this.m_uncertainty = value; }
 	/**
 	 * Gets a code specifying the type of probability distribution in uncertainty.
 	 */
+	@Property(name="uncertaintyType", propertyType = PropertyType.STRUCTURAL, conformance = ConformanceType.REQUIRED)
+	@Override
 	public QuantityUncertaintyType getUncertaintyType() { return this.m_uncertaintyType; }
 	/**
 	 * Sets a code specifying the type of probability distribution in uncertainty.
 	 */
 	public void setUncertaintyType(QuantityUncertaintyType value) { this.m_uncertaintyType = value; }
 	/**
-	 * Gets 
-	 * @return
+	 * Gets the value that indicates the value comes from a range of possible values
+	 * <p>The uncertain range is used where the actual value is not known,
+	 * but a range of possible values are</p>
 	 */
-	
-	public IVL<QTY<T>> getUncertaintyRange() { return this.m_uncertaintyRange; }
-	public void setUncertaintyRange(IVL<QTY<T>> value) { this.m_uncertaintyRange = value; }
+	@Property(name = "uncertainRange", propertyType = PropertyType.NONSTRUCTURAL, conformance = ConformanceType.REQUIRED)
+	@Override
+	public IVL<IQuantity> getUncertainRange() { return this.m_uncertaintyRange; }
+	/**
+	 * Sets the value that indicates the value comes from a range of possible values
+	 * <p>The uncertain range is used where the actual value is not known,
+	 * but a range of possible values are</p>
+	 */
+	public void setUncertainRange(IVL<IQuantity> value) { this.m_uncertaintyRange = value; }
 	
 	
 	/**

@@ -19,13 +19,17 @@
 package ca.marc.everest.datatypes;
 
 import ca.marc.everest.datatypes.generic.*;
+import ca.marc.everest.datatypes.interfaces.IPointInTime;
+import ca.marc.everest.datatypes.interfaces.ISet;
+import ca.marc.everest.datatypes.interfaces.ISetComponent;
+import ca.marc.everest.datatypes.interfaces.ITelecommunicationsAddress;
 import ca.marc.everest.annotations.*;
 
 /**
  * Represents a telecommunications address such as a telephone number, email address,
  * fax, or url that can be contacted
  */
-public class TEL extends PDV<String> {
+public class TEL extends PDV<String> implements ITelecommunicationsAddress {
 
 	// backing field for use
 	private SET<TelecommunicationsAddressUse> m_use;
@@ -68,12 +72,22 @@ public class TEL extends PDV<String> {
 	 * Gets a set of TelecommunicationsAddressUse codes that describe the 
 	 * circumstances under which the telecommunications address can be used
 	 */
-	public SET<TelecommunicationsAddressUse> getUse() { return this.m_use; }
+	@Override
+	public ISet<TelecommunicationsAddressUse> getUse() { return this.m_use; }
 	/**
 	 * Sets the set of TelecommunicationsAddressUse codes that describe the
 	 * circumstances under which the telecommunications address can be used
 	 */
 	public void setUse(SET<TelecommunicationsAddressUse> value) { this.m_use = value; }
+	/**
+	 * Populates the use based on a list of TelecommunicationsAddressUse codes
+	 * @param use
+	 */
+	public void setUse(TelecommunicationsAddressUse... use) {
+		this.m_use = new SET<TelecommunicationsAddressUse>();
+		for(TelecommunicationsAddressUse u : use)
+			this.m_use.add(u);
+	}
 	/**
 	 * Gets a set that describes the capabilities of the device
 	 * attached to the telecommunications address
@@ -88,7 +102,8 @@ public class TEL extends PDV<String> {
 	 * Gets a genegral timing specification that describes the segments of
 	 * time that a telecommunications address is available
 	 */
-	public GTS getUsablePeriod() { return this.m_usablePeriod;  }
+	@Override
+	public ISetComponent<IPointInTime> getUseablePeriod() { return this.m_usablePeriod;  }
 	/**
 	 * Sets a general timing specification that describes the segments
 	 * of time that a telecommunications address is available.
@@ -151,5 +166,7 @@ public class TEL extends PDV<String> {
     {
         return tel.getValue() != null && tel.getValue().startsWith("mailto:");
     }
+	
+
 
 }

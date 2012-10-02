@@ -18,15 +18,55 @@
  */
 package ca.marc.everest.datatypes.interfaces;
 
+import ca.marc.everest.annotations.TypeMap;
+import ca.marc.everest.datatypes.generic.IVL;
+import ca.marc.everest.datatypes.generic.QuantityUncertaintyType;
+
 /**
  * Identifies a class that implements the necessary data to qualify as a Quantity of something
  */
-public interface IQuantity {
+@TypeMap(name = "QTY")
+public interface IQuantity extends IAny {
 
+	/**
+	 * Gets the expression that represents the quantity
+	 */
+	IEncapsulatedData getExpression();
+	/**
+	 * Sets a value representing the expression of the quantity
+	 */
+	void setExpression(IEncapsulatedData value);
+	
+	/**
+	 * Get the uncertainty
+	 */
+	IQuantity getUncertainty();
+	/**
+	 * Set the uncertainty
+	 */
+	void setUncertainty(IQuantity value);
+	
+	/**
+	 * Get the uncertainty type
+	 */
+	QuantityUncertaintyType getUncertaintyType();
+
+	/**
+	 * Sets the type of uncertainty
+	 */
+	void setUncertaintyType(QuantityUncertaintyType value);
+	
+	/**
+	 * Get the uncertain range
+	 */
+	IInterval<IQuantity> getUncertainRange();
+
+	
 	/**
 	 * Gets the value of the quantity as an integer
 	 */
 	Integer toInteger();
+	
 	/**
 	 * Gets the value of the quantity as a double
 	 */

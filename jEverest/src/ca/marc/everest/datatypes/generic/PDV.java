@@ -19,6 +19,7 @@
 package ca.marc.everest.datatypes.generic;
 
 import ca.marc.everest.datatypes.*;
+import ca.marc.everest.datatypes.interfaces.IPrimitiveDataValue;
 import ca.marc.everest.annotations.*;
 
 /**
@@ -27,7 +28,7 @@ import ca.marc.everest.annotations.*;
  * @param <T> The encapsulated primitive value
  */
 @Structure(name = "PDV", structureType = StructureType.DATATYPE)
-public abstract class PDV <T> extends ANY implements Comparable<PDV<T>> {
+public abstract class PDV <T> extends ANY implements Comparable<PDV<T>>, IPrimitiveDataValue<T> {
 
 
 	// Backing field for the value property
@@ -55,12 +56,14 @@ public abstract class PDV <T> extends ANY implements Comparable<PDV<T>> {
 	 * @return The value encapsulated by this object
 	 */
 	@Property(name = "value", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.STRUCTURAL)
+	@Override
 	public T getValue() { return this.m_value; }
 	/**
 	 * Sets the value to be encapsulated by this object and updates the 
 	 * IsValueSet property
 	 * @param value The new value to be encapsulated
 	 */
+	@Override
 	public void setValue(T value) {
 		
 		this.m_value = value; 

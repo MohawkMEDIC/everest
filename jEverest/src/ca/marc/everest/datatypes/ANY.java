@@ -34,7 +34,7 @@ import ca.marc.everest.annotations.*;
  * of this general abstract data value type
  * </p>    
  */
-public class ANY extends HXIT implements IImplementsNullFlavor, Cloneable {
+public class ANY extends HXIT implements IAny, IImplementsNullFlavor, Cloneable {
 
 	// Backing field for null flavor
 	private CS<NullFlavor> m_nullFlavor;
