@@ -28,7 +28,7 @@ import java.math.*;
  * quantity using any unit of measure from any code system
  */
 @Structure(name = "PQR", structureType = StructureType.DATATYPE)
-public class PQR extends CV<String> implements IQuantity {
+public class PQR extends CV<String>  {
 
 	// backing field for value
 	private BigDecimal m_value;
@@ -94,14 +94,12 @@ public class PQR extends CV<String> implements IQuantity {
 	/**
 	 * Represent this PQR as an integer
 	 */
-	@Override
 	public Integer toInteger() {
 		return this.getValue().intValue();
 	}
 	/**
 	 * Represent this PQR as a double
 	 */
-	@Override
 	public Double toDouble() {
 		return this.getValue().doubleValue();
 	}

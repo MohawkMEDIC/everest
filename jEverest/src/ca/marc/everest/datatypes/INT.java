@@ -314,5 +314,20 @@ public class INT extends QTY<Integer> {
 
 	}
 	
+	/**
+	 * Represents the INT class as an integer
+	 */
+	@Override
+	public Integer toInteger() {
+		return this.getValue();
+	}
+	/**
+	 * Represents the INT class as a double
+	 */
+	@Override
+	public Double toDouble() {
+		return this.getValue().doubleValue();
+	}
+	
 	
 }

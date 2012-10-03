@@ -18,20 +18,39 @@
  */
 package ca.marc.everest.datatypes.interfaces;
 
+import java.util.Collection;
+
+import ca.marc.everest.datatypes.INT;
+
 /**
  * Represents a list of values whereby the list contains a series of deltas between
  * an origin
- * @author fyfej
- *
  */
 public interface ISampledList {
 
+	/**
+	 * Gets the origin quantity
+	 */
 	IQuantity getOrigin();
-	
-	
+
+	/**
+	 * Sets the origin quantity
+	 */
+	void setOrigin(IQuantity value);
+
+	/**
+	 * Gets the scale
+	 */
 	IQuantity getScale();
 	
-	List<INT> getItems();
-	
-	INT getItem(int index);
+	/**
+	 * Sets the scale
+	 */
+	void setScale(IQuantity value);
+
+	/**
+	 * Gets the items from the sampled list
+	 */
+	Collection<INT> getItems();
+
 }

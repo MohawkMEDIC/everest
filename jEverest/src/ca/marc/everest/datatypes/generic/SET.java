@@ -177,6 +177,7 @@ public class SET<T> extends COLL<T> implements Set<T>, ISet<T> {
 	
 	/**
 	 * Determines if this set contains the specified object
+	 * <p>Note: Uses the comparator for the compare operation</p>
 	 */
 	@SuppressWarnings({ "unchecked" })
 	@Override
