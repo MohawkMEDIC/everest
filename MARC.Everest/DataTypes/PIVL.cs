@@ -228,9 +228,36 @@ namespace MARC.Everest.DataTypes
             Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         public INT Count { get; set; }
         /// <summary>
-        /// Indicates the number of times that 
+        /// Indicates the frequency that the period repeats. 
         /// </summary>
-        /// <remarks>Only <see cref="P:Frequency"/> OR <see cref="P:Period"/> should be specified</remarks>
+        /// <remarks>Only <see cref="P:Frequency"/> OR <see cref="P:Period"/> should be specified
+        /// <para>
+        /// <see cref="P:Period"/> should be used in cases where it is easier for humans to read.</para>
+        /// <example>Repeat every 5 days:
+        /// <code lang="cs" title="Preferred">
+        /// var pivl = new PIVL&lt;TS>();
+        /// pivl.Period = new PQ(5, "d");
+        /// </code>
+        /// instead of :
+        /// <code lang="cs" title="Correct, but not preferable">
+        /// var pivl = new PIVL&lt;TS>();
+        /// pivl.Frequency = new RTO&lt;INT, PQ>(1, new PQ(5, "d"));
+        /// </code>
+        /// </para>
+        /// </example>
+        /// <example>Repeat twice per day:
+        /// <code lang="cs" title="Preferred">
+        /// var pivl = new PIVL&lt;TS>();
+        /// pivl.Frequency = new RTO&lt;INT, PQ>(2, new PQ(1, "d"));
+        /// </code>
+        /// instead of :
+        /// <code lang="cs" title="Correct, but not preferable">
+        /// var pivl = new PIVL&lt;TS>();
+        /// pivl.Period = new PQ(0.5, "d");
+        /// </code>
+        /// </example>
+        /// </remarks>
+        /// 
         public RTO<INT, PQ> Frequency { get; set; }
         /// <summary>
         /// Gets or sets the reason why the specified interval was supplied
@@ -356,7 +383,7 @@ namespace MARC.Everest.DataTypes
             // Get the desired translation in repeats
             desiredTranslation /= period;
             desiredTranslation.Value = Math.Round(desiredTranslation.Value.Value, 0);
-
+            
             if (this.Count != null && this.Count.CompareTo((int)desiredTranslation.Value) > 0) // number of iterations exceeds limit
                 return false;
             else if (desiredTranslation.Value < 0) // Happens before offset, meaning first 
@@ -404,7 +431,7 @@ namespace MARC.Everest.DataTypes
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             if((this.Frequency != null) ^ (this.Period != null))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", String.Format(ValidationMessages.MSG_INDEPENDENT_VALUE, "Frequency", "Period"), null));
-            if(this.Phase != null && (this.Phase.Width == null || this.Phase.Width.IsNull || this.Phase.Width < this.Period))
+            if(this.Phase != null && (this.Phase.Width == null || this.Phase.Width.IsNull || this.Phase.Width > this.Period))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", "Width property of Phase must be less than the Period property", null));
             return retVal;
         }

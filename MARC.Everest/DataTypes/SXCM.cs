@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -167,6 +168,18 @@ namespace MARC.Everest.DataTypes
             else if (this is SXCM<T>) // This is a value that will appear in a QSS
                 return new QSS<T>(this.Value);
             return null;
+        }
+
+        /// <summary>
+        /// Performs validation on the SXCM set
+        /// </summary>
+        /// <remarks>This function really checks that value isn't set and provides a warning if it does</remarks>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>();
+            if (this.Value != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "SXCM", String.Format(ValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "Value"), null));
+            return retVal;
         }
 
     }
