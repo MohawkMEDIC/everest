@@ -25,7 +25,7 @@ using System.ComponentModel;
 namespace MARC.Everest.DataTypes.Interfaces
 {
     /// <summary>
-    /// Identifies that a class implements a LIST function
+    /// Identifies that a class implements an unordered list of values
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), EditorBrowsable(EditorBrowsableState.Never)]
     public interface IBag<T> : IColl<T>

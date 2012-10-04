@@ -25,6 +25,7 @@ using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Interfaces;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -367,6 +368,45 @@ namespace MARC.Everest.DataTypes
             // Translate phase
             var translatedPhase = this.Phase.Translate(desiredTranslation);
             return translatedPhase.Contains(member);
+        }
+
+        /// <summary>
+        /// Extended validation routine which returns the detected issues with the
+        /// validated data type
+        /// </summary>
+        /// <remarks>
+        /// An instance of PIVL is considered valid when :
+        /// <list type="number">
+        ///     <item>
+        ///         <description>When the <see cref="P:NullFlavor"/> property is populated, neither <see cref="P:Period"/>, <see cref="P:Frequency"/> nor <see cref="P:Phase"/> are populated</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>When <see cref="P:NullFlavor"/> is not populated <see cref="P:Frequency"/> or <see cref="P:Period"/> must be set
+        ///     </item>
+        ///     <item>
+        ///         <description>When <see cref="P:Frequency"/> is set <see cref="P:Period"/> must not be set
+        ///     </item>
+        ///     <item>
+        ///         <description>When <see cref="P:Period"/> is set <see cref="P:Frequency"/> must not be set</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>If <see cref="P:Phase"/> is set and the <see cref="P:IVL.Width"/> property of <see cref="P:Phase"/> is populated, then it must be less than or equal to to value of the <see cref="P:Period"/> property</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+
+            if(this.NullFlavor != null && (this.Period != null || this.Frequency != null || this.Phase != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            else if(this.NullFlavor == null && this.Period == null && this.Period == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            if((this.Frequency != null) ^ (this.Period != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", String.Format(ValidationMessages.MSG_INDEPENDENT_VALUE, "Frequency", "Period"), null));
+            if(this.Phase != null && (this.Phase.Width == null || this.Phase.Width.IsNull || this.Phase.Width < this.Period))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", "Width property of Phase must be less than the Period property", null));
+            return retVal;
         }
 
         /// <summary>

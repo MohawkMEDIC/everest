@@ -325,6 +325,10 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Determines if the current instance of BAG is semantically equal to <paramref name="other"/>
         /// </summary>
+        /// <remarks>
+        /// Two non-null, non null-flavored instances of BAG are semantically equal when they are empty or
+        /// if they contain the same items (semantically) regardless of their order
+        /// </remarks>
         public override BL SemanticEquals(IAny other)
         {
             var baseSem = base.SemanticEquals(other);
