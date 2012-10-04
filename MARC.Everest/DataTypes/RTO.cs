@@ -22,6 +22,8 @@ using System.Xml.Serialization;
 using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
 using System.ComponentModel;
+using MARC.Everest.Connectors;
+using System.Collections.Generic;
 
 namespace MARC.Everest.DataTypes
 {
@@ -246,6 +248,35 @@ namespace MARC.Everest.DataTypes
                  UncertainRange == null;
         }
 
+        /// <summary>
+        /// Validate the RTO returning detected issues
+        /// </summary>
+        /// <remarks>An instance of RTO is considered valid when :
+        /// <list type="number">
+        ///     <item><description>When the <see cref="P:NullFlavor"/> property is set, neither <see cref="P:Numerator"/> or <see cref="P:Denominator"/> may have a value</description></item>
+        ///     <item><description>When the <see cref="P:Numerator"/> and <see cref="P:Denominator"/> properties are set, the <see cref="P:NullFlavor"/> property is not set</description></item>
+        ///     <item><description>Whenever a <see cref="P:Numerator"/> is set, the <see cref="P:Denominator"/> must also be set</description></item>
+        ///     <item><description><see cref="P:UncertainRange"/> must never be set</description></item>
+        /// </list>
+        /// </remarks>
+        public override System.Collections.Generic.IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            // Cannot use base to validate as Value is not permitted
+            var retVal = new List<IResultDetail>();
+            if (this.NullFlavor != null && (this.Numerator != null || this.Denominator != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "RTO", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            else if (this.NullFlavor == null && this.Numerator == null && this.Denominator == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "RTO", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            if (this.Numerator != null && this.Denominator == null || this.Denominator != null && this.Numerator == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "RTO", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Numerator", "Denominator"), null));
+            if (this.UncertainRange != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "RTO", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "UncertainRange"), null));
+            if (this.Uncertainty != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "RTO", String.Format(ValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "Uncertainty"), null));
+            if (this.UncertaintyType != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "RTO", String.Format(ValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "UncertaintyType"), null));
+            return retVal;
+        }
         // <summary>
         // Parse a generic RTO from a serialization surrogate RTO
         // </summary>
