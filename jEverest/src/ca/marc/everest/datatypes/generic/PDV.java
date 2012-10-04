@@ -18,8 +18,15 @@
  */
 package ca.marc.everest.datatypes.generic;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import ca.marc.everest.datatypes.*;
 import ca.marc.everest.datatypes.interfaces.IPrimitiveDataValue;
+import ca.marc.everest.interfaces.IResultDetail;
+import ca.marc.everest.interfaces.ResultDetailType;
+import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
 import ca.marc.everest.annotations.*;
 
 /**
@@ -144,6 +151,18 @@ public abstract class PDV <T> extends ANY implements Comparable<PDV<T>>, IPrimit
 		else if (!m_value.equals(other.m_value)) 
 			return false;
 		return true;
+	}
+	/* (non-Javadoc)
+	 * @see ca.marc.everest.datatypes.ANY#validateEx()
+	 */
+	@Override
+	public Collection<IResultDetail> validateEx() {
+		List<IResultDetail> retVal = new ArrayList<IResultDetail>(super.validateEx());
+        if (this.isNull() && this.m_value != null)
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "PDV", EverestValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+        else if (!this.isNull() && this.m_value == null)
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "PDV", EverestValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+        return retVal;
 	}
 	
 

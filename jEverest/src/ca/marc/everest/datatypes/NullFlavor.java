@@ -24,9 +24,10 @@ import ca.marc.everest.annotations.*;
  * Indicates why a value is not present.
  */
 @Structure(name= "NullFlavor", structureType = StructureType.CONCEPTDOMAIN)
-public enum NullFlavor implements IEnumeratedVocabulary {
+public enum NullFlavor implements IHierarchicEnumeratedVocabulary {
 
 	/**
+	 * 
 	 * No information whatsoever can be inferred from this exceptional value. This is the most general exceptional value. It is also the default exceptional value..
 	 */
 	NoInformation ("NI", null),
@@ -114,14 +115,16 @@ public enum NullFlavor implements IEnumeratedVocabulary {
 	/**
 	 * Get parent of the current null flavor
 	 */
-	public NullFlavor getParent() { return this.m_parent; }
+	@Override
+	public IHierarchicEnumeratedVocabulary getParent() { return this.m_parent; }
 	
 	/**
 	 * Get the common anscestor
 	 */
-	public NullFlavor getCommonParent(NullFlavor other)
+	@Override
+	public IHierarchicEnumeratedVocabulary getCommonParent(IHierarchicEnumeratedVocabulary other)
 	{
-		NullFlavor parentAttempt = this;
+		IHierarchicEnumeratedVocabulary parentAttempt = this;
 		do {
 			if(other.isChildConcept(parentAttempt))
 				return parentAttempt;
@@ -134,9 +137,10 @@ public enum NullFlavor implements IEnumeratedVocabulary {
 	 * Returns true if this is a child concept of other
 	 * @param other The parent to test
 	 */
-	public boolean isChildConcept(NullFlavor other)
+	@Override
+	public boolean isChildConcept(IHierarchicEnumeratedVocabulary other)
 	{
-		NullFlavor parentAttempt = this;
+		IHierarchicEnumeratedVocabulary parentAttempt = this;
 		do
 		{
 			if(parentAttempt.equals(other))

@@ -18,12 +18,19 @@
  */
 package ca.marc.everest.datatypes.generic;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.*;
+import ca.marc.everest.interfaces.IResultDetail;
+import ca.marc.everest.interfaces.ResultDetailType;
+import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
 
 /**
  * Set component: An individual component belonging to a set
  * <p>See the IVL&lt;T> datatype for an example of a set</p>
+ * <p>Note that the value property is maintained for schema compatibility and should not be set directly</p>
  */
 @Structure(name = "SXCM", structureType = StructureType.DATATYPE)
 public class SXCM<T> extends PDV<T> {
@@ -81,6 +88,16 @@ public class SXCM<T> extends PDV<T> {
 			return false;
 		}
 		return true;
+	}
+	/* (non-Javadoc)
+	 * @see ca.marc.everest.datatypes.ANY#validateEx()
+	 */
+	@Override
+	public Collection<IResultDetail> validateEx() {
+        Collection<IResultDetail >retVal = new ArrayList<IResultDetail>();
+        if (this.getValue() != null)
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.WARNING, "SXCM", String.format(EverestValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "Value"), null));
+        return retVal;
 	}
 	
 	
