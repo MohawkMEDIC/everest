@@ -19,6 +19,10 @@
 package ca.marc.everest.datatypes;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 import ca.marc.everest.datatypes.generic.*;
 import ca.marc.everest.datatypes.interfaces.IQuantity;
 import ca.marc.everest.annotations.*;
@@ -36,6 +40,27 @@ public class PQ extends QTY<BigDecimal> {
 	private SET<CodingRationale> m_rationale;
 	// backing field for translation
 	private SET<PQR> m_translation;
+	
+	private final static Map<String, Float> s_tickMap = new HashMap<String, Float>();
+	
+	/**
+	 * Static constructor
+	 */
+	static
+	{
+		s_tickMap.put("us",             0.001f);
+		s_tickMap.put("ms",             1f);
+		s_tickMap.put("s",           1000f);
+		s_tickMap.put("ks",       1000000f);
+		s_tickMap.put("Ms",    1000000000f);
+		s_tickMap.put("Gs", 1000000000000f);
+		s_tickMap.put("min",        60000f);
+		s_tickMap.put("h",        3600000f);
+		s_tickMap.put("d",       86400000f);
+		s_tickMap.put("wk",     604800000f);
+		s_tickMap.put("mo",    2628000000f);
+		s_tickMap.put("a",    31536000000f);
+	}
 	
 	/**
 	 * Creates a new instance of PQ
@@ -257,6 +282,15 @@ public class PQ extends QTY<BigDecimal> {
 		return this.getValue().doubleValue();
 	}
 	
+    /** 
+     * Determine if this PQ validates to the PQ.TIME flavor
+     */
+    @Flavor(name = "PQ.TIME")
+    public static boolean isValidTimeFlavor(PQ a)
+    {
+        return s_tickMap.containsKey(a.getUnit());
+    }
+    
 	@Override
 	public int hashCode() {
 		final int prime = 31;

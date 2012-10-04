@@ -121,13 +121,12 @@ public enum NullFlavor implements IHierarchicEnumeratedVocabulary {
 	/**
 	 * Get the common anscestor
 	 */
-	@Override
-	public IHierarchicEnumeratedVocabulary getCommonParent(IHierarchicEnumeratedVocabulary other)
+	public NullFlavor getCommonParent(NullFlavor other)
 	{
 		IHierarchicEnumeratedVocabulary parentAttempt = this;
 		do {
 			if(other.isChildConcept(parentAttempt))
-				return parentAttempt;
+				return (NullFlavor)parentAttempt;
 			parentAttempt = parentAttempt.getParent();
 		} while(parentAttempt != null);
 		return NullFlavor.NoInformation;

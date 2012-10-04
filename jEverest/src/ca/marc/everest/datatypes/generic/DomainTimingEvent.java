@@ -24,66 +24,67 @@ import ca.marc.everest.annotations.*;
  * Domain timing event types
  */
 @Structure(name = "DomainTimingEvent", structureType = StructureType.CONCEPTDOMAIN)
-public enum DomainTimingEvent implements IEnumeratedVocabulary {
+public enum DomainTimingEvent implements IHierarchicEnumeratedVocabulary {
 	/**
 	 * Before a meal
 	 */
-	BeforeMeal("AC"),
+	BeforeMeal("AC", null),
 	/**
 	 * Before Lunch
 	 */
-	BeforeLunch("ACD"),
+	BeforeLunch("ACD", BeforeMeal),
 	/**
 	 * Before breakfast
 	 */
-	BeforeBreakfast("ACM"),
+	BeforeBreakfast("ACM", BeforeMeal),
 	/**
 	 * Before Dinner
 	 */
-	BeforeDinner("ACV"),
+	BeforeDinner("ACV", BeforeMeal),
 	/**
 	 * One hour before sleeping
 	 */
-	HourOfSleep("HS"),
+	HourOfSleep("HS", null),
 	/**
 	 * BEtween two meals
 	 */
-	BetweenMeals("IC"),
+	BetweenMeals("IC", null),
 	/**
 	 * Between lunch and dinner
 	 */
-	BetweenLunchAndDinner("ICD"),
+	BetweenLunchAndDinner("ICD", BetweenMeals),
 	/**
 	 * Between breakfast and lunch
 	 */
-	BetweenBreakfastAndLunch("ICM"),
+	BetweenBreakfastAndLunch("ICM", BetweenMeals),
 	/**
 	 * Between dinner and the hour of sleep
 	 */
-	BetweenDinnerAndSleep("ICV"),
+	BetweenDinnerAndSleep("ICV", BetweenMeals),
 	/**
 	 * After a meal
 	 */
-	AfterMeal("PC"),
+	AfterMeal("PC", null),
 	/**
 	 * After lunch
 	 */
-	AfterLunch("PCD"),
+	AfterLunch("PCD", AfterMeal),
 	/**
 	 * After breakfast
 	 */
-	AfterBreakfast("PCM"),
+	AfterBreakfast("PCM", AfterMeal),
 	/**
 	 * After dinner
 	 */
-	AfterDinner("PCV");
+	AfterDinner("PCV", AfterMeal);
 
 	private final String m_code;
+	private final DomainTimingEvent m_parent;
 	
 	/**
 	 * Creates a new instance of the DomainTimingEvent enumeration
 	 */
-	DomainTimingEvent(String code) { this.m_code = code; }
+	DomainTimingEvent(String code, DomainTimingEvent parent) { this.m_code = code; this.m_parent = parent; }
 	
 	/**
 	 * Get the code of the domain timing event
@@ -99,6 +100,29 @@ public enum DomainTimingEvent implements IEnumeratedVocabulary {
 	@Override
 	public String getCodeSystem() {
 		return "2.16.840.1.113883.5.139";
+	}
+
+	/**
+	 * Gets the parent of this code
+	 */
+	@Override
+	public IHierarchicEnumeratedVocabulary getParent() {
+		return this.m_parent;
+	}
+
+	/**
+	 * Returns true if the specified code is a child concept of this code.
+	 */
+	@Override
+	public boolean isChildConcept(IHierarchicEnumeratedVocabulary other) {
+		IHierarchicEnumeratedVocabulary parentAttempt = this;
+		do
+		{
+			if(parentAttempt.equals(other))
+				return true;
+			parentAttempt = parentAttempt.getParent();
+		} while(parentAttempt != null);
+		return false;
 	}
 
 }

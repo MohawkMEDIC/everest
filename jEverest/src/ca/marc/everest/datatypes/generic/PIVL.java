@@ -166,14 +166,14 @@ public class PIVL<T extends IAny> extends SXCM<T> implements IOriginalText {
 	 * Gets the value which indicates the frequency at which the interval repeats
 	 */
 	@Property(name = "frequency", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.STRUCTURAL)
-	public RTO<INT, PQ> getM_frequency() {
+	public RTO<INT, PQ> getFrequency() {
 		return m_frequency;
 	}
 
 	/**
 	 * Sets the value which indicates the frequency at which the interval repeats
 	 */
-	public void setM_frequency(RTO<INT, PQ> value) {
+	public void setFrequency(RTO<INT, PQ> value) {
 		this.m_frequency = value;
 	}
 
@@ -219,7 +219,7 @@ public class PIVL<T extends IAny> extends SXCM<T> implements IOriginalText {
 	public Collection<IResultDetail> validateEx() {
 		 List<IResultDetail> retVal = new ArrayList<IResultDetail>(super.validateEx());
 
-         if(this.isNull() && (this.m_period != null || this.m_frequency != null || this.m_phase != null)
+         if(this.isNull() && (this.m_period != null || this.m_frequency != null || this.m_phase != null))
              retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "PIVL", EverestValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
          else if(!this.isNull() && this.m_period == null && this.m_period == null)
              retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "PIVL", EverestValidationMessages.MSG_NULLFLAVOR_MISSING, null));
@@ -250,19 +250,19 @@ public class PIVL<T extends IAny> extends SXCM<T> implements IOriginalText {
         if (eivlOther == null)
             return BL.FALSE;
         else
-            return
+            return BL.fromBoolean(
                 (eivlOther.getPeriod() == null ? this.getPeriod() == null : eivlOther.getPeriod().semanticEquals(this.getPeriod()).toBoolean())
                 &&
                 (eivlOther.getFrequency() == null ? this.getFrequency() == null : eivlOther.getFrequency().semanticEquals(this.getFrequency()).toBoolean()) 
                 &&
-                (eivlOther.getPhase() == null ? this.getPhase() == null : eivlOther.getPhase().semanticEquals(this.getPhase()).toBoolean());
+                (eivlOther.getPhase() == null ? this.getPhase() == null : eivlOther.getPhase().semanticEquals(this.getPhase()).toBoolean()));
 	}
 	
 	
 	/**
 	 * Determines if member is contained (or described by) the periodic interval
 	 */
-	public boolean Contains(T member)
+	public boolean contains(T member)
 	{
 		// Algorithm:
         //  phase.translate((int)((member - low) / period) * period)
@@ -276,7 +276,7 @@ public class PIVL<T extends IAny> extends SXCM<T> implements IOriginalText {
         PQ period = this.m_period;
 
         if (period == null && this.m_frequency != null) // If frequency is specified, then make period the reciprocal
-            period = this.m_frequency.getDenominator().divide(this.m_frequency.getNumerator());
+            period = this.m_frequency.getDenominator().divide(this.m_frequency.getNumerator().toReal());
 
         // Get the distance between the target iteration and the phase
         PQ desiredTranslation = distMemb.distance(this.m_phase.getLow());

@@ -29,11 +29,6 @@ public interface IHierarchicEnumeratedVocabulary extends IEnumeratedVocabulary {
 	IHierarchicEnumeratedVocabulary getParent();
 
 	/**
-	 * Gets the common parent of this item and other
-	 */
-	IHierarchicEnumeratedVocabulary getCommonParent(IHierarchicEnumeratedVocabulary other);
-
-	/**
 	 * Determine of other is child concept of the current concept
 	 */
 	boolean isChildConcept(IHierarchicEnumeratedVocabulary other);
