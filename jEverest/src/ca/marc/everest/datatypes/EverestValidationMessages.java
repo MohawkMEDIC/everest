@@ -30,6 +30,7 @@ public final class EverestValidationMessages {
     public final static String MSG_PROPERTY_NOT_POPULATED = "%1 must be populated and must contain a valid instance of %2";
     public final static String MSG_INVALID_VALUE = "'%1' is not a valid value for %2";
     public final static String MSG_DEPENDENT_VALUE_MISSING = "%1 cannot be populated unless %2 is populated";
+    public final static String MSG_INSUFFICIENT_TERMS = "Collection does not contain sufficient number of terms";
     public final static String MSG_INDEPENDENT_VALUE = "When %1 is populated, %2 must not be populated";
     public final static String MSG_NULL_COLLECTION_VALUE = "Collection item cannot be null or null-flavored";
     public final static String MSG_PROPERTY_SCHEMA_ONLY = "%1 is only provided for compatibility with schemas and should not be used directly";

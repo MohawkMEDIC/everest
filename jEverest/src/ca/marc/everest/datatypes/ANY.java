@@ -42,7 +42,7 @@ public class ANY extends HXIT implements IAny, IImplementsNullFlavor, Cloneable 
 	private CS<UpdateMode> m_updateMode;
 	// Backing field for flavor id
 	private String m_flavorId;
-	
+		
 	/**
 	 * Gets the exceptional code that identifies why the contents of the datatype are not 
 	 * being passed within a message instance.
@@ -203,4 +203,19 @@ public class ANY extends HXIT implements IAny, IImplementsNullFlavor, Cloneable 
 			retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "ANY", "NullFlavor on ANY instance must imply 'Invalid'", null));
 		return retVal;
 	}
+
+	/**
+	 * Creates a shallow copy of the object
+	 */
+	@Override
+	public ANY shallowCopy() {
+		// TODO Auto-generated method stub
+		try {
+			return (ANY)super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new UnsupportedOperationException(e.getMessage(), e);
+		}
+	}
+	
+
 }

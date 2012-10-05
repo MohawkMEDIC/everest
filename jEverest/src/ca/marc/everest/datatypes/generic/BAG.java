@@ -32,12 +32,13 @@ import ca.marc.everest.datatypes.BL;
 import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.IBag;
 import ca.marc.everest.datatypes.interfaces.ISemanticEquals;
+import ca.marc.everest.interfaces.IGraphable;
 
 /**
  * An unordered collection of values whereby each value can be contained more than once.
  */
 @Structure(name = "BAG", structureType = StructureType.DATATYPE)
-public class BAG<T> extends COLL<T> implements IBag<T> {
+public class BAG<T extends IGraphable> extends COLL<T> implements IBag<T> {
 
 	// Backing field for items
 	private List<T> m_bag = new ArrayList<T>();
@@ -63,7 +64,7 @@ public class BAG<T> extends COLL<T> implements IBag<T> {
 	 * Create a bag of items
 	 * @param items The items to seed the bag with
 	 */
-	public static <T> BAG<T> createBAG(T... items)
+	public static <T extends IGraphable> BAG<T> createBAG(T... items)
 	{
 		return new BAG<T>(Arrays.asList(items));
 	}

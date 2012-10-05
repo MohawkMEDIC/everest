@@ -25,7 +25,7 @@ import ca.marc.everest.interfaces.*;
 /**
  * Identifies a type as implementing the ANY attributes (a data type)
  */
-public interface IAny extends ISemanticEquals, Cloneable, IImplementsNullFlavor, IGraphable {
+public interface IAny extends ISemanticEquals, IImplementsNullFlavor, IGraphable {
 
 	/**
 	 * Validates the instance
@@ -52,4 +52,9 @@ public interface IAny extends ISemanticEquals, Cloneable, IImplementsNullFlavor,
 	 * Validate with details
 	 */
 	Collection<IResultDetail> validateEx();
+	
+	/**
+	 * Create a shallow copy of the object
+	 */
+	IAny shallowCopy();
 }

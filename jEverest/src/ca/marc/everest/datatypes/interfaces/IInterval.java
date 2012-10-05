@@ -21,7 +21,7 @@ package ca.marc.everest.datatypes.interfaces;
 /**
  * Identifies an interval 
  */
-public interface IInterval<T> extends IOriginalText {
+public interface IInterval<T> extends ISetComponent<T>, IOriginalText {
 
 	/**
 	 * Gets the lower bound of the interval

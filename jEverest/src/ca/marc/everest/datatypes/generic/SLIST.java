@@ -264,10 +264,10 @@ public class SLIST<T extends IQuantity> extends ANY implements ISequence<INT>, I
 	/**
 	 * Converts the list of samples to an array
 	 */
-	@SuppressWarnings({ "unchecked", "hiding" })
+	@SuppressWarnings({ "hiding" })
 	@Override
 	public <T> T[] toArray(T[] a) {
-		return (T[])this.m_digits.toArray();
+		return this.m_digits.toArray(a);
 	}
 
 	/** 

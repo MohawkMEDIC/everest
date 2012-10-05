@@ -30,6 +30,8 @@ import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.ISemanticEquals;
 import ca.marc.everest.datatypes.interfaces.ISet;
 import ca.marc.everest.exceptions.DuplicateItemException;
+import ca.marc.everest.formatters.FormatterUtil;
+import ca.marc.everest.interfaces.IGraphable;
 
 
 /**
@@ -38,7 +40,7 @@ import ca.marc.everest.exceptions.DuplicateItemException;
  * @param <E> the element type
  */
 @Structure(name="SET", structureType=StructureType.DATATYPE)
-public class SET<T> extends COLL<T> implements Set<T>, ISet<T> {
+public class SET<T extends IGraphable> extends COLL<T> implements Set<T>, ISet<T> {
 
 	/**
 	 * Represents a default comparator
@@ -86,16 +88,10 @@ public class SET<T> extends COLL<T> implements Set<T>, ISet<T> {
 		super();
 	}
 	/**
-	 * Create a new instance of the set with the specified capacity
-	 */
-	public SET(int capacity) {
-		this();
-	}
-	/**
 	 * Creates a new instance of the set with the specified iterable
 	 * instance forming the content of the set
 	 */
-	public SET(Iterable<T> collection)
+	public SET(Iterable<? extends IGraphable> collection)
 	{
 		this(collection, null);
 	}
@@ -124,18 +120,19 @@ public class SET<T> extends COLL<T> implements Set<T>, ISet<T> {
 	 * @param comparator The custom comparator to use for detecting duplicates within the set
 	 * @param collection The initial collection
 	 */
-	public SET(Iterable<T> collection, Comparator<T> comparator)
+	public SET(Iterable<? extends IGraphable> collection, Comparator<T> comparator)
 	{
 		this();
 		this.m_comparator = comparator == null ? this.f_defaultComparator : comparator;
-		for(T item : collection)
-			this.add(item);
+		for(IGraphable item : collection)
+			this.add((T)item);
+		
 	}
 
 	/**
 	 * Create a set helper method
 	 */
-	public static <T> SET<T> createSET(T... items)
+	public static <T extends IGraphable> SET<T> createSET(T... items)
 	{
 		return new SET<T>(Arrays.asList(items));
 	}

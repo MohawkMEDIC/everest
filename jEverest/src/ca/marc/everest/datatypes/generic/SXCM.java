@@ -23,6 +23,8 @@ import java.util.Collection;
 
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.*;
+import ca.marc.everest.datatypes.interfaces.IAny;
+import ca.marc.everest.datatypes.interfaces.ISetComponent;
 import ca.marc.everest.interfaces.IResultDetail;
 import ca.marc.everest.interfaces.ResultDetailType;
 import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
@@ -33,7 +35,7 @@ import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
  * <p>Note that the value property is maintained for schema compatibility and should not be set directly</p>
  */
 @Structure(name = "SXCM", structureType = StructureType.DATATYPE)
-public class SXCM<T> extends PDV<T> {
+public class SXCM<T extends IAny> extends PDV<T> implements ISetComponent<T> {
 
 	// backing field for the set operator
 	private SetOperator m_setOperator;
@@ -47,7 +49,15 @@ public class SXCM<T> extends PDV<T> {
 	 * @param value The initial value of the SXCM
 	 */
 	public SXCM(T value) { super(value); }
-	
+	/**
+	 * Copies the values in copy to this instance of SXCM 
+	 * @throws CloneNotSupportedException When SXCM is bound to a class which cannot be cloned
+	 */
+	@SuppressWarnings("unchecked")
+	public SXCM(SXCM<T> copy) throws CloneNotSupportedException {
+		super((T)copy.getValue().shallowCopy());
+		this.m_setOperator = copy.getOperator();
+	}
 	/**
 	 * Gets the operator that dictates how the component is included as part of the set
 	 */

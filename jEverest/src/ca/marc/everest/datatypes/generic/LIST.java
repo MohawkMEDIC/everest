@@ -33,12 +33,13 @@ import ca.marc.everest.datatypes.BL;
 import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.ISemanticEquals;
 import ca.marc.everest.datatypes.interfaces.ISequence;
+import ca.marc.everest.interfaces.IGraphable;
 
 /**
  * Represents a collection that contains discrete (but not necessarily distinct) values in a defined sequence.
  */
 @Structure(name = "LIST", structureType = StructureType.DATATYPE)
-public class LIST<T> extends COLL<T> implements List<T>, ISequence<T> {
+public class LIST<T extends IGraphable> extends COLL<T> implements List<T>, ISequence<T> {
 	
 	// List of items
 	private List<T> m_list = new ArrayList<T>();
@@ -61,19 +62,18 @@ public class LIST<T> extends COLL<T> implements List<T>, ISequence<T> {
 	 * Creates a new instance of the LIST datatype with the specified items
 	 * @param items The initial set of items to place into the LIST
 	 */
-	public LIST(Iterable<T> items) 
+	public LIST(Iterable<? extends IGraphable> items)
 	{
 		this();
-		for(T item : items)
-			this.add(item);
-		
+		for(IGraphable item : items)
+			this.add((T)item);
 	}
 	
 	/**
 	 * Create a list from items
 	 * @param items The items to seed the list with
 	 */
-	public static <T> LIST<T> createLIST(T... items)
+	public static <T extends IGraphable> LIST<T> createLIST(T... items)
 	{
 		return new LIST<T>(Arrays.asList(items));
 	}

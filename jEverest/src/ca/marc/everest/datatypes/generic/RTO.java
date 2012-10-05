@@ -25,6 +25,8 @@ import java.util.List;
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.BL;
 import ca.marc.everest.datatypes.EverestValidationMessages;
+import ca.marc.everest.datatypes.NullFlavor;
+import ca.marc.everest.datatypes.REAL;
 import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.IQuantity;
 import ca.marc.everest.interfaces.IResultDetail;
@@ -166,6 +168,20 @@ public class RTO<S extends IQuantity & IAny, T extends IQuantity & IAny> extends
 
 	}
 	
+	/**
+	 * Represents the RTO as a REAL
+	 */
+	public REAL toReal()
+	{
+        REAL retVal = new REAL();
+		if (this.m_numerator == null || this.m_denominator == null)
+            return null;
+        else if (this.m_numerator.isNull() || this.m_denominator.isNull())
+        	retVal.setNullFlavor(NullFlavor.NoInformation);
+        else
+            retVal.setValue(this.m_numerator.toDouble() / this.m_denominator.toDouble());
+		return retVal;
+	}
 	
 
 }

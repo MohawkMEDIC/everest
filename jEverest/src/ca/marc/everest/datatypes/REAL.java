@@ -280,4 +280,18 @@ public class REAL extends QTY<Double> {
 	{
 		return new INT(this.getValue().intValue());
 	}
+	/**
+	 * Represent as an integer
+	 */
+	@Override
+	public Integer toInteger() {
+		return this.getValue().intValue();
+	}
+	/**
+	 * Represent as double
+	 */
+	@Override
+	public Double toDouble() {
+		return this.getValue();
+	}
 }

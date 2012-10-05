@@ -34,6 +34,7 @@ import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.ICollection;
 import ca.marc.everest.datatypes.interfaces.IPredicate;
 import ca.marc.everest.datatypes.interfaces.ISemanticEquals;
+import ca.marc.everest.interfaces.IGraphable;
 import ca.marc.everest.interfaces.IResultDetail;
 import ca.marc.everest.interfaces.ResultDetailType;
 import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
@@ -43,7 +44,7 @@ import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
  * to collections
  */
 @Structure(name = "COLL", structureType = StructureType.DATATYPE)
-public abstract class COLL<T> extends ANY implements ICollection<T> {
+public abstract class COLL<T extends IGraphable> extends ANY implements ICollection<T> {
 
 	/**
 	 * Gets the list of items
