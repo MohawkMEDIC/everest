@@ -425,7 +425,7 @@ namespace MARC.Everest.DataTypes
         {
             var retVal = new List<IResultDetail>(base.ValidateEx());
 
-            if(this.NullFlavor != null && (this.Period != null || this.Frequency != null || this.Phase != null)
+            if(this.NullFlavor != null && (this.Period != null || this.Frequency != null || this.Phase != null))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             else if(this.NullFlavor == null && this.Period == null && this.Period == null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));

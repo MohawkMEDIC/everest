@@ -409,7 +409,7 @@ namespace MARC.Everest.DataTypes
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemName", "CodeSystem"), null));
                 if(CodeSystemVersion != null && CodeSystem == null)
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemVersion", "CodeSystem"), null));
-                if(CodeSystem != null && (Code == null || ((NullFlavor)NullFlavor).IsChildConcept(DataTypes.NullFlavor.Other)))
+                if(CodeSystem != null && (Code == null || NullFlavor != null && ((NullFlavor)NullFlavor).IsChildConcept(DataTypes.NullFlavor.Other)))
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystem can only be used when Code is populated or NullFlavor does implies Other", null));
                 if(DisplayName != null && Code == null)
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "DisplayName", "CodeSystem"), null));

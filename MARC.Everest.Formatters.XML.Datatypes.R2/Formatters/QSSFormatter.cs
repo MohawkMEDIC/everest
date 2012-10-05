@@ -104,7 +104,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
                 int sDepth = s.Depth;
                 string sName = s.Name;
 
-                LIST<IGraphable> termList = new LIST<IGraphable>(4);
+                List<IGraphable> termList = new List<IGraphable>(4);
 
                 s.Read();
                 // string Name
@@ -150,6 +150,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
                 }
 
                 // Set term list
+
                 ((IListContainer)instance).ContainedList = termList;
             }
             #endregion

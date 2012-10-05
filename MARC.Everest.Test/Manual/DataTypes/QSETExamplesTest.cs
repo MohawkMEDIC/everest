@@ -76,7 +76,7 @@ namespace MARC.Everest.Test.DataTypes.Manual
         {
             // create a new intersection set expression
             // (difference of 2 intervals is intersected with a third interval)
-            QSI<INT> setExpression = new QSI<INT>
+            QSI<INT> setExpression = QSI<INT>.CreateQSI
             (
                 // creates the set expression by differentiating two intervals
                 new QSD<INT>(
@@ -113,7 +113,7 @@ namespace MARC.Everest.Test.DataTypes.Manual
         [TestMethod]
         public void QSETExamplesTest02()
         {
-            QSI<INT> setExpression = new QSI<INT>
+            QSI<INT> setExpression = QSI<INT>.CreateQSI
             (
                 new QSD<INT>(
                     new IVL<INT>(1, 10)

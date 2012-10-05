@@ -57,17 +57,17 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Creates a new instance of the QSET set class containing the specified <paramref name="collection"/>
         /// </summary>
-        public QSS(List<T> terms)
+        public QSS(IEnumerable<T> terms)
         {
-            this.Terms = terms;
+            this.Terms = new List<T>(terms);
         }
 
         /// <summary>
         /// Creates a new instance of the QSET set class containing the specified <paramref name="collection"/>
         /// </summary>
-        public QSS(params T[] terms)
+        public static QSS<T> CreateQSS(params T[] terms)
         {
-            this.Terms = new List<T>(terms);
+            return new QSS<T>(terms);
         }
 
         /// <summary>

@@ -200,7 +200,7 @@ namespace MARC.Everest.DataTypes
                     else if (current is SXCM<T>)
                     {
                         var sxcm = current.Clone() as SXCM<T>;
-                        sxcm.Operator = this.GetEquivalentSetOperator();
+                        sxcm.Operator = this.GetEquivalentSetOperator(); // This is a shallow clone, but that is ok since we only want to modify the SetOperator which is immutable
                         retVal.Add(sxcm);
                     }
                     else if (current is T)

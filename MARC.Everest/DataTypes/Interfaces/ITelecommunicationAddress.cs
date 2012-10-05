@@ -154,6 +154,6 @@ namespace MARC.Everest.DataTypes.Interfaces
         /// Indicates the period that this particular telecommunications address is valid
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        GTS UseablePeriod { get;}
+        ISetComponent<IPointInTime> UseablePeriod { get;}
     }
 }

@@ -194,9 +194,9 @@ namespace MARC.Everest.DataTypes
             {
                 retVal.AddRange(t.ValidateEx());
                 if (t.OriginalText != null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "OriginalText", "Translation"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "OriginalText", "Translation"), null));
                 if (t.Translation != null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Translation", "Translation"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Translation", "Translation"), null));
             }
             return retVal;
         }

@@ -31,12 +31,14 @@ namespace MARC.Everest.DataTypes
     {
         internal const string MSG_NULLFLAVOR_WITH_VALUE = "Data type cannot carry a value when NullFlavor is present";
         internal const string MSG_NULLFLAVOR_MISSING = "Data type must carry a NullFlavor when no value is present";
-        internal const string MSG_PROPERTY_NOT_PERMITTED = "{0} is not permitted on property {1}";
+        internal const string MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY = "{0} is not permitted on property {1}";
+        internal const string MSG_PROPERTY_NOT_PERMITTED = "{0} cannot be populated";
         internal const string MSG_PROPERTY_SCHEMA_ONLY = "{0} is only provided for compatibility with schemas and should not be used directly";
         internal const string MSG_PROPERTY_NOT_POPULATED = "{0} must be populated and must contain a valid instance of {1}";
         internal const string MSG_INVALID_VALUE = "'{0}' is not a valid value for {1}";
         internal const string MSG_DEPENDENT_VALUE_MISSING = "{0} cannot be populated unless {1} is populated";
         internal const string MSG_INDEPENDENT_VALUE = "When {0} is populated, {1} must not be populated";
         internal const string MSG_NULL_COLLECTION_VALUE = "Collection item cannot be null or null-flavored";
+        internal const string MSG_INSUFFICIENT_TERMS = "Collection does not contain sufficient number of terms";
     }
 }

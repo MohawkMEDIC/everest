@@ -73,7 +73,7 @@ namespace MARC.Everest.Test.DataTypes
         [TestMethod]
         public void SXPRTSExistingCollectionTest()
         {
-            SXPR<TS> test = new SXPR<TS>(new IVL<TS>(DateTime.Now),
+            SXPR<TS> test = SXPR<TS>.CreateSXPR(new IVL<TS>(DateTime.Now),
                  new IVL<TS>(DateTime.Now.AddDays(1)));
             Assert.AreEqual(test.Count, 2);
         }
@@ -86,7 +86,7 @@ namespace MARC.Everest.Test.DataTypes
         public void SXPRSTMixedComponentsFormatting()
         {
 
-            SXPR<RTO<INT, INT>> test = new SXPR<RTO<INT, INT>>(new IVL<RTO<INT,INT>>(new RTO<INT,INT>(1,3), new RTO<INT,INT>(2,3)),
+            SXPR<RTO<INT, INT>> test = SXPR<RTO<INT, INT>>.CreateSXPR(new IVL<RTO<INT,INT>>(new RTO<INT,INT>(1,3), new RTO<INT,INT>(2,3)),
                 new PIVL<RTO<INT,INT>>(
                     new IVL<RTO<INT,INT>>(new RTO<INT,INT>(2,3),new RTO<INT,INT>(5,6)),
                     new PQ((decimal)1.0, "y")
@@ -120,7 +120,7 @@ namespace MARC.Everest.Test.DataTypes
         [TestMethod]
         public void SXPRTSMixedComponentsFormatting()
         {
-            SXPR<TS> test = new SXPR<TS>(new IVL<TS>(DateTime.Now, DateTime.Now.AddDays(1)),
+            SXPR<TS> test = SXPR<TS>.CreateSXPR(new IVL<TS>(DateTime.Now, DateTime.Now.AddDays(1)),
                 new PIVL<TS>(
                     new IVL<TS>(DateTime.Now, DateTime.Now.AddDays(1)),
                     new PQ((decimal)1.0, "y")

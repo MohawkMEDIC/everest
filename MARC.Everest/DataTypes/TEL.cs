@@ -311,5 +311,17 @@ namespace MARC.Everest.DataTypes
         }
 
         #endregion
+
+        #region ITelecommunicationAddress Members
+
+        /// <summary>
+        /// Gets the usable period as an ISetComponent
+        /// </summary>
+        ISetComponent<IPointInTime> ITelecommunicationAddress.UseablePeriod
+        {
+            get { return this.UseablePeriod; }
+        }
+
+        #endregion
     }
 }

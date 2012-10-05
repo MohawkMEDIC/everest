@@ -95,7 +95,7 @@ namespace MARC.Everest.Test.DataTypes.R2
             // We set the usable period to a set of
             // 1. All weekdays
             // 2. intersect with times from 9-5 daily
-            tel.UseablePeriod = new GTS(new QSI<TS>(
+            tel.UseablePeriod = new GTS(QSI<TS>.CreateQSI(
                 weekdays,
                 nineToFive 
             ));

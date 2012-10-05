@@ -98,7 +98,7 @@ namespace MARC.Everest.Test.Manual.Operations
 
             // Construct instructions as a union of the two
             GTS instructionTime = new GTS();
-            instructionTime.Hull = new QSU<TS>(
+            instructionTime.Hull = QSU<TS>.CreateQSU(
                 hourAfterMeal,
                 beforeSleep
                 );

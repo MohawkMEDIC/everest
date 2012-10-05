@@ -10,7 +10,7 @@ namespace MARC.Everest.DataTypes.Interfaces
     /// <summary>
     /// Identifies an interface that the ANY data type implements
     /// </summary>
-    public interface IAny : IImplementsNullFlavor, ISemanticEquatable, ICloneable
+    public interface IAny : IImplementsNullFlavor, ISemanticEquatable, ICloneable, IGraphable
     {
         /// <summary>
         /// Validates the instance 

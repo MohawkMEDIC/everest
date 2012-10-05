@@ -136,6 +136,7 @@ namespace MARC.Everest.DataTypes
         /// single value along with a distribution of uncertainty for the value.
         /// </para>
         /// </remarks>
+        [Property(Name = "uncertainRange", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Required)]
         public virtual IVL<IQuantity> UncertainRange { get; set; }
 
         /// <summary>

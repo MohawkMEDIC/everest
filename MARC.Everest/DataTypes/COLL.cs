@@ -78,6 +78,23 @@ namespace MARC.Everest.DataTypes
             return (this.NullFlavor != null) ^ (!this.IsEmpty);
         }
 
+        /// <summary>
+        /// Find all items that match the given predicate
+        /// </summary>
+        public T Find(Predicate<T> match)
+        {
+            return this.Items.Find(match);
+        }
+
+        /// <summary>
+        /// Find all occurences of <paramref name="match"/>
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        public List<T> FindAll(Predicate<T> match)
+        {
+            return this.Items.FindAll(match);
+        }
+
 
         /// <summary>
         /// Validate the data type returning the validation errors that occur

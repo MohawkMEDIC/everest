@@ -159,14 +159,14 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Translate to QSET equivalent
         /// </summary>
-        internal ISetComponent<T> TranslateToQSetComponent()
+        internal ISetComponent<T> TranslateToQSETComponent()
         {
             if (this is IVL<T> || this is PIVL<T> || this is EIVL<T>)
                 return this;
             else if (this is SXPR<T>)
                 return (this as SXPR<T>).TranslateToQSET();
             else if (this is SXCM<T>) // This is a value that will appear in a QSS
-                return new QSS<T>(this.Value);
+                return QSS<T>.CreateQSS(this.Value);
             return null;
         }
 

@@ -87,7 +87,7 @@ namespace MARC.Everest.DataTypes
     [TypeMap(Name = "QSD", ArgumentType = "TS")]
     [TypeMap(Name = "SXPR", ArgumentType = "TS")]
     [TypeMap(Name = "SXCM", ArgumentType = "TS")]
-    public class GTS : ANY, IEquatable<GTS>
+    public class GTS : ANY, IEquatable<GTS>, ISetComponent<IPointInTime>
     {
 
         /// <summary>

@@ -714,13 +714,13 @@ namespace MARC.Everest.DataTypes
             else if (this.NullFlavor == null && this.Data == null && this.Reference == null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", ValidationMessages.MSG_NULLFLAVOR_MISSING));
             if (this.Translation != null && this.Translation.FindAll(o => o.Translation != null).Count > 0)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Translation", "Translation"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Translation", "Translation"), null));
             if (this.Reference != null && !TEL.IsValidUrlFlavor(this.Reference))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", "When populated, Reference must be a valid instance of TEL.URL", null));
             if (this.Thumbnail != null && this.Thumbnail.Thumbnail != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Thumbnail", "Thumbnail"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Thumbnail", "Thumbnail"), null));
             if (this.Thumbnail != null && this.Thumbnail.Reference != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "Thumbnail", "Reference"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Thumbnail", "Reference"), null));
             
             return retVal;
         }
