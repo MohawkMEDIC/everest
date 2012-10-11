@@ -25,6 +25,7 @@ using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -96,7 +97,22 @@ namespace MARC.Everest.DataTypes
                 isValid &= qs != null && !qs.IsNull;
             return isValid;
         }
+        /// <summary>
+        /// Extended validation routine which returns a list of detected issues
+        /// </summary>
+        /// <remarks>An instance of QSET is considered valid when it contains at least one items and no property contains
+        /// a null component</remarks>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            List<IResultDetail> retVal = new List<IResultDetail>();
 
+            if (!((this.NullFlavor != null) ^ (this.Terms.Count > 0)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSS", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            foreach (var qs in Terms ?? new List<T>())
+                if (qs == null || qs.IsNull)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSI", ValidationMessages.MSG_NULL_COLLECTION_VALUE, null));
+            return retVal;
+        }
 
         #region IEnumerable<T> Members
 
