@@ -39,7 +39,7 @@ abstract class QSC<T extends IAny> extends QSET<T> implements Collection<ISetCom
 	/**
 	 * Creates a new instance of QSC
 	 */
-	protected QSC() { super(); }
+	protected QSC() { super();  }
 
 	/**
 	 * Gets the list of terms that make up the QSET instance
@@ -110,7 +110,7 @@ abstract class QSC<T extends IAny> extends QSET<T> implements Collection<ISetCom
 	 */
 	@Override
 	public boolean isEmpty() {
-		return this.p_terms.size() == 0;
+		return this.p_terms != null && this.p_terms.size() == 0;
 	}
 	/**
 	 * Gets the iterator for this set expression

@@ -24,6 +24,7 @@ import ca.marc.everest.datatypes.*;
 import ca.marc.everest.datatypes.interfaces.ICodedValue;
 import ca.marc.everest.datatypes.interfaces.IEncapsulatedData;
 import ca.marc.everest.datatypes.interfaces.IOriginalText;
+import ca.marc.everest.datatypes.interfaces.ISet;
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.interfaces.*;
 
@@ -38,7 +39,7 @@ public class CV<T> extends CS<T> implements ICodedValue<T> {
 	// backing field for original text
 	private ED m_originalText;
 	// backing field for coding rationale
-	private SET<CodingRationale> m_codingRationale;
+	private SET<CS<CodingRationale>> m_codingRationale;
 	// backing field for code system
 	private String m_codeSystem;
 	// backing field for code system name
@@ -125,12 +126,16 @@ public class CV<T> extends CS<T> implements ICodedValue<T> {
 	 */
 	@Override
 	@Property(name = "codingRationale", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.STRUCTURAL, genericSupplier = { CodingRationale.class })
-	public SET<CodingRationale> getCodingRationale() { return this.m_codingRationale; }
+	public SET<CS<CodingRationale>> getCodingRationale() { return this.m_codingRationale; }
+	/**
+	 * Sets the reason the code was provided
+	 */
+	public void setCodingRationale(SET<CS<CodingRationale>> value) { this.m_codingRationale = value; }
 	/**
 	 * Sets the reason the code was provided
 	 */
 	@Override
-	public void setCodingRationale(SET<CodingRationale> value) { this.m_codingRationale = value; }
+	public void setCodingRationale(ISet<CS<CodingRationale>> value) { this.m_codingRationale = (SET<CS<CodingRationale>>)value; }
 	
 	/**
 	 * Sets the code value of this CS.

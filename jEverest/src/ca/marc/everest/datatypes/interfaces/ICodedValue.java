@@ -61,10 +61,10 @@ public interface ICodedValue<T> extends ICodedSimple<T>, IOriginalText {
 	/**
 	 * Gets the coding rationale for the coded value
 	 */
-	ISet<CodingRationale> getCodingRationale();
+	ISet<CS<CodingRationale>> getCodingRationale();
 	/**
 	 * Sets the coding rationale for the coded value
 	 */
-	void setCodingRationale(SET<CodingRationale> value);
+	void setCodingRationale(ISet<CS<CodingRationale>> value);
 	
 }
