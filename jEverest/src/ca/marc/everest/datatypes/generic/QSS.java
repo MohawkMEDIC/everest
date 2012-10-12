@@ -39,6 +39,7 @@ import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
  * Represents a QSET{T} that has been specialized to contain a list of primitive values which
  * are unioned to provide a complete set of data
  */
+@Structure(name = "QSS", structureType = StructureType.DATATYPE)
 public class QSS<T extends IAny> extends QSET<T> implements IListContainer, Collection<T> {
 
 	// The list of terms

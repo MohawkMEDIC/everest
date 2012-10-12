@@ -389,13 +389,13 @@ public class SXPR<T extends IAny> extends SXCM<T> implements List<SXCM<T>>, ILis
                 boolean isQssCandidate = true;
                 if (context != null)
                 {
-                    isQssCandidate &= (context instanceof QSS<T>) && ((QSS<T>)context).size() == 1;
+                    isQssCandidate &= (context instanceof QSS<?>) && ((QSS<T>)context).size() == 1;
                     unionSet.add(context);
                 }
                 for(SXCM<T> itm : collectedTerms)
                 {
                     ISetComponent<T> qsuItem = itm.translateToQSETComponent();
-                    isQssCandidate &= (qsuItem instanceof QSS<T>) && ((QSS<T>)qsuItem).size() == 1;
+                    isQssCandidate &= (qsuItem instanceof QSS<?>) && ((QSS<T>)qsuItem).size() == 1;
                     unionSet.add(qsuItem);
                 }
 
@@ -404,7 +404,7 @@ public class SXPR<T extends IAny> extends SXCM<T> implements List<SXCM<T>>, ILis
                 {
                     QSS<T> qssSet = new QSS<T>();
                     for(ISetComponent<T> itm : unionSet)
-                        qssSet.add(((QSS<T>)itm).First());
+                        qssSet.add(((QSS<T>)itm).getTerms().get(0));
                     context = qssSet;
                 }
                 else
@@ -417,7 +417,7 @@ public class SXPR<T extends IAny> extends SXCM<T> implements List<SXCM<T>>, ILis
                  if (context != null)
                      intersectSet.add(context);
                  for (SXCM<T> itm : collectedTerms)
-                     intersectSet.Add(itm.translateToQSETComponent());
+                     intersectSet.add(itm.translateToQSETComponent());
                  context = intersectSet;
                  break;
 			}
@@ -428,7 +428,7 @@ public class SXPR<T extends IAny> extends SXCM<T> implements List<SXCM<T>>, ILis
                 QSP<T> periodSet = null;
                 if (context == null) // Null, then the minuend is our first term
                 {
-                    periodSet = new QSP<T>(collectedTerms[0].translateToQSETComponent(), null);
+                    periodSet = new QSP<T>(collectedTerms.get(0).translateToQSETComponent(), null);
                     iofs = 1;
                 }
                 else // Not, then the current QSET is the minuend
@@ -444,7 +444,6 @@ public class SXPR<T extends IAny> extends SXCM<T> implements List<SXCM<T>>, ILis
 			}
 			default:
 				throw new UnsupportedOperationException("Cannot represent this set component in QSET");
-				break;
 		}
 		
 		return context;

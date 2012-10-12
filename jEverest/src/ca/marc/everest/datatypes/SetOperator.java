@@ -28,10 +28,7 @@ import ca.marc.everest.interfaces.*;
  */
 public enum SetOperator implements IEnumeratedVocabulary {
 	
-	/** The H. */
-	@Deprecated
-	H("H", null),
-	
+
 	/** Form the convex hull with the value. */
 	Hull("H", null),
 	
@@ -41,16 +38,9 @@ public enum SetOperator implements IEnumeratedVocabulary {
 	/** Exclude the value from the set (difference). */
 	Exclusive("E", null),
 	
-	/** The A. */
-	@Deprecated
-	A("I", null),
 	
 	/** Intersect: Form the intersection with the value. */
 	Intersect("I", null),
-	
-	/** The P. */
-	@Deprecated
-	P("P", null),
 	
 	/** Form the periodic hull with the value. */
 	PeriodicHull("P", null);

@@ -99,7 +99,7 @@ public class SXCM<T extends IAny> extends PDV<T> implements ISetComponent<T> {
 		}
 		return true;
 	}
-	/* (non-Javadoc)
+	/** (non-Javadoc)
 	 * @see ca.marc.everest.datatypes.ANY#validateEx()
 	 */
 	@Override
@@ -110,5 +110,18 @@ public class SXCM<T extends IAny> extends PDV<T> implements ISetComponent<T> {
         return retVal;
 	}
 	
+	/**
+	 * Translate to a QSET equivalent
+	 */
+	@SuppressWarnings("unchecked")
+	public ISetComponent<T> translateToQSETComponent()
+	{
+		if (this instanceof IVL<?> || this instanceof PIVL<?> || this instanceof EIVL<?>)
+            return this;
+        else if (this instanceof SXPR<?>)
+            return ((SXPR<T>)this).translateToQSET();
+        else if (this instanceof SXCM<?>) // This is a value that will appear in a QSS
+            return QSS.createQSS(this.getValue());
+        return null;	}
 	
 }
