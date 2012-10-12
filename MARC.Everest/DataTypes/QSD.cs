@@ -24,6 +24,7 @@ using System.Text;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -86,6 +87,21 @@ namespace MARC.Everest.DataTypes
             return isValid;
         }
 
+        /// <summary>
+        /// Validate that the QSET is valid. A QSET is valid when it contains <see cref="P:First"/> and
+        /// <paramref name="P:Second"/> and contains no-null terms.
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            List<IResultDetail> retVal = new List<IResultDetail>();
+            if (!((this.NullFlavor != null) ^ (this.Minuend != null && !this.Minuend.IsNull && this.Subtrahend != null && !this.Subtrahend.IsNull)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.Minuend == null || this.Minuend.IsNull)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Minuend", String.Format("ISetComponent<{0}>", typeof(T).Name)), null));
+            if (this.Subtrahend == null || this.Subtrahend.IsNull)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Subtrahend", String.Format("ISetComponent<{0}>", typeof(T).Name)), null));
+            return retVal;
+        }
         /// <summary>
         /// Get equivalent set operator
         /// </summary>
