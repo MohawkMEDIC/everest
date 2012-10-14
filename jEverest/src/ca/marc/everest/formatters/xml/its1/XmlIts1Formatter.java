@@ -97,7 +97,7 @@ public class XmlIts1Formatter implements IStructureFormatter, IXmlStructureForma
 		throwIfDisposed();
 		provisionGraphAides();
 		// TODO Auto-generated method stub
-
+	
 		return null;
 	}
 

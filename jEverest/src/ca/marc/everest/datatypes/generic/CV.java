@@ -126,7 +126,7 @@ public class CV<T> extends CS<T> implements ICodedValue<T> {
 	 */
 	@Override
 	@Property(name = "codingRationale", conformance = ConformanceType.OPTIONAL, propertyType = PropertyType.STRUCTURAL, genericSupplier = { CodingRationale.class })
-	public SET<CS<CodingRationale>> getCodingRationale() { return this.m_codingRationale; }
+	public ISet<CS<CodingRationale>> getCodingRationale() { return this.m_codingRationale; }
 	/**
 	 * Sets the reason the code was provided
 	 */

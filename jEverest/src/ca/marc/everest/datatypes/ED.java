@@ -578,6 +578,25 @@ public class ED extends ANY implements IEncapsulatedData {
 	}
 	
 	/**
+	 * Convert this ED instance to an ST
+	 */
+	public ST toST()
+	{
+		String value = this.toString();
+
+        ST retVal = new ST(value);
+        retVal.setControlActRoot(this.getControlActRoot());
+        retVal.setControlActExt(this.getControlActExt());
+        retVal.setFlavorId(this.getFlavorId());
+        retVal.setLanguage(this.getLanguage());
+        retVal.setNullFlavor(this.getNullFlavor());
+        retVal.setUpdateMode(this.getUpdateMode());
+        retVal.setValidTimeHigh(this.getValidTimeHigh());
+        retVal.setValidTimeLow(this.getValidTimeLow());
+        return retVal;
+	}
+	
+	/**
 	 * Represent this as a string
 	 */
 	@Override
