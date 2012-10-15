@@ -14,18 +14,23 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 10-03-2012
+ * Date: 10-15-2012
  */
 package ca.marc.everest.datatypes.interfaces;
 
 /**
- * Identifies a type that has a precision and can be interpreted
- * as an interval of values
+ * Identifies a class which contains a number with floating point precision
  */
-public interface IImplicitInterval<T extends IAny>{
+public interface IRealValue<T> extends IPrimitiveDataValue<T> {
 
 	/**
-	 * Convert this type to an interval
+	 * Sets the precision of the object
+	 * @param precision
 	 */
-	IInterval<T> toIvl();
+	void setPrecision(int precision);
+	/**
+	 * Gets the precision of the object
+	 */
+	int getPrecision();
+	
 }

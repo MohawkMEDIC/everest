@@ -99,7 +99,7 @@ public class SXCM<T extends IAny> extends PDV<T> implements ISetComponent<T> {
 		}
 		return true;
 	}
-	/** (non-Javadoc)
+	/** 
 	 * @see ca.marc.everest.datatypes.ANY#validateEx()
 	 */
 	@Override

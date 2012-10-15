@@ -18,17 +18,22 @@
  */
 package ca.marc.everest.datatypes;
 
+import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.generic.*;
+import ca.marc.everest.datatypes.interfaces.IImplicitInterval;
+import ca.marc.everest.datatypes.interfaces.IInterval;
+import ca.marc.everest.datatypes.interfaces.IRealValue;
 
 /**
  * Represent fractional numbers.
  * 
  * Typically used whenever quantities are measured with real numbers.
  */
-public class REAL extends QTY<Double> {
+@Structure(name = "REAL", structureType = StructureType.DATATYPE)
+public class REAL extends QTY<Double> implements IRealValue<Double>, IImplicitInterval<REAL>  {
 
 	// Precision of the float
-	private int m_precision = 15;
+	private int m_precision = 0;
 	
 	/**
 	 * Creates a new instance of the REAL class
@@ -42,6 +47,7 @@ public class REAL extends QTY<Double> {
 	/**
 	 * Gets the precision of this REAL value
 	 */
+	@Property(name = "precision", conformance=ConformanceType.REQUIRED, propertyType = PropertyType.STRUCTURAL)
 	public int getPrecision() { return this.m_precision; }
 	/**
 	 * Sets the precision of this real value to the specified value.
@@ -66,6 +72,9 @@ public class REAL extends QTY<Double> {
 			this.p_floatingPointEqualityTolerance = 1 / Math.pow(10, this.m_precision);
 	}
 	
+	/**
+	 * Calculate hashcode
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -73,6 +82,9 @@ public class REAL extends QTY<Double> {
 		result = prime * result + m_precision;
 		return result;
 	}
+	/**
+	 * Determine value equality
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -87,6 +99,28 @@ public class REAL extends QTY<Double> {
 		return true;
 	}
 	
+	/**
+	 * Parse a REAL instance from a string
+	 */
+	public static REAL fromString(String s)
+	{
+		try
+		{		
+			REAL retVal = new REAL(Double.parseDouble(s));
+			int precision = 0;
+			if (s.contains("."))
+				precision = s.length() - s.indexOf(".") - 1;
+			retVal.setPrecision(precision);
+			return retVal;
+		}
+		catch(NumberFormatException e)
+		{
+			REAL retVal = new REAL();
+			retVal.setNullFlavor(NullFlavor.Other);
+			return retVal;
+		}
+	}
+
 	/**
 	 * Get the maximum of this integer an another
 	 */
@@ -293,5 +327,40 @@ public class REAL extends QTY<Double> {
 	@Override
 	public Double toDouble() {
 		return this.getValue();
+	}
+    /**
+	* Represents the REAL as an interval range represented by the precision
+	* <p>
+	* This function requires the <see cref="P:Precision"/> property to be set 
+	* in order to be of any use. When calling with the precision it will 
+	* return the appropriate Interval
+	* </p>
+	* REAL oneThird = new REAL(1.0f).divide(new REAL(3.0f));
+	* oneThird.setPrecision(3);
+	* IVL&lt;REAL> ivl = oneThird.toIVL();
+	* // Output is: 
+	* // 1/3 is between 0.333 and 0.333999999999 
+	*/
+	@Override
+	public IInterval<REAL> toIvl() {
+        // For example, if we have 43.20399485
+        // with a precision of 4, our interval should be 
+        // 43.20390000 to 43.20399999
+		IVL<REAL> retVal = new IVL<REAL>();
+        if (this.isNull() || this.getValue() == null)
+            retVal.setNullFlavor(NullFlavor.NoInformation);
+        else
+        {
+	        // First, we multiply the value to get store the number
+	        double tValue = this.getValue().doubleValue() * Math.pow(10, this.getPrecision()),
+	            min = Math.floor(tValue),
+	            max = Math.ceil(tValue) - Math.pow(10, -(14 - this.getPrecision()));
+	
+	        retVal.setLow(new REAL(min / Math.pow(10, this.getPrecision())));
+	        retVal.setHigh(new REAL(max / Math.pow(10, this.getPrecision())));
+	        retVal.setLowInclusive(true);
+	        retVal.setHighInclusive(true);
+        }
+        return retVal;
 	}
 }

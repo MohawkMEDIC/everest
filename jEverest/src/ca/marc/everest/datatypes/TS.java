@@ -203,7 +203,7 @@ public class TS extends PDV<String> implements IPointInTime
 	 * an IVL&lt;TS> with a low of January 1, 2009 00:00:00 and high of 
 	 * January 31, 2009 11:59:59</p>
 	 */
-	public IVL<TS> toIVL()
+	public IVL<TS> toIvl()
 	{
 		
 		// Is this TS full precision? If so, then the high/low are identical

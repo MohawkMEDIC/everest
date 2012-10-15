@@ -127,9 +127,9 @@ public class QSP<T extends IAny> extends QSET<T> implements Iterable<ISetCompone
         if (!(this.isNull() ^ (this.m_low != null && !this.m_low.isNull() && this.m_high != null && !this.m_high.isNull())))
             retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "QSP", EverestValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
         if (this.m_low == null || this.m_low.isNull())
-            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "QSP", String.format(EverestValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Minuend", String.format("ISetComponent<{0}>", "?")), null));
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "QSP", String.format(EverestValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Low", String.format("ISetComponent<{0}>", "?")), null));
         if (this.m_high == null || this.m_high.isNull())
-            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "QSP", String.format(EverestValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Subtrahend", String.format("ISetComponent<{0}>", "?")), null));
+            retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "QSP", String.format(EverestValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "High", String.format("ISetComponent<{0}>", "?")), null));
         return retVal;
 	}
 	/** (non-Javadoc)

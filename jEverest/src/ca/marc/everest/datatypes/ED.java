@@ -580,7 +580,7 @@ public class ED extends ANY implements IEncapsulatedData {
 	/**
 	 * Convert this ED instance to an ST
 	 */
-	public ST toST()
+	public ST toSt()
 	{
 		String value = this.toString();
 

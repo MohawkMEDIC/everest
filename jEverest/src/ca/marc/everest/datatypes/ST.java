@@ -133,7 +133,7 @@ public class ST extends PDV<String> {
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 */
-	public ED toED() throws UnsupportedEncodingException
+	public ED toEd() throws UnsupportedEncodingException
 	{
         // Copy
         ED retVal = new ED(this.getValue(), this.getLanguage());
