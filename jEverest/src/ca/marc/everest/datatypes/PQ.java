@@ -25,6 +25,7 @@ import java.util.Map;
 
 import ca.marc.everest.datatypes.generic.*;
 import ca.marc.everest.datatypes.interfaces.IQuantity;
+import ca.marc.everest.datatypes.interfaces.ISet;
 import ca.marc.everest.annotations.*;
 
 /**
@@ -37,7 +38,7 @@ public class PQ extends QTY<BigDecimal> {
 	// backing field for unit
 	private String m_unit;
 	// coding rationale
-	private SET<CodingRationale> m_rationale;
+	private SET<CS<CodingRationale>> m_rationale;
 	// backing field for translation
 	private SET<PQR> m_translation;
 	
@@ -95,11 +96,11 @@ public class PQ extends QTY<BigDecimal> {
 	 * Gets the rationale as to why this PQ or PQR is provided
 	 */
 	@Property(name = "codingRationale", conformance = ConformanceType.REQUIRED, propertyType = PropertyType.NONSTRUCTURAL)
-	public SET<CodingRationale> getCodingRationale() { return this.m_rationale; }
+	public ISet<CS<CodingRationale>> getCodingRationale() { return this.m_rationale; }
 	/**
 	 * Sets the rationale as to why this PQ or PQR is provided
 	 */
-	public void setCodingRationale(SET<CodingRationale> value) { this.m_rationale = value; }
+	public void setCodingRationale(ISet<CS<CodingRationale>> value) { this.m_rationale = (SET<CS<CodingRationale>>)value; }
 	/**
 	 * Gets a set of alternate representations of the provisioned quantity
 	 */
@@ -268,6 +269,24 @@ public class PQ extends QTY<BigDecimal> {
 	}
 	
 	/**
+	 * Negate the quantity
+	 */
+	public PQ negate()
+	{
+		PQ retVal = new PQ();
+        if (this.isNull())
+            retVal.setNullFlavor(this.getNullFlavor());
+        else if (this.getValue() == null)
+            retVal.setNullFlavor(NullFlavor.NoInformation);
+        else
+        {
+            this.setValue(this.getValue().negate());
+            this.setUnit(this.getUnit());
+        }
+        return retVal;
+	}
+	
+	/**
 	 * Represent this PQ as an integer
 	 */
 	@Override
@@ -328,4 +347,5 @@ public class PQ extends QTY<BigDecimal> {
 			return false;
 		return true;
 	}
+	
 }

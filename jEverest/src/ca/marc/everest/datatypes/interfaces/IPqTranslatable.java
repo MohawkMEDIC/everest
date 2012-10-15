@@ -14,36 +14,21 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 10-02-2012
+ * Date: 10-15-2012
  */
 package ca.marc.everest.datatypes.interfaces;
 
-import ca.marc.everest.datatypes.TelecommunicationsAddressUse;
-import ca.marc.everest.datatypes.generic.CS;
+import ca.marc.everest.datatypes.PQ;
 
 /**
- * Represents a telecommunications address
+ * Represents a class that can be translated by a PQ value
  */
-public interface ITelecommunicationsAddress {
+public interface IPqTranslatable<T> {
 
 	/**
-	 * Gets a value representing the telecommunications address
+	 * Translates the value by the specified translation by adding the PQ to the
+	 * current instance 
 	 */
-	String getValue();
-	/**
-	 * Sets a value representing the telecommunications address
-	 */
-	void setValue(String value);
-
-	/**
-	 * Gets a collection of uses for the telecommunications address
-	 */
-	ISet<CS<TelecommunicationsAddressUse>> getUse();
-
-	/**
-	 * Gets a general specification which specifies the time which the use
-	 */
-	ISetComponent<IPointInTime> getUseablePeriod();
-	
+	T translate(PQ translation);
 	
 }

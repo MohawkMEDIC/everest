@@ -154,7 +154,7 @@ public abstract class QSET<T extends IAny> extends ANY implements ISetComponent<
 				{
 					SXCM<T> sxcm = null;
 					if(current instanceof IImplicitInterval<?>)
-						sxcm = (SXCM<T>)((IImplicitInterval<T>)current).toIVL();
+						sxcm = (SXCM<T>)((IImplicitInterval<T>)current).toIvl();
 					else
 						throw new UnsupportedOperationException("Cannot interpret set member");
 					sxcm.setOperator(this.getEquivalentSetOperator());

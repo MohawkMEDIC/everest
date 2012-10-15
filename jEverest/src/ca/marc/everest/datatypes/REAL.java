@@ -20,6 +20,7 @@ package ca.marc.everest.datatypes;
 
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.generic.*;
+import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.IImplicitInterval;
 import ca.marc.everest.datatypes.interfaces.IInterval;
 import ca.marc.everest.datatypes.interfaces.IRealValue;
@@ -363,4 +364,30 @@ public class REAL extends QTY<Double> implements IRealValue<Double>, IImplicitIn
         }
         return retVal;
 	}
+	/**
+	 * @see ca.marc.everest.datatypes.ANY#semanticEquals(ca.marc.everest.datatypes.interfaces.IAny)
+	 */
+	@Override
+	public BL semanticEquals(IAny other) {
+		BL baseEq = super.semanticEquals(other);
+        if (!baseEq.toBoolean())
+            return baseEq;
+
+        // Null-flavored
+        if (this.isNull() && other.isNull())
+            return BL.TRUE;
+        else if (this.isNull() ^ other.isNull())
+            return BL.FALSE;
+
+        // Values are equal?
+        REAL realOther = (REAL)other;
+        if (realOther.getValue() != null && this.getValue() != null && Math.abs(realOther.getValue().doubleValue() - this.getValue().doubleValue()) <= Math.abs(realOther.getValue().doubleValue() * this.p_floatingPointEqualityTolerance))
+            return BL.TRUE;
+        else if (realOther.getUncertainRange() != null && !realOther.getUncertainRange().isNull() &&
+            this.getUncertainRange() != null && !this.getUncertainRange().isNull())
+            return realOther.getUncertainRange().semanticEquals(this.getUncertainRange());
+        return BL.FALSE;
+	}
+	
+	
 }

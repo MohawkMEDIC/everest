@@ -14,36 +14,20 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 10-02-2012
+ * Date: 10-14-2012
  */
 package ca.marc.everest.datatypes.interfaces;
 
-import ca.marc.everest.datatypes.TelecommunicationsAddressUse;
-import ca.marc.everest.datatypes.generic.CS;
-
 /**
- * Represents a telecommunications address
+ * Identifies a data type that has ordered values
  */
-public interface ITelecommunicationsAddress {
-
+public interface IOrderedDataType<T> {
 	/**
-	 * Gets a value representing the telecommunications address
+	 * Return what the next ordered value would be
 	 */
-	String getValue();
+	T nextValue();
 	/**
-	 * Sets a value representing the telecommunications address
+	 * Return what the previous ordered value would be
 	 */
-	void setValue(String value);
-
-	/**
-	 * Gets a collection of uses for the telecommunications address
-	 */
-	ISet<CS<TelecommunicationsAddressUse>> getUse();
-
-	/**
-	 * Gets a general specification which specifies the time which the use
-	 */
-	ISetComponent<IPointInTime> getUseablePeriod();
-	
-	
+	T previousValue();
 }

@@ -32,9 +32,9 @@ import ca.marc.everest.annotations.*;
 public class TEL extends PDV<String> implements ITelecommunicationsAddress {
 
 	// backing field for use
-	private SET<TelecommunicationsAddressUse> m_use;
+	private SET<CS<TelecommunicationsAddressUse>> m_use;
 	// backing field for capabilities
-	private SET<TelecommunicationsCapabilities> m_capabilities;
+	private SET<CS<TelecommunicationsCapabilities>> m_capabilities;
 	// backing field for usable period
 	private GTS m_usablePeriod;
 	
@@ -55,7 +55,8 @@ public class TEL extends PDV<String> implements ITelecommunicationsAddress {
 	 * @param use The use of the telecommunications address
 	 */
 	public TEL(String value, TelecommunicationsAddressUse use) {
-		this(value, new SET<TelecommunicationsAddressUse>(use));
+		this(value);
+		this.m_use = new SET<CS<TelecommunicationsAddressUse>>(new CS<TelecommunicationsAddressUse>(use));
 	}
 	/**
 	 * Creates a new instance of the telecommunications address with the
@@ -66,38 +67,49 @@ public class TEL extends PDV<String> implements ITelecommunicationsAddress {
 	public TEL(String value, Iterable<TelecommunicationsAddressUse> use)
 	{
 		this(value);
-		this.m_use = new SET<TelecommunicationsAddressUse>(use);
+		this.m_use = new SET<CS<TelecommunicationsAddressUse>>();
+		for(TelecommunicationsAddressUse u : use)
+			this.m_use.add(new CS<TelecommunicationsAddressUse>(u));
 	}
 	/**
 	 * Gets a set of TelecommunicationsAddressUse codes that describe the 
 	 * circumstances under which the telecommunications address can be used
 	 */
 	@Override
-	public ISet<TelecommunicationsAddressUse> getUse() { return this.m_use; }
+	public ISet<CS<TelecommunicationsAddressUse>> getUse() { return this.m_use; }
 	/**
 	 * Sets the set of TelecommunicationsAddressUse codes that describe the
 	 * circumstances under which the telecommunications address can be used
 	 */
-	public void setUse(SET<TelecommunicationsAddressUse> value) { this.m_use = value; }
+	public void setUse(SET<CS<TelecommunicationsAddressUse>> value) { this.m_use = value; }
 	/**
 	 * Populates the use based on a list of TelecommunicationsAddressUse codes
 	 * @param use
 	 */
 	public void setUse(TelecommunicationsAddressUse... use) {
-		this.m_use = new SET<TelecommunicationsAddressUse>();
+		this.m_use = new SET<CS<TelecommunicationsAddressUse>>();
 		for(TelecommunicationsAddressUse u : use)
-			this.m_use.add(u);
+			this.m_use.add(new CS<TelecommunicationsAddressUse>(u));
 	}
 	/**
 	 * Gets a set that describes the capabilities of the device
 	 * attached to the telecommunications address
 	 */
-	public SET<TelecommunicationsCapabilities> getCapabilities() { return this.m_capabilities; }
+	public SET<CS<TelecommunicationsCapabilities>> getCapabilities() { return this.m_capabilities; }
 	/**
 	 * Sets a set that describes the capabilities of the device
 	 * attached to the telecommunications address
 	 */
-	public void setCapabilities(SET<TelecommunicationsCapabilities> value) { this.m_capabilities = value; }
+	public void setCapabilities(SET<CS<TelecommunicationsCapabilities>> value) { this.m_capabilities = value; }
+	/**
+	 * Sets a set that describes the capabilities of the device
+	 * attached to the telecommunications address
+	 */
+	public void setCapabilities(TelecommunicationsCapabilities... value) {
+		this.m_capabilities = new SET<CS<TelecommunicationsCapabilities>>();
+		for(TelecommunicationsCapabilities u : value)
+			this.m_capabilities.add(new CS<TelecommunicationsCapabilities>(u));	
+	}
 	/**
 	 * Gets a genegral timing specification that describes the segments of
 	 * time that a telecommunications address is available
