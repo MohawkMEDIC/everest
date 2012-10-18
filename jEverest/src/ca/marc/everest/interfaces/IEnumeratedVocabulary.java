@@ -51,4 +51,5 @@ public interface IEnumeratedVocabulary {
 	 * Get the code system for the enumerated vocabulary
 	 */
 	String getCodeSystem();
+
 }

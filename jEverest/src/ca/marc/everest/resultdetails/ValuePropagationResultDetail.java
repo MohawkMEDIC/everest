@@ -52,7 +52,7 @@ public class ValuePropagationResultDetail extends ResultDetail {
 	 */
 	public ValuePropagationResultDetail(ResultDetailType type, String originalPath, String destinationPath, Object value, String location)
 	{
-		super(type, String.format("Value '%1' set at '%2' has been propagated to '%3'", FormatterUtil.ToWireFormat(value), originalPath, destinationPath), location, null);
+		super(type, String.format("Value '%1' set at '%2' has been propagated to '%3'", FormatterUtil.toWireFormat(value), originalPath, destinationPath), location, null);
 		this.m_propagatedValue = value;
 		this.m_originalPropertyPath = originalPath;
 		this.m_destinationPropertyPath = destinationPath;

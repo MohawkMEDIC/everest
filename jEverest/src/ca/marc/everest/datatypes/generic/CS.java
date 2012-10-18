@@ -18,8 +18,17 @@
  */
 package ca.marc.everest.datatypes.generic;
 
+import java.util.Collection;
+import java.util.List;
+
 import ca.marc.everest.datatypes.*;
+import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.datatypes.interfaces.ICodedSimple;
+import ca.marc.everest.datatypes.interfaces.IPredicate;
+import ca.marc.everest.formatters.FormatterUtil;
+import ca.marc.everest.interfaces.IResultDetail;
+import ca.marc.everest.interfaces.ResultDetailType;
+import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
 import ca.marc.everest.annotations.*;
 
 /**
@@ -77,7 +86,64 @@ public class CS<T> extends ANY implements ICodedSimple<T> {
         else
             return (this.m_code != null) ^ (this.getNullFlavor() != null) && super.validate();
 	}
+	/**
+	 * @see ca.marc.everest.datatypes.ANY#validateEx()
+	 */
+	@Override
+	public Collection<IResultDetail> validateEx() {
+		 List<IResultDetail> retVal = (List<IResultDetail>)super.validateEx();
+         if (this instanceof CV<?>)
+             return retVal;
+         else if (!((this.getCode() == null) ^ (!this.isNull())))
+             retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "CS", EverestValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+         return retVal;
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.isNull() ? "" : this.getCode() == null ? "" : this.getCode().toString();
+	}
 	
-	
-	
+	/**
+	 * Convert this type to an enumerated vocabulary
+	 */
+	public T toEnumeratedVocabulary()
+	{
+		return this.getCode();
+	}
+
+	/**
+	 * Get the matcher predicate for the object
+	 */
+	public IPredicate<CS<T>> getMatcherPredicate(CS<T> scope)
+	{
+		return new Predicate<CS<T>>(scope) {
+			public boolean match(CS<T> other)
+			{
+				if ((this.getScopeValue().getCode().equals(other.getCode())) ^ (this.getScopeValue().getNullFlavor() == other.getNullFlavor() && this.getScopeValue().getNullFlavor() != null))
+	                return true;
+	            return false; 
+			}
+		};
+	}
+	/**
+	 * @see ca.marc.everest.datatypes.ANY#semanticEquals(ca.marc.everest.datatypes.interfaces.IAny)
+	 */
+	@Override
+	public BL semanticEquals(IAny other) {
+		BL retVal = new BL();
+		if (other == null)
+            return null;
+        else if (this.isNull() && other.isNull())
+            retVal.setNullFlavor(this.getNullFlavor().getCode().getCommonParent(other.getNullFlavor().getCode()));
+        else if (this.isNull() ^ other.isNull())
+            retVal.setNullFlavor(NullFlavor.NotApplicable);
+        else if (!(other instanceof ICodedSimple))
+            retVal = BL.FALSE;
+        else
+        	retVal.setValue(!this.isNull() && !other.isNull() && this.getCode() != null && ((ICodedSimple)other).getCode() != null && FormatterUtil.toWireFormat(this.getCode()).equals(FormatterUtil.toWireFormat(((ICodedSimple)other).getCode())));
+		return retVal;
+	}
 }

@@ -27,7 +27,7 @@ public class FormatterUtil {
 	 * Represents value in a wire-format friendly way as specified by the datatypes
 	 * implementation guide
 	 */
-	public static String ToWireFormat(Object value)
+	public static String toWireFormat(Object value)
 	{
 		// TODO: Implement this
 		return "";
