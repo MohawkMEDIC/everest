@@ -19,6 +19,7 @@
 package ca.marc.everest.datatypes;
 
 import ca.marc.everest.datatypes.generic.*;
+import ca.marc.everest.datatypes.interfaces.IAny;
 import ca.marc.everest.annotations.*;
 
 /**
@@ -60,7 +61,7 @@ public class BL extends PDV<Boolean> {
 	 * Validator for the BL.NonNull flavor
 	 */
 	@Flavor(name = "BL.NONNULL")
-	public static Boolean isNonNullFlavor(BL o)
+	public static Boolean isValidNonNullFlavor(BL o)
 	{
 		return o.getNullFlavor() == null && o.getValue() != null;
 	}
@@ -185,4 +186,26 @@ public class BL extends PDV<Boolean> {
 	{
 		return this.getValue();
 	}
+	/**
+	 * @see ca.marc.everest.datatypes.ANY#semanticEquals(ca.marc.everest.datatypes.interfaces.IAny)
+	 */
+	@Override
+	public BL semanticEquals(IAny other) {
+		BL baseEq = super.semanticEquals(other);
+        if (!baseEq.toBoolean())
+            return baseEq;
+
+        // Null-flavored
+        if (this.isNull() && other.isNull())
+            return BL.TRUE;
+        else if (this.isNull() ^ other.isNull())
+            return BL.FALSE;
+
+        // Values are equal?
+        BL blOther = (BL)other ;
+        if (blOther.getValue() != null && this.getValue() != null)
+            return BL.fromBoolean(this.getValue().equals(blOther.getValue()));
+        return BL.FALSE;
+	}
+	
 }
