@@ -141,13 +141,15 @@
   <datatype name="ED" type="ED">
     <setterOverride>
       <parameter type="String" name="value"/>
+      <throws type="java.io.UnsupportedEncodingException"/>
       <value name="retVal"/>
       <![CDATA[ ED retVal = new ED(value);]]>
     </setterOverride>
     <setterOverride>
       <parameter type="byte[]" name="value"/>
+      <parameter type="String" name="mediaType"/>
       <value name="retVal"/>
-      <![CDATA[ ED retVal = new ED(value);]]>
+      <![CDATA[ ED retVal = new ED(value, mediaType);]]>
     </setterOverride>
   </datatype>
   <datatype name="EIVL" type="EIVL" defaultBind="TS" genericParameter="T"/>
@@ -201,7 +203,7 @@
   </datatype>
   <datatype name="MO" type="MO">
     <setterOverride>
-      <parameter type="double" name="value"/>
+      <parameter type="java.math.BigDecimal" name="value"/>
       <parameter type="String" name="currency"/>
       <value name="retVal"/>
       <![CDATA[ MO retVal = new MO(value, currency);]]>

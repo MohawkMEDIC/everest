@@ -157,6 +157,19 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
     }
 
     /// <summary>
+    /// Data related to throws from setter override
+    /// </summary>
+    [XmlType(Namespace = "urn:marc-hi:gpmr:heuristic")]
+    public class ThrowsData
+    {
+        /// <summary>
+        /// Gets the type this throws
+        /// </summary>
+        [XmlAttribute("type")]
+        public string Type { get; set; }
+    }
+
+    /// <summary>
     /// Data related to a setter override
     /// </summary>
     [XmlType(Namespace = "urn:marc-hi:gpmr:heuristic")]
@@ -167,6 +180,12 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
         /// </summary>
         [XmlElement("parameter")]
         public List<PropertyInfoData> Parameters { get; set; }
+
+        /// <summary>
+        /// Gets the types of exception this class throws
+        /// </summary>
+        [XmlElement("throws")]
+        public List<ThrowsData> Throws { get; set; }
         /// <summary>
         /// The value instance that is created in the setter text that describes the value 
         /// instance variable name to set the backing field to.

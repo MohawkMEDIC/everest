@@ -105,7 +105,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             if (initialize)
                 sw.Write(" = new {0}()", dtr);
-            
+
+            string setterName = "set";
+
             // TODO: Fixed Values here
             var property = cc as Property;
             // Only render fixed values when:
@@ -128,7 +130,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                     ev = bindingDomain.GetEnumeratedLiterals().Find(o => o.Name == (property.FixedValue ?? property.DefaultValue));
 
                 if (bindingDomain == null)
-                    sw.Write(" = new {0}(\"{1}\");",
+                    sw.Write(" = ca.marc.everest.formatters.FormatterUtil.convert(\"{1}\");",
                         dtr, property.FixedValue);
                 else if (ev == null) // Enumeration value is not known in the enumeration, fixed value fails
                 {
@@ -143,6 +145,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 else // Fixed value is known
                     sw.Write(" = new {2}({0}.{1})",
                     Util.Util.MakeFriendly(EnumerationRenderer.WillRender(property.SupplierDomain)), Util.Util.PascalCase(ev.BusinessName ?? ev.Name), dtr, ownerPackage);
+
+                // Update setter name so the output method has the right naming convention
+                setterName = "override";
+
             }
 
             sw.WriteLine(";");
@@ -159,9 +165,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             // Render setters
             // Default setter
             sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
-            string setterName = "set";
-            if (cc is Property && !String.IsNullOrEmpty((cc as Property).FixedValue)) // fixed value so setter is override
-                setterName = "override";
+
             sw.WriteLine("\tpublic void {3}{1}({0} value) {{ this.m_{2} = value; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name), setterName);
 
             // Is choice?
@@ -179,7 +183,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         if (sod.Parameters.Last() != parm)
                             sw.Write(", ");
                     }
-                    sw.WriteLine(") {");
+                    sw.Write(")");
+                    if (sod.Throws != null && sod.Throws.Count > 0)
+                    {
+                        sw.Write(" throws ");
+                        foreach (var thrw in sod.Throws)
+                            sw.Write("{0} {1}", thrw.Type, thrw == sod.Throws.Last() ? "" : ",");
+                    }
+                    sw.WriteLine("{");
                     sw.WriteLine("\t\t{0}", sod.SetterText);
                     sw.WriteLine("\t\tthis.m_{0} = {1};", Util.Util.MakeFriendly(cc.Name), sod.ValueInstance.Name);
                     sw.WriteLine("\t}");

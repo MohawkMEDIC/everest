@@ -182,6 +182,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                 }
 
                 // Correct Body
+                templatedSod.Throws = new List<ThrowsData>(sod.Throws);
                 templatedSod.SetterText = sod.SetterText.Replace(string.Format("<{0}>", dataType.TemplateParameter), String.Format("<{0}>", fillParameter));
                 templatedSod.ValueInstance = sod.ValueInstance;
                 overrides.Add(templatedSod);
