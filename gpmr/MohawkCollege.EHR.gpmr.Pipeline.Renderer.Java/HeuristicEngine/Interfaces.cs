@@ -95,12 +95,12 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                     {
                         string rv = iface.Name;
                         if (supplierDomain != null && 
-                            EnumerationRenderer.WillRender(supplierDomain))
+                            !String.IsNullOrEmpty(EnumerationRenderer.WillRender(supplierDomain)))
                         {
                             if (retVal.Contains(rv))
                                 retVal.Remove(rv);
 
-                            rv += "<" + String.Format("{0}.vocabulary.{1}", ownerNs, supplierDomain.Name) + ">";
+                            rv += String.Format("<{1}>", ownerNs, EnumerationRenderer.WillRender(supplierDomain));
                             retVal.Add(rv);
                         }
                     }

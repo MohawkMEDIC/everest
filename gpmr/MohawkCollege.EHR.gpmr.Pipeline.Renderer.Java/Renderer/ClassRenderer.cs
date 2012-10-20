@@ -88,8 +88,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             sw.Write("\tprivate ");
             
             // Fixed value?
-            if (cc is Property && !String.IsNullOrEmpty((cc as Property).FixedValue))
-                sw.Write("final ");
+            //if (cc is Property && !String.IsNullOrEmpty((cc as Property).FixedValue))
+            //    sw.Write("final ");
 
             // Datatype reference
             string dtr = CreateDatatypeRef(backingFieldType, cc as Property, ownerPackage);
@@ -110,22 +110,29 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             if (cc is Property && !String.IsNullOrEmpty((cc as Property).FixedValue))
             {
                 var property = cc as Property;
+                // Get the real supplier (value set, or code system if concept domain)
+                var splrCd = property.SupplierDomain as ConceptDomain;
+                var bindingDomain = property.SupplierDomain;
                 Enumeration.EnumerationValue ev = null;
-                if(property.SupplierDomain != null)
-                    ev = property.SupplierDomain.Literals.Find(o => o.Name == property.FixedValue);
+                if (splrCd != null && splrCd.ContextBinding != null &&
+                    splrCd.ContextBinding.Count == 1)
+                    bindingDomain = splrCd.ContextBinding[0];
 
-                if (property.SupplierDomain == null)
+                if(bindingDomain != null)
+                    ev = bindingDomain.GetEnumeratedLiterals().Find(o => o.Name == (property.FixedValue ?? property.DefaultValue));
+
+                if (bindingDomain == null)
                     sw.Write(" = new {0}(\"{1}\");",
                         dtr, property.FixedValue);
                 else if (ev == null) // Enumeration value is not known in the enumeration, fixed value fails
                 {
                     System.Diagnostics.Trace.WriteLine(String.Format("Can't find literal '{0}' in supplier domain for property '{1}'", property.FixedValue, property.Name), "error");
                     sw.Write(" = new {0}(new {2}(\"{3}\"))",
-                       dtr, ownerPackage, Util.Util.MakeFriendly(property.SupplierDomain.Name), property.FixedValue);
+                       dtr, ownerPackage, Util.Util.MakeFriendly(EnumerationRenderer.WillRender(property.SupplierDomain)), property.FixedValue);
                 }
                 else // Fixed value is known
                     sw.Write(" = new {2}({0}.{1})",
-                    Util.Util.MakeFriendly(property.SupplierDomain.Name), Util.Util.PascalCase(ev.BusinessName ?? ev.Name), dtr, ownerPackage);
+                    Util.Util.MakeFriendly(EnumerationRenderer.WillRender(property.SupplierDomain)), Util.Util.PascalCase(ev.BusinessName ?? ev.Name), dtr, ownerPackage);
             }
 
             sw.WriteLine(";");
@@ -140,32 +147,32 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             sw.WriteLine("\tpublic {0} get{1}() {{ return this.m_{2}; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name));
             
             // Render setters
-            if (cc is Choice || string.IsNullOrEmpty((cc as Property).FixedValue))
-            {
-                // Default setter
-                sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
-                sw.WriteLine("\tpublic void set{1}({0} value) {{ this.m_{2} = value; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name));
+            // Default setter
+            sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
+            string setterName = "set";
+            if (cc is Property && !String.IsNullOrEmpty((cc as Property).FixedValue)) // fixed value so setter is override
+                setterName = "override";
+            sw.WriteLine("\tpublic void {3}{1}({0} value) {{ this.m_{2} = value; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name), setterName);
 
-                // Is choice?
-                if (cc is Choice)
-                    ; // TODO: Factory methods and etc
-                else
+            // Is choice?
+            if (cc is Choice)
+                ; // TODO: Factory methods and etc
+            else
+            {
+                foreach (var sod in MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine.Datatypes.GetOverrideSetters(backingFieldType, cc as Property, ownerPackage))
                 {
-                    foreach (var sod in MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine.Datatypes.GetOverrideSetters(backingFieldType, cc as Property, ownerPackage))
+                    sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
+                    sw.Write("\tpublic void {1}{0}(", Util.Util.PascalCase(cc.Name), setterName);
+                    foreach (var parm in sod.Parameters)
                     {
-                        sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
-                        sw.Write("\tpublic void set{0}(", Util.Util.PascalCase(cc.Name));
-                        foreach (var parm in sod.Parameters)
-                        {
-                            sw.Write("{0} {1}", parm.DataType, parm.Name);
-                            if (sod.Parameters.Last() != parm)
-                                sw.Write(", ");
-                        }
-                        sw.WriteLine(") {");
-                        sw.WriteLine("\t\t{0}", sod.SetterText);
-                        sw.WriteLine("\t\tthis.m_{0} = {1};", Util.Util.MakeFriendly(cc.Name), sod.ValueInstance.Name);
-                        sw.WriteLine("\t}");
+                        sw.Write("{0} {1}", parm.DataType, parm.Name);
+                        if (sod.Parameters.Last() != parm)
+                            sw.Write(", ");
                     }
+                    sw.WriteLine(") {");
+                    sw.WriteLine("\t\t{0}", sod.SetterText);
+                    sw.WriteLine("\t\tthis.m_{0} = {1};", Util.Util.MakeFriendly(cc.Name), sod.ValueInstance.Name);
+                    sw.WriteLine("\t}");
                 }
             }
 
@@ -225,7 +232,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
                         // Now for an interaction hint
                         if (tr.Class != null && (property.Container is Choice || property.AlternateTraversalNames != null) && kv.InteractionOwner != null)
-                            retBuilder.Write(", interactionOwner = {0}.Interactions.{1}.class", ownerPackage, kv.InteractionOwner.Name);
+                            retBuilder.Write(", interactionOwner = {0}.interaction.{1}.class", ownerPackage, kv.InteractionOwner.Name);
                         // Impose a flavor?
                         if (tr.Flavor != null)
                             retBuilder.Write(", imposeFlavorId = \"{0}\"", tr.Flavor);
@@ -233,20 +240,23 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         // Is this a set?
                         if (property.MaxOccurs != "1")
                             retBuilder.Write(", minOccurs = {0}, maxOccurs = {1}", property.MinOccurs, property.MaxOccurs == "*" ? "-1" : property.MaxOccurs);
-                        //if (property.MinLength != null)
-                        //    retBuilder.Write(", MinLength = {0}", property.MinLength);
-                        //if (property.MaxLength != null)
-                        //    retBuilder.Write(", MaxLength = {0}", property.MaxLength);
+                        if (property.MinLength != null)
+                            retBuilder.Write(", minLength = {0}", property.MinLength);
+                        if (property.MaxLength != null)
+                            retBuilder.Write(", maxLength = {0}", property.MaxLength);
 
                         // Is there an update mode
                         //if (property.UpdateMode != null)
-                        //    retBuilder.Write(", DefaultUpdateMode = UpdateMode.{0}", property.UpdateMode);
+                        //    retBuilder.Write(", defaultUpdateMode = UpdateMode.{0}", property.UpdateMode);
 
                         // Is there a supplier domain?
                         if (property.SupplierDomain != null &&
                             property.SupplierStrength == MohawkCollege.EHR.gpmr.COR.Property.CodingStrengthKind.CodedNoExtensions)
                             retBuilder.Write(", supplierDomain = \"{0}\"", (property.SupplierDomain.ContentOid));
 
+                        // Fixed value
+                        if (!String.IsNullOrEmpty(property.FixedValue))
+                            retBuilder.Write(", fixedValue = \"{0}\"", property.FixedValue);
                         retBuilder.WriteLine("),");
                         alreadyRendered.Add(key);
                     }
@@ -257,7 +267,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             retVal = retVal.Substring(0, retVal.LastIndexOf(","));
             retVal += "\r\n";
             if (alreadyRendered.Count > 1)
-                return String.Format("\t@Properties(\r\n{0}\t)\r\n", retVal);
+            {
+                if (!s_imports.Contains("ca.marc.everest.annotations.Properties"))
+                    s_imports.Add("ca.marc.everest.annotations.Properties");
+                return String.Format("\t@Properties( value = {{\r\n{0}\t }})\r\n", retVal);
+            }
             else
                 return retVal;
         }
@@ -283,10 +297,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                     "CE", 
                     "CR", 
                     "CD" }).Contains(tr.Name)
-                && EnumerationRenderer.WillRender(p.SupplierDomain))
+                && !String.IsNullOrEmpty(EnumerationRenderer.WillRender(p.SupplierDomain)))
             {
 
-                
+                EnumerationRenderer.MarkAsUsed(p.SupplierDomain);
+
                 // Since we are going to reference it, we better ensure that any value we use will have it in the
                 // domain
                 if (p.FixedValue != null && p.FixedValue.Length > 0 &&
@@ -297,7 +312,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                     p.SupplierDomain.Literals.Add(ev);
                 }
 
-                return Util.Util.MakeFriendly(p.SupplierDomain.Name);
+                return Util.Util.MakeFriendly(EnumerationRenderer.WillRender(p.SupplierDomain));
             }
             return null;
         }
@@ -521,14 +536,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                             string clsDoc = DocumentationRenderer.Render(child.Documentation, 1);
 
                             string ctorClassName = String.Format("{0}.{2}.{1}",ownerPackage, tr.Class.Name, tr.Class.ContainerName.ToLower());
-                            // import already exists?
-                            if(!s_imports.Exists(o=>o.EndsWith(Util.Util.PascalCase(tr.Class.Name))))
-                            {
-                                s_imports.Add(ctorClassName);
-                                ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
-                            }
-                            if (s_imports.Contains(ctorClassName))
-                                ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
+                            //// import already exists?
+                            //if(!s_imports.Exists(o=>o.EndsWith(Util.Util.PascalCase(tr.Class.Name))))
+                            //{
+                            //    s_imports.Add(ctorClassName);
+                            //    ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
+                            //}
+                            //if (s_imports.Contains(ctorClassName))
+                            //    ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
 
                             if(clsDoc.Contains("*/"))
                                 sw.Write(clsDoc.Substring(0, clsDoc.LastIndexOf("*/")));

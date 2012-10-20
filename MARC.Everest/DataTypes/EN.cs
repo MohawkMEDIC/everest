@@ -344,6 +344,11 @@ namespace MARC.Everest.DataTypes
 
         #endregion
 
+        /// <summary>
+        /// Determine semantic equality of this type
+        /// </summary>
+        /// <remarks>Two non-null non-nullflavored instance of EN are considered semantically equal when
+        /// they both contain the same parts in the same order.</remarks>
         public override BL SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny other)
         {
             var baseSem = base.SemanticEquals(other);

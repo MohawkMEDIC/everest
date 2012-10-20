@@ -184,6 +184,14 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Validate the CS is valid, returning the detected issues
         /// </summary>
+        /// <remarks>
+        /// An instance of CS is valid when:
+        /// <list type="number">
+        ///     <item><description>All validation from <see cref="T:ANY"/> succeeds</description></item>
+        ///     <item><description>This instance of CS contains a <see cref="P:Code"/> or <see cref="P:NullFlavor"/> but not both, and</description></item>
+        ///     <item><description>The <see cref="P:Code"/> specified is in the <typeparamref name="T"/> domain</description></item>
+        /// </list>
+        /// </remarks>
         public override IEnumerable<IResultDetail> ValidateEx()
         {
             var retVal = new List<IResultDetail>(base.ValidateEx());

@@ -38,7 +38,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 new string[] {"--rimbapi-profileid","Set the default ProfileId value"},
                 new string[] {"--rimbapi-realm-pref", "When there is a conflict of names\r\n\t\t\tdetermines which 'realm' is preferred" },
                 new string[] {"--rimbapi-max-literals", "Specifies the maximum size of an\r\n\t\t\tenumeration. Default is 100" },
-                new string[] {"--rimbapi-jdk", "Specifies the path to the JDK\r\n\t\t\twith which to compile the project"}
+                new string[] {"--rimbapi-jdk", "Specifies the path to the JDK\r\n\t\t\twith which to compile the project"},
+                new string[] {"--rimbapi-partials", "When true, specifies that GPMR should\r\n\t\t\tenumerate partial vocabularies" },
+                new string[] {"--rimbapi-suppress-doc", "Supresses documentation generation" }
+
             };
 
         //DOC: Documentation Required
@@ -56,7 +59,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
         /// 
         /// </summary>
         internal static bool GenerateRim = false;
-
+        /// <summary>
+        /// When true, render  partials
+        /// </summary>
+        public static bool RenderPartials = false;
+        /// <summary>
+        /// Suppress documentation
+        /// </summary>
+        public static bool SuppressDoc = false;
         /// <summary>
         /// The maximum number of literals that can be rendered using this renderer
         /// </summary>
@@ -70,7 +80,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
         /// <summary>
         /// Path to the java cc program
         /// </summary>
-        private string m_javaccpath = Environment.GetEnvironmentVariable("JAVA_HOME");
+        private string m_javaccpath = Environment.GetEnvironmentVariable("JAVA_HOME", EnvironmentVariableTarget.Machine);
 
 
         /// <summary>
@@ -131,18 +141,22 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 GenerateVocab = Convert.ToBoolean(parameters["rimbapi-gen-vocab"][0]);
             if (parameters.ContainsKey("rimbapi-gen-rim"))
                 GenerateRim = Convert.ToBoolean(parameters["rimbapi-gen-rim"][0]);
-            //if (parameters.ContainsKey("rimbapi-profileid"))
-            //    InteractionRenderer.profileId = parameters["rimbapi-profileid"][0];
-            //if (parameters.ContainsKey("rimbapi-oid-profileid"))
-            //    InteractionRenderer.profileIdOid = parameters["rimbapi-oid-profileid"][0];
-            //if (parameters.ContainsKey("rimbapi-oid-interactionid"))
-            //    InteractionRenderer.interactionIdOid = parameters["rimbapi-oid-interactionid"][0];
-            //if (parameters.ContainsKey("rimbapi-oid-triggerevent"))
-            //    InteractionRenderer.triggerEventOid = parameters["rimbapi-oid-triggerevent"][0];
+            if (parameters.ContainsKey("rimbapi-profileid"))
+                InteractionRenderer.profileId = parameters["rimbapi-profileid"][0];
+            if (parameters.ContainsKey("rimbapi-oid-profileid"))
+                InteractionRenderer.profileIdOid = parameters["rimbapi-oid-profileid"][0];
+            if (parameters.ContainsKey("rimbapi-oid-interactionid"))
+                InteractionRenderer.interactionIdOid = parameters["rimbapi-oid-interactionid"][0];
+            if (parameters.ContainsKey("rimbapi-oid-triggerevent"))
+                InteractionRenderer.triggerEventOid = parameters["rimbapi-oid-triggerevent"][0];
+            if (parameters.ContainsKey("rimbapi-suppress-doc"))
+                SuppressDoc = Boolean.Parse(parameters["rimbapi-suppress-doc"][0]);
             if (parameters.ContainsKey("rimbapi-gen-its"))
                 genFormatters = parameters["rimbapi-gen-its"];
             if (parameters.ContainsKey("rimbapi-jdk"))
                 m_javaccpath = parameters["rimbapi-jdk"][0];
+            if (parameters.ContainsKey("rimbapi-partials"))
+                RenderPartials = Boolean.Parse(parameters["rimbapi-partials"][0]);
 
             if (string.IsNullOrEmpty(m_javaccpath))
                 throw new ArgumentException("Cannot find JDK, specify location in JAVA_HOME or with --rimbapi-jdk", "rimbapi-jdk");

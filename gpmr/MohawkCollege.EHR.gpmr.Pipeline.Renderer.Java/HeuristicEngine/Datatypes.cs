@@ -154,8 +154,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                         if (bindTypeRef == null)
                             bindTypeRef = tr.GenericSupplier[i++];
                     }
-                    else if (p != null && p.SupplierDomain != null)
-                        bindTypeRef = new TypeReference() { Name = String.Format("{0}", p.SupplierDomain.Name) };
+                    else if (p != null && p.SupplierDomain != null && !String.IsNullOrEmpty(EnumerationRenderer.WillRender(p.SupplierDomain)))
+                        bindTypeRef = new TypeReference() { Name = String.Format("{0}", EnumerationRenderer.WillRender(p.SupplierDomain)) };
                     else
                         bindTypeRef = new TypeReference() { Name = dataType.DefaultBind };
 
@@ -178,7 +178,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                     if (!bind.TryGetValue(parameterData.DataType, out dt))
                         dt = parameterData.DataType;
                     
-                    templatedSod.Parameters.Add(new PropertyInfoData() { Name = parameterData.Name, DataType = dt });
+                    templatedSod.Parameters.Add(new PropertyInfoData() { Name = parameterData.Name, DataType = dt.Replace(string.Format("<{0}>", dataType.TemplateParameter), String.Format("<{0}>", fillParameter)) });
                 }
 
                 // Correct Body

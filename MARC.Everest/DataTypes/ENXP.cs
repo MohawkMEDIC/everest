@@ -171,13 +171,13 @@ namespace MARC.Everest.DataTypes
         [XmlEnum("MID")]
         Middle,
         /// <summary>
-        /// Identifies a middle name
+        /// Identifies a prefix
         /// </summary>
         [Enumeration(Value = "PFX")]
         [XmlEnum("PFX")]
         Prefix,
         /// <summary>
-        /// Identifies a middle name
+        /// Identifies a suffix
         /// </summary>
         [Enumeration(Value = "SFX")]
         [XmlEnum("SFX")]
@@ -249,7 +249,7 @@ namespace MARC.Everest.DataTypes
         /// The value of the ENXP
         /// </summary>
         [Property(Name = "value", PropertyType = PropertyAttribute.AttributeAttributeType.Structural,
-            Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+            Conformance = PropertyAttribute.AttributeConformanceType.Required)]
         [XmlAttribute("value")]
         public string Value { get; set; }
         /// <summary>

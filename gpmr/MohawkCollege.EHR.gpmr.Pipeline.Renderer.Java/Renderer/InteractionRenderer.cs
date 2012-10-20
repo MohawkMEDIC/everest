@@ -140,28 +140,28 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             sw.Write(DocumentationRenderer.Render(interaction.Documentation, 0));
             sw.WriteLine("@Structure(name = \"{0}\", structureType = StructureType.INTERACTION)", interaction.Name);
-            sw.WriteLine("@Interaction(triggerEvent = \"{0}\")", interaction.TriggerEvent);
-            sw.WriteLine("@InteractionResponses(");
+            sw.WriteLine("@Interaction(name=\"{1}\", triggerEvent = \"{0}\")", interaction.TriggerEvent, interaction.Name);
+            sw.WriteLine("@InteractionResponses( value = {");
             foreach (Interaction response in interaction.Responses)
-                sw.WriteLine("\t@InteractionResponse(name = \"{0}\", triggerEvent = \"{1}\")", response.Name, response.TriggerEvent);
-            sw.WriteLine(")");
+                sw.WriteLine("\t@Interaction(name = \"{0}\", triggerEvent = \"{1}\"){2}", response.Name, response.TriggerEvent, response == interaction.Responses.Last() ? "" : ",");
+            sw.WriteLine("})");
             sw.WriteLine("public class {0} extends {1} {{", interaction.Name, CreateInteractionDatatype(interaction.MessageType, ownerPackage));
 
             #region Constants
 
             // Get the trigger event
             sw.WriteLine("\t/** Gets the default trigger event to be used for this interaction */");
-            sw.WriteLine("\tpublic static CV<String> getTriggerEvent() {{ return new CV<String>(\"{0}\", \"{1}\"); }}", interaction.TriggerEvent, triggerEventOid, apiNs);
+            sw.WriteLine("\tpublic static CV<String> defaultTriggerEvent() {{ return new CV<String>(\"{0}\", \"{1}\"); }}", interaction.TriggerEvent, triggerEventOid, apiNs);
 
             // Get the interaction id
             sw.WriteLine("\t/** Gets the interaction ID of this interaction */");
-            sw.WriteLine("\tpublic static II getInteractionId() {{ return new II(new OID(\"{1}\"), \"{0}\"); }}", interaction.Name, interactionIdOid, apiNs);
+            sw.WriteLine("\tpublic static II defaultInteractionId() {{ return new II(\"{1}\", \"{0}\"); }}", interaction.Name, interactionIdOid, apiNs);
 
             // Get the profile id
             if (!String.IsNullOrEmpty(profileId))
             {
                 sw.WriteLine("\t/** Gets the profile id of this interaction */");
-                sw.WriteLine("\tpublic static LIST<II> getProfileId() {{ LIST<II> retVal = new LIST<II>(); retVal.add(new II (\"{0}\", \"{1}\")); }}", profileIdOid, profileId, apiNs);
+                sw.WriteLine("\tpublic static LIST<II> defaultProfileId() {{ LIST<II> retVal = new LIST<II>(); retVal.add(new II (\"{0}\", \"{1}\")); return retVal; }}", profileIdOid, profileId, apiNs);
             }
 
 

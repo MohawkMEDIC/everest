@@ -92,6 +92,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
         /// </summary>
         [XmlAttribute("type")]
         public string DataType { get; set; }
+        /// <summary>
+        /// Argument type(s)
+        /// </summary>
+        [XmlAttribute("argumentType")]
+        public string ArgumentType { get; set; }
     }
 
     /// <summary>
@@ -125,6 +130,30 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
         /// </summary>
         [XmlElement("setterOverride")]
         public List<SetterOverrideData> SetterOverride { get; set; }
+
+        /// <summary>
+        /// Type map
+        /// </summary>
+        [XmlElement("map")]
+        public List<MapData> TypeMap { get; set; }
+    }
+
+    /// <summary>
+    /// Represents a type map
+    /// </summary>
+    [XmlType(Namespace = "urn:marc-hi:gpmr:heuristic")]
+    public class MapData
+    {
+        /// <summary>
+        /// The name of the from type
+        /// </summary>
+        [XmlAttribute("name")]
+        public string Name { get; set; }
+        /// <summary>
+        /// The name of the argument on the map type
+        /// </summary>
+        [XmlAttribute("argument")]
+        public string Argument { get; set; }
     }
 
     /// <summary>

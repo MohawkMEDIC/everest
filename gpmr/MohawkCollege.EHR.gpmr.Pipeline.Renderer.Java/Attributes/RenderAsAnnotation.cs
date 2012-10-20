@@ -1,4 +1,4 @@
-/* 
+﻿/* 
  * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
@@ -12,26 +12,26 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
  * License for the specific language governing permissions and limitations under 
  * the License.
-
  * 
- * Author: Justin Fyfe
+ * User: Justin Fyfe
  * Date: 01-09-2009
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using MohawkCollege.EHR.gpmr.COR;
 
-namespace MARC.Everest.Attributes
+namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Attributes
 {
     /// <summary>
-    /// Identifies that a particular structure represents a complete HL7v3 interaction with transport, controlAct and payload wrappers
+    /// Annotation for the render as
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes"), AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class InteractionAttribute : NamedAttribute
+    public class RenderAsAnnotation : Annotation
     {
         /// <summary>
-        /// Gets or sets the trigger event for this interaction.
+        /// Gets or sets the name to render as
         /// </summary>
-        public string TriggerEvent { get; set; }
+        public string RenderName { get; set; }
     }
 }

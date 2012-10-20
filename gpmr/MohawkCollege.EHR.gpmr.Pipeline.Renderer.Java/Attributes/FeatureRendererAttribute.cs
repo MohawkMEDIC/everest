@@ -14,9 +14,7 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 08-07-2011
- * 
- * NB: This file is duplicated from the RimbaCS renderer
+ * Date: 01-09-2009
  */
 using System;
 using System.Collections.Generic;

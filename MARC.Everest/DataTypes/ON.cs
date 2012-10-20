@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using MARC.Everest.Attributes;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -50,6 +51,14 @@ namespace MARC.Everest.DataTypes
         public ON(EntityNameUse use, IEnumerable<ENXP> parts)
             : base(use, parts)
         {
+        }
+
+        /// <summary>
+        /// Creates an organization name
+        /// </summary>
+        public static ON CreateON(EntityNameUse use, params ENXP[] parts)
+        {
+            return new ON(use, parts);
         }
 
         /// <summary>
@@ -90,6 +99,42 @@ namespace MARC.Everest.DataTypes
                 isValid &= !disallowedPartTypes.Contains(part.Type.HasValue ? part.Type.Value : EntityNamePartType.Title);
 
             return isValid;
+        }
+
+        /// <summary>
+        /// Extended validation with reported problems
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+
+
+            List<EntityNamePartType> disallowedPartTypes = new List<EntityNamePartType>()
+                { 
+                    EntityNamePartType.Given, 
+                    EntityNamePartType.Family 
+                };
+            List<EntityNameUse?> disallowedUses = new List<EntityNameUse?>()
+            {
+                EntityNameUse.Indigenous,
+                EntityNameUse.Pseudonym,
+                EntityNameUse.Anonymous,
+                EntityNameUse.Artist,
+                EntityNameUse.Religious,
+                EntityNameUse.MaidenName
+            };
+
+            //object obj = disallowedQualifiers.Find(o => Use.Find(u => u.Code.Equals(o)) != null);
+            if (Use != null && disallowedUses.Exists(o => Use.Find(u => u.Code.Equals(o)) != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ON", String.Format(ValidationMessages.MSG_INVALID_VALUE, this.Use, "Use")));
+
+            // Validate parts
+            foreach (var part in Part)
+                if(disallowedPartTypes.Contains(part.Type.HasValue ? part.Type.Value : EntityNamePartType.Title))
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ON", String.Format(ValidationMessages.MSG_INVALID_VALUE, part.Type, "Part.Type")));
+
+            return retVal;
         }
 
         /// <summary>
