@@ -142,8 +142,13 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             sw.WriteLine("@Structure(name = \"{0}\", structureType = StructureType.INTERACTION)", interaction.Name);
             sw.WriteLine("@Interaction(name=\"{1}\", triggerEvent = \"{0}\")", interaction.TriggerEvent, interaction.Name);
             sw.WriteLine("@InteractionResponses( value = {");
+            List<String> resp = new List<string>();
             foreach (Interaction response in interaction.Responses)
+            {
+                if (resp.Contains(response.Name)) continue;
                 sw.WriteLine("\t@Interaction(name = \"{0}\", triggerEvent = \"{1}\"){2}", response.Name, response.TriggerEvent, response == interaction.Responses.Last() ? "" : ",");
+                resp.Add(response.Name);
+            }
             sw.WriteLine("})");
             sw.WriteLine("public class {0} extends {1} {{", interaction.Name, CreateInteractionDatatype(interaction.MessageType, ownerPackage));
 

@@ -785,12 +785,12 @@
         </member>
         <member name="F:MARC.Everest.DataTypes.EntityNamePartQualifier.Prefix">
             <summary>
-            Identifies a middle name
+            Identifies a prefix
             </summary>
         </member>
         <member name="F:MARC.Everest.DataTypes.EntityNamePartQualifier.Suffix">
             <summary>
-            Identifies a middle name
+            Identifies a suffix
             </summary>
         </member>
         <member name="T:MARC.Everest.DataTypes.ENXP">
@@ -2521,6 +2521,13 @@
             <summary>
             Override of base equals
             </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.EN.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
+            <summary>
+            Determine semantic equality of this type
+            </summary>
+            <remarks>Two non-null non-nullflavored instance of EN are considered semantically equal when
+            they both contain the same parts in the same order.</remarks>
         </member>
         <member name="P:MARC.Everest.DataTypes.EN.Use">
             <summary>
@@ -9376,6 +9383,20 @@
             Validate
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.MO.ValidateEx">
+            <summary>
+            Validate returning a list of detected issues
+            </summary>
+            <remarks>
+            An instance of MO is considered valid when:
+            <list type="number">
+                <item><description>If the <see cref="P:NullFlavor"/> property has a value and the <see cref="P:Value"/> and <see cref="P:UncertainRange"/> properties are not set, and</description></item>
+                <item><description>If the <see cref="P:Value"/> property is set, the <see cref="P:NullFlavor"/> and <see cref="P:UncertainRange"/> properties have no value, and</description></item>
+                <item><description>If the <see cref="P:UncertainRange"/> property is set, the <see cref="P:NullFlavor"/> and <see cref="P:Value"/> properties are not set, and</description></item>
+                <item><description>If the <see cref="P:NullFlavor"/> property is not set then <see cref="P:Currency"/> property is set</description></item>
+            </list>
+            </remarks>
+        </member>
         <member name="M:MARC.Everest.DataTypes.MO.Equals(MARC.Everest.DataTypes.MO)">
             <summary>
             Determine if this MO is equal to another MO
@@ -9439,8 +9460,8 @@
             <summary>
             Determines if this instance of MO semantically equals <paramref name="other"/>
             </summary>
-            <param name="b"></param>
-            <returns></returns>
+            <remarks>Two non-null non-null flavored instance of MO are considered equal when their currencies and values are equal or if their uncertain range properties
+            are non-null, not null-flavored and equal.</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.MO.CompareTo(MARC.Everest.DataTypes.MO)">
             <summary>
@@ -11856,6 +11877,11 @@
             <param name="parts">The parts of the names</param>
             <param name="use">The uses of this name</param>
         </member>
+        <member name="M:MARC.Everest.DataTypes.ON.CreateON(MARC.Everest.DataTypes.EntityNameUse,MARC.Everest.DataTypes.ENXP[])">
+            <summary>
+            Creates an organization name
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.ON.Validate">
             <summary>
             Validate the organization name
@@ -11868,6 +11894,12 @@
                 <item>The <see cref="M:MARC.Everest.DataTypes.ENXP.Type"/> property of each <see cref="!:Part"/> is not in { Given, Family }</item>
             </list>
             </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.ON.ValidateEx">
+            <summary>
+            Extended validation with reported problems
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:MARC.Everest.DataTypes.ON.Parse(MARC.Everest.DataTypes.EN)">
             <summary>
@@ -12391,6 +12423,11 @@
             Create a new instance of a simple PN
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.PN.CreatePN(MARC.Everest.DataTypes.EntityNameUse,MARC.Everest.DataTypes.ENXP[])">
+            <summary>
+            Create a new instance of PN
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.PN.IsValidBasicFlavor(MARC.Everest.DataTypes.PN)">
             <summary>
             TODO: Find a proper definition for PN.Basic
@@ -12401,6 +12438,12 @@
             <summary>
             Validate this instance
             </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.PN.ValidateEx">
+            <summary>
+            Extended validation with additional data
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:MARC.Everest.DataTypes.PN.Parse(MARC.Everest.DataTypes.EN)">
             <summary>

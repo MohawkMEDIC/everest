@@ -107,9 +107,15 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 sw.Write(" = new {0}()", dtr);
             
             // TODO: Fixed Values here
-            if (cc is Property && !String.IsNullOrEmpty((cc as Property).FixedValue))
+            var property = cc as Property;
+            // Only render fixed values when:
+            // 1. The property is a property
+            // 2. The property has a fixed value
+            // 3. The property is mandatory or populated
+            // 4. The property is not a traversable association.
+            if (property != null && !String.IsNullOrEmpty(property.FixedValue) && (property.Conformance == ClassContent.ConformanceKind.Populated || property.Conformance == ClassContent.ConformanceKind.Mandatory) &&
+                property.PropertyType != Property.PropertyTypes.TraversableAssociation)
             {
-                var property = cc as Property;
                 // Get the real supplier (value set, or code system if concept domain)
                 var splrCd = property.SupplierDomain as ConceptDomain;
                 var bindingDomain = property.SupplierDomain;
@@ -127,8 +133,12 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 else if (ev == null) // Enumeration value is not known in the enumeration, fixed value fails
                 {
                     System.Diagnostics.Trace.WriteLine(String.Format("Can't find literal '{0}' in supplier domain for property '{1}'", property.FixedValue, property.Name), "error");
-                    sw.Write(" = new {0}(new {2}(\"{3}\"))",
-                       dtr, ownerPackage, Util.Util.MakeFriendly(EnumerationRenderer.WillRender(property.SupplierDomain)), property.FixedValue);
+                    if (String.IsNullOrEmpty(EnumerationRenderer.WillRender(bindingDomain)))
+                        sw.Write(" = new {0}(\"{1}\")",
+                            dtr, property.FixedValue);
+                    else
+                        sw.Write(" = new {0}(new {2}(\"{3}\"))",
+                            dtr, ownerPackage, Util.Util.MakeFriendly(EnumerationRenderer.WillRender(property.SupplierDomain)), property.FixedValue);
                 }
                 else // Fixed value is known
                     sw.Write(" = new {2}({0}.{1})",
@@ -819,7 +829,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         // Now the signature (Mandatory)
                         if (choice.Conformance == ClassContent.ConformanceKind.Mandatory)
                         {
-                            ctors["mandatory"][0] += string.Format("{0} {1},", tr == null ? "System.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                            ctors["mandatory"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
                             ctors["mandatory"][1] += string.Format("\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                             ctors["mandatory"][2] += String.Format("\t * @param {0} ({1}) No documentation available", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
                         }
@@ -827,11 +837,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         {
 
                             // Required (default)
-                            ctors["required"][0] += string.Format("{0} {1},", tr == null ? "System.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                            ctors["required"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
                             ctors["required"][1] += string.Format("\t\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                             ctors["required"][2] += String.Format("\t\t * @param {0} ({1}) No documentation available\r\n", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
                         }
-                        ctors["all"][0] += string.Format("{0} {1},", tr == null ? "System.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                        ctors["all"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
                         ctors["all"][1] += string.Format("\t\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                         ctors["all"][2] += String.Format("\t\t/* @param {0} ({1}) No documentation available\r\n", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
 
