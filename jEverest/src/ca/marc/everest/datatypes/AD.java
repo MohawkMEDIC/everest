@@ -34,6 +34,7 @@ import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -105,9 +106,19 @@ public class AD extends ANY {
 		this.use = use;
 	}
 	
-	@Override
-	public CS<NullFlavor> getNullFlavor() {
-		return null;
+	/**
+	 * Create an AD instance given the parts
+	 */
+	public static AD createAD(ADXP... parts){
+		return new AD(Arrays.asList(parts));
+	}
+		
+	/**
+	 * Create an instance of AD given the parts and use
+	 */
+	public static AD createAD(SET<CS<PostalAddressUse>> use, ADXP... parts)
+	{
+		return new AD(use, Arrays.asList(parts));
 	}
 	
 	/**

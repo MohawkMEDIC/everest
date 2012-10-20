@@ -87,6 +87,11 @@ public @interface Property {
 	int maxOccurs() default 1;
 
 	/**
+	 * Identifies the maximum length of the contents of the file
+	 */
+	int maxLength() default -1;
+	
+	/**
 	 * When set, this parameter forces a flavor onto the rendered property. This means that 
 	 * a particular flavor can be imposed on a property.
 	 */
@@ -98,5 +103,10 @@ public @interface Property {
 	 * of the contained class.
 	 */
 	boolean ignoreTraversal() default false;
+	
+	/**
+	 * Specifies the original fixed value of the field.
+	 */
+	String fixedValue() default NULL;
 	
 }
