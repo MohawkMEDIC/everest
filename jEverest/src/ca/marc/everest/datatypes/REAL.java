@@ -18,6 +18,8 @@
  */
 package ca.marc.everest.datatypes;
 
+import java.math.BigDecimal;
+
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.generic.*;
 import ca.marc.everest.datatypes.interfaces.IAny;
@@ -234,7 +236,7 @@ public class REAL extends QTY<Double> implements IRealValue<Double>, IImplicitIn
 		
 		if(other == null)
 			return null; // This differs from standard Java Integer + null as no boxing is performed
-		else if(this.isNull() || other.isNull())
+		else if(this.isNull() || other.isNull() || other.getValue() == 0)
 			retVal.setNullFlavor(NullFlavor.NoInformation);
 		else if(other.getValue() != null && this.getValue() != null)
 			retVal.setValue(this.getValue() / other.getValue());
@@ -253,12 +255,31 @@ public class REAL extends QTY<Double> implements IRealValue<Double>, IImplicitIn
 		
 		if(other == null)
 			return null; // This differs from standard Java Integer + null as no boxing is performed
-		else if(this.isNull() || other.isNull())
+		else if(this.isNull() || other.isNull() || other.getValue() == 0)
 			retVal.setNullFlavor(NullFlavor.NoInformation);
 		else if(other.getValue() != null && this.getValue() != null)
 			retVal.setValue(this.getValue() / other.getValue());
 		else 
 			retVal.setNullFlavor(NullFlavor.Other);
+		return retVal;
+	}
+	
+	/**
+	 * Perform floating point division between this REAL and an instance of MO
+	 */
+	public MO divide(MO other)
+	{
+		MO retVal = new MO();
+		
+		if (other == null)
+            return null;
+        else if (this.isNull() || other.isNull() || other.getValue().equals(0))
+            retVal.setNullFlavor(NullFlavor.NoInformation);
+        else
+        {
+            retVal.setValue(BigDecimal.valueOf(this.getValue() / other.getValue().doubleValue()));
+            retVal.setCurrency(other.getCurrency());
+        }
 		return retVal;
 	}
 	
@@ -300,6 +321,28 @@ public class REAL extends QTY<Double> implements IRealValue<Double>, IImplicitIn
 		
 	}
 
+	/**
+	 * Multiply this REAL by the specified MO
+	 */
+	public MO multiply(MO other) {
+		
+		MO retVal = new MO();
+		
+		if(other == null)
+			return null; // This differs from standard Java Integer + null as no boxing is performed
+		else if(this.isNull() || other.isNull())
+			retVal.setNullFlavor(NullFlavor.NoInformation);
+		else if(other.getValue() != null && this.getValue() != null)
+		{
+			retVal.setValue(BigDecimal.valueOf(this.getValue() * other.getValue().doubleValue()));
+			retVal.setCurrency(other.getCurrency());
+		}
+		else 
+			retVal.setNullFlavor(NullFlavor.Other);
+		return retVal;
+		
+	}
+	
 	/**
 	 * Converts an INT instance to a REAL instance
 	 */

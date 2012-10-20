@@ -53,8 +53,14 @@ public class EN extends ANY {
 	 * @param parts The parts which compose the EN
 	 */
 	public EN(EntityNameUse use, Collection<ENXP> parts) { 
-		super();
+		this(parts);
 		this.m_use = new SET<CS<EntityNameUse>>(new CS<EntityNameUse>(use));
+	}
+	/**
+	 * Creates a new instance of EN with the specified parts
+	 */
+	public EN(Collection<ENXP> parts)
+	{
 		this.m_parts.addAll(parts);
 	}
 	/**

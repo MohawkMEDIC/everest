@@ -26,6 +26,7 @@ import java.util.List;
 import ca.marc.everest.annotations.*;
 import ca.marc.everest.datatypes.generic.CS;
 import ca.marc.everest.datatypes.generic.Predicate;
+import ca.marc.everest.datatypes.generic.SET;
 import ca.marc.everest.interfaces.IResultDetail;
 import ca.marc.everest.interfaces.ResultDetailType;
 import ca.marc.everest.resultdetails.DatatypeValidationResultDetail;
@@ -136,6 +137,23 @@ public class ON extends EN {
 
         return isValid;
 	}
-	
+
+	/**
+	 * Create an ON instance from an EN instance (up-cast)
+	 */
+	public static ON fromEN(EN name)
+	{
+        ON retVal = new ON();
+        retVal.getParts().addAll(name.getParts());
+        retVal.setControlActExt(name.getControlActExt());
+        retVal.setControlActRoot(name.getControlActRoot()) ;
+        retVal.setFlavorId(name.getFlavorId());
+        retVal.setNullFlavor(name.getNullFlavor() != null ? (CS<NullFlavor>)name.getNullFlavor().shallowCopy() : null);
+        retVal.setUpdateMode(name.getNullFlavor() != null ? (CS<UpdateMode>)name.getUpdateMode().shallowCopy() : null);
+        retVal.setUse(name.getUse() != null ? new SET<CS<EntityNameUse>>(name.getUse()) : null);
+        retVal.setValidTimeHigh(name.getValidTimeHigh());
+        retVal.setValidTimeLow(name.getValidTimeLow());
+        return retVal;
+	}
 	
 }
