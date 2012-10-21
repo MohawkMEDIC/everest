@@ -284,21 +284,24 @@ namespace MARC.Everest.Test.DataTypes
             Assert.IsTrue(urg.Validate());
         }
 
+        #region Surrogates removed from Everest 1.1
+
         /// <summary>
         /// Testing when a concreate URG is converted to a generic version
         /// Must return TRUE
         /// Variables being converted:
         ///     ControlActRoot not nullified
         /// </summary> 
-        [TestMethod]
-        public void URGControlActRootSurrogateTest()
-        {
-            MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
-            o.ControlActRoot = "1";
-            URG<String> test = URG<String>.Parse(o);
-            Assert.IsTrue(o.ControlActRoot == test.ControlActRoot);
+        /// Obsolete with hierarchy change
+        //[TestMethod]
+        //public void URGControlActRootSurrogateTest()
+        //{
+        //    MARC.Everest.DataTypes.URG<PQ> o = new MARC.Everest.DataTypes.URG<PQ>();
+        //    o.ControlActRoot = "1";
+        //    URG<String> test = URG<String>.Parse(o);
+        //    Assert.IsTrue(o.ControlActRoot == test.ControlActRoot);
 
-        }
+        //}
 
         /// <summary>
         /// Testing when a concreate URG is converted to a generic version
@@ -306,14 +309,15 @@ namespace MARC.Everest.Test.DataTypes
         /// Variables being converted:
         ///     ControlActExt not nullified
         /// </summary> 
-        [TestMethod]
-        public void URGControlActExtSurrogateTest()
-        {
-            MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
-            o.ControlActExt = "1";
-            URG<String> test = URG<String>.Parse(o);
-            Assert.IsTrue(o.ControlActExt == test.ControlActExt);
-        }
+        /// Obsolete with hierarchy change
+        /// [TestMethod]
+        //public void URGControlActExtSurrogateTest()
+        //{
+        //    MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
+        //    o.ControlActExt = "1";
+        //    URG<String> test = URG<String>.Parse(o);
+        //    Assert.IsTrue(o.ControlActExt == test.ControlActExt);
+        //}
 
         /// <summary>
         /// Testing when a concreate URG is converted to a generic version
@@ -321,14 +325,14 @@ namespace MARC.Everest.Test.DataTypes
         /// Variables being converted:
         ///     Probability not nullified
         /// </summary>         
-        [TestMethod]
-        public void URGProbabilitySurrogateTest()
-        {
-            MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
-            o.Probability = (decimal)0.50;
-            URG<double?> test = URG<double?>.Parse(o);
-            Assert.IsTrue(o.Probability == test.Probability);
-        }
+        //[TestMethod]
+        //public void URGProbabilitySurrogateTest()
+        //{
+        //    MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
+        //    o.Probability = (decimal)0.50;
+        //    URG<double?> test = URG<double?>.Parse(o);
+        //    Assert.IsTrue(o.Probability == test.Probability);
+        //}
 
         /// <summary>
         /// Testing when a concreate URG is converted to a generic version
@@ -336,14 +340,14 @@ namespace MARC.Everest.Test.DataTypes
         /// Variables being converted:
         ///     Flavor not nullified
         /// </summary>         
-        [TestMethod]
-        public void URGFlavorSurrogateTest()
-        {
-            MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
-            o.Flavor = "hola";
-            URG<String> test = URG<String>.Parse(o);
-            Assert.IsTrue(o.Flavor == test.Flavor);
-        }
+        //[TestMethod]
+        //public void URGFlavorSurrogateTest()
+        //{
+        //    MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
+        //    o.Flavor = "hola";
+        //    URG<String> test = URG<String>.Parse(o);
+        //    Assert.IsTrue(o.Flavor == test.Flavor);
+        //}
 
         /// <summary>
         /// Testing when a concreate URG is converted to a generic version
@@ -351,14 +355,14 @@ namespace MARC.Everest.Test.DataTypes
         /// Variables being converted:
         ///     NullFlavor is nullified
         /// </summary>         
-        [TestMethod]
-        public void URGNullFlavorSurrogate1Test()
-        {
-            MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
-            o.NullFlavor = null;
-            URG<String> test = URG<String>.Parse(o);
-            Assert.IsTrue(o.NullFlavor == test.NullFlavor);
-        }
+        //[TestMethod]
+        //public void URGNullFlavorSurrogate1Test()
+        //{
+        //    MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
+        //    o.NullFlavor = null;
+        //    URG<String> test = URG<String>.Parse(o);
+        //    Assert.IsTrue(o.NullFlavor == test.NullFlavor);
+        //}
 
         /// <summary>
         /// Testing when a concreate URG is converted to a generic version
@@ -366,13 +370,14 @@ namespace MARC.Everest.Test.DataTypes
         /// Variables being converted:
         ///     NullFlavor is not nullified
         /// </summary>         
-        [TestMethod]
-        public void URGPNullFlavorSurrogate2Test()
-        {
-            MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
-            o.NullFlavor = NullFlavor.NotAsked;
-            URG<String> test = URG<String>.Parse(o);
-            Assert.IsTrue(o.NullFlavor.Equals(test.NullFlavor));
-        }
+        //[TestMethod]
+        //public void URGPNullFlavorSurrogate2Test()
+        //{
+        //    MARC.Everest.DataTypes.URG<Object> o = new MARC.Everest.DataTypes.URG<Object>();
+        //    o.NullFlavor = NullFlavor.NotAsked;
+        //    URG<String> test = URG<String>.Parse(o);
+        //    Assert.IsTrue(o.NullFlavor.Equals(test.NullFlavor));
+        //}
+        #endregion
     }
 }

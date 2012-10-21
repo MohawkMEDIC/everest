@@ -28,6 +28,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 new string [] {"--rimbapi-target-ns\t", "Set the target namespace of the generated files" },
                 new string[] {"--rimbapi-compile\t","Compile the resultant java files" },
                 new string[] {"--rimbapi-jaronly\t", "Only output a jar file (clean\r\n\t\t\t\tcode files)" },
+                new string[] {"--rimbapi-jdoc\t", "True if javadoc should be generated" },
                 new string[] {"--rimbapi-license\t","The license that should be appended to the\r\n\t\t\t\tgenerated files (BSD, MIT, or file)"}, 
                 new string[] {"--rimbapi-org\t","The organization the generated code belongs to"},
                 new string[] {"--rimbapi-gen-vocab\t", "Generate all vocabulary into Java enumerations"},
@@ -165,9 +166,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
 
             // Validate the jdk path
             // TODO: Find a better way of doing this
-            String javacPath = Util.JabaUtils.GetJavaCPath(m_javaccpath);
-            if (string.IsNullOrEmpty(javacPath))
-                throw new InvalidOperationException("Could not find javac on the path specified by --rimbapi-jdk parameter");
+            String javacPath = Util.JabaUtils.GetJavaTool(m_javaccpath, "javac"),
+                jarPath = Util.JabaUtils.GetJavaTool(m_javaccpath, "jar"),
+                javaDocPath = Util.JabaUtils.GetJavaTool(m_javaccpath, "javadoc");
+            if (string.IsNullOrEmpty(javacPath) || string.IsNullOrEmpty(jarPath))
+                throw new InvalidOperationException("Could not find javac or jar on the path specified by --rimbapi-jdk parameter");
 
             string heuristicFile = Path.Combine(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "data"), "JavaHeuristicData.xml");
             // Initialize Heuristics
@@ -209,6 +212,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
             Directory.CreateDirectory(Path.Combine(hostContext.Output, "src"));
             Directory.CreateDirectory(Path.Combine(hostContext.Output, "bin"));
             Directory.CreateDirectory(Path.Combine(hostContext.Output, "lib"));
+            Directory.CreateDirectory(Path.Combine(hostContext.Output, "doc"));
             Directory.CreateDirectory(Path.Combine(hostContext.Output, ".settings"));
             string[] subPackages = { projectName, 
                                        String.Format("{0}.{1}", projectName, "interaction"), 
@@ -223,6 +227,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
             if (!File.Exists(jarFile))
                 throw new FileNotFoundException("Cannot find the Everest JAR file");
             File.Copy(jarFile, Path.Combine(Path.Combine(hostContext.Output, "lib"), Path.GetFileName(jarFile)), true);
+            jarFile = Path.Combine(Path.Combine(hostContext.Output, "lib"), Path.GetFileName(jarFile));
             #endregion
             // Core files
             #region Assembly Info
@@ -232,6 +237,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
             GenerateFile(Path.Combine(Path.Combine(hostContext.Output, ".settings"), "org.eclipse.jdt.core.prefs"), Template.Preferences, parameters);
             #endregion
 
+            #region Generate Sources
             // Convert class rep to list
             List<Feature> features = new List<Feature>();
             foreach (KeyValuePair<String, Feature> kv in classRep)
@@ -243,6 +249,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 else if ((b is SubSystem) && !(a is SubSystem)) return 1;
                 else return a.GetType().Name.CompareTo(b.GetType().Name);
             });
+
 
             // Setup the template parameters
             string[][] templateFields = new string[][] 
@@ -261,64 +268,175 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 new string[] { "$mrversion$", InteractionRenderer.profileId ?? "" }
             };
 
-            // Scan the class repo and start processing
-            foreach (Feature f in features)
+            TextWriter jFileList = null;
+            try
             {
-                System.Diagnostics.Trace.WriteLine(String.Format("Rendering Java for '{0}'...", f.Name), "debug");
+                jFileList = File.CreateText(Path.Combine(hostContext.Output, "sources.index"));
 
-                // Is there a renderer for this feature
-                KeyValuePair<FeatureRendererAttribute, IFeatureRenderer> fr = renderers.Find(o => o.Key.Feature == f.GetType());
+                // Render initial feature list
+                RenderFeatureList(features, templateFields, renderers, jFileList, parameters, projectName);
 
-                // Was a renderer found?
-                if (fr.Key == null)
-                    System.Diagnostics.Trace.WriteLine(String.Format("can't find renderer for {0}", f.GetType().Name), "warn");
-                else
+                // Any added features?
+                // HACK: This should be fixed soon, but meh... I'll get around to it
+                List<Feature> addlFeatures = new List<Feature>();
+                foreach (KeyValuePair<String, Feature> kv in classRep)
+                    if (!features.Contains(kv.Value))
+                        addlFeatures.Add(kv.Value);
+                RenderFeatureList(addlFeatures, templateFields, renderers, jFileList, parameters, projectName);
+
+            }
+            finally
+            {
+                if (jFileList != null)
+                    jFileList.Close();
+            }
+            #endregion
+
+            // Compile?
+            #region Compile this project
+
+            // Does the user want to compile?
+            if (parameters.ContainsKey("rimbapi-compile") && Convert.ToBoolean(parameters["rimbapi-compile"][0]))
+            {
+                Trace.WriteLine(String.Format("Output will be logged to: {0}", hostContext.Output), "information");
+
+                // Generate compile arguments
+                StringBuilder compileArgs = new StringBuilder(),
+                    jarArgs = new StringBuilder(),
+                    jdocArgs = new StringBuilder();
+
+                // First, the classpath 
+                compileArgs.AppendFormat("-nowarn -classpath \"{0}\" ", jarFile);
+                // Output
+                compileArgs.AppendFormat("-d \"{0}\" ", Path.Combine(hostContext.Output, "bin"));
+                // Sources
+                compileArgs.AppendFormat("-sourcepath \"{0}\" ", Path.Combine(hostContext.Output, "src"));
+                compileArgs.Append("-g:none ");
+                // source files
+                compileArgs.AppendFormat("@{0}", Path.Combine(hostContext.Output, "sources.index"));
+
+                // Jar options
+                jarArgs.AppendFormat("cf \"{0}\" ", Path.Combine(hostContext.Output, String.Format("{0}.jar", projectName)));
+                jarArgs.AppendFormat("@\"{0}\" ", Path.Combine(hostContext.Output, "classes.index"));
+
+                // Javadoc args
+                jdocArgs.AppendFormat("-docencoding UTF-8 -charset UTF-8 -encoding UTF-8 -sourcepath \"{0}\" ", Path.Combine(hostContext.Output, "src"));
+                jdocArgs.AppendFormat("-classpath \"{0}\" ", jarFile);
+                jdocArgs.AppendFormat("-d \"{0}\" ", Path.Combine(hostContext.Output, "doc"));
+                jdocArgs.AppendFormat(" {0} @{1}", projectName, Path.Combine(hostContext.Output, "sources.index"));
+
+                // Create process start info
+                ProcessStartInfo psiJavac = new ProcessStartInfo(javacPath, compileArgs.ToString()),
+                    psiJar = new ProcessStartInfo(jarPath, jarArgs.ToString()),
+                    psiJavaDoc = new ProcessStartInfo(javaDocPath, jdocArgs.ToString());
+                psiJavaDoc.UseShellExecute = psiJar.UseShellExecute = psiJavac.UseShellExecute = false;
+                //psiJavac.RedirectStandardOutput = psiJar.RedirectStandardOutput = psiJar.RedirectStandardError = psiJavac.RedirectStandardError = true;
+
+                // Setup processes
+                Process javacProc = new Process(),
+                    jarProc = new Process(),
+                    jdocProc = new Process();
+
+                javacProc.StartInfo = psiJavac;
+                jarProc.StartInfo = psiJar;
+                jdocProc.StartInfo = psiJavaDoc;
+
+                // Compile
+                System.Diagnostics.Trace.Write(String.Format("Compiling project:\r\n\t{0}\r\n\t{1}\r\nWait...", javacPath, psiJavac.Arguments), "information");
+        
+                // Start compile
+                javacProc.Start();
+                //logWriter.Write(javacProc.StandardOutput.ReadToEnd());
+                javacProc.WaitForExit();
+                if (javacProc.ExitCode == 0)
                 {
-                    string file = String.Empty;
-                    try // To write the file
+                    Trace.WriteLine("Success!", "information");
+
+                    // Generate documentation?
+                    bool jd = false;
+                    if (parameters.ContainsKey("--rimbapi-jdoc"))
+                        jd = Boolean.Parse(parameters["--rimbapi-jdoc"][0]);
+                    if (jd)
                     {
-                        // Start the rendering
-                        file = fr.Value.CreateFile(f, Path.Combine(Path.Combine(hostContext.Output, "src"), JabaUtils.PackageNameToDirectory(projectName)));
-
-                        // Is the renderer for a file
-                        if (fr.Key.IsFile)
+                        System.Diagnostics.Trace.Write(String.Format("Creating JavaDocs:\r\n\t{0}\r\n\t{1}\r\nWait...", jdocProc, psiJavaDoc.Arguments), "information");
+                        jdocProc.Start();
+                        // logWriter.Write(jarProc.StandardOutput.ReadToEnd());
+                        jdocProc.WaitForExit();
+                        if (jdocProc.ExitCode == 0)
+                            Trace.WriteLine("Success!", "information");
+                        else
                         {
-
-                            TextWriter tw = File.CreateText(file);
-                            try // Render the file
-                            {
-
-                                string Header = Template.Default; // Set the header to the default
-
-                                // Populate template fields
-                                foreach (String[] st in templateFields)
-                                    Header = Header.Replace(st[0], st[1]);
-
-                                // Write header
-                                tw.Write(Header);
-
-                                // Render the template out
-                                fr.Value.Render(parameters["rimbapi-target-ns"][0], parameters["rimbapi-api-ns"][0], f, tw);
-                            }
-                            finally
-                            {
-                                tw.Close();
-                            }
-
+                            Trace.WriteLine("Fail!", "information");
                         }
                     }
-                    catch (NotSupportedException)
-                    {
-                        if (!String.IsNullOrEmpty(file)) File.Delete(file);
-                    }
-                    catch (Exception e)
-                    {
-                        if (!String.IsNullOrEmpty(file)) File.Delete(file);
-                        System.Diagnostics.Trace.WriteLine(String.Format("Could not write file '{0}', {1}", file, e.Message), "error");
-                    }
-                }
-            }
 
+                    // Enumerate classes
+                    var classList = JabaUtils.GenerateClassIndex(Path.Combine(hostContext.Output, "bin"));
+                    try
+                    {
+                        jFileList = File.CreateText(Path.Combine(hostContext.Output, "classes.index"));
+                        foreach (var classFile in classList)
+                            jFileList.WriteLine(String.Format("-C \"{0}\" \"{1}\"",
+                                Path.Combine(hostContext.Output, "bin"),
+                                classFile.Replace(String.Format("{0}{1}", Path.Combine(hostContext.Output, "bin"), Path.DirectorySeparatorChar), "")).Replace('\\', '/')
+                            );
+                    }
+                    finally
+                    {
+                        if (jFileList != null)
+                            jFileList.Close();
+                    }
+                    // Jar it up
+                    System.Diagnostics.Trace.Write(String.Format("Creating JAR:\r\n\t{0}\r\n\t{1}\r\nWait...", jarPath, psiJar.Arguments), "information");
+                    jarProc.Start();
+                    // logWriter.Write(jarProc.StandardOutput.ReadToEnd());
+                    jarProc.WaitForExit();
+                    if (jarProc.ExitCode == 0)
+                        Trace.WriteLine("Success!", "information");
+                    else
+                    {
+                        Trace.WriteLine("Fail!", "information");
+                        throw new InvalidOperationException("Can't continue, compile failed!");
+                    }
+
+                }
+                else
+                {
+                    Trace.WriteLine("Fail!", "information");
+                    throw new InvalidOperationException("Can't continue, compile failed!");
+                }
+
+            }
+            #endregion
+
+            // Does the user only want asm?
+            #region jaronly
+            if (parameters.ContainsKey("rimbapi-jaronly") && parameters.ContainsKey("rimbapi-compile") && Convert.ToBoolean(parameters["rimbapi-jaronly"][0]))
+                try
+                {
+                    // Move the everest jar to root
+                    File.Move(jarFile, Path.Combine(hostContext.Output, Path.GetFileName(jarFile)));
+
+                    // Clean all in the projects and remove all directories
+                    List<String> directories = new List<string>(new string[] {
+                        Path.Combine(hostContext.Output, "bin"), 
+                        Path.Combine(hostContext.Output, "lib"), 
+                        Path.Combine(hostContext.Output, "src"),
+                        Path.Combine(hostContext.Output, ".settings"),
+                    });
+
+                    // Clean dirs
+                    foreach (string s in directories)
+                        Directory.Delete(s, true);
+                    foreach (string f in Directory.GetFiles(hostContext.Output))
+                        if (Path.GetExtension(f) != ".jar")
+                            File.Delete(f);
+                }
+                catch (Exception)
+                {
+                    System.Diagnostics.Trace.WriteLine("Could not clean working files!", "warn");
+                }
+            #endregion
 
         }
 
@@ -372,6 +490,74 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
             {
                 System.Diagnostics.Trace.WriteLine(String.Format("Couldn't generate the {0} for this project", Path.GetFileName(outputFile)), "warn");
             }
+        }
+
+        /// <summary>
+        /// Render feature list
+        /// </summary>
+        private void RenderFeatureList(List<Feature> features, string[][] templateFields, List<KeyValuePair<FeatureRendererAttribute, IFeatureRenderer>> renderers, TextWriter jFileList, Dictionary<String, StringCollection> parameters, string projectName)
+        {
+
+            // Scan the class repo and start processing
+            foreach (Feature f in features)
+            {
+                System.Diagnostics.Trace.WriteLine(String.Format("Rendering Java for '{0}'...", f.Name), "debug");
+
+                // Is there a renderer for this feature
+                KeyValuePair<FeatureRendererAttribute, IFeatureRenderer> fr = renderers.Find(o => o.Key.Feature == f.GetType());
+
+                // Was a renderer found?
+                if (fr.Key == null)
+                    System.Diagnostics.Trace.WriteLine(String.Format("can't find renderer for {0}", f.GetType().Name), "warn");
+                else
+                {
+                    string file = String.Empty;
+                    try // To write the file
+                    {
+                        // Start the rendering
+                        file = fr.Value.CreateFile(f, Path.Combine(Path.Combine(hostContext.Output, "src"), JabaUtils.PackageNameToDirectory(projectName)));
+
+                        // Is the renderer for a file
+                        if (fr.Key.IsFile)
+                        {
+
+                            TextWriter tw = File.CreateText(file);
+                            try // Render the file
+                            {
+
+                                string Header = Template.Default; // Set the header to the default
+
+                                // Populate template fields
+                                foreach (String[] st in templateFields)
+                                    Header = Header.Replace(st[0], st[1]);
+
+                                // Write header
+                                tw.Write(Header);
+
+                                // Render the template out
+                                fr.Value.Render(parameters["rimbapi-target-ns"][0], parameters["rimbapi-api-ns"][0], f, tw);
+
+                                jFileList.WriteLine(file);
+                            }
+                            finally
+                            {
+                                tw.Close();
+                            }
+
+                        }
+                    }
+                    catch (NotSupportedException)
+                    {
+                        if (!String.IsNullOrEmpty(file)) File.Delete(file);
+                    }
+                    catch (Exception e)
+                    {
+                        if (!String.IsNullOrEmpty(file)) File.Delete(file);
+                        System.Diagnostics.Trace.WriteLine(String.Format("Could not write file '{0}', {1}", file, e.Message), "error");
+                    }
+                }
+            }
+
         }
 
         /// <summary>

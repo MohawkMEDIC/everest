@@ -244,7 +244,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             #region Render the imports
             string[] apiImports = { "annotations.*", "datatypes.*", "datatypes.generic.*" },
-                jImports = { "java.lang.*", "java.util.*", string.Format("{0}.vocabulary.*", ownerPackage) };
+                jImports = { "java.lang.*", "java.util.*" };
             foreach (var import in apiImports)
                 tw.WriteLine("import {0}.{1};", apiNs, import);
             foreach (var import in jImports)

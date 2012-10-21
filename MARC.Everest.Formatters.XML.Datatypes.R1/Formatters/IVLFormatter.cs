@@ -251,7 +251,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     result.AddResultDetail(new NotSupportedChoiceResultDetail(
                             ResultDetailType.Warning, "Though XML ITS supports it, use of the IVL 'value' attribute should be avoided. The data has been parsed anyways.", s.ToString(), null));
                 }
-                if (s.GetAttribute("specializationType") != null)
+                if (s.GetAttribute("specializationType") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
                     ((ANY)instance).Flavor = s.GetAttribute("specializationType");
 
                 // Get property information

@@ -50,9 +50,10 @@ namespace MARC.Everest.DataTypes
     /// </example>
     /// <seealso cref="T:MARC.Everest.DataTypes.PDV{T}"/>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "UVP"), Serializable]
-    [Structure(Name = "UVP", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "UVP", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(IQuantity))]
     [XmlType("UVP", Namespace = "urn:hl7-org:v3")]
-    public class UVP<T> : PDV<T>, IEquatable<UVP<T>>, IProbability
+    public class UVP<T> : ANY, IEquatable<UVP<T>>, IProbability
+        where T : IAny
     {
         /// <summary>
         /// Create a new instance of UVP
@@ -72,6 +73,13 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
+        /// Gets or sets the value of the probability
+        /// </summary>
+        [Property(Name = "value", PropertyType = PropertyAttribute.AttributeAttributeType.Structural,
+            Conformance = PropertyAttribute.AttributeConformanceType.Mandatory)]
+        public T Value { get; set; }
+
+        /// <summary>
         /// The probability assigned to the value a decimal between 0 and 1
         /// </summary>
         [Property(Name = "probability", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, 
@@ -87,32 +95,60 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
+        /// Validate the UVP instance returning any detected issues
+        /// </summary>
+        /// <remarks>
+        /// An instance of UVP is considered valid when:
+        /// <list type="number">
+        ///     <item><description>When the <see cref="P:NullFlavor"/> property has a value then neither <see cref="P:Value"/> nor <see cref="P:Probability"/> carry a a value, and</description></item>
+        ///     <item><description>When the <see cref="P:NullFlavor"/> property has no value, then the <see cref="P:Value"/> and <see cref="P:Probability"/> properties must carry a value, and </description></item>
+        ///     <item><description>If populated, <see cref="P:Probability"/> must be carry a value between 0 and 1</description></item>
+        /// </list>
+        /// </remarks>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>();
+            if (this.NullFlavor != null && (this.Value != null || this.Probability != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "UVP", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            else if (this.NullFlavor == null)
+            {
+                if (this.Value == null && !(this is URG<T>))
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "UVP", String.Format(ValidationMessages.MSG_PROPERTY_NOT_POPULATED, "Value", typeof(T).Name), null));
+                if (this.Probability == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "UVP", String.Format(ValidationMessages.MSG_PROPERTY_NOT_POPULATED, "Probability", "Decimal"), null));
+                else if (this.Probability < 0 || this.Probability > 1)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "UVP", "Probabiliy must carry a value between 0 and 1", null));
+            }
+            return retVal;
+        }
+        /// <summary>
         /// Convert a concrete UVP to a generic version
         /// </summary>
         /// <exception cref="T:System.InvalidCastException">When the <paramref name="o"/> instance cannot be parsed to a strongly typed UVP of <typeparamref name="T"/></exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        public static UVP<T> Parse(MARC.Everest.DataTypes.UVP<Object> o)
-        {
-            UVP<T> retVal = new UVP<T>();
-            retVal.NullFlavor = o.NullFlavor == null ? null : o.NullFlavor.Clone() as CS<NullFlavor>;
-            retVal.ControlActExt = o.ControlActExt;
-            retVal.ControlActRoot = o.ControlActRoot;
-            retVal.Flavor = o.Flavor;
-            retVal.Probability = o.Probability;
-            retVal.UpdateMode = o.UpdateMode == null ? null : o.UpdateMode.Clone() as CS<UpdateMode>;
-            retVal.ValidTimeHigh = o.ValidTimeHigh;
-            retVal.ValidTimeLow = o.ValidTimeLow;
-            try
-            {
-                retVal.Value = (T)Util.FromWireFormat(o.Value, typeof(T));
-            }
-            catch (Exception e)
-            {
-                throw new InvalidCastException("Can't parse surrogate into a strongly typed UVP<T>", e);
-            }
+        /// Obsolete
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
+        //public static UVP<T> Parse(MARC.Everest.DataTypes.UVP<Object> o)
+        //{
+        //    UVP<T> retVal = new UVP<T>();
+        //    retVal.NullFlavor = o.NullFlavor == null ? null : o.NullFlavor.Clone() as CS<NullFlavor>;
+        //    retVal.ControlActExt = o.ControlActExt;
+        //    retVal.ControlActRoot = o.ControlActRoot;
+        //    retVal.Flavor = o.Flavor;
+        //    retVal.Probability = o.Probability;
+        //    retVal.UpdateMode = o.UpdateMode == null ? null : o.UpdateMode.Clone() as CS<UpdateMode>;
+        //    retVal.ValidTimeHigh = o.ValidTimeHigh;
+        //    retVal.ValidTimeLow = o.ValidTimeLow;
+        //    try
+        //    {
+        //        retVal.Value = (T)Util.FromWireFormat(o.Value, typeof(T));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new InvalidCastException("Can't parse surrogate into a strongly typed UVP<T>", e);
+        //    }
 
-            return retVal;
-        }
+        //    return retVal;
+        //}
 
         #region IEquatable<UVP<T>> Members
 
@@ -123,7 +159,7 @@ namespace MARC.Everest.DataTypes
         {
             bool result = false;
             if (other != null)
-                result = base.Equals((PDV<T>)other) &&
+                result = base.Equals((ANY)other) &&
                     other.Probability == this.Probability;
             return result;
         }
@@ -143,6 +179,10 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Override of semantic equality between this and <paramref name="other"/>
         /// </summary>
+        /// <remarks>
+        /// Two non-null, not null-flavored instances of UVP are considered semantically equal with their <see cref="P:Probability"/>
+        /// and <see cref="P:Value"/> properties are equal.
+        /// </remarks>
         public override BL SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny other)
         {
             var baseEq = base.SemanticEquals(other);
@@ -163,5 +203,32 @@ namespace MARC.Everest.DataTypes
                 (this.Probability == null ? uvOther.Probability == null : this.Probability.Equals(uvOther.Probability));
 
         }
+
+        /// <summary>
+        /// Represent this UVP as a string
+        /// </summary>
+        public override string ToString()
+        {
+            return this.Value == null || this.Probability == null ? base.ToString() : String.Format("~{0} ({1:#.00})", this.Value, this.Probability); 
+        }
+
+        #region IPrimitiveDataValue Members
+
+        /// <summary>
+        /// Generic Value implementation
+        /// </summary>
+        object IPrimitiveDataValue.Value
+        {
+            get
+            {
+                return this.Value;
+            }
+            set
+            {
+                this.Value = (T)value;
+            }
+        }
+
+        #endregion
     }
 }

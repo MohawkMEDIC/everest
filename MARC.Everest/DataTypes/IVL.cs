@@ -167,6 +167,21 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Determines semantic equality between this IVL and <paramref name="other"/>
         /// </summary>
+        /// <remarks>
+        /// Two instances of IVL are considered semantically equal when their <see cref="P:Low"/> and <see cref="P:High"/> bounds
+        /// are semantically equal with one another. The following rules apply:
+        /// <list type="number">
+        ///     <item><description>If the <see cref="P:High"/> property is null or positive infinity in both instances of <see cref="T:IVL"/> or if the <see cref="P:Low"/> property
+        ///     is null or negative infinity in both IVLs they can be semantically equal</description></item>
+        ///     <item><description>Two <see cref="T:IVL"/> instances that are not bound (<see cref="P:Low"/>/<see cref="P:High"/> null) will never be considered equal even if their <see cref="P:Value"/> and <see cref="P:Width"/> properties are semantically equal</description></item>
+        ///     
+        /// </list>
+        /// <para>
+        /// Because IVL describes a set, an instance of IVL can be semantically equal to a SET with the same members. For example a <see cref="T:SET"/> instance containing
+        /// the numbers {1,2,3,4,5} can be semantically equal to an <see cref="T:IVL{INT}"/> describing {1-5}. Note that when comparing an <see cref="T:IVL"/> to a <see cref="T:SET"/>
+        /// the <see cref="M:ToSet()"/> method is called which can be quite costly in terms of CPU resources.
+        /// </para>
+        /// </remarks>
         public override BL SemanticEquals(IAny other)
         {
 

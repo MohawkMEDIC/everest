@@ -24,6 +24,7 @@ namespace MARC.Everest.DataTypes
     [Structure(Name = "NPPD", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [Serializable]
     public class NPPD<T> : SET<UVP<T>>, IEnumerable<UVP<T>>, IColl
+        where T: IAny
     {
 
         /// <summary>

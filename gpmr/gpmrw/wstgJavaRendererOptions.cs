@@ -38,7 +38,7 @@ namespace gpmrw
         public wstgJavaRenderOptions()
         {
             InitializeComponent();
-            string jPath = JabaUtils.GetJavaCPath(Environment.GetEnvironmentVariable("JAVA_HOME", EnvironmentVariableTarget.Machine) ?? "");
+            string jPath = JabaUtils.GetJavaTool(Environment.GetEnvironmentVariable("JAVA_HOME", EnvironmentVariableTarget.Machine) ?? "", "javac");
             txtJDK.Text = jPath ?? "";
         }
 

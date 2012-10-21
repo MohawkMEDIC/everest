@@ -376,6 +376,7 @@ namespace MohawkCollege.EHR.gpmr.COR
             tr.Flavor = null;
             tr.GenericSupplier = null;
             tr.cachedClassRef = this;
+            tr.MemberOf = this.MemberOf ?? this.ContainerPackage.MemberOf;
             return tr;
         }
 

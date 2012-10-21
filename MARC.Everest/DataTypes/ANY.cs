@@ -220,5 +220,19 @@ namespace MARC.Everest.DataTypes
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ANY", "NullFlavor must imply 'Invalid'", null));
             return retVal;
         }
+
+        /// <summary>
+        /// Represent this ANY instance as a string
+        /// </summary>
+        /// <remarks>Returns the HL7 datatype name and null-flavor if present</remarks>
+        public override string ToString()
+        {
+            StringBuilder retVal = new StringBuilder("{");
+            retVal.AppendFormat("{0}", this.DataType.Name);
+            if (this.IsNull)
+                retVal.AppendFormat(":NULL({1})", Util.ToWireFormat(this.NullFlavor));
+            retVal.Append("}");
+            return retVal.ToString();
+        }
     }
 }

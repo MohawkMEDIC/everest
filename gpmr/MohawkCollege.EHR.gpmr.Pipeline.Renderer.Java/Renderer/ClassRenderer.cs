@@ -43,7 +43,6 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         // MCCI_MTxxxxxxCA.Patient3         COCT_MTxxxxxxxCA.CreatePatient(x,y,z);
         static Dictionary<string, List<FactoryMethodInfo>> factoryMethods = new Dictionary<string, List<FactoryMethodInfo>>();
 
-
         // Method signatures that have been decleared 
         internal List<String> s_methodDeclarations = new List<string>();
 
@@ -82,7 +81,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         backingFieldType = new TypeReference() { Name = null };
                 }
             }
-
+            
             // Backing field write
             sw.WriteLine("\t// Backing field for {0}", cc.Name);
             sw.Write("\tprivate ");
@@ -93,12 +92,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             // Datatype reference
             string dtr = CreateDatatypeRef(backingFieldType, cc as Property, ownerPackage);
-            bool initialize = false;
+            bool initialize = false,
+                isNativeCollection = false;
             if (cc.MaxOccurs != "1" &&
                     (!backingFieldType.Name.StartsWith("LIST") && !backingFieldType.Name.StartsWith("DSET") &&  !backingFieldType.Name.StartsWith("SET") && !backingFieldType.Name.StartsWith("COLL") && !backingFieldType.Name.StartsWith("BAG")))
             {
                 dtr = string.Format("ArrayList<{0}>", dtr);
                 initialize = true;
+                isNativeCollection = true;
             }
 
             sw.Write("{0} m_{1}", dtr, Util.Util.MakeFriendly(cc.Name));
@@ -129,22 +130,30 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 if(bindingDomain != null)
                     ev = bindingDomain.GetEnumeratedLiterals().Find(o => o.Name == (property.FixedValue ?? property.DefaultValue));
 
+                bool wontRenderBd = bindingDomain != null ? String.IsNullOrEmpty(EnumerationRenderer.WillRender(bindingDomain)) : true;
+
                 if (bindingDomain == null)
                     sw.Write(" = ca.marc.everest.formatters.FormatterUtil.convert(\"{1}\");",
                         dtr, property.FixedValue);
-                else if (ev == null) // Enumeration value is not known in the enumeration, fixed value fails
+                else if (ev == null || wontRenderBd) // Enumeration value is not known in the enumeration, fixed value fails
                 {
                     System.Diagnostics.Trace.WriteLine(String.Format("Can't find literal '{0}' in supplier domain for property '{1}'", property.FixedValue, property.Name), "error");
-                    if (String.IsNullOrEmpty(EnumerationRenderer.WillRender(bindingDomain)))
-                        sw.Write(" = new {0}(\"{1}\")",
-                            dtr, property.FixedValue);
+                    if (wontRenderBd) // wont be rendering binding domain, so best to just emit it
+                    {
+                        if(Datatypes.GetOverrideSetters(backingFieldType, property, ownerPackage).FirstOrDefault(o=>o.Parameters.Count == 2) != null)
+                            sw.Write(" = new {0}(\"{1}\", {2})",
+                                dtr, property.FixedValue, ev == null ? "null" : String.Format("\"{0}\"", ev.CodeSystem));
+                        else
+                            sw.Write(" = new {0}(\"{1}\")",
+                                dtr, property.FixedValue, ev == null ? "null" : String.Format("\"{0}\"", ev.CodeSystem));
+                    }
                     else
                         sw.Write(" = new {0}(new {2}(\"{3}\"))",
                             dtr, ownerPackage, Util.Util.MakeFriendly(EnumerationRenderer.WillRender(property.SupplierDomain)), property.FixedValue);
                 }
                 else // Fixed value is known
                     sw.Write(" = new {2}({0}.{1})",
-                    Util.Util.MakeFriendly(EnumerationRenderer.WillRender(property.SupplierDomain)), Util.Util.PascalCase(ev.BusinessName ?? ev.Name), dtr, ownerPackage);
+                    Util.Util.MakeFriendly(EnumerationRenderer.WillRender(bindingDomain)), Util.Util.PascalCase(ev.BusinessName ?? ev.Name), dtr, ownerPackage);
 
                 // Update setter name so the output method has the right naming convention
                 setterName = "override";
@@ -168,10 +177,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             sw.WriteLine("\tpublic void {3}{1}({0} value) {{ this.m_{2} = value; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name), setterName);
 
-            // Is choice?
-            if (cc is Choice)
+            // Now to render the helper methods that can set the backing property, these are convenience methods
+            if (cc is Choice && !isNativeCollection)
                 ; // TODO: Factory methods and etc
-            else
+            else if(!isNativeCollection)
             {
                 foreach (var sod in MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine.Datatypes.GetOverrideSetters(backingFieldType, cc as Property, ownerPackage))
                 {
@@ -278,6 +287,19 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         // Fixed value
                         if (!String.IsNullOrEmpty(property.FixedValue))
                             retBuilder.Write(", fixedValue = \"{0}\"", property.FixedValue);
+
+                        // generic supplier
+                        if (property.Type != null && property.Type.GenericSupplier != null &&
+                            property.Type.GenericSupplier.Count > 0)
+                        {
+                            retBuilder.Write(", genericSupplier = {");
+                            foreach (var genSupp in property.Type.GenericSupplier)
+                                if((property.Container as Class).TypeParameters == null ||
+                                    !(property.Container as Class).TypeParameters.Exists(o=>o.Name == genSupp.Name))
+                                    retBuilder.Write("{0}.class{1}", CreateDatatypeRef(genSupp, property, ownerPackage, false), genSupp == property.Type.GenericSupplier.Last() ? "" : ",");
+                            retBuilder.Write("}");
+                        }
+
                         retBuilder.WriteLine("),");
                         alreadyRendered.Add(key);
                     }
@@ -347,6 +369,18 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         internal static string CreateDatatypeRef(TypeReference tr, Property p, string ownerPackage)
         {
+            return CreateDatatypeRef(tr, p, ownerPackage, true);    
+        }
+
+        /// <summary>
+        /// Create datatype reference
+        /// </summary>
+        /// <param name="tr">The datatype reference to emit</param>
+        /// <param name="p">The property containing the datatype reference</param>
+        /// <param name="ownerPackage">The package owner</param>
+        /// <param name="emitGenerics">True if generic parameter should be emitted</param>
+        private static string CreateDatatypeRef(TypeReference tr, Property p, string ownerPackage, bool emitGenerics)
+        {
             tr = HeuristicEngine.Datatypes.MapDatatype(tr);
             string retVal = tr is TypeParameter && tr.Name == null ? Util.Util.MakeFriendly((tr as TypeParameter).ParameterName) :
                 tr.Class == null ? tr.Name : String.Format("{0}", Util.Util.PascalCase(tr.Class.Name));
@@ -354,25 +388,37 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             if (tr.Class != null)
             {
                 string import = String.Format("{0}.{1}.{2}", ownerPackage, tr.Class.ContainerName.ToLower(), Util.Util.PascalCase(tr.Class.Name));
-                if (!s_imports.Exists(o => o.EndsWith(retVal)))
+                if (!s_imports.Exists(o => o.EndsWith(retVal))) // Ensure duplicate class isn't imported
                     s_imports.Add(import);
-                else if(!s_imports.Contains(import))
+                else if (!s_imports.Contains(import)) // Ensure duplicate import isn't imported
                     retVal = String.Format("{0}.{1}.{2}", ownerPackage, tr.Class.ContainerName.ToLower(), retVal);
 
                 // Correct the import
             }
 
             // Domain for a code?
-            if (!String.IsNullOrEmpty(GetSupplierDomain(tr, p, ownerPackage)))
+            if (emitGenerics && !String.IsNullOrEmpty(GetSupplierDomain(tr, p, ownerPackage)))
             {
-                // Bind if appropriate
-                retVal += String.Format("<{0}>", GetSupplierDomain(tr, p, ownerPackage)); 
+                string vocabDomain = GetSupplierDomain(tr, p, ownerPackage);
 
+                if (String.IsNullOrEmpty(Datatypes.GetBuiltinVocabulary(vocabDomain)))
+                {
+                    // Output the import for vocab if it doesn't exist
+                    string import = String.Format("{0}.vocabulary.{1}", ownerPackage, vocabDomain);
+                    if (!s_imports.Exists(o => o.EndsWith(vocabDomain))) // Ensure duplicate class isn't imported
+                        s_imports.Add(import);
+                    else if (!s_imports.Contains(import)) // Didn't add the import so we must reference by full name
+                        vocabDomain = import;
+                }
+
+                // Bind if appropriate
+                retVal += String.Format("<{0}>", vocabDomain);
+                
             }
 
 
             // Generics?
-            if (tr.Class != null && tr.Class.TypeParameters != null)
+            if (emitGenerics && tr.Class != null && tr.Class.TypeParameters != null)
             {
                 retVal += "<";
                 foreach (var parm in tr.Class.TypeParameters)
@@ -390,7 +436,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 retVal = retVal.Substring(0, retVal.Length - 1);
                 retVal += ">";
             }
-            else if (tr.GenericSupplier != null && tr.GenericSupplier.Count > 0 && !retVal.Contains("<"))
+            else if (emitGenerics && tr.GenericSupplier != null && tr.GenericSupplier.Count > 0 && !retVal.Contains("<"))
             {
                 retVal += "<";
                 foreach (TypeReference gr in tr.GenericSupplier)
@@ -402,7 +448,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             return retVal;
         }
 
-
+        
+        
         #region IFeatureRenderer Members
 
         /// <summary>
@@ -415,7 +462,6 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         public void Render(string ownerPackage, string apiNs, MohawkCollege.EHR.gpmr.COR.Feature f, System.IO.TextWriter tw)
         {
             s_imports.Clear();
-
             // Validate arguments
             if (String.IsNullOrEmpty(ownerPackage))
                 throw new ArgumentNullException("ownerPackage");
@@ -612,13 +658,16 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             #region Render the imports
             string[] apiImports = { "annotations.*", "datatypes.*", "datatypes.generic.*" },
-                jImports = { "java.lang.*", "java.util.*", String.Format("{0}.vocabulary.*", ownerPackage) };
+                jImports = { "java.lang.*", "java.util.*" };
             foreach (var import in apiImports)
                 tw.WriteLine("import {0}.{1};", apiNs, import);
             foreach (var import in jImports)
                 tw.WriteLine("import {0};", import);
             foreach (var import in s_imports)
-                tw.WriteLine("import {0};", import);
+            {
+                if (!import.EndsWith(String.Format(".{0}", Util.Util.PascalCase(f.Name)))) 
+                    tw.WriteLine("import {0};", import);
+            }
 
             tw.WriteLine(sw.ToString());
             #endregion
@@ -781,11 +830,16 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                                     ctors["required"][1] += setterText;
                                 ctors["all"][1] += setterText;
 
+                                // Create the datatype reference so the import gets registered
+                                CreateDatatypeRef(tr, p, ownerPackage);
+
                                 // Update the class signature
                                 tr = new TypeReference()
                                 {
                                     Name = String.Format("{1}", ownerPackage, GetSupplierDomain(tr, p, ownerPackage))
                                 };
+
+                                
 
                             }
 
