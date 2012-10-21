@@ -53,6 +53,9 @@ public class CS<T> extends ANY implements ICodedSimple<T> {
 	 */
 	public CS(T code) { super(); this.setCode(code); }
 	
+	/**
+	 * Gets the code value of the CS
+	 */
 	@Property(name = "code", conformance = ConformanceType.MANDATORY, propertyType = PropertyType.STRUCTURAL)
 	public T getCode() { return this.m_code; }
 	/**
@@ -146,4 +149,35 @@ public class CS<T> extends ANY implements ICodedSimple<T> {
         	retVal.setValue(!this.isNull() && !other.isNull() && this.getCode() != null && ((ICodedSimple)other).getCode() != null && FormatterUtil.toWireFormat(this.getCode()).equals(FormatterUtil.toWireFormat(((ICodedSimple)other).getCode())));
 		return retVal;
 	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((m_code == null) ? 0 : m_code.hashCode());
+		return result;
+	}
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CS other = (CS) obj;
+		if (m_code == null) {
+			if (other.m_code != null)
+				return false;
+		} else if (!m_code.equals(other.m_code))
+			return false;
+		return true;
+	}
+	
+	
 }

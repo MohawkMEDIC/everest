@@ -164,6 +164,13 @@ public abstract class PDV <T> extends ANY implements Comparable<PDV<T>>, IPrimit
             retVal.add(new DatatypeValidationResultDetail(ResultDetailType.ERROR, "PDV", EverestValidationMessages.MSG_NULLFLAVOR_MISSING, null));
         return retVal;
 	}
+	/**
+	 * Convert to string
+	 */
+	@Override
+	public String toString() {
+		return this.m_value == null ? super.toString() : this.m_value.toString();
+	}
 	
 
 }

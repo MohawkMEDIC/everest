@@ -136,5 +136,76 @@ public abstract class QTY<T> extends PDV<T> implements IQuantity {
 		(((this.m_uncertaintyRange != null) ^ (this.m_uncertainty != null)) || this.m_uncertaintyRange == null && this.m_uncertainty == null) &&
 		super.validate();
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((m_expression == null) ? 0 : m_expression.hashCode());
+		result = prime
+				* result
+				+ ((m_expressionLanguage == null) ? 0 : m_expressionLanguage
+						.hashCode());
+		result = prime * result
+				+ ((m_originalText == null) ? 0 : m_originalText.hashCode());
+		result = prime * result
+				+ ((m_uncertainty == null) ? 0 : m_uncertainty.hashCode());
+		result = prime
+				* result
+				+ ((m_uncertaintyRange == null) ? 0 : m_uncertaintyRange
+						.hashCode());
+		result = prime
+				* result
+				+ ((m_uncertaintyType == null) ? 0 : m_uncertaintyType
+						.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		QTY other = (QTY) obj;
+		if (m_expression == null) {
+			if (other.m_expression != null)
+				return false;
+		} else if (!m_expression.equals(other.m_expression))
+			return false;
+		if (m_expressionLanguage == null) {
+			if (other.m_expressionLanguage != null)
+				return false;
+		} else if (!m_expressionLanguage.equals(other.m_expressionLanguage))
+			return false;
+		if (m_originalText == null) {
+			if (other.m_originalText != null)
+				return false;
+		} else if (!m_originalText.equals(other.m_originalText))
+			return false;
+		if (m_uncertainty == null) {
+			if (other.m_uncertainty != null)
+				return false;
+		} else if (!m_uncertainty.equals(other.m_uncertainty))
+			return false;
+		if (m_uncertaintyRange == null) {
+			if (other.m_uncertaintyRange != null)
+				return false;
+		} else if (!m_uncertaintyRange.equals(other.m_uncertaintyRange))
+			return false;
+		if (m_uncertaintyType != other.m_uncertaintyType)
+			return false;
+		return true;
+	}
+	
 	
 }

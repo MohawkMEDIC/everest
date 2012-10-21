@@ -78,6 +78,13 @@ public class EN extends ANY {
 		return this.m_parts;
 	}
 	/**
+	 * Gets the name part at the specified index
+	 */
+	public ENXP getPart(int index)
+	{
+		return this.m_parts.get(index);
+	}
+	/**
 	 * Sets the list of parts that make up this entity name
 	 */
 	public void setParts(List<ENXP> value) {
@@ -168,6 +175,41 @@ public class EN extends ANY {
         }
 
         return sw.toString();	
+	}
+	/** (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((m_parts == null) ? 0 : m_parts.hashCode());
+		result = prime * result + ((m_use == null) ? 0 : m_use.hashCode());
+		return result;
+	}
+	/** (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EN other = (EN) obj;
+		if (m_parts == null) {
+			if (other.m_parts != null)
+				return false;
+		} else if (!m_parts.equals(other.m_parts))
+			return false;
+		if (m_use == null) {
+			if (other.m_use != null)
+				return false;
+		} else if (!m_use.equals(other.m_use))
+			return false;
+		return true;
 	}
 	
 	

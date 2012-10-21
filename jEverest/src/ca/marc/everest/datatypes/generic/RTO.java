@@ -182,6 +182,44 @@ public class RTO<S extends IQuantity & IAny, T extends IQuantity & IAny> extends
             retVal.setValue(this.m_numerator.toDouble() / this.m_denominator.toDouble());
 		return retVal;
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((m_denominator == null) ? 0 : m_denominator.hashCode());
+		result = prime * result
+				+ ((m_numerator == null) ? 0 : m_numerator.hashCode());
+		return result;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RTO other = (RTO) obj;
+		if (m_denominator == null) {
+			if (other.m_denominator != null)
+				return false;
+		} else if (!m_denominator.equals(other.m_denominator))
+			return false;
+		if (m_numerator == null) {
+			if (other.m_numerator != null)
+				return false;
+		} else if (!m_numerator.equals(other.m_numerator))
+			return false;
+		return true;
+	}
+	
 	
 
 }

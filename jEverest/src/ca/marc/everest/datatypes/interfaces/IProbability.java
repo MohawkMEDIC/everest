@@ -14,39 +14,22 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 09-25-2012
+ * Date: 10-21-2012
  */
-package ca.marc.everest.formatters;
+package ca.marc.everest.datatypes.interfaces;
 
 /**
- * A utility class that is used by formatters to perform wire-level tasks
+ * Represents a value with probability expressed
  */
-public class FormatterUtil {
+public interface IProbability<T> extends IPrimitiveDataValue<T> {
 
 	/**
-	 * Represents value in a wire-format friendly way as specified by the datatypes
-	 * implementation guide
+	 * Gets the probability of the expressed value
 	 */
-	public static String toWireFormat(Object value)
-	{
-		// TODO: Implement this
-		return "";
-	}
-	
+	Float getProbability();
 	/**
-	 * Convert an object from the value to type T
+	 * Sets the probability of the expressed value
 	 */
-	public static <T> T convert(Object value)
-	{
-		return convert(value, true);
-	}
+	void setProbability(Float probability);
 	
-	/**
-	 * Convert an object from the value type T
-	 */
-	public static <T> T convert(Object value, boolean throwOnError)
-	{
-		
-		return null;
-	}
 }

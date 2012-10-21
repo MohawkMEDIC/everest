@@ -402,6 +402,69 @@ public class IVL<T extends IAny> extends SXCM<T> implements IInterval<T>, IPqTra
             return String.format("{.. %1}", this.getHigh());
         else return super.toString();
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((m_high == null) ? 0 : m_high.hashCode());
+		result = prime * result
+				+ ((m_highInclusive == null) ? 0 : m_highInclusive.hashCode());
+		result = prime * result + ((m_low == null) ? 0 : m_low.hashCode());
+		result = prime * result
+				+ ((m_lowInclusive == null) ? 0 : m_lowInclusive.hashCode());
+		result = prime * result
+				+ ((m_originalText == null) ? 0 : m_originalText.hashCode());
+		result = prime * result + ((m_width == null) ? 0 : m_width.hashCode());
+		return result;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IVL other = (IVL) obj;
+		if (m_high == null) {
+			if (other.m_high != null)
+				return false;
+		} else if (!m_high.equals(other.m_high))
+			return false;
+		if (m_highInclusive == null) {
+			if (other.m_highInclusive != null)
+				return false;
+		} else if (!m_highInclusive.equals(other.m_highInclusive))
+			return false;
+		if (m_low == null) {
+			if (other.m_low != null)
+				return false;
+		} else if (!m_low.equals(other.m_low))
+			return false;
+		if (m_lowInclusive == null) {
+			if (other.m_lowInclusive != null)
+				return false;
+		} else if (!m_lowInclusive.equals(other.m_lowInclusive))
+			return false;
+		if (m_originalText == null) {
+			if (other.m_originalText != null)
+				return false;
+		} else if (!m_originalText.equals(other.m_originalText))
+			return false;
+		if (m_width == null) {
+			if (other.m_width != null)
+				return false;
+		} else if (!m_width.equals(other.m_width))
+			return false;
+		return true;
+	}
+
 	
 
 	

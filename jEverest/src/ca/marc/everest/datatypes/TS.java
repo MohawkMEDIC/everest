@@ -266,5 +266,12 @@ public class TS extends PDV<String> implements IPointInTime
 		super.setFlavorId(value);
 	}
 	
+	/**
+	 * Get a new instance of TS representing now
+	 */
+	public static TS now()
+	{
+		return new TS(Calendar.getInstance());
+	}
 
 }

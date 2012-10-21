@@ -297,6 +297,81 @@ public class PIVL<T extends IAny> extends SXCM<T> implements IOriginalText {
         IVL<T> translatedPhase = this.m_phase.translate(desiredTranslation);
         return translatedPhase.contains(member);		
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((m_alignment == null) ? 0 : m_alignment.hashCode());
+		result = prime * result + ((m_count == null) ? 0 : m_count.hashCode());
+		result = prime * result
+				+ ((m_frequency == null) ? 0 : m_frequency.hashCode());
+		result = prime
+				* result
+				+ ((m_institutionSpecified == null) ? 0
+						: m_institutionSpecified.hashCode());
+		result = prime * result
+				+ ((m_originalText == null) ? 0 : m_originalText.hashCode());
+		result = prime * result
+				+ ((m_period == null) ? 0 : m_period.hashCode());
+		result = prime * result + ((m_phase == null) ? 0 : m_phase.hashCode());
+		result = prime * result + ((m_value == null) ? 0 : m_value.hashCode());
+		return result;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PIVL other = (PIVL) obj;
+		if (m_alignment != other.m_alignment)
+			return false;
+		if (m_count == null) {
+			if (other.m_count != null)
+				return false;
+		} else if (!m_count.equals(other.m_count))
+			return false;
+		if (m_frequency == null) {
+			if (other.m_frequency != null)
+				return false;
+		} else if (!m_frequency.equals(other.m_frequency))
+			return false;
+		if (m_institutionSpecified == null) {
+			if (other.m_institutionSpecified != null)
+				return false;
+		} else if (!m_institutionSpecified.equals(other.m_institutionSpecified))
+			return false;
+		if (m_originalText == null) {
+			if (other.m_originalText != null)
+				return false;
+		} else if (!m_originalText.equals(other.m_originalText))
+			return false;
+		if (m_period == null) {
+			if (other.m_period != null)
+				return false;
+		} else if (!m_period.equals(other.m_period))
+			return false;
+		if (m_phase == null) {
+			if (other.m_phase != null)
+				return false;
+		} else if (!m_phase.equals(other.m_phase))
+			return false;
+		if (m_value == null) {
+			if (other.m_value != null)
+				return false;
+		} else if (!m_value.equals(other.m_value))
+			return false;
+		return true;
+	}
 	
 	
 	

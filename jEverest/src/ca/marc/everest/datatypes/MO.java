@@ -308,4 +308,38 @@ public class MO extends QTY<BigDecimal> implements Comparable<PDV<BigDecimal>> {
         }
 		return retVal;
 	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((m_currency == null) ? 0 : m_currency.hashCode());
+		result = prime * result + m_precision;
+		return result;
+	}
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MO other = (MO) obj;
+		if (m_currency == null) {
+			if (other.m_currency != null)
+				return false;
+		} else if (!m_currency.equals(other.m_currency))
+			return false;
+		if (m_precision != other.m_precision)
+			return false;
+		return true;
+	}
+	
 }
