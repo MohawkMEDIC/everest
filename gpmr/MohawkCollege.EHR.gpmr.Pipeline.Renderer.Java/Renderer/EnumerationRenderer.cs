@@ -154,22 +154,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             Enumeration cls = f as Enumeration;
 
-            if (!String.IsNullOrEmpty(Datatypes.GetBuiltinVocabulary(cls.Name)))
-                throw new InvalidOperationException(String.Format("Not rendering '{0}' already included in core library", cls.Name));
-            
-            // Sanity check
-            if (cls.Literals.Count == 0)
-                throw new InvalidOperationException("Enumeration doesn't contain any data"); // Don't populate it
-
-            // Is this code system even used?
-            if (String.IsNullOrEmpty(WillRender(cls)))
-            {
-                if (cls.Literals.Count > RimbaJavaRenderer.MaxLiterals)
-                    throw new InvalidOperationException(String.Format("Enumeration '{2}' too large, enumeration has {0} literals, maximum allowed is {1}",
-                        cls.Literals.Count, RimbaJavaRenderer.MaxLiterals, cls.Name));
-                else
-                    throw new InvalidOperationException("Enumeration is not used!");
-            }
+            // enumeration is a concept domain? do the binding
+            if (cls is ConceptDomain && (cls as ConceptDomain).ContextBinding != null)
+                cls = (cls as ConceptDomain).ContextBinding[0];
+            else if (cls is ConceptDomain)
+                throw new InvalidOperationException("Won't render unbound concept domains");
 
 
             tw.WriteLine("package {0}.vocabulary;", ownerPackage);

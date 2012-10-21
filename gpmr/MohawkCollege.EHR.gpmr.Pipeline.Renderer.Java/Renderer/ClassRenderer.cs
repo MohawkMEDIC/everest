@@ -567,7 +567,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             {
                 #region Generate creator methods for each of the children
 
-                foreach (TypeReference tr in CascadeSpecializers(cls.SpecializedBy))
+                // NB: In Java apparently super classes' static methods are acceessable
+                //     in child classes which is different than .NET, so we're not going to cascade specializers
+                foreach (TypeReference tr in cls.SpecializedBy)
                 {
 
                     if (tr.Class == null || tr.Class.ContainerName == "RIM" && !RimbaJavaRenderer.GenerateRim ||

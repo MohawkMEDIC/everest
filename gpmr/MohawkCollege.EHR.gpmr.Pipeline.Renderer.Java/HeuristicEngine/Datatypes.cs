@@ -81,6 +81,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
             // Create a type reference
             var type = s_heuristicData.Datatypes.Find(o => o.MifDatatype == t.Name + (t.Flavor != null ? "." + t.Flavor : ""));
 
+            if(type == null && !String.IsNullOrEmpty(t.Flavor ))
+                type = s_heuristicData.Datatypes.Find(o => o.MifDatatype == t.Name);
+
             if (t is TypeParameter)
                 return t;
             else if (t.Name == null)

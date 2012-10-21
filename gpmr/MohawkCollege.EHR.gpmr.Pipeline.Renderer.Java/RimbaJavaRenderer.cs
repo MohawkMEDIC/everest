@@ -354,8 +354,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
 
                     // Generate documentation?
                     bool jd = false;
-                    if (parameters.ContainsKey("--rimbapi-jdoc"))
-                        jd = Boolean.Parse(parameters["--rimbapi-jdoc"][0]);
+                    if (parameters.ContainsKey("rimbapi-jdoc"))
+                        jd = Boolean.Parse(parameters["rimbapi-jdoc"][0]);
                     if (jd)
                     {
                         System.Diagnostics.Trace.Write(String.Format("Creating JavaDocs:\r\n\t{0}\r\n\t{1}\r\nWait...", jdocProc, psiJavaDoc.Arguments), "information");
