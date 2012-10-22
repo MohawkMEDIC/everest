@@ -593,10 +593,25 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             if (cls.SpecializedBy != null && cls.SpecializedBy.Count > 0 &&
                 cls.IsAbstract)
             {
-                #region Generate creator methods for each of the children
+                // NB: This isn't possible in Java (at least I don't have time to work around Java's weirdness) so
+                //      I'm going to disable it. This causes problems when
+                //
+                //      abstract A.A
+                //      abstract B.B extends A.A
+                //      C.C extends A.A
+                //      B.C extends B.B
+                //
+                // Results in :
+                //     A.A { C.C CreateC(); }
+                //     B.B { B.C CreateC(); }
+                //
+                // Java freaks out because the return type of CreateC has changed.
+                // The only thing I can think of is to blow out the method...
 
-                // NB: In Java apparently super classes' static methods are acceessable
-                //     in child classes which is different than .NET, so we're not going to cascade specializers
+                //#region Generate creator methods for each of the children
+
+                //// NB: In Java apparently super classes' static methods are acceessable
+                ////     in child classes which is different than .NET, so we're not going to cascade specializers
                 foreach (TypeReference tr in cls.SpecializedBy)
                 {
 
@@ -632,7 +647,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         {
                             string clsDoc = DocumentationRenderer.Render(child.Documentation, 1);
 
-                            string ctorClassName = String.Format("{0}.{2}.{1}",ownerPackage, tr.Class.Name, tr.Class.ContainerName.ToLower());
+                            string ctorClassName = String.Format("{0}.{2}.{1}", ownerPackage, tr.Class.Name, tr.Class.ContainerName.ToLower());
                             //// import already exists?
                             //if(!s_imports.Exists(o=>o.EndsWith(Util.Util.PascalCase(tr.Class.Name))))
                             //{
@@ -642,9 +657,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                             //if (s_imports.Contains(ctorClassName))
                             //    ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
 
-                            if(clsDoc.Contains("*/"))
+                            if (clsDoc.Contains("*/"))
                                 sw.Write(clsDoc.Substring(0, clsDoc.LastIndexOf("*/")));
-                            sw.WriteLine("* This function creates a new instance of {1}\r\n\t {4}\r\n\t*/\t\n\tpublic static {0} create{2}({3}) {{ ", ctorClassName, tr.Class.Name, Util.Util.PascalCase(child.Name), kv.Value[0].Substring(0, kv.Value[0].Length - 1), kv.Value[2], tr.Class.ContainerName.ToLower());
+                            sw.WriteLine("* This function creates a new instance of {5}.{1}\r\n\t {4}\r\n\t*/\t\n\tpublic static {0} create{6}{2}({3}) {{ ", ctorClassName, tr.Class.Name, Util.Util.PascalCase(child.Name), kv.Value[0].Substring(0, kv.Value[0].Length - 1), kv.Value[2], tr.Class.ContainerName.ToLower(), Util.Util.PascalCase(cls.Name));
                             sw.WriteLine("\t\t{0} retVal = new {0}();", ctorClassName);
                             sw.WriteLine("{0}", kv.Value[1]);
                             sw.WriteLine("\t\treturn retVal;");
@@ -680,7 +695,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                     }
                 }
 
-                #endregion
+                //#endregion
             }
             // End class
             sw.WriteLine("}");
@@ -871,7 +886,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                                 // Update the class signature
                                 tr = new TypeReference()
                                 {
-                                    Name = String.Format("{1}", ownerPackage, GetSupplierDomain(tr, p, ownerPackage))
+                                    Name = String.Format("{1}", ownerPackage, Util.Util.MakeFriendly(GetSupplierDomain(tr, p, ownerPackage)))
                                 };
 
 

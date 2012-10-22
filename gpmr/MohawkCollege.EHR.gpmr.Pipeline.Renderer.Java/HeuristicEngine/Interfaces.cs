@@ -80,7 +80,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                 Enumeration supplierDomain = null;
                 foreach (var prop in iface.Properties)
                 {
-                    Property p = c.Content.Find(o => (o is Property) &&
+                    Property p = c.Content.Find(o => (o is Property) && (o as Property).Type.Name != null &&
                         (o as Property).Type.Name.ToLower() + "." + o.Name.ToLower() == prop.DataType.ToLower() + "." + prop.Name.ToLower() &&
                         (o.MaxOccurs == "1" || o.MaxOccurs != "1" && prop.Name.StartsWith("LIST"))) as Property;
                     matches &= p != null;

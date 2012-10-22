@@ -163,7 +163,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                             bindTypeRef = tr.GenericSupplier[i++];
                     }
                     else if (p != null && p.SupplierDomain != null && !String.IsNullOrEmpty(EnumerationRenderer.WillRender(p.SupplierDomain)))
-                        bindTypeRef = new TypeReference() { Name = String.Format("{0}", EnumerationRenderer.WillRender(p.SupplierDomain)) };
+                        bindTypeRef = new TypeReference() { Name = String.Format("{0}", Util.Util.MakeFriendly(EnumerationRenderer.WillRender(p.SupplierDomain))) };
                     else
                         bindTypeRef = new TypeReference() { Name = dataType.DefaultBind };
 

@@ -237,10 +237,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
                 // Already rendered, so warn and skip
                 if (rendered.Contains(rendName) || mnemonics.Contains(ev.Name))
-                {
                     System.Diagnostics.Trace.WriteLine(String.Format("Enumeration value {0} already rendered, skipping", ev.BusinessName), "warn");
-                    continue;
-                }
                 else if (!ev.Annotations.Exists(o => o is SuppressBrowseAnnotation))
                 {
                     sw.Write(DocumentationRenderer.Render(ev.Documentation, 1));
@@ -269,9 +266,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                     rendered.Add(rendName); // Add to rendered list to keep track
                     mnemonics.Add(ev.Name);
 
-                    if (ev.RelatedCodes != null)
-                        RenderLiterals(sw, enu, rendered, mnemonics, ev.RelatedCodes, ctorName);
+                    
                 }
+                if (ev.RelatedCodes != null)
+                    RenderLiterals(sw, enu, rendered, mnemonics, ev.RelatedCodes, ctorName);
             }
         }
 
