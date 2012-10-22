@@ -60,7 +60,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             // Render the backing field
             TypeReference backingFieldType = null;
             if (cc is Property)
-                backingFieldType = (cc as Property).Type;
+            {
+                // HACK: Java can't hide members, so what we need to do 
+                //       is detect if the model changes data types between overridden
+                //       classes.
+                backingFieldType = GetBackingFieldTypeThroughChildren((cc as Property), cc.Container as Class);
+            //    backingFieldType = (cc as Property).Type;
+
+            }
             else
             {
 
@@ -82,6 +89,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 }
             }
             
+            
             // Backing field write
             sw.WriteLine("\t// Backing field for {0}", cc.Name);
             sw.Write("\tprivate ");
@@ -95,7 +103,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             bool initialize = false,
                 isNativeCollection = false;
             if (cc.MaxOccurs != "1" &&
-                    (!backingFieldType.Name.StartsWith("LIST") && !backingFieldType.Name.StartsWith("DSET") &&  !backingFieldType.Name.StartsWith("SET") && !backingFieldType.Name.StartsWith("COLL") && !backingFieldType.Name.StartsWith("BAG")))
+                    !Datatypes.IsCollectionType(backingFieldType))
             {
                 dtr = string.Format("ArrayList<{0}>", dtr);
                 initialize = true;
@@ -208,6 +216,26 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             return sw.ToString();
 
+        }
+
+        /// <summary>
+        /// Gets a common backing type for a particular property type reference through children
+        /// Handles when data types change through child implementations ( handled by .NET via NEW )
+        /// </summary>
+        private TypeReference GetBackingFieldTypeThroughChildren(Property property, Class searchClass)
+        {
+            TypeReference initialType = property.Type;
+            foreach (var child in searchClass.SpecializedBy) // iterate through children
+            {
+                var childProp = child.Class.Content.Find(o => o.Name == property.Name);
+                if (childProp is Property)
+                {
+                    TypeReference candidate = GetBackingFieldTypeThroughChildren(childProp as Property, child.Class);
+                    if (!candidate.Name.Equals(initialType.Name))
+                        initialType = new TypeReference() { Name = null };
+                }
+            }
+            return initialType;
         }
 
         /// <summary>
@@ -792,13 +820,13 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
                         // Variable initializor
                         string varInitValue = string.Empty, 
-                            varInitType = cc.Name;
+                            varInitType = Util.Util.MakeFriendly(cc.Name);
 
                         // Documentation
                         string doc = String.Format("\t * @param {0} ({2}) {1}\r\n", cc.Name, cc.Documentation != null && cc.Documentation.Definition != null && cc.Documentation.Definition.Count > 0 ? cc.Documentation.Definition[0] : "No documentation available", cc.Conformance);
 
                         // Is this a list?
-                        if (p.MaxOccurs != "1" && (!p.Type.Name.StartsWith("LIST") && !p.Type.Name.StartsWith("COLL") && !p.Type.Name.StartsWith("SET") && !p.Type.Name.StartsWith("BAG") && !p.Type.Name.StartsWith("DSET")))
+                        if (p.MaxOccurs != "1" && !Datatypes.IsCollectionType(p.Type))
                         {
                             varInitValue = String.Format(".add({0})", varInitType);
                             varInitType = String.Format("new ArrayList<{0}>()",
@@ -820,10 +848,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                             var setter = Array.Find(setters, o => o.Parameters != null && o.Parameters.Count == 1);
                             if (setter != null) // We found one, now capitilize on the opportunity
                             {
-                                varInitType = String.Format("d{0:N}", Guid.NewGuid());
+                                var varName = String.Format("d{0:N}", Guid.NewGuid());
                                 string setterText = setter.SetterText;
                                 setterText = setterText.Replace(setter.Parameters[0].Name, Util.Util.MakeFriendly(cc.Name)); // Replace all instance of the parameter to our parameter
-                                setterText = setterText.Replace(setter.ValueInstance.Name, varInitType);
+                                setterText = setterText.Replace(setter.ValueInstance.Name, varName);
                                 if (p.Conformance == ClassContent.ConformanceKind.Mandatory)                            
                                     ctors["mandatory"][1] += setterText;
                                 if (p.Conformance == ClassContent.ConformanceKind.Mandatory && (p.PropertyType == Property.PropertyTypes.Structural || p.PropertyType == Property.PropertyTypes.NonStructural)) // Structural
@@ -835,13 +863,17 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                                 // Create the datatype reference so the import gets registered
                                 CreateDatatypeRef(tr, p, ownerPackage);
 
+                                if (p.MaxOccurs != "1" && !Datatypes.IsCollectionType(p.Type))
+                                    varInitValue = String.Format(".add({0})", varName);
+                                else
+                                    varInitType = varName;
+
                                 // Update the class signature
                                 tr = new TypeReference()
                                 {
                                     Name = String.Format("{1}", ownerPackage, GetSupplierDomain(tr, p, ownerPackage))
                                 };
 
-                                
 
                             }
 

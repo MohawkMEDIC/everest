@@ -38,7 +38,12 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
         private static HeuristicData s_heuristicData;
         // API namespace
         private static string s_apiNs = "ca.marc.everest";
-            
+        private static List<String> collectionTypes = new List<string>(new String[]{
+            "LIST",
+            "HIST",
+            "SET",
+            "BAG"
+                                                      });
         /// <summary>
         /// Intialize
         /// </summary>
@@ -193,6 +198,18 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
 
             return overrides.ToArray();
         }
-        
+
+
+        /// <summary>
+        /// Returns true if the specified <paramref name="tr"/> is
+        /// a collection
+        /// </summary>
+        public static bool IsCollectionType(TypeReference tr)
+        {
+            string trCoreName = tr.CoreDatatypeName;
+            if (trCoreName == null)
+                return false;
+            return collectionTypes.Exists(o => trCoreName.StartsWith(o));
+        }
     }
 }
