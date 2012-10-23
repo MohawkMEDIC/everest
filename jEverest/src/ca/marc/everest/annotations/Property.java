@@ -109,4 +109,9 @@ public @interface Property {
 	 */
 	String fixedValue() default NULL;
 	
+	/**
+	 * Specifies a sorting key for the property
+	 * @return
+	 */
+	int sortKey() default 0;
 }

@@ -186,6 +186,7 @@ public class BL extends PDV<Boolean> {
 	{
 		return this.getValue();
 	}
+
 	/**
 	 * @see ca.marc.everest.datatypes.ANY#semanticEquals(ca.marc.everest.datatypes.interfaces.IAny)
 	 */
@@ -202,10 +203,11 @@ public class BL extends PDV<Boolean> {
             return BL.FALSE;
 
         // Values are equal?
-        BL blOther = (BL)other ;
+        BL blOther = (BL)other;
         if (blOther.getValue() != null && this.getValue() != null)
             return BL.fromBoolean(this.getValue().equals(blOther.getValue()));
         return BL.FALSE;
 	}
 	
+
 }

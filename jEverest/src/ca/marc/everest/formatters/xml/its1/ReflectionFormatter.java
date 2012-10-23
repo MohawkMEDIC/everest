@@ -21,7 +21,9 @@ package ca.marc.everest.formatters.xml.its1;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.event.RowSorterEvent.Type;
@@ -30,6 +32,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import ca.marc.everest.annotations.Properties;
 import ca.marc.everest.annotations.Property;
+import ca.marc.everest.annotations.PropertyType;
 import ca.marc.everest.annotations.Structure;
 import ca.marc.everest.annotations.StructureType;
 import ca.marc.everest.interfaces.IGraphable;
@@ -123,31 +126,86 @@ public class ReflectionFormatter {
 			e.printStackTrace();
 		}
 
+		return retVal;
+	}
+	
+	/**
+	 * Determine if the method is a traversable association
+	 */
+	private boolean isOfPropertyType(Method m, PropertyType type)
+	{
+		Property propertyAnnotation = m.getAnnotation(Property.class);
+		Properties propertiesAnnotation = m.getAnnotation(Properties.class);
+		
+		if(propertyAnnotation != null)
+			return propertyAnnotation.propertyType().equals(type);
+		else if(propertiesAnnotation != null)
+			return propertiesAnnotation.value()[0].propertyType().equals(type);
+		return false;
 	}
 	
 	/**
 	 * Build a list of methods
 	 */
 	private List<Method> getBuildProperties(Class<?> instanceType) {
+		// Arrays of items representing the property types
+		// Structural, NonStructural and Traversable Associations
+		// These will be used to ensure that the return array is ordered correctly
+		// such that XML instances will 
 		List<Method> structural = new ArrayList<Method>(10),
 				nonStructural = new ArrayList<Method>(10),
 				traversable = new ArrayList<Method>(10);
+
+		// Find all methods with property annotation
+		Method[] thisMethods = instanceType.getMethods();
+		
+		// Sort the array of methods by the sort key
+		Arrays.sort(thisMethods, new Comparator<Method>() {
+
+			@Override
+			public int compare(Method a, Method b) {
+				Property propertyAnnotation = a.getAnnotation(Property.class);
+				Properties propertiesAnnotation = a.getAnnotation(Properties.class);
 				
-		Class<?> cType = instanceType;
-		int nonTrav = 0, nonStruct = 0;
-		while(cType.equals(Object.class))
-		{
-			// Find all methods with property annotation
-			Method[] thisMethods = cType.getMethods();
-			for(Method meth : thisMethods)
-			{
-				Property propertyAnnotation = meth.getAnnotation(Property.class);
-				Properties propertiesAnnotation = meth.getAnnotation(Properties.class);
+				// Sort key for a
+				Integer aSortKey = 0; 
+				if(propertyAnnotation != null)
+					aSortKey = propertyAnnotation.sortKey();
+				else if(propertiesAnnotation != null)
+					aSortKey = propertiesAnnotation.value()[0].sortKey();
 				
+				propertyAnnotation = a.getAnnotation(Property.class);
+				propertiesAnnotation = a.getAnnotation(Properties.class);
 				
+				// Sort key for b
+				Integer bSortKey = 0; 
+				if(propertyAnnotation != null)
+					bSortKey = propertyAnnotation.sortKey();
+				else if(propertiesAnnotation != null)
+					bSortKey = propertiesAnnotation.value()[0].sortKey();
+
+				return aSortKey.compareTo(bSortKey);
 			}
 			
-
+		});
+		
+		// Iterate through methods and prepare the output arrays
+		for(Method meth : thisMethods)
+		{
+			if(this.isOfPropertyType(meth, PropertyType.TRAVERSABLEASSOCIATION))
+				traversable.add(0, meth);
+			else if(this.isOfPropertyType(meth, PropertyType.NONSTRUCTURAL))
+				nonStructural.add(0, meth);
+			else
+				structural.add(0, meth);
 		}
+		
+		// Return value
+		List<Method> retVal = new ArrayList<Method>();
+		retVal.addAll(structural);
+		retVal.addAll(nonStructural);
+		retVal.addAll(traversable);
+		
+		return retVal;
 	}
 }

@@ -250,12 +250,13 @@ public class XmlIts1Formatter implements IStructureFormatter, IXmlStructureForma
 		throwIfDisposed();
 		provisionGraphAides();
 		
+		
 		// Construct an XML stream writer
 		XMLOutputFactory fact = XMLOutputFactory.newInstance();
 		XMLStreamWriter xsWriter;
 		try {
 			xsWriter = fact.createXMLStreamWriter(s);
-		
+			
 			// Do we need to emit the xsi and hl7 namespace
 			boolean needsRootElement = o.getClass().getAnnotation(Interaction.class) == null;
 			if(needsRootElement)

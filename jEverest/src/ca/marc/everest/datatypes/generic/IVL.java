@@ -36,6 +36,7 @@ import ca.marc.everest.annotations.*;
 /**
  * A set of consecutive values of an ordered base datatype. Any ordered type can be the basis of an IVL
  */
+@Structure(name = "IVL", structureType = StructureType.DATATYPE)
 public class IVL<T extends IAny> extends SXCM<T> implements IInterval<T>, IPqTranslatable<IVL<T>>, IOriginalText  {
 
 	// backing field for low inclusive attribute
@@ -191,7 +192,7 @@ public class IVL<T extends IAny> extends SXCM<T> implements IInterval<T>, IPqTra
 		
 	}
 	/**
-	 * Translate the interval
+	 * Translate the interval by the specified translation
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -238,7 +239,13 @@ public class IVL<T extends IAny> extends SXCM<T> implements IInterval<T>, IPqTra
         return retVal;
     }
 	/**
-	 * @see ca.marc.everest.datatypes.generic.SXCM#validateEx()
+	 * Validate this instance of IVL using the validation rules. 
+	 * <p>An IVL is valid if:</p>
+	 * <ul>
+	 * 	<li>When NullFlavor is specified Low, Width, High and Value are not and, </li>
+	 *  <li>When LowInclusive is specified, Low is also specified and,</li>
+	 *  <li>When HighInclusive is specified, High is also specified</li>
+	 * </ul>
 	 */
 	@Override
 	public Collection<IResultDetail> validateEx() {
