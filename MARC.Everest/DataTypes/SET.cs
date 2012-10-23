@@ -52,6 +52,8 @@ namespace MARC.Everest.DataTypes
     /// </para>
     /// <para>From : http://en.wikipedia.org/wiki/SPQR</para>
     /// </remarks>
+    [Serializable]
+    [Obsolete("",false)]
     public class SPQR : SET<PQR>
     {
     }
