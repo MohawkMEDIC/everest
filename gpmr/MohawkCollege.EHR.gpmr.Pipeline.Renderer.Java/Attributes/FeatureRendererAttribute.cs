@@ -36,5 +36,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Attributes
         /// True if the feature requires the creation of a file
         /// </summary>
         public bool IsFile { get; set; }
+
+        /// <summary>
+        /// True if the renderer is for factories
+        /// </summary>
+        public bool IsFactory { get; set; }
     }
 }

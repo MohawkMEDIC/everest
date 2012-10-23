@@ -41,7 +41,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 new string[] {"--rimbapi-max-literals", "Specifies the maximum size of an\r\n\t\t\tenumeration. Default is 100" },
                 new string[] {"--rimbapi-jdk", "Specifies the path to the JDK\r\n\t\t\twith which to compile the project"},
                 new string[] {"--rimbapi-partials", "When true, specifies that GPMR should\r\n\t\t\tenumerate partial vocabularies" },
-                new string[] {"--rimbapi-suppress-doc", "Supresses documentation generation" }
+                new string[] {"--rimbapi-suppress-doc", "Supresses documentation generation" },
+                new string[] {"--rimbapi-jopt", "Pass the specified parameter to the java tools" }
 
             };
 
@@ -273,6 +274,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
             {
                 jFileList = File.CreateText(Path.Combine(hostContext.Output, "sources.index"));
 
+                jFileList.WriteLine(Path.Combine(Path.Combine(Path.Combine(hostContext.Output, "src"), JabaUtils.PackageNameToDirectory(projectName)), "JarInfo.java"), Template.AssemblyInfo, parameters);
+
                 // Render initial feature list
                 RenderFeatureList(features, templateFields, renderers, jFileList, parameters, projectName);
 
@@ -325,6 +328,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 jdocArgs.AppendFormat("-d \"{0}\" ", Path.Combine(hostContext.Output, "doc"));
                 jdocArgs.AppendFormat(" {0} @{1}", projectName, Path.Combine(hostContext.Output, "sources.index"));
 
+                // Additional stuffs
+                if(parameters.ContainsKey("rimbapi-jopt"))
+                    foreach (var parm in parameters["rimbapi-jopt"])
+                    {
+                        jdocArgs.AppendFormat(" {0} ", parm);
+                        compileArgs.AppendFormat(" {0} ", parm);
+                        jarArgs.AppendFormat(" {0} ", parm);
+                    }
                 // Create process start info
                 ProcessStartInfo psiJavac = new ProcessStartInfo(javacPath, compileArgs.ToString()),
                     psiJar = new ProcessStartInfo(jarPath, jarArgs.ToString()),
@@ -504,60 +515,71 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 System.Diagnostics.Trace.WriteLine(String.Format("Rendering Java for '{0}'...", f.Name), "debug");
 
                 // Is there a renderer for this feature
-                KeyValuePair<FeatureRendererAttribute, IFeatureRenderer> fr = renderers.Find(o => o.Key.Feature == f.GetType());
+                KeyValuePair<FeatureRendererAttribute, IFeatureRenderer> fr = renderers.Find(o => o.Key.Feature == f.GetType() && !o.Key.IsFactory);
+                KeyValuePair<FeatureRendererAttribute, IFeatureRenderer> factoryRenderer = renderers.Find(o => o.Key.Feature == f.GetType() && o.Key.IsFactory);
 
                 // Was a renderer found?
                 if (fr.Key == null)
                     System.Diagnostics.Trace.WriteLine(String.Format("can't find renderer for {0}", f.GetType().Name), "warn");
                 else
-                {
-                    string file = String.Empty;
-                    try // To write the file
-                    {
-                        // Start the rendering
-                        file = fr.Value.CreateFile(f, Path.Combine(Path.Combine(hostContext.Output, "src"), JabaUtils.PackageNameToDirectory(projectName)));
-
-                        // Is the renderer for a file
-                        if (fr.Key.IsFile)
-                        {
-
-                            TextWriter tw = File.CreateText(file);
-                            try // Render the file
-                            {
-
-                                string Header = Template.Default; // Set the header to the default
-
-                                // Populate template fields
-                                foreach (String[] st in templateFields)
-                                    Header = Header.Replace(st[0], st[1]);
-
-                                // Write header
-                                tw.Write(Header);
-
-                                // Render the template out
-                                fr.Value.Render(parameters["rimbapi-target-ns"][0], parameters["rimbapi-api-ns"][0], f, tw);
-
-                                jFileList.WriteLine(file);
-                            }
-                            finally
-                            {
-                                tw.Close();
-                            }
-
-                        }
-                    }
-                    catch (NotSupportedException)
-                    {
-                        if (!String.IsNullOrEmpty(file)) File.Delete(file);
-                    }
-                    catch (Exception e)
-                    {
-                        if (!String.IsNullOrEmpty(file)) File.Delete(file);
-                        System.Diagnostics.Trace.WriteLine(String.Format("Could not write file '{0}', {1}", file, e.Message), "error");
-                    }
-                }
+                    if (GenerateFeature(fr, f, templateFields, projectName, jFileList, parameters) && factoryRenderer.Key != null)
+                        GenerateFeature(factoryRenderer, f, templateFields, projectName, jFileList, parameters);
             }
 
+        }
+
+        /// <summary>
+        /// Generate feature
+        /// </summary>
+        private bool GenerateFeature(KeyValuePair<FeatureRendererAttribute, IFeatureRenderer> fr, Feature f, string[][] templateFields, string projectName, TextWriter jFileList, Dictionary<String, StringCollection> parameters)
+        {
+            string file = String.Empty;
+            try // To write the file
+            {
+                // Start the rendering
+                file = fr.Value.CreateFile(f, Path.Combine(Path.Combine(hostContext.Output, "src"), JabaUtils.PackageNameToDirectory(projectName)));
+
+                // Is the renderer for a file
+                if (fr.Key.IsFile)
+                {
+
+                    TextWriter tw = File.CreateText(file);
+                    try // Render the file
+                    {
+
+                        string Header = Template.Default; // Set the header to the default
+
+                        // Populate template fields
+                        foreach (String[] st in templateFields)
+                            Header = Header.Replace(st[0], st[1]);
+
+                        // Write header
+                        tw.Write(Header);
+
+                        // Render the template out
+                        fr.Value.Render(parameters["rimbapi-target-ns"][0], parameters["rimbapi-api-ns"][0], f, tw);
+
+                        jFileList.WriteLine(file);
+                    }
+                    finally
+                    {
+                        tw.Close();
+                    }
+                    return true;
+                }
+                return true;
+            }
+            catch (NotSupportedException)
+            {
+                if (!String.IsNullOrEmpty(file)) File.Delete(file);
+                return false;
+            }
+            catch (Exception e)
+            {
+                if (!String.IsNullOrEmpty(file)) File.Delete(file);
+                System.Diagnostics.Trace.WriteLine(String.Format("Could not write file '{0}', {1}", file, e.Message), "error");
+                return false;
+            }
         }
 
         /// <summary>

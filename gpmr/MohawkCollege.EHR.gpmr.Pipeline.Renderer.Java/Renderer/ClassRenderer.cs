@@ -22,7 +22,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         /// <summary>
         /// Structure contains the factory method information
         /// </summary>
-        private struct FactoryMethodInfo
+        internal struct FactoryMethodInfo
         {
             public string documentation;
             public string signature;
@@ -538,10 +538,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 sw.Write("{0}", RimbaJavaRenderer.RootClass);
 
             // Interfaces
+            sw.Write(" implements IGraphable ");
             List<String> interfaces = MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine.Interfaces.MapInterfaces(cls, ownerPackage);
             if (interfaces.Count > 0)
             {
-                sw.Write(" implements ");
+                sw.Write(",");
                 foreach (string s in interfaces)
                     sw.Write("{0} {1}", s, s == interfaces.Last() ? "" : ",");
             }
@@ -589,120 +590,122 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 //#endregion
             }
 
+            // Move to a factory
             // Is this an emtpy class that facilitates a choice?
-            if (cls.SpecializedBy != null && cls.SpecializedBy.Count > 0 &&
-                cls.IsAbstract)
-            {
-                // NB: This isn't possible in Java (at least I don't have time to work around Java's weirdness) so
-                //      I'm going to disable it. This causes problems when
-                //
-                //      abstract A.A
-                //      abstract B.B extends A.A
-                //      C.C extends A.A
-                //      B.C extends B.B
-                //
-                // Results in :
-                //     A.A { C.C CreateC(); }
-                //     B.B { B.C CreateC(); }
-                //
-                // Java freaks out because the return type of CreateC has changed.
-                // The only thing I can think of is to blow out the method...
+            //if (cls.SpecializedBy != null && cls.SpecializedBy.Count > 0 &&
+            //    cls.IsAbstract)
+            //{
+            //    // NB: This isn't possible in Java (at least I don't have time to work around Java's weirdness) so
+            //    //      I'm going to disable it. This causes problems when
+            //    //
+            //    //      abstract A.A
+            //    //      abstract B.B extends A.A
+            //    //      C.C extends A.A
+            //    //      B.C extends B.B
+            //    //
+            //    // Results in :
+            //    //     A.A { C.C CreateC(); }
+            //    //     B.B { B.C CreateC(); }
+            //    //
+            //    // Java freaks out because the return type of CreateC has changed.
+            //    // The only thing I can think of is to blow out the method name...
+            //    // wait a tick, I'll do that :@
 
-                //#region Generate creator methods for each of the children
+            //    //#region Generate creator methods for each of the children
 
-                //// NB: In Java apparently super classes' static methods are acceessable
-                ////     in child classes which is different than .NET, so we're not going to cascade specializers
-                foreach (TypeReference tr in cls.SpecializedBy)
-                {
+            //    //// NB: In Java apparently super classes' static methods are acceessable
+            //    ////     in child classes which is different than .NET, so we're not going to cascade specializers
+            //    foreach (TypeReference tr in cls.SpecializedBy)
+            //    {
 
-                    if (tr.Class == null || tr.Class.ContainerName == "RIM" && !RimbaJavaRenderer.GenerateRim ||
-                        tr.Class.IsAbstract)
-                        continue;
+            //        if (tr.Class == null || tr.Class.ContainerName == "RIM" && !RimbaJavaRenderer.GenerateRim ||
+            //            tr.Class.IsAbstract)
+            //            continue;
 
-                    Class child = tr.Class;
+            //        Class child = tr.Class;
 
-                    // Create factory for the child
-                    Dictionary<String, String[]> ctors = CreateFactoryMethod(tr, "retVal", ownerPackage);
-                    // Write factory
-                    foreach (var kv in ctors)
-                    {
+            //        // Create factory for the child
+            //        Dictionary<String, String[]> ctors = CreateFactoryMethod(tr, "retVal", ownerPackage);
+            //        // Write factory
+            //        foreach (var kv in ctors)
+            //        {
 
-                        string methodSignature = String.Format("{1}.{0}.{2}.create{3}", cls.ContainerName, ownerPackage, Util.Util.PascalCase(cls.Name), Util.Util.PascalCase(child.Name)),
-                            publicName = methodSignature;
+            //            string methodSignature = String.Format("{1}.{0}.{2}.create{3}", cls.ContainerName, ownerPackage, Util.Util.PascalCase(cls.Name), Util.Util.PascalCase(child.Name)),
+            //                publicName = methodSignature;
 
-                        // Regex for extracting the parameter type rather than the type/name
-                        Regex parmRegex = new Regex(@"(([\w<>,.]*)\s(\w*)),?\s?");
-                        MatchCollection parmMatches = parmRegex.Matches(kv.Value[0]);
-                        foreach (Match match in parmMatches)
-                            methodSignature += match.Groups[1].Value.Substring(0, match.Groups[1].Value.IndexOf(" "));
-
-
-                        // JF: Added to protected against rendering the same factory method
-                        if (s_methodDeclarations.Contains(methodSignature))
-                            continue;
-                        s_methodDeclarations.Add(methodSignature);
-
-                        // Render if there is even any content
-                        if (kv.Value[0].Length > 0)
-                        {
-                            string clsDoc = DocumentationRenderer.Render(child.Documentation, 1);
-
-                            string ctorClassName = String.Format("{0}.{2}.{1}", ownerPackage, tr.Class.Name, tr.Class.ContainerName.ToLower());
-                            //// import already exists?
-                            //if(!s_imports.Exists(o=>o.EndsWith(Util.Util.PascalCase(tr.Class.Name))))
-                            //{
-                            //    s_imports.Add(ctorClassName);
-                            //    ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
-                            //}
-                            //if (s_imports.Contains(ctorClassName))
-                            //    ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
-
-                            if (clsDoc.Contains("*/"))
-                                sw.Write(clsDoc.Substring(0, clsDoc.LastIndexOf("*/")));
-                            sw.WriteLine("* This function creates a new instance of {5}.{1}\r\n\t {4}\r\n\t*/\t\n\tpublic static {0} create{6}{2}({3}) {{ ", ctorClassName, tr.Class.Name, Util.Util.PascalCase(child.Name), kv.Value[0].Substring(0, kv.Value[0].Length - 1), kv.Value[2], tr.Class.ContainerName.ToLower(), Util.Util.PascalCase(cls.Name));
-                            sw.WriteLine("\t\t{0} retVal = new {0}();", ctorClassName);
-                            sw.WriteLine("{0}", kv.Value[1]);
-                            sw.WriteLine("\t\treturn retVal;");
-                            sw.WriteLine("\t}");
-
-                            if (!factoryMethods.ContainsKey(tr.Name))
-                                factoryMethods.Add(tr.Name, new List<FactoryMethodInfo>());
-
-                            FactoryMethodInfo myInfo = new FactoryMethodInfo(publicName, kv.Value[2], methodSignature);
+            //            // Regex for extracting the parameter type rather than the type/name
+            //            Regex parmRegex = new Regex(@"(([\w<>,.]*)\s(\w*)),?\s?");
+            //            MatchCollection parmMatches = parmRegex.Matches(kv.Value[0]);
+            //            foreach (Match match in parmMatches)
+            //                methodSignature += match.Groups[1].Value.Substring(0, match.Groups[1].Value.IndexOf(" "));
 
 
-                            //Match the regular expression below and capture its match into backreference number 1 «(([\w<>,]*?)\s(\w*),?\s?)»
-                            //Match the regular expression below and capture its match into backreference number 2 «([\w<>,]*?)»
-                            //Match a single character present in the list below «[\w<>,]*?»
-                            //Between zero and unlimited times, as few times as possible, expanding as needed (lazy) «*?»
-                            //A word character (letters, digits, etc.) «\w»
-                            //One of the characters “<>,” «<>,»
-                            //Match a single character that is a “whitespace character” (spaces, tabs, line breaks, etc.) «\s»
-                            //Match the regular expression below and capture its match into backreference number 3 «(\w*)»
-                            //Match a single character that is a “word character” (letters, digits, etc.) «\w*»
-                            //Between zero and unlimited times, as many times as possible, giving back as needed (greedy) «*»
-                            //Match the character “,” literally «,?»
-                            //Between zero and one times, as many times as possible, giving back as needed (greedy) «?»
-                            //Match a single character that is a “whitespace character” (spaces, tabs, line breaks, etc.) «\s?»
-                            //Between zero and one times, as many times as possible, giving back as needed (greedy) «?»
-                            foreach (Match match in parmMatches)
-                                myInfo.parameters.Add(match.Groups[1].Value);
+            //            // JF: Added to protected against rendering the same factory method
+            //            if (s_methodDeclarations.Contains(methodSignature))
+            //                continue;
+            //            s_methodDeclarations.Add(methodSignature);
 
-                            // ADd the factory signature to the dictionary
-                            factoryMethods[tr.Name].Add(myInfo);
-                        }
+            //            // Render if there is even any content
+            //            if (kv.Value[0].Length > 0)
+            //            {
+            //                string clsDoc = DocumentationRenderer.Render(child.Documentation, 1);
 
-                    }
-                }
+            //                string ctorClassName = String.Format("{0}.{2}.{1}", ownerPackage, tr.Class.Name, tr.Class.ContainerName.ToLower());
+            //                //// import already exists?
+            //                //if(!s_imports.Exists(o=>o.EndsWith(Util.Util.PascalCase(tr.Class.Name))))
+            //                //{
+            //                //    s_imports.Add(ctorClassName);
+            //                //    ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
+            //                //}
+            //                //if (s_imports.Contains(ctorClassName))
+            //                //    ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
 
-                //#endregion
-            }
+            //                if (clsDoc.Contains("*/"))
+            //                    sw.Write(clsDoc.Substring(0, clsDoc.LastIndexOf("*/")));
+            //                sw.WriteLine("* This function creates a new instance of {5}.{1}\r\n\t {4}\r\n\t*/\t\n\tpublic static {0} create{6}{2}({3}) {{ ", ctorClassName, tr.Class.Name, Util.Util.PascalCase(child.Name), kv.Value[0].Substring(0, kv.Value[0].Length - 1), kv.Value[2], tr.Class.ContainerName.ToLower(), Util.Util.PascalCase(cls.Name));
+            //                sw.WriteLine("\t\t{0} retVal = new {0}();", ctorClassName);
+            //                sw.WriteLine("{0}", kv.Value[1]);
+            //                sw.WriteLine("\t\treturn retVal;");
+            //                sw.WriteLine("\t}");
+
+            //                if (!factoryMethods.ContainsKey(tr.Name))
+            //                    factoryMethods.Add(tr.Name, new List<FactoryMethodInfo>());
+
+            //                FactoryMethodInfo myInfo = new FactoryMethodInfo(publicName, kv.Value[2], methodSignature);
+
+
+            //                //Match the regular expression below and capture its match into backreference number 1 «(([\w<>,]*?)\s(\w*),?\s?)»
+            //                //Match the regular expression below and capture its match into backreference number 2 «([\w<>,]*?)»
+            //                //Match a single character present in the list below «[\w<>,]*?»
+            //                //Between zero and unlimited times, as few times as possible, expanding as needed (lazy) «*?»
+            //                //A word character (letters, digits, etc.) «\w»
+            //                //One of the characters “<>,” «<>,»
+            //                //Match a single character that is a “whitespace character” (spaces, tabs, line breaks, etc.) «\s»
+            //                //Match the regular expression below and capture its match into backreference number 3 «(\w*)»
+            //                //Match a single character that is a “word character” (letters, digits, etc.) «\w*»
+            //                //Between zero and unlimited times, as many times as possible, giving back as needed (greedy) «*»
+            //                //Match the character “,” literally «,?»
+            //                //Between zero and one times, as many times as possible, giving back as needed (greedy) «?»
+            //                //Match a single character that is a “whitespace character” (spaces, tabs, line breaks, etc.) «\s?»
+            //                //Between zero and one times, as many times as possible, giving back as needed (greedy) «?»
+            //                foreach (Match match in parmMatches)
+            //                    myInfo.parameters.Add(match.Groups[1].Value);
+
+            //                // ADd the factory signature to the dictionary
+            //                factoryMethods[tr.Name].Add(myInfo);
+            //            }
+
+            //        }
+            //    }
+
+            //    //#endregion
+            //}
             // End class
             sw.WriteLine("}");
 
 
             #region Render the imports
-            string[] apiImports = { "annotations.*", "datatypes.*", "datatypes.generic.*" },
+            string[] apiImports = { "annotations.*", "datatypes.*", "datatypes.generic.*", "interfaces.IGraphable" },
                 jImports = { "java.lang.*", "java.util.*" };
             foreach (var import in apiImports)
                 tw.WriteLine("import {0}.{1};", apiNs, import);
