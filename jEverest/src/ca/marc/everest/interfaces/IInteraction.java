@@ -20,12 +20,13 @@ package ca.marc.everest.interfaces;
 
 import ca.marc.everest.datatypes.*;
 import ca.marc.everest.datatypes.generic.*;
+import ca.marc.everest.datatypes.interfaces.ICodedSimple;
 
 /**
  * Identifies a class as implementing the basic functionality
  * as necessary to implement Interaction functionality
  */
-public interface IInteraction {
+public interface IInteraction extends IGraphable {
 
 	/**
 	 * Gets the time that the particular interaction instance was created
@@ -34,7 +35,7 @@ public interface IInteraction {
 	/**
 	 * Gets the version code of the interaction instance 
 	 */
-	CS<String> getVersionCode();
+	ICodedSimple getVersionCode();
 	/**
 	 * Gets the interaction identifier for the instance
 	 */
@@ -42,7 +43,7 @@ public interface IInteraction {
 	/**
 	 * Gets the processing mode code for the instance 
 	 */
-	CS<String> getProcessingModeCode();
+	ICodedSimple getProcessingModeCode();
 	/**
 	 * Gets the profile identifier for the instance 
 	 */

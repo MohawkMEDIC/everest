@@ -28,25 +28,25 @@ public enum ResultCodeType {
 	 * The operation succeeded and the message or structure as 
 	 * accepted without error
 	 */
-	ACCEPTED,
+	Accepted,
 	/**
 	 * The operation succeeded, however the message generated
 	 * may not be conformant.
 	 */
-	ACCEPTEDNONCONFORMANT,
+	AcceptedNonConformant,
 	/**
 	 * The operation failed because the message structure or
 	 * operation was rejected given the current state
 	 */
-	REJECTED,
+	Rejected,
 	/**
 	 * The operation could not be completed because the necessary
 	 * information to complete the request is was not available
 	 */
-	NOTAVAILABLE,
+	NotAvailable,
 	/**
 	 * The operation could not be completed because a runtime error
 	 * occurred that prohibited the operation from succeeding
 	 */
-	ERROR
+	Error
 }

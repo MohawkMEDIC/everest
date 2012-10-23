@@ -19,8 +19,12 @@
 package ca.marc.everest.formatters.interfaces;
 
 import java.io.*;
+
+import ca.marc.everest.exceptions.FormatterException;
 import ca.marc.everest.interfaces.*;
 import java.util.*;
+
+import javax.xml.stream.XMLStreamException;
 
 /**
  * Represents a class that has the ability to render an IGraphible object
@@ -63,13 +67,13 @@ public interface IStructureFormatter extends Cloneable, IDisposable {
 	 * @param o The object that is to be graphed
 	 * @return An IFormatterGraphResult that contains the result of the graph
 	 */
-	IFormatterGraphResult Graph(OutputStream s, IGraphable o);
+	IFormatterGraphResult graph(OutputStream s, IGraphable o);
 	
 	/**
 	 * Parses an object instance from input stream s
 	 * @param s The stream that is to be parsed
 	 * @return An IFormatterParseResult that contains the result of the parse operation
 	 */
-	IFormatterParseResult Parse(InputStream s);
+	IFormatterParseResult parse(InputStream s);
 
 }

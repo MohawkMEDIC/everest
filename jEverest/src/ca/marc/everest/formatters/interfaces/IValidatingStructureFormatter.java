@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2011 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -14,22 +14,22 @@
  * the License.
  * 
  * User: Justin Fyfe
- * Date: 06-24-2011
+ * Date: 10-22-2012
  */
-package ca.marc.everest.datatypes.interfaces;
+package ca.marc.everest.formatters.interfaces;
 
 /**
- * Represents the structure of a coded simple value 
+ * Represents a formatter which can validate structures
  */
-public interface ICodedSimple {
+public interface IValidatingStructureFormatter extends IStructureFormatter {
 
 	/**
-	 * Get the code mnemonic value of the coded simple
+	 * Gets a value which indicates whether this formatter should perform validation
 	 */
-	Object getCode();
+	boolean getValidateConformance();
+
 	/**
-	 * Set the code mnemonic value of the coded simple
+	 * Sets a value which indicates whether this formatter should perform validation
 	 */
-	void setCode(Object value);
-	
+	void setValidateConformance(boolean value);
 }

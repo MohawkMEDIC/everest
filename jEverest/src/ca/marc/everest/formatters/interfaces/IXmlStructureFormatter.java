@@ -18,6 +18,7 @@
  */
 package ca.marc.everest.formatters.interfaces;
 
+import ca.marc.everest.exceptions.FormatterException;
 import ca.marc.everest.interfaces.*;
 import javax.xml.stream.*;
 
@@ -33,13 +34,13 @@ public interface IXmlStructureFormatter extends IStructureFormatter {
 	 * @param xr The XmlReader to from which to read data 
 	 * @return An IFormatterParseResult that contains the parsed structure data
 	 */
-	IFormatterParseResult Parse(XMLStreamReader xr);
+	IFormatterParseResult parse(XMLStreamReader xr);
 	/**
 	 * Graph data in the specified object to the specified XmlStreamWriter
 	 * @param xw The XmlStreamWriter to graph data to
 	 * @param o The object to graph to the XmlStreamWriter
 	 * @return A IFormatterGraphResult that contains the details of the format operation
 	 */
-	IFormatterGraphResult Graph(XMLStreamWriter xw, IGraphable o);
+	IFormatterGraphResult graph(XMLStreamWriter xw, IGraphable o);
 	
 }

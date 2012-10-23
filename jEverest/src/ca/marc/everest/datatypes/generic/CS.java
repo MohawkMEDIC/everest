@@ -38,7 +38,7 @@ import ca.marc.everest.annotations.*;
  * </p>
  */
 @Structure(name = "CS", structureType = StructureType.DATATYPE, defaultTemplateType = java.lang.String.class)
-public class CS<T> extends ANY implements ICodedSimple<T> {
+public class CS<T> extends ANY implements ICodedSimple {
 
 	// backing field for code
 	private T m_code;
@@ -57,15 +57,23 @@ public class CS<T> extends ANY implements ICodedSimple<T> {
 	 * Gets the code value of the CS
 	 */
 	@Property(name = "code", conformance = ConformanceType.MANDATORY, propertyType = PropertyType.STRUCTURAL)
+	@Override
 	public T getCode() { return this.m_code; }
 	/**
 	 * Sets the code value of this CS.
 	 * @param value The new value of the code field
 	 */
-	public void setCode(T value) {
-		this.m_code = value;
+	@Override
+	public void setCode(Object value) {
+		this.setCodeEx((T)value);
 	}
-
+	/**
+	 * Sets the code value of the CS as bound by the generic parameter
+	 */
+	public void setCodeEx(T value)
+	{
+		this.m_code = (T)value;
+	}
 	/**
 	 * Validates that the code is valid
 	 * <p>

@@ -23,7 +23,7 @@ import ca.marc.everest.datatypes.generic.*;
 /**
  * An interface that represents the structure of a codified value
  */
-public interface ICodedValue<T> extends ICodedSimple<T>, IOriginalText {
+public interface ICodedValue<T> extends ICodedSimple, IOriginalText {
 
 	/**
 	 * Get the code system of the coded simple

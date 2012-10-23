@@ -147,12 +147,13 @@ public class CV<T> extends CS<T> implements ICodedValue<T> {
 	 * @param value The new value of the code field
 	 */
 	@Override
-	public void setCode(T value) {
+	public void setCodeEx(T value) {
 		// Set a code system if one is not set
 		if(this.m_codeSystem == null && value != null && value instanceof IEnumeratedVocabulary)
 			this.m_codeSystem = ((IEnumeratedVocabulary)value).getCodeSystem();
 		super.setCode(value);
 	}
+
 	
 	/**
 	 * Gets the value of the codeSystem.
