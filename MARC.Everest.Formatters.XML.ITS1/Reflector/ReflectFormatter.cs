@@ -131,7 +131,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                             if (instance == null || isInstanceNull)
                                 continue;
 
-                            // TODO: Impose flavors or code?
+                            // Impose flavors or code?
                             if (pa.DefaultUpdateMode != MARC.Everest.DataTypes.UpdateMode.Unknown &&
                                 pi.PropertyType.GetProperty("UpdateMode") != null &&
                                 pi.PropertyType.GetProperty("UpdateMode").GetValue(instance, null) == null &&
@@ -153,6 +153,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                             if (instance is IGraphable)
                             {
                                 // Ensure the data is not empty
+                                // TODO: Check whether this causes issues with R2
                                 if (instance is IColl && (instance as IColl).IsEmpty)
                                     continue;
                                 rc = Host.WriteElementUtil(s, pa.Name, instance as IGraphable, pi.PropertyType, context, resultContext);

@@ -52,7 +52,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         /// <summary>
         /// Render class content to class file
         /// </summary>
-        private string RenderClassContent(ClassContent cc, string ownerPackage)
+        private string RenderClassContent(ClassContent cc, string ownerPackage, int propertySort)
         {
 
             StringWriter sw = new StringWriter();
@@ -174,7 +174,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
 
             // Render the property attribute
-            sw.Write(RenderPropertyAttribute(cc, ownerPackage));
+            sw.Write(RenderPropertyAttribute(cc, ownerPackage, propertySort));
 
             // Render the getter
             sw.WriteLine("\tpublic {0} get{1}() {{ return this.m_{2}; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name));
@@ -241,7 +241,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         /// <summary>
         /// Render property attribute
         /// </summary>
-        private String RenderPropertyAttribute(ClassContent cc, string ownerPackage)
+        private String RenderPropertyAttribute(ClassContent cc, string ownerPackage, int propertySort)
         {
 
             StringWriter retBuilder = new StringWriter();
@@ -281,8 +281,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                     // Already rendered
                     if (!alreadyRendered.Contains(key))
                     {
-                        retBuilder.Write("\t@Property(name = \"{0}\", conformance = ConformanceType.{1}, propertyType = PropertyType.{2}",
-                            kv.TraversalName, cc.Conformance.ToString().ToUpper(), (options.Content[0] as Property).PropertyType.ToString().ToUpper());
+                        retBuilder.Write("\t@Property(name = \"{0}\", conformance = ConformanceType.{1}, propertyType = PropertyType.{2}, sortKey = {3}",
+                            kv.TraversalName, cc.Conformance.ToString().ToUpper(), (options.Content[0] as Property).PropertyType.ToString().ToUpper(), propertySort);
 
                         // Now a type hint
                         if (tr.Class != null && (property.Container is Choice || property.AlternateTraversalNames != null))
@@ -325,6 +325,12 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                                 if((property.Container as Class).TypeParameters == null ||
                                     !(property.Container as Class).TypeParameters.Exists(o=>o.Name == genSupp.Name))
                                     retBuilder.Write("{0}.class{1}", CreateDatatypeRef(genSupp, property, ownerPackage, false), genSupp == property.Type.GenericSupplier.Last() ? "" : ",");
+                            retBuilder.Write("}");
+                        }
+                        else if (property.MaxOccurs != "1" && !Datatypes.IsCollectionType(property.Type)) // Array list so we still need to put this in
+                        {
+                            retBuilder.Write(", genericSupplier = {");
+                            CreateDatatypeRef(property.Type, property, ownerPackage);
                             retBuilder.Write("}");
                         }
 
@@ -553,8 +559,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             #region Render Properties
 
+            int propertySort = 0;
             foreach (ClassContent cc in cls.Content)
-                sw.WriteLine(RenderClassContent(cc, ownerPackage));
+                sw.WriteLine(RenderClassContent(cc, ownerPackage, propertySort++));
 
             #endregion
 

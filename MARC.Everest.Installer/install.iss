@@ -18,7 +18,7 @@ OutputBaseFilename=everest-nightly
 InfoBeforeFile=..\gpmr\Readme-nightly.txt
 #else
 AppName=MARC-HI Everest Framework
-AppVerName=MARC-HI Everest Framework Release Candidate 1
+AppVerName=1.2
 OutputBaseFilename=everest-setup
 ;InfoBeforeFile=.\installsupp\release\AUG-CTP-2010.txt
 #endif
