@@ -141,8 +141,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 bool wontRenderBd = bindingDomain != null ? String.IsNullOrEmpty(EnumerationRenderer.WillRender(bindingDomain)) : true;
 
                 if (bindingDomain == null)
-                    sw.Write(" = ca.marc.everest.formatters.FormatterUtil.convert(\"{1}\");",
-                        dtr, property.FixedValue);
+                    sw.Write(" = ({2})ca.marc.everest.formatters.FormatterUtil.fromWireFormat(\"{1}\", {0}.class);",
+                        backingFieldType.Name, property.FixedValue, dtr);
                 else if (ev == null || wontRenderBd) // Enumeration value is not known in the enumeration, fixed value fails
                 {
                     System.Diagnostics.Trace.WriteLine(String.Format("Can't find literal '{0}' in supplier domain for property '{1}'", property.FixedValue, property.Name), "error");

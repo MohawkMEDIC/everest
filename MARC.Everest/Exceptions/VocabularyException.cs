@@ -49,42 +49,37 @@ namespace MARC.Everest.Exceptions
         /// 
         /// </summary>
         public VocabularyException() : base() { }
-        //DOC: Documentation Required
         /// <summary>
-        /// 
+        /// Creates a new instance of the VocabularyException
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">The textual message describing the exception</param>
         public VocabularyException(string message) : base(message) { }
-        //DOC: Documentation Required
         /// <summary>
-        /// 
+        /// Creates a new instance of the VocabularyException
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="innerException"></param>
+        /// <param name="message">The textual message describing the exception</param>
+        /// <param name="innerException">The exception that caused this exception to be raised</param>
         public VocabularyException(string message, Exception innerException) : base(message, innerException) { }
-        //DOC: Documentation Required
         /// <summary>
-        /// 
+        /// Creates a new instance of the VocabularyException
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="offender"></param>
+        /// <param name="message">The textual message of the exception</param>
+        /// <param name="offender">The <see cref="T:MARC.Everest.Interfaces.IGraphable"/> interface which caused the exception to be thrown</param>
         public VocabularyException(string message, IGraphable offender) : base(message, offender) { }
-        //DOC: Documentation Required
         /// <summary>
-        /// 
+        /// Creates a new instance of the VocabularyException
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="offender"></param>
-        /// <param name="innerException"></param>
-        public VocabularyException(string message, IGraphable offender, Exception innerException) : base(message, innerException, offender) { }
-        //DOC: Documentation Required
+        /// <param name="message">The textual message of the exception</param>
+        /// <param name="offender">The <see cref="T:MARC.Everest.Interfaces.IGrapable"/> instance which caused the exception to be thrown</param>
+        /// <param name="innerException">The exception that caused this exception to be thrown</param>
+        public VocabularyException(string message, Exception innerException, IGraphable offender) : base(message, innerException, offender) { }
         /// <summary>
-        /// 
+        /// Creates a new instance of the VocabularyException
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="mnemonic"></param>
-        /// <param name="codeSet"></param>
-        /// <param name="offender"></param>
+        /// <param name="message">The textual message describing the exception</param>
+        /// <param name="mnemonic">The code mnemonic that caused the vocabulary exception to be thrown</param>
+        /// <param name="codeSet">The code set from which the <paramref name="mnemonic"/> was drawn</param>
+        /// <param name="offender">The <see cref="T:MARC.Everest.Interfaces.IGraphable"/> instance which caused the exception to be thrown</param>
         public VocabularyException(string message, string mnemonic, string codeSet, IGraphable offender)
             : base(message, offender)
         {

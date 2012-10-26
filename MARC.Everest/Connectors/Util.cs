@@ -149,7 +149,7 @@ namespace MARC.Everest.Connectors
         {
             object retVal = null;
             if (!TryFromWireFormat(value, typeof(T), out retVal) && throwOnError)
-                throw new FormatterException(String.Format("Can't find valid cast to from '{0}' to '{1}'", value.GetType(), typeof(T)));
+                throw new FormatterException(String.Format("Can't find valid conversion to from '{0}' to '{1}'", value.GetType(), typeof(T)));
             return (T)retVal;
         }
 
@@ -467,7 +467,8 @@ namespace MARC.Everest.Connectors
 
             // Is there a built in method that can convert this
             MethodInfo mi;
-            if (!s_wireMaps.TryGetValue(string.Format("{0}>{1}", value.GetType().FullName, destType.FullName), out mi))
+            string converterKey = string.Format("{0}>{1}", value.GetType().FullName, destType.FullName);
+            if (!s_wireMaps.TryGetValue(converterKey, out mi))
             {
                 // Try to find a map first...
                 // Using an operator overload
@@ -482,8 +483,8 @@ namespace MARC.Everest.Connectors
                 if (mi != null)
                 {
                     lock (s_wireMaps)
-                        if (!s_wireMaps.ContainsKey(string.Format("{0}>{1}", value.GetType().FullName, destType.FullName)))
-                            s_wireMaps.Add(string.Format("{0}>{1}", value.GetType().FullName, destType.FullName), mi);
+                        if (!s_wireMaps.ContainsKey(converterKey))
+                            s_wireMaps.Add(converterKey, mi);
                 }
                 else
                 {
