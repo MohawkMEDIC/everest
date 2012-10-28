@@ -28,7 +28,9 @@ namespace MARC.Everest.Connectors
     /// Represents diagnostic details about a validation, formatting or connection
     /// operation.
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class ResultDetail : IResultDetail
     {
         // location
@@ -39,7 +41,9 @@ namespace MARC.Everest.Connectors
         /// <summary>
         /// Exception
         /// </summary>
+#if !WINDOWS_PHONE
         [NonSerialized]
+#endif
         private Exception exception;
 
         /// <summary>
@@ -185,7 +189,9 @@ namespace MARC.Everest.Connectors
     /// where the minimum occurs is set to 1 (the conformance of Populated). At minimum a NullFlavor
     /// should be popualted
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class RequiredElementMissingResultDetail : FormalConstraintViolationResultDetail
     {
         /// <summary>
@@ -207,7 +213,10 @@ namespace MARC.Everest.Connectors
     /// This formal constraint violation indicates that an instnace has not supplied sufficient
     /// repetitions to fulfill the min occurs constraint on the property.
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Repitions"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Repitions")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class InsufficientRepetionsResultDetail : FormalConstraintViolationResultDetail
     {
         /// <summary>
@@ -229,7 +238,9 @@ namespace MARC.Everest.Connectors
     /// This formal constraint violation indicates that an instance has a property set to null (or whose null flavor is set ) when
     /// the conformance for the property is Mandatory
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class MandatoryElementMissingResultDetail : FormalConstraintViolationResultDetail
     {
         
@@ -289,7 +300,9 @@ namespace MARC.Everest.Connectors
     /// This result details occurs during the parsing of an instance whereby the formatter encountered
     /// an element that has no "home" within the object. 
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class NotImplementedElementResultDetail : NotImplementedResultDetail
     {
 
@@ -318,7 +331,9 @@ namespace MARC.Everest.Connectors
     /// <remarks>
     /// This result detail is usually used whenever a property is populated with a valid value (from .NET perspective) however
     /// the RMIM model does not support the choice. This is commonly raised for referneces to System.Object</remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class NotSupportedChoiceResultDetail : FormalConstraintViolationResultDetail
     {
 
@@ -349,7 +364,9 @@ namespace MARC.Everest.Connectors
     /// match the fixed value defined in the .NET type. The formatter may override the supplied value with the fixed value, 
     /// or may use the fixed value
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class FixedValueMisMatchedResultDetail : ValidationResultDetail
     {
 
@@ -391,7 +408,9 @@ namespace MARC.Everest.Connectors
     /// This issue is raised whenever codified data is encountered whereby the supplied value 
     /// cannot be used in the context, or if the value is unknown / invalid.
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class VocabularyIssueResultDetail : ValidationResultDetail
     {
 
@@ -417,7 +436,9 @@ namespace MARC.Everest.Connectors
     /// <summary>
     /// Identifies that basic validation of a datatype instance has failed
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class DatatypeValidationResultDetail : ValidationResultDetail
     {
 
@@ -473,7 +494,9 @@ namespace MARC.Everest.Connectors
     /// <summary>
     /// Identifies that flavor validation of a datatype instance has failed
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class DatatypeFlavorValidationResultDetail : DatatypeValidationResultDetail
     {
 
@@ -524,7 +547,9 @@ namespace MARC.Everest.Connectors
     /// is set on a data type that is "transparent" or not rendered (such as GTS.Hull). The result detail
     /// is used to record the original and destination and value of propagation</para>
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class PropertyValuePropagatedResultDetail : ResultDetail
     {
         /// <summary>
@@ -582,7 +607,9 @@ namespace MARC.Everest.Connectors
     /// not have been rendered on the wire</para>
     /// <para>This abstract class must be extended by datatype formatters</para>
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public abstract class UnsupportedDatatypePropertyResultDetail : NotImplementedElementResultDetail
     {
         

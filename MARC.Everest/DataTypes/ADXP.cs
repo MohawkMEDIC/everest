@@ -224,7 +224,10 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// A character string that may have a type-tag signifying its role in the address.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ADXP"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ADXP")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     [Structure(Name = "ADXP", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("ADXP", Namespace = "urn:hl7-org:v3")]
     public class ADXP : ANY, IEquatable<ADXP>

@@ -40,7 +40,9 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <summary>
         /// Permits RMIM based classes to impose a default UpdateMode on rendered datatypes
         /// </summary>
-        AllowUpdateModeImposing = 4,
+        AllowUpdateModeImposing = 4
+#if !WINDOWS_PHONE 
+        ,
         /// <summary>
         /// Signals that the formatter should use the reflection method of formatting
         /// rather than code-dom
@@ -74,5 +76,6 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Default settings for older versions of everest
         /// </summary>
         DefaultLegacy = AllowFlavorImposing | AllowSupplierDomainImposing | AllowUpdateModeImposing | UseGeneratorFormat
+#endif
     }
 }

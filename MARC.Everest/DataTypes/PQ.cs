@@ -25,6 +25,10 @@ using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using System.ComponentModel;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
@@ -80,8 +84,12 @@ namespace MARC.Everest.DataTypes
     /// </list>
     /// </remarks>
     /// <seealso cref="T:MARC.Everest.DataTypes.QTY"/>
-    [Serializable][Structure(Name = "PQ", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "PQ", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("PQ", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
+
     public class PQ : QTY<Nullable<Decimal>>, IEquatable<PQ>, IComparable<PQ>, IPqTranslatable<PQ>, IPqScalar<PQ>, IDistanceable<PQ>, IImplicitInterval<PQ>
     {
 
@@ -707,13 +715,13 @@ namespace MARC.Everest.DataTypes
                 return new IVL<PQ>(this, this);
 
             // First, we multiply the value to get store the number
-            decimal tValue = this.Value.Value * (decimal)Math.Pow(10, Precision),
+            double tValue = (double)this.Value.Value * Math.Pow(10, Precision),
                 min = Math.Floor(tValue),
-                max = Math.Ceiling(tValue + (decimal)Math.Pow(10, -(20 - Precision))) - (decimal)Math.Pow(10, -(20 - Precision));
+                max = Math.Ceiling(tValue + Math.Pow(10, -(20 - Precision))) - Math.Pow(10, -(20 - Precision));
             
             return new IVL<PQ>(
-                new PQ(min / (decimal)Math.Pow(10, Precision), this.Unit),
-                new PQ(max / (decimal)Math.Pow(10, Precision), this.Unit)
+                new PQ((decimal)(min / Math.Pow(10, Precision)), this.Unit),
+                new PQ((decimal)(max / Math.Pow(10, Precision)), this.Unit)
                ) { LowClosed = true, HighClosed = true };
 
 

@@ -31,7 +31,9 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// Identifies the scope to which an II applies
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     [Structure(Name = "IdentifierScope", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
     [XmlType("IdentifierScope", Namespace = "urn:hl7-org:v3")]
     public enum IdentifierScope
@@ -140,7 +142,9 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     [Structure(Name = "II", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("II", Namespace = "urn:hl7-org:v3")]
     public class II : ANY, IInstanceIdentifier, IEquatable<II>

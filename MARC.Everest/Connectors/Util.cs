@@ -28,6 +28,10 @@ using MARC.Everest.Exceptions;
 using MARC.Everest.DataTypes.Interfaces;
 using System.ComponentModel;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.Connectors
 {
 
@@ -295,8 +299,7 @@ namespace MARC.Everest.Connectors
         {
             string typeName = typeNames.Dequeue();
             
-            // Find the type 
-            Type cType = Array.Find(typeof(Util).Assembly.GetTypes(), delegate(Type a)
+            Predicate<Type> findPredicate = delegate(Type a)
             {
                 var structureAtt = a.GetCustomAttributes(typeof(StructureAttribute), false);
                 if (structureAtt.Length == 0)
@@ -308,7 +311,13 @@ namespace MARC.Everest.Connectors
                 foreach (TypeMapAttribute tma in typeMapAtt)
                     result |= (tma.Name == typeName) && (String.IsNullOrEmpty(tma.ArgumentType) ^ (tma.ArgumentType == typeNames.Peek()));
                 return result || (structureAtt[0] as StructureAttribute).Name == typeName;
-            });
+            };
+#if WINDOWS_PHONE
+            Type cType = typeof(Util).Assembly.GetTypes().Find(findPredicate); 
+#else
+            // Find the type 
+            Type cType = Array.Find(typeof(Util).Assembly.GetTypes(), findPredicate);
+#endif
 
             // Determine if the type is generic in nature?
             if (cType.IsGenericTypeDefinition) // Yes
@@ -341,7 +350,11 @@ namespace MARC.Everest.Connectors
                 object[] typeMapAttribute = cType.GetCustomAttributes(typeof(TypeMapAttribute), false);
                 if (typeMapAttribute.Length > 0)
                 {
+#if WINDOWS_PHONE
+                    var tma = typeMapAttribute.Find(o => (o as TypeMapAttribute).Name == typeName) as TypeMapAttribute;
+#else
                     var tma = Array.Find(typeMapAttribute, o => (o as TypeMapAttribute).Name == typeName) as TypeMapAttribute;
+#endif
                     if (tma != null && !String.IsNullOrEmpty(tma.ArgumentType))
                     {
                         var genType = typeNames.Dequeue();
@@ -431,7 +444,7 @@ namespace MARC.Everest.Connectors
                 ;
             else if (m_destType.IsEnum && s_enumerationMaps.ContainsKey(string.Format("{0}.{1}", m_destType.FullName, value)))
             {
-                value = Enum.Parse(m_destType, s_enumerationMaps[string.Format("{0}.{1}", m_destType.FullName, value)]);
+                value = Enum.Parse(m_destType, s_enumerationMaps[string.Format("{0}.{1}", m_destType.FullName, value)], false);
                 if (!requiresExplicitCastCall)
                 {
                     result = value;
@@ -446,7 +459,7 @@ namespace MARC.Everest.Connectors
 
                 try
                 {
-                    value = Enum.Parse(m_destType, s_enumerationMaps[string.Format("{0}.{1}", m_destType.FullName, value)]);
+                    value = Enum.Parse(m_destType, s_enumerationMaps[string.Format("{0}.{1}", m_destType.FullName, value)], false);
                 }
                 catch
                 {
@@ -521,7 +534,7 @@ namespace MARC.Everest.Connectors
                 }
             }
 
-
+            
             try
             {
                 result = mi.Invoke(null, new object[] { value }); // Invoke the conversion method

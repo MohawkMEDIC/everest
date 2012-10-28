@@ -117,7 +117,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 if (instance_ed.Representation == EncapsulatedDataRepresentation.B64)
                     s.WriteBase64(instance_ed.Data, 0, instance_ed.Data.Length);
                 else if (instance_ed.Representation == EncapsulatedDataRepresentation.TXT)
-                    s.WriteString(textEncoding.GetString(instance_ed.Data));
+                    s.WriteString(textEncoding.GetString(instance_ed.Data, 0, instance_ed.Data.Length));
                 else
                 {
                     char[] charBuffer = textEncoding.GetChars(instance_ed.Data);

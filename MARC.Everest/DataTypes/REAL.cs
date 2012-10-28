@@ -48,9 +48,12 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "REAL"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "REAL")]
     [Structure(Name = "REAL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("REAL", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class REAL : QTY<Nullable<Double>>, IRealValue, IEquatable<REAL>, IComparable<REAL>, IImplicitInterval<REAL>
     {
 

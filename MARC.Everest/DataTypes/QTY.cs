@@ -81,9 +81,12 @@ namespace MARC.Everest.DataTypes
     /// quantity type abstraction is needed in defining certain other types such as the interval and 
     /// probability distribution
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "QTY"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "QTY")]
     [Structure(Name = "QTY", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QTY", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public abstract class QTY<T> : PDV<T>, IQuantity, IRealValue, IGraphable, IEquatable<QTY<T>>
         //where T : IComparable<T>
     {

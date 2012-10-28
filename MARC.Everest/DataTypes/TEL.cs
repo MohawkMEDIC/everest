@@ -53,9 +53,12 @@ namespace MARC.Everest.DataTypes
     /// by time specification and use codes that help in deciding which address to use for a given time 
     /// and purpose
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TEL"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TEL")]
     [Structure(Name = "TEL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("TEL", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class TEL : PDV<String>, ITelecommunicationAddress, IEquatable<TEL>
     {
 

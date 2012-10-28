@@ -87,7 +87,9 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:MARC.Everest.DataTypes.QSET{T}"/>
     /// <seealso cref="T:MARC.Everest.DataTypes.SET{T}"/>
     [Structure(Name = "SXPR", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(IVL<TS>))]
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class SXPR<T> : SXCM<T>, IListContainer, IList<SXCM<T>>, IEquatable<SXPR<T>>
         where T : IAny
     {

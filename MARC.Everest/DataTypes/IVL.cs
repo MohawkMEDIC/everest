@@ -24,10 +24,15 @@ using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Attributes;
 using MARC.Everest.Interfaces;
 using System.ComponentModel;
-using MARC.Everest.Design;
-using System.Drawing.Design;
 using System.Xml.Serialization;
 using MARC.Everest.Connectors;
+
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#else
+using MARC.Everest.Design;
+using System.Drawing.Design;
+#endif
 
 namespace MARC.Everest.DataTypes
 {
@@ -50,9 +55,13 @@ namespace MARC.Everest.DataTypes
     /// </code>
     /// </example>
     /// <seealso cref="T:MARC.Everest.DataTypes.SXCM{T}"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IVL"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IVL")]
     [Structure(Name = "IVL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("IVL", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
+
     public class IVL<T> : SXCM<T>, IInterval<T>, IEquatable<IVL<T>>, IPqTranslatable<IVL<T>>, IOriginalText
         where T : IAny
     {
@@ -79,18 +88,22 @@ namespace MARC.Everest.DataTypes
         /// Text indicating where this interval was derived
         /// </summary>
         [Description("Text indicating where this interval was derived")]
+        [Property(Name = "originalText", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [Property(Name = "originalText", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#endif
         public ED OriginalText { get; set; }
 
         /// <summary>
         /// This is the low limit. If the low limit is not known a null flavor should be specified
         /// </summary>
         [Description("This is the low limit. If the low limit is not known a null flavor should be specified")]
+        [Property(Name = "low", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [Property(Name = "low", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#endif
         public T Low { get; set; }
 
         /// <summary>
@@ -109,9 +122,11 @@ namespace MARC.Everest.DataTypes
         /// The high limit. If the hign limit is not known, a null flavour should be specified
         /// </summary>
         [Description("The high limit. If the hign limit is not known, a null flavour should be specified")]
+        [Property(Name = "high", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [Property(Name = "high", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#endif
         public T High { get; set; }
         
         /// <summary>
@@ -131,9 +146,11 @@ namespace MARC.Everest.DataTypes
         /// but the actual start and end points are not known. 
         /// </summary>
         [Description("The difference between the high and low bondary. Width is used when the size of the interval is known but the actual start and end points are not known. ")]
+        [Property(Name = "width", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [Property(Name = "width", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#endif
         public PQ Width { get; set; }
 
         /// <summary>

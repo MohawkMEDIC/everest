@@ -78,7 +78,7 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:MARC.Everest.DataType.SXCM&lt;>"/>
     /// <seealso cref="T:MARC.Everest.DataType.PIVL_TS"/>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "GTS")]
-    [Serializable][Structure(Name = "GTS", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "GTS", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("GTS", Namespace = "urn:hl7-org:v3")]
     [TypeMap(Name = "QSI", ArgumentType = "TS")]
     [TypeMap(Name = "QSET", ArgumentType= "TS")]
@@ -87,6 +87,10 @@ namespace MARC.Everest.DataTypes
     [TypeMap(Name = "QSD", ArgumentType = "TS")]
     [TypeMap(Name = "SXPR", ArgumentType = "TS")]
     [TypeMap(Name = "SXCM", ArgumentType = "TS")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
+
     public class GTS : ANY, IEquatable<GTS>, ISetComponent<IPointInTime>
     {
 

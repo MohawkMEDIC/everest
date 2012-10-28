@@ -101,11 +101,14 @@ namespace MARC.Everest.DataTypes
     /// </list>
     /// </para>
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Set"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SET"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Set"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SET")]
     [Structure(Name = "SET", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("SET", Namespace = "urn:hl7-org:v3")]
     [TypeMap(Name = "DSET")]
-    public class SET<T> : COLL<T>, ISet<T>, ISequence<T>, IColl<T> , IEquatable<SET<T>>
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
+    public class SET<T> : COLL<T>, ISet<T>, ISequence<T>, IColl<T>, IEquatable<SET<T>>
     {
 
         /// <summary>

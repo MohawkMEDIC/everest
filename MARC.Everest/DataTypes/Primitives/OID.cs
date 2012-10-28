@@ -16,7 +16,9 @@ namespace MARC.Everest.DataTypes.Primitives
     /// assist developers in the assigning of an OID to an <see cref="MARC.Everest.DataTypes.II"/>
     /// </para>
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class OID 
     {
         /// <summary>

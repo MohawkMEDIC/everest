@@ -44,8 +44,11 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [Serializable][Structure(Name = "UpdateMode", CodeSystem = "2.16.840.1.113883.5.57", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    [Structure(Name = "UpdateMode", CodeSystem = "2.16.840.1.113883.5.57", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
     [XmlType("UpdateMode", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public enum UpdateMode
     {
         /// <summary>

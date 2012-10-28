@@ -26,6 +26,10 @@ using System.Reflection;
 using System.Xml.Serialization;
 using MARC.Everest.Connectors;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
@@ -165,8 +169,11 @@ namespace MARC.Everest.DataTypes
     [FlavorMap(FlavorId = "PN", Implementer = typeof(PN))]
     [FlavorMap(FlavorId = "TN", Implementer = typeof(TN))]
     [FlavorMap(FlavorId = "ON", Implementer = typeof(ON))]
-    [Serializable][Structure(Name = "EN", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "EN", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("EN", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class EN : ANY, IEquatable<EN>
     {
         /// <summary>

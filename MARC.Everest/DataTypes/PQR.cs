@@ -33,9 +33,12 @@ namespace MARC.Everest.DataTypes
     /// the unit (usually in some other coding system other than UCCUM)
     /// </summary>
     /// <seealso cref="T:MARC.Everest.DataTypes.CD"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "PQR"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "PQR"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance")]
     [Structure(Name = "PQR", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("PQR", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class PQR : CV<String>, IRealValue, IEquatable<PQR>
     {
 

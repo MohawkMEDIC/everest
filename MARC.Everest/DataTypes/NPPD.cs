@@ -22,7 +22,9 @@ namespace MARC.Everest.DataTypes
     /// </para>
     /// </remarks>
     [Structure(Name = "NPPD", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class NPPD<T> : SET<UVP<T>>, IEnumerable<UVP<T>>, IColl
         where T: IAny
     {

@@ -30,6 +30,10 @@ using System.ComponentModel;
 using System.Collections;
 using MARC.Everest.Xml;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.Formatters.XML.Datatypes.R1
 {
 
@@ -123,7 +127,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
                     if (formatters.Count > 0) return; // check again once we have a lock
                     Assembly a = typeof(DatatypeFormatter).Assembly;
                     foreach (Type t in a.GetTypes()) // Get all types
-                        if (t.GetInterface("MARC.Everest.Formatters.XML.Datatypes.R1.Formatters.IDatatypeFormatter") != null)
+                        if (t.GetInterface("MARC.Everest.Formatters.XML.Datatypes.R1.Formatters.IDatatypeFormatter", false) != null)
                         {
                             IDatatypeFormatter fmtr = (IDatatypeFormatter)a.CreateInstance(t.FullName);
                             if (!formatters.ContainsKey(fmtr.HandlesType))
@@ -248,24 +252,11 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         /// <summary>
         /// clone an instnace of this object
         /// </summary>
-        public IStructureFormatter Clone()
+        public Object Clone()
         {
             DatatypeFormatter retVal = (DatatypeFormatter)this.MemberwiseClone();
             return retVal;
         }
-        #endregion
-
-        #region ICloneable Members
-
-        /// <summary>
-        /// Clone this object
-        /// </summary>
-        object ICloneable.Clone()
-        {
-            DatatypeFormatter retVal = (DatatypeFormatter)this.MemberwiseClone();
-            return retVal;
-        }
-
         #endregion
 
         #region IXmlStructureFormatter Members
@@ -331,7 +322,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
 
             //if (formatter != null && t != typeof(GTS) && formatter.GenericArguments == null )
             //    formatter.GenericArguments = t.GetGenericArguments();
-            if (t == typeof(GTS) || t.GetInterface(typeof(IEnumerable).FullName) != null && !t.IsAbstract)
+            if (t == typeof(GTS) || t.GetInterface(typeof(IEnumerable).FullName, false) != null && !t.IsAbstract)
                 formatter = GetFormatter(t);
             else
             {
@@ -349,8 +340,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
             DatatypeFormatterParseResult result = new DatatypeFormatterParseResult(this.CompatibilityMode, ResultCode.Accepted, null, this.ValidateConformance);
             formatter.Host = (IXmlStructureFormatter)(this.Host ?? this);
 
+            
+#if WINDOWS_PHONE
+            bool hasErrors = s_unsupportedNames.Exists(o => (t.IsGenericType ? t.GetGenericTypeDefinition() : t).Equals(o));
+#else
+            bool hasErrors = Array.Exists(s_unsupportedNames, o => (t.IsGenericType ? t.GetGenericTypeDefinition() : t).Equals(o));
+#endif
             // Errors
-            if (Array.Exists(s_unsupportedNames, o => (t.IsGenericType ? t.GetGenericTypeDefinition() : t).Equals(o)))
+            if (hasErrors)
             {
                 var structAtt = t.GetCustomAttributes(typeof(StructureAttribute), false);
                 if (structAtt.Length > 0)
@@ -361,7 +358,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
                         r.ToString()
                     ));
             }
-            
             // Structure graph
             result.Structure = formatter.Parse(r, result) as IGraphable;
             

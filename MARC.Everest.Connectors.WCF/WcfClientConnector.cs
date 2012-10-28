@@ -23,7 +23,6 @@ using System.Text;
 using MARC.Everest.Connectors.WCF.Core;
 using MARC.Everest.Connectors.WCF.Serialization;
 using System.Threading;
-using MARC.Everest.Connectors.WCF.Configuration;
 using System.Configuration;
 using System.ServiceModel.Channels;
 using MARC.Everest.Interfaces;
@@ -31,6 +30,12 @@ using System.IO;
 using MARC.Everest.Exceptions;
 using System.ServiceModel;
 using System.ComponentModel;
+
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#else
+using MARC.Everest.Connectors.WCF.Configuration;
+#endif
 
 namespace MARC.Everest.Connectors.WCF
 {
@@ -277,7 +282,33 @@ namespace MARC.Everest.Connectors.WCF
         /// <summary>
         /// WCF Configuration section reference.
         /// </summary>
+#if WINDOWS_PHONE
+        // Backing field for actions
+        private Dictionary<Type, string> m_actions = new Dictionary<Type, string>();
+        /// <summary>
+        /// Gets the actions that is registered for the specified message type
+        /// </summary>
+        public string GetAction(Type messageType)
+        {
+            String retVal = null;
+            if (m_actions.TryGetValue(messageType, out retVal))
+                return retVal;
+            return null;
+        }
+        /// <summary>
+        /// Adds an action to the registered message types, replaces an existing one if 
+        /// it already exists
+        /// </summary>
+        public void AddAction(Type messageType, string wsaAction)
+        {
+            if (this.m_actions.ContainsKey(messageType))
+                this.m_actions[messageType] = wsaAction;
+            else
+                this.m_actions.Add(messageType, wsaAction);
+        }
+#else
         private MARC.Everest.Connectors.WCF.Configuration.ConfigurationSection wcfConfiguration;
+#endif
         /// <summary>
         /// Dictionary of pending Results.
         /// </summary>
@@ -293,10 +324,17 @@ namespace MARC.Everest.Connectors.WCF
         /// </summary>
         private class Worker
         {
+#if WINDOWS_PHONE
+            /// <summary>
+            /// Actions dictionary for the worker class
+            /// </summary>
+            public Dictionary<Type, string> Actions { get; set; }
+#else
             /// <summary>
             /// Gets or sets a reference to the WCF configuration section.
             /// </summary>
             public MARC.Everest.Connectors.WCF.Configuration.ConfigurationSection WcfConfiguration { get; set; }
+#endif
             /// <summary>
             /// Gets or sets the formatter to use.
             /// </summary>
@@ -355,15 +393,19 @@ namespace MARC.Everest.Connectors.WCF
 
                     // Graph the object
                     string soapAction = "";
+#if WINDOWS_PHONE
+                    SendResult.Message = Message.CreateMessage(MessageVersion, Actions != null && Actions.TryGetValue(state.GetType(), out soapAction) ? soapAction : "none", data, surrogate);
+#else
                     SendResult.Message = Message.CreateMessage(MessageVersion, WcfConfiguration != null && WcfConfiguration.Actions.TryGetValue(state.GetType().FullName, out soapAction) ? soapAction : "none", data, surrogate);
+#endif
                     if(CustomHeaders != null)
                         SendResult.Message.Headers.CopyHeadersFrom(CustomHeaders);
                     // Validate
-                    surrogate.WriteObject(new MemoryStream(), data);
-                    SendResult.Code = surrogate.ResultCode;
+                    var graphResult = this.Formatter.Graph(new MemoryStream(), data);
+                    SendResult.Code = graphResult.Code;
 
                     // Did the operation fail?
-                    if (SendResult.Code != ResultCode.Accepted && SendResult.Code != ResultCode.AcceptedNonConformant)
+                    if (graphResult.Code != ResultCode.Accepted && graphResult.Code != ResultCode.AcceptedNonConformant)
                     {
                         if (InvalidMessage != null)
                         {
@@ -424,7 +466,11 @@ namespace MARC.Everest.Connectors.WCF
                     ReceiveResult.Details = surrogate.Details;
                     ReceiveResult.Code = ResultCode.Accepted;
                     ReceiveResult.Headers = ReceiveResult.ResponseHeaders = (state as Message).Headers;
+#if WINDOWS_PHONE
+                    if (ReceiveResult.Details.Find(o => o.Type == ResultDetailType.Error) != null)
+#else
                     if (Array.Find<IResultDetail>(ReceiveResult.Details, o => o.Type == ResultDetailType.Error) != null)
+#endif
                         ReceiveResult.Code = ResultCode.AcceptedNonConformant;
                     else if (ReceiveResult.Structure == null)
                         ReceiveResult.Code = ResultCode.TypeNotAvailable;
@@ -479,7 +525,11 @@ namespace MARC.Everest.Connectors.WCF
             // process the message 
             Worker w = new Worker();
             w.Formatter = (IXmlStructureFormatter)Formatter;
+#if WINDOWS_PHONE
+            w.Actions = this.m_actions;
+#else
             w.WcfConfiguration = wcfConfiguration;
+#endif
             w.WorkReceive(responseMessage);
 
             return w.ReceiveResult;
@@ -500,7 +550,11 @@ namespace MARC.Everest.Connectors.WCF
             // Create the work that will perform the operations
             Worker w = new Worker();
             w.Formatter = (IXmlStructureFormatter)Formatter;
+#if WINDOWS_PHONE
+            w.Actions = this.m_actions;
+#else
             w.WcfConfiguration = wcfConfiguration;
+#endif
             w.MessageVersion = wcfClient.Endpoint.Binding.MessageVersion;
 
             Message data = null;
@@ -570,7 +624,11 @@ namespace MARC.Everest.Connectors.WCF
             // Create the work that will perform the operations
             Worker w = new Worker();
             w.Formatter = (IXmlStructureFormatter)Formatter;
+#if WINDOWS_PHONE
+            w.Actions = this.m_actions;
+#else
             w.WcfConfiguration = wcfConfiguration;
+#endif
             w.MessageVersion = wcfClient.Endpoint.Binding.MessageVersion;
             w.CustomHeaders = headers;
             // Work
@@ -602,7 +660,10 @@ namespace MARC.Everest.Connectors.WCF
             // Create the work that will perform the operations
             Worker w = new Worker();
             w.Formatter = (IXmlStructureFormatter)Formatter;
+
+#if !WINDOWS_PHONE
             w.WcfConfiguration = wcfConfiguration;
+#endif
             w.MessageVersion = wcfClient.Endpoint.Binding.MessageVersion;
 
             // Result
@@ -695,12 +756,16 @@ namespace MARC.Everest.Connectors.WCF
             else
                 wcfClient = new ConnectorServiceClient(endpointName, endpointAddress);
 
+
+#if WINDOWS_PHONE
+            ((ICommunicationObject)wcfClient).Open();
+#else
+            wcfClient.Open();
             // Using the app.config
             wcfConfiguration = ConfigurationManager.GetSection("marc.everest.connectors.wcf") as MARC.Everest.Connectors.WCF.Configuration.ConfigurationSection;
             if (Formatter == null)
                 Formatter = (wcfConfiguration.Formatter as ICloneable).Clone() as IStructureFormatter;
-
-            wcfClient.Open();
+#endif
         }
 
         /// <summary>
@@ -708,8 +773,12 @@ namespace MARC.Everest.Connectors.WCF
         /// </summary>
         public void Close()
         {
+#if WINDOWS_PHONE
+            wcfClient.Abort();
+#else
             wcfConfiguration = null;
             wcfClient.Close();
+#endif
         }
 
         /// <summary>
@@ -759,7 +828,11 @@ namespace MARC.Everest.Connectors.WCF
             try
             {
                 if (this.wcfClient.State != CommunicationState.Closed)
+#if WINDOWS_PHONE
+                    ((ICommunicationObject)wcfClient).Close();
+#else
                     wcfClient.Close();
+#endif
             }
             catch
             {

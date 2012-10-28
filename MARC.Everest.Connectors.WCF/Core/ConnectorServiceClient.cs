@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading;
 
 namespace MARC.Everest.Connectors.WCF.Core
 {
@@ -78,5 +79,61 @@ namespace MARC.Everest.Connectors.WCF.Core
         }
 
         #endregion
+
+#if WINDOWS_PHONE
+
+        /// <summary>
+        /// Create the underlying channel for communications
+        /// </summary>
+        /// <returns></returns>
+        protected override IConnectorContract CreateChannel()
+        {
+            return new ConnectorServiceChannel(this);
+        }
+
+        /// <summary>
+        /// Service channel
+        /// </summary>
+        private class ConnectorServiceChannel : System.ServiceModel.ClientBase<IConnectorContract>.ChannelBase<IConnectorContract>, IConnectorContract
+        {
+            // Lock object
+            private Object m_lockObject = new Object();
+
+            /// <summary>
+            /// Constructs a new instance of the object
+            /// </summary>
+            /// <param name="client"></param>
+            public ConnectorServiceChannel(System.ServiceModel.ClientBase<IConnectorContract> client) : 
+                    base(client) {
+            }
+
+            #region IConnectorContract Members
+
+            public Message ProcessInboundMessage(Message m)
+            {
+                object[] _args = new object[] { m };
+
+                lock (m_lockObject)
+                {
+                    IAsyncResult asyncResult = base.BeginInvoke("ProcessInboundMessage", _args, delegate(IAsyncResult state)
+                    {
+                        lock (m_lockObject)
+                            Monitor.Pulse(m_lockObject);
+                    }, null);
+
+                    Monitor.Wait(m_lockObject);
+
+                    return (Message)base.EndInvoke("ProcessInboundMessage", new object[0], asyncResult); 
+                }
+
+            }
+
+            #endregion
+        }
+
+#endif
+
+
+        
     }
 }

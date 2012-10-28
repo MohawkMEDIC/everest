@@ -10,7 +10,11 @@ namespace MARC.Everest.DataTypes.Interfaces
     /// <summary>
     /// Identifies an interface that the ANY data type implements
     /// </summary>
-    public interface IAny : IImplementsNullFlavor, ISemanticEquatable, ICloneable, IGraphable
+#if WINDOWS_PHONE
+    public interface IAny : IImplementsNullFlavor, ISemanticEquatable, IGraphable
+#else
+    public interface IAny : IImplementsNullFlavor, ISemanticEquatable, IGraphable, ICloneable
+#endif
     {
         /// <summary>
         /// Validates the instance 
@@ -37,5 +41,14 @@ namespace MARC.Everest.DataTypes.Interfaces
         /// </summary>
         /// <returns></returns>
         IEnumerable<IResultDetail> ValidateEx();
+
+#if WINDOWS_PHONE
+        /// <summary>
+        /// Windows phone does not allow use of ICloneable so many methods
+        /// will fail, so we redefine it in IAny for WP compiles
+        /// </summary>
+        object Clone();
+#endif
+
     }
 }

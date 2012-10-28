@@ -97,9 +97,12 @@ namespace MARC.Everest.DataTypes
     /// </para>
     /// </remarks>
     /// <seealso cref="T:MARC.Everest.DataTypes.SET"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SXCM"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SXCM")]
     [Structure(Name = "SXCM", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("SXCM", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public abstract class SXCM<T> : PDV<T>, IEquatable<SXCM<T>>, ISetComponent<T>
         where T : IAny
     {

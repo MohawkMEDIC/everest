@@ -33,7 +33,10 @@ namespace MARC.Everest.Exceptions
     /// fails to interpret the meaning of the Code. The main cause of this exception is a code that does not fall within a bound code system
     /// where no alternative code system is provided.
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class VocabularyException : MessageValidationException
     {
         /// <summary>

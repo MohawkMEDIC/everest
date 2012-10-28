@@ -49,9 +49,12 @@ namespace MARC.Everest.DataTypes
     /// </code>`
     /// </example>
     /// <seealso cref="T:MARC.Everest.DataTypes.PDV{T}"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "UVP"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "UVP")]
     [Structure(Name = "UVP", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(IQuantity))]
     [XmlType("UVP", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class UVP<T> : ANY, IEquatable<UVP<T>>, IProbability
         where T : IAny
     {
@@ -160,6 +163,7 @@ namespace MARC.Everest.DataTypes
             bool result = false;
             if (other != null)
                 result = base.Equals((ANY)other) &&
+                    other.Value == null ? this.Value == null : other.Value.Equals(this.Value) &&
                     other.Probability == this.Probability;
             return result;
         }

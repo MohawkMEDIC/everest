@@ -33,9 +33,11 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// A collection of items that are ordered based on their history
     /// </summary>
-    [Serializable]
     [Structure(Name = "HIST", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("HIST", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class HIST<T> : LIST<T>
     {
 
@@ -98,9 +100,12 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// A collection that contains other discrete (but not necessarily distinct) values in a defined sequence.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "LIST"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "LIST")]
     [Structure(Name = "LIST", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("LIST", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class LIST<T> : COLL<T>, ISequence<T>, IEquatable<LIST<T>>
     {
         /// <summary>
@@ -127,7 +132,7 @@ namespace MARC.Everest.DataTypes
         {
             items = new List<T>();
             // Add items
-            foreach (object o in collection ?? new ArrayList())
+            foreach (object o in collection ?? new List<Object>())
                 if (o is T)
                     items.Add((T)o);
                 else

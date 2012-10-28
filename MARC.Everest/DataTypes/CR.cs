@@ -48,8 +48,11 @@ namespace MARC.Everest.DataTypes
     /// <example>
     /// An example of the use of CR can be seen in the <see cref="T:MARC.Everest.DataTypes.CD{}"/> datatype
     /// </example>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
     [Structure(Name = "CR", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(String))]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class CR<T> : ANY, IConceptQualifier, IEquatable<CR<T>>
     {
 

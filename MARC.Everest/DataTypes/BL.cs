@@ -63,9 +63,11 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [Serializable]
     [Structure(Name = "BL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("BL", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class BL : PDV<Boolean?>, IBooleanValue, IEquatable<BL>, IComparable<BL>
     {
         /// <summary>

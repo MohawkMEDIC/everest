@@ -77,12 +77,21 @@ namespace MARC.Everest.DataTypes.Interfaces
         /// </summary>
         [Enumeration(Value = "B64")]
         B64,
+#if WINDOWS_PHONE
+        /// <summary>
+        /// Data is xml encoded
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "XML")]
+        [Enumeration(Value = "TXT")]
+        XML = TXT
+#else
         /// <summary>
         /// Data is xml encoded
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "XML")]
         [Enumeration(Value = "TXT")]
         XML
+#endif
     }
 
     /// <summary>

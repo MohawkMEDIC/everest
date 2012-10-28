@@ -32,8 +32,13 @@ namespace MARC.Everest.Exceptions
     /// This exception usually occurs due to a formal constraint violation in which the formatter can no longer 
     /// reliably interpret data.
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly")]
+#if WINDOWS_PHONE
+    public class MessageValidationException : Exception
+#else
+    [Serializable]
     public class MessageValidationException : ApplicationException
+#endif
     {
 
         /// <summary>

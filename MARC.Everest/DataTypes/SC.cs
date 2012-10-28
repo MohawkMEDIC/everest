@@ -50,9 +50,11 @@ namespace MARC.Everest.DataTypes
     ///    ]]>
     /// </code>
     /// </example>
-    [Serializable]
     [Structure(Name = "SC", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("SC", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class SC : ST, IEquatable<SC>
     {
 

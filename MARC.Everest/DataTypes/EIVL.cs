@@ -154,7 +154,9 @@ namespace MARC.Everest.DataTypes
     /// </code>        
     /// </example>
     [Structure(Name = "EIVL", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(TS))]
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public sealed class EIVL<T> : SXCM<T>, IEquatable<EIVL<T>>, IOriginalText
         where T : IAny
     {

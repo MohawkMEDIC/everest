@@ -24,10 +24,14 @@ using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Connectors;
 using System.ComponentModel;
-using System.Drawing.Design;
-using MARC.Everest.Design;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Primitives;
+
+// WP7 Imports
+#if !WINDOWS_PHONE
+using System.Drawing.Design;
+using MARC.Everest.Design;
+#endif
 
 namespace MARC.Everest.DataTypes
 {
@@ -149,8 +153,11 @@ namespace MARC.Everest.DataTypes
     /// The coded value data type is an example of a flavor that has been mapped into a full class in order to remain compatible with R1 data types. In R2 the CV data type is actually the CD (Concept Descriptor) data type with a flavor of CV.
     /// CV extends the CS data type by adding display name, coding rationale, and original text.
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
     [Structure(Name = "CV", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType=typeof(String))]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class CV<T> : CS<T>, ICodedValue, IEquatable<CV<T>>
     {
 
@@ -315,9 +322,11 @@ namespace MARC.Everest.DataTypes
         /// Gets or sets the text as seen and or selected by the user who entered the data
         /// </summary>
         [Property(Name = "originalText", ImposeFlavorId = "Text", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+        [XmlElement("originalText")]
+        #if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [XmlElement("originalText")]
+        #endif
         public ED OriginalText { get; set; }
 
         /// <summary>
@@ -333,9 +342,11 @@ namespace MARC.Everest.DataTypes
         /// Gets or sets the reason the code was provided
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), Property(Name = "codingRationale", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+        [XmlElement("codingRationale")]
+        #if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [XmlElement("codingRationale")]
+        #endif
         public SET<CodingRationale> CodingRationale { get; set; }
 
         /// <summary>

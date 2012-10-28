@@ -47,8 +47,11 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [Serializable][Structure(Name = "PN", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "PN", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("PN", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class PN : EN, IEquatable<PN>
     {
         /// <summary>

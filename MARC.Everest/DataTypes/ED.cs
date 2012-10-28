@@ -26,13 +26,18 @@ using System.IO;
 using System.Xml;
 using System.ComponentModel;
 using System.Globalization;
-using MARC.Everest.Design;
-using System.Drawing.Design;
 using System.Security.Cryptography;
 using MARC.Everest.Exceptions;
-using System.IO.Compression;
 using System.Xml.Serialization;
 using MARC.Everest.Connectors;
+
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#else
+using MARC.Everest.Design;
+using System.Drawing.Design;
+using System.IO.Compression;
+#endif
 
 namespace MARC.Everest.DataTypes
 {
@@ -96,8 +101,12 @@ namespace MARC.Everest.DataTypes
     /// you are populating your ED to a string.
     /// </para>
     /// </remarks>
-    [Serializable][Structure(Name = "ED", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "ED", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("ED", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
+
     public class ED : ANY, IEncapsulatedData, IEquatable<ED>
     {
 
@@ -182,6 +191,9 @@ namespace MARC.Everest.DataTypes
         /// <exception cref="T:System.InvalidOperationException">When <paramref name="compressionMethod"/> is not supported by this function</exception>
         public ED Compress(EncapsulatedDataCompression compressionMethod)
         {
+            #if WINDOWS_PHONE
+            throw new NotSupportedException("Compression is not supported by the Windows Phone Version of Everest");
+            #else
             ED retVal = this.Clone() as ED;
             retVal.Compression = compressionMethod;
             retVal.Data = retVal.CompressInternal();
@@ -190,6 +202,7 @@ namespace MARC.Everest.DataTypes
                 retVal.IntegrityCheck = retVal.ComputeIntegrityCheck();
 
             return retVal;
+            #endif
         }
 
         /// <summary>
@@ -204,6 +217,9 @@ namespace MARC.Everest.DataTypes
         /// <exception cref="T:System.InvalidOperationException">When the compression algorithm for the instance is not supported by this method</exception>
         public ED UnCompress()
         {
+            #if WINDOWS_PHONE
+            throw new NotSupportedException("De-Compression is not supported by the Windows Phone Version of Everest");
+            #else
             ED retVal = this.Clone() as ED;
             retVal.Data = retVal.UnCompressInternal();
             retVal.Compression = null;
@@ -212,6 +228,8 @@ namespace MARC.Everest.DataTypes
                 retVal.IntegrityCheck = retVal.ComputeIntegrityCheck();
 
             return retVal;
+            #endif
+
         }
 
         /// <summary>
@@ -386,6 +404,7 @@ namespace MARC.Everest.DataTypes
             }
         }
 
+#if !WINDOWS_PHONE
         /// <summary>
         /// Uncompress the data in this object according to the set parameters
         /// </summary>
@@ -467,6 +486,7 @@ namespace MARC.Everest.DataTypes
             return buffer; // Return output
 
         }
+#endif
 
         /// <summary>
         /// Validate the hash that the data within this ED is valid according to the set
@@ -502,18 +522,22 @@ namespace MARC.Everest.DataTypes
         /// ]]>
         /// </code>
         /// </example>
+        [Property(Name = "thumbnail", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
+#if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]        
-        [Property(Name = "thumbnail", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
+#endif
         public ED Thumbnail { get; set; }
 
         /// <summary>
         /// A telecommunications address such as a url for HTTP or FTP which resolve to precisely the same binary
         /// content that could as well have been provided inline.
         /// </summary>
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
         [Property(Name = "reference", ImposeFlavorId = "URL", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
+#if !WINDOWS_PHONE
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]        
+#endif
         public TEL Reference { get; set; }
 
         /// <summary>
@@ -573,7 +597,10 @@ namespace MARC.Everest.DataTypes
             get
             {
                 if (Representation == EncapsulatedDataRepresentation.TXT && Data != null)
-                    return System.Text.Encoding.UTF8.GetString(Data ?? new byte[0]);
+                {
+                    byte[] data = Data ?? new byte[0];
+                    return System.Text.Encoding.UTF8.GetString(data, 0, data.Length);
+                }
                 else
                     return null;
             }
@@ -612,6 +639,7 @@ namespace MARC.Everest.DataTypes
             }
         }
 
+#if !WINDOWS_PHONE
         /// <summary>
         /// XML Representation of the data
         /// </summary>
@@ -664,6 +692,7 @@ namespace MARC.Everest.DataTypes
                 }
             }
         }
+#endif
 
         #region IEncapsulatedData Members
 
@@ -775,8 +804,10 @@ namespace MARC.Everest.DataTypes
                 return Value;
             else if (Base64Data != null)
                 return Base64Data;
+            #if !WINDOWS_PHONE
             else if (XmlData != null)
                 return XmlData.OuterXml;
+            #endif
             return "";
         }
 

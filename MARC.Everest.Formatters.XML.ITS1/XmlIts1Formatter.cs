@@ -23,9 +23,7 @@ using System.Text;
 using MARC.Everest.Connectors;
 using System.Reflection;
 using MARC.Everest.Attributes;
-using MARC.Everest.Formatters.XML.ITS1.CodeGen;
 using System.CodeDom;
-using Microsoft.CSharp;
 using MARC.Everest.DataTypes;
 using System.CodeDom.Compiler;
 using MARC.Everest.Exceptions;
@@ -34,15 +32,19 @@ using MARC.Everest.Interfaces;
 using MARC.Everest.Xml;
 using System.Reflection.Emit;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.ComponentModel;
 using System.Threading;
 using System.Collections;
-using MARC.Everest.Threading;
 using MARC.Everest.Formatters.XML.ITS1.Reflector;
 using MARC.Everest.DataTypes.Interfaces;
-
-
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#else
+using Microsoft.CSharp;
+using MARC.Everest.Formatters.XML.ITS1.CodeGen;
+using System.Runtime.Serialization.Formatters.Binary;
+using MARC.Everest.Threading;
+#endif
 
 namespace MARC.Everest.Formatters.XML.ITS1
 {
@@ -221,7 +223,11 @@ namespace MARC.Everest.Formatters.XML.ITS1
     /// </code>
     /// </example>
     [Description("Formatter for XML ITS 1.0")]
+#if WINDOWS_PHONE
+    public class XmlIts1Formatter : IXmlStructureFormatter, ICodeDomStructureFormatter, IValidatingStructureFormatter, IDisposable
+#else
     public class XmlIts1Formatter : IXmlStructureFormatter, ICloneable, ICodeDomStructureFormatter, IValidatingStructureFormatter, IDisposable
+#endif
     {
 
         /// <summary>
@@ -232,14 +238,16 @@ namespace MARC.Everest.Formatters.XML.ITS1
         // A dictionary of root name maps that are used by the default Parse method
         private static Dictionary<string, Type> s_rootNameMaps = new Dictionary<string, Type>();
 
+#if !WINDOWS_PHONE
         // A shared wait thread pool for creating datatypes
         private static WaitThreadPool s_threadPool = new WaitThreadPool(1); //WaitThreadPool.Current;
 
-        // A list of generated assemblies
-        private List<Assembly> m_generatedAssemblies = new List<Assembly>(10);
-
         // The code generator formatter
         private CodeGenFormatter m_codeGeneratorFormatter = new CodeGenFormatter();
+#endif
+
+        // A list of generated assemblies
+        private List<Assembly> m_generatedAssemblies = new List<Assembly>(10);
 
         // The reflection formatter
         private ReflectFormatter m_reflectionFormatter = new ReflectFormatter();
@@ -380,12 +388,15 @@ namespace MARC.Everest.Formatters.XML.ITS1
             this.CreateRequiredElements = false;
             GenerateInMemory = true;
             this.GraphAides = new List<IStructureFormatter>(4);
-            this.Settings = Environment.ProcessorCount > 1 ? SettingsType.DefaultMultiprocessor : SettingsType.DefaultUniprocessor;
             //this.Settings = SettingsType.DefaultLegacy;
+            #if WINDOWS_PHONE
+            this.Settings = SettingsType.AllowFlavorImposing | SettingsType.AllowSupplierDomainImposing | SettingsType.AllowUpdateModeImposing;
+            #else
+            this.Settings = Environment.ProcessorCount > 1 ? SettingsType.DefaultMultiprocessor : SettingsType.DefaultUniprocessor;
             #if DEBUG
             System.Diagnostics.Trace.TraceInformation("{0}", this.Settings);
             #endif
-
+            #endif
 	    }
 
         /// <summary>
@@ -552,18 +563,27 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 else if (i == 0) // Try to build the cache for this root name
                 {
                     // Last attempt, try to find a type in the app domain that we can scan!
-                    Assembly asm = Array.Find<Assembly>(AppDomain.CurrentDomain.GetAssemblies(), delegate(Assembly a)
+                    Predicate<Assembly> asmPredicate = delegate(Assembly a)
                     {
                         try
                         {
+#if WINDOWS_PHONE
+                            return a.GetTypes().Exists(typeComparator);
+#else
                             return Array.Find<Type>(a.GetTypes(), typeComparator) != null;
+#endif
                         }
                         catch
                         {
                             return false;
                         }
-                    });
+                    };
 
+#if WINDOWS_PHONE
+                    Assembly asm = AppDomain.CurrentDomain.GetAssemblies().Find(asmPredicate);
+#else
+                    Assembly asm = Array.Find<Assembly>(AppDomain.CurrentDomain.GetAssemblies(), asmPredicate);
+#endif
                     if (asm == null) // Couldn't find assembly... ditch
                         break;
                     else
@@ -827,7 +847,11 @@ namespace MARC.Everest.Formatters.XML.ITS1
             };
 
             // Try to find the value if it doesn't succeed, try to build it and try to find it again
+#if WINDOWS_PHONE
+            Type fType = a.GetTypes().Find(typeComparator);
+#else
             Type fType = Array.Find<Type>(a.GetTypes(), typeComparator);
+#endif
 
             // Found the type
             if (fType != null)
@@ -844,11 +868,15 @@ namespace MARC.Everest.Formatters.XML.ITS1
             return resultContext;
         }
 
+
         /// <summary>
         /// Builds a type cache for the specified list of types
         /// </summary>
         public void BuildCache(Type[] t)
         {
+#if WINDOWS_PHONE
+            throw new NotSupportedException("BuildCache method is not supported in Everest for Windows Phone");
+#else
             ThrowIfDisposed();
 
             // Ensure we block
@@ -878,6 +906,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                     Monitor.Pulse(m_syncRoot);
                 }
             }
+#endif
         }
 
         
@@ -1012,8 +1041,12 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// </example>
         public void AddFormatterAssembly(Assembly asm)
         {
+#if WINDOWS_PHONE
+            throw new NotSupportedException("AddFormatterAssembly is not supported in Everest for Windows Phone");
+#else
             ThrowIfDisposed();
             this.m_codeGeneratorFormatter.AddFormatterAssembly(asm);
+#endif
         }
 
         /// <summary>
@@ -1023,7 +1056,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         {
             // Scan for all types
             foreach (Type t in types)
-                if (t.GetInterface(typeof(IGraphable).FullName) != null)
+                if (t.GetInterface(typeof(IGraphable).FullName, false) != null)
                 {
                     //Formatters.Add(tf); // Add formatter if it exists
                     object[] structureAttribute = t.GetCustomAttributes(typeof(StructureAttribute), true);
@@ -1074,6 +1107,9 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 return aideResult.Structure;
             }
 
+#if WINDOWS_PHONE
+            ITypeFormatter formatter = new ReflectFormatter();
+#else
             ITypeFormatter formatter = m_codeGeneratorFormatter.GetFormatter(useType);
             // Is there a formatter and if there is not a formatter 
             // can we create one?
@@ -1090,6 +1126,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 s_threadPool.WaitOne();
                 formatter = m_codeGeneratorFormatter.GetFormatter(useType);
             }
+#endif
             if (formatter == null)
                 throw new InvalidOperationException(string.Format("Couldn't format '{0}' at {1}, verify formatter settings", useType.FullName, r.ToString()));
 
@@ -1133,6 +1170,9 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 return rv.Code;
             }
 
+#if WINDOWS_PHONE
+            ITypeFormatter formatter = new ReflectFormatter();
+#else
             ITypeFormatter formatter = m_codeGeneratorFormatter.GetFormatter(useType);
             // Is there a formatter and if there is not a formatter 
             // can we create one?
@@ -1149,6 +1189,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 s_threadPool.WaitOne();
                 formatter = m_codeGeneratorFormatter.GetFormatter(useType);
             }
+#endif
             if(formatter == null)
                 throw new InvalidOperationException(string.Format("Couldn't format '{0}' at {1}, verify formatter settings!", useType.FullName, s.ToString()));
 
@@ -1171,8 +1212,10 @@ namespace MARC.Everest.Formatters.XML.ITS1
         private string GetStructureName(Type useType)
         {
             // Already built, so we can forgo checking
+#if !WINDOWS_PHONE
             if (m_codeGeneratorFormatter.GetFormatter(useType) != null)
                 return useType.Name;
+#endif
 
             // Create graph aides
             //CreateGraphAides();

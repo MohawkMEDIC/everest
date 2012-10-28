@@ -40,10 +40,12 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example> 
-    [Serializable]
     [Structure(Name = "CDGroup", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("CDGroup", Namespace = "urn:hl7-org:v3")]
     [Obsolete("Class is no longer used", true)]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class CDGroup : ANY, IEquatable<CDGroup>
     {
 

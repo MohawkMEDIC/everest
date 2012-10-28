@@ -27,6 +27,10 @@ using MARC.Everest.Interfaces;
 using MARC.Everest.Connectors;
 using System.Collections;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
@@ -41,9 +45,13 @@ namespace MARC.Everest.DataTypes
     /// This class behaves like the built in .NET <see cref="T:System.Collections.Generic.List()"/> class
     /// </para>
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BAG"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BAG")]
     [Structure(StructureType = StructureAttribute.StructureAttributeType.DataType, Name = "BAG")]
     [XmlType("BAG", Namespace = "urn:hl7-org:v3")]
+    // Windows Phone Cross Compile
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class BAG<T> : COLL<T>, IBag<T>, IEquatable<BAG<T>>
     {
 
@@ -92,7 +100,7 @@ namespace MARC.Everest.DataTypes
         {
             items = new List<T>();
             // Add items
-            foreach (object o in collection ?? new ArrayList())
+            foreach (object o in collection ?? new List<object>())
                 if (o is T)
                     items.Add((T)o);
                 else

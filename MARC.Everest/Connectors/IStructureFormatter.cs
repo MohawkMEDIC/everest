@@ -38,7 +38,11 @@ namespace MARC.Everest.Connectors
     /// methods like GraphObject and ParseObject
     /// </para>
     /// </remarks>
+#if WINDOWS_PHONE
+    public interface IStructureFormatter : IDisposable
+#else
     public interface IStructureFormatter : ICloneable, IDisposable
+#endif
     {
  
 
@@ -165,5 +169,14 @@ namespace MARC.Everest.Connectors
         /// </example>
         IFormatterParseResult Parse(Stream s);
 
+
+#if WINDOWS_PHONE
+        /// <summary>
+        /// Returns a new shallow copy of the object
+        /// </summary>
+        /// <remarks>Windows Phone doesn't expose ICloneable which is used by several Everest functions
+        /// so this interface redefines it</remarks>
+        object Clone();
+#endif
     }
 }

@@ -33,9 +33,12 @@ namespace MARC.Everest.DataTypes
     /// The primitive data value  (PDV) data type is not explicitly defined by HL7, however it is used here as a 
     /// shortcut to allow many types to share functionality
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1012:AbstractTypesShouldNotHaveConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "PDV"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1012:AbstractTypesShouldNotHaveConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "PDV")]
     [Structure(Name = "PDV", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+#if !WINDOWS_PHONE
+    [Serializable]
     [DefaultProperty("Value")]
+#endif
     public abstract class PDV<T> : ANY, IPrimitiveDataValue<T>, IEquatable<PDV<T>>
     {
 

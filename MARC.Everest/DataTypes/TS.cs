@@ -67,9 +67,12 @@ namespace MARC.Everest.DataTypes
     ///    ]]>
     /// </code>
     /// </example>
-    [Serializable][Structure(Name = "TS", StructureType = StructureAttribute.StructureAttributeType.DataType)]
-    [DefaultProperty("DateValue")]
+    [Structure(Name = "TS", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("TS", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+    [DefaultProperty("DateValue")]
+#endif
     public class TS : QTY<string>, IPointInTime, IEquatable<TS>, IComparable<TS>, IPqTranslatable<TS>, IDistanceable<TS>, IImplicitInterval<TS>, IOrderedDataType<TS>
     {
 

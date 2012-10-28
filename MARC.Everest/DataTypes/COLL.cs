@@ -25,13 +25,19 @@ using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Connectors;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
     /// An abstract type intended to collect common functionality related to collections
     /// </summary>
     [Structure(Name= "COLL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public abstract class COLL<T> : ANY, IColl<T>, IEquatable<COLL<T>>
     {
         #region IColl<T> Members

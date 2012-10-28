@@ -40,9 +40,11 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:SXPR{T}"/>
     /// <seealso cref="T:SXCM{T}"/>
     /// <seealso cref="T:GTS"/>
-    [Serializable]
     [Structure(Name = "QSP", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QSP", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class QSP<T> : QSET<T>, IEnumerable<ISetComponent<T>>, IEquatable<QSP<T>>
         where T : IAny
     {

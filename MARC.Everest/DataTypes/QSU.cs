@@ -42,9 +42,11 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:SXPR{T}"/>
     /// <seealso cref="T:SXCM{T}"/>
     /// <seealso cref="T:GTS"/>
-    [Serializable]
     [Structure(Name = "QSU", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QSU", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class QSU<T> : QSC<T>, ICollection<ISetComponent<T>>, IListContainer
         where T : IAny
     {

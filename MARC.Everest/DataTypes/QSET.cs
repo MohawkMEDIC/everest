@@ -120,9 +120,12 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:SXPR{T}"/>
     /// <seealso cref="T:SXCM{T}"/>
     /// <seealso cref="T:GTS"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "QSET"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "QSET")]
     [Structure(Name = "QSET", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QSET", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public abstract class QSET<T> : ANY, IEquatable<QSET<T>>, ISetComponent<T>, IOriginalText, INormalizable
         where T : IAny
     {

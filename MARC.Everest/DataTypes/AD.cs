@@ -27,6 +27,10 @@ using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Connectors;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif 
+
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
@@ -244,7 +248,11 @@ namespace MARC.Everest.DataTypes
     /// </para>
     /// </remarks>
     [XmlType("AD",Namespace="urn:hl7-org:v3")]
-    [Serializable][Structure(Name = "AD", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "AD", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
+
     public class AD : ANY, IEquatable<AD>
     {
         private static Dictionary<String, AddressPartType> PartTypeMap;

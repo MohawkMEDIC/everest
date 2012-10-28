@@ -41,9 +41,12 @@ namespace MARC.Everest.DataTypes
     /// by developers when writing structures that use the CO data type
     /// </para>
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance")]
     [Structure(Name = "CO", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("CO", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class CO : QTY<Decimal?>, IQuantity, IEquatable<CO>
     {
 

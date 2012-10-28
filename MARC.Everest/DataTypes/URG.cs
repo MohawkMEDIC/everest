@@ -47,9 +47,12 @@ namespace MARC.Everest.DataTypes
     /// <remarks>It is being included for compatibility with R1 datatypes.</remarks>
     /// <seealso cref="T:MARC.Everest.DataTypes.UVP{T}"/>
     /// <seealso cref="T:MARC.Everest.DataTypes.IVL{T}"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "URG"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "URG")]
     [Structure(Name = "URG", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(IQuantity))]
     [XmlType("URG", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class URG<T> : UVP<T>, IInterval<T>, IEquatable<URG<T>>
         where T : IAny
     {

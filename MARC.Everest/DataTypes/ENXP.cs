@@ -188,9 +188,12 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// A character string token representing a part of a name
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ENXP"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ENXP")]
     [Structure(Name = "ENXP", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("ENXP", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class ENXP : ANY, IGraphable, IEquatable<ENXP>
     {
         /// <summary>
@@ -204,9 +207,11 @@ namespace MARC.Everest.DataTypes
         static ENXP()
         {
             // Create keys
-            foreach (EntityNamePartQualifier key in Enum.GetValues(typeof(EntityNamePartQualifier)))
+            foreach (var fi in typeof(EntityNamePartQualifier).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+            {
+                EntityNamePartQualifier key = (EntityNamePartQualifier)fi.GetValue(null);
                 validation.Add(key, new List<EntityNamePartType?>());
-
+            }
             // Add
             validation[EntityNamePartQualifier.LegalStatus].AddRange(new EntityNamePartType?[] { EntityNamePartType.Title });
             validation[EntityNamePartQualifier.Academic].AddRange(new EntityNamePartType?[] { EntityNamePartType.Title });

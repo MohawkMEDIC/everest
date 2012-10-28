@@ -27,7 +27,9 @@ namespace MARC.Everest.Connectors.WCF
     /// <summary>
     /// Result of the WCF Send operation
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class WcfSendResult : ISendResult
     {
         /// <summary>

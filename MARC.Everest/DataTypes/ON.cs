@@ -25,6 +25,10 @@ using System.Xml.Serialization;
 using MARC.Everest.Attributes;
 using MARC.Everest.Connectors;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
@@ -33,9 +37,11 @@ namespace MARC.Everest.DataTypes
     /// <remarks>
     /// Organization Name
     /// </remarks>
-    [Serializable]
     [XmlType("ON", Namespace = "urn:hl7-org:v3")]
     [Structure(Name = "ON", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class ON : EN, IEquatable<ON>
     {
 
