@@ -25,6 +25,7 @@ using MARC.Everest.Attributes;
 using MARC.Everest.Interfaces;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -193,6 +194,28 @@ namespace MARC.Everest.DataTypes
 
             return valid;
 
+        }
+
+        /// <summary>
+        /// Advanced validation with details
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            List<IResultDetail> retVal = new List<IResultDetail>();
+            
+            // Either null Flavor or Value or Uncertain range
+            if ((Value != null) && NullFlavor != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QTY", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if(Value == null && NullFlavor == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QTY", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            if(!((UncertainRange != null) ^ (Uncertainty != null)|| UncertainRange == null && Uncertainty == null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QTY", String.Format(ValidationMessages.MSG_INDEPENDENT_VALUE, "Uncertainty", "UncertainRange"), null));
+            if (!((Uncertainty != null && UncertaintyType != null) || Uncertainty == null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QTY", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Uncertainty", "UncertaintyType"), null));
+            if(!((UncertainRange != null && UncertainRange.Width == null && UncertainRange.Value == null) || UncertainRange == null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QTY", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Width or Value", "UncertainRange"), null));
+            return retVal;
         }
 
         /// <summary>

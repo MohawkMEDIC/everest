@@ -68,15 +68,15 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// The set from which <see cref="P:Subtrahend"/> is subtracted
         /// </summary>
-        [Property(Name = "first", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
-        [XmlElement("first")]
+        [Property(Name = "minuend", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
+        [XmlElement("minuend")]
         public ISetComponent<T> Minuend { get; set; }
 
         /// <summary>
         /// The set by which <see cref="P:Minuend"/> is to be subtracted
         /// </summary>
-        [Property(Name = "second", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
-        [XmlElement("second")]
+        [Property(Name = "subtrahend", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
+        [XmlElement("subtrahend")]
         public ISetComponent<T> Subtrahend { get; set; }
 
         /// <summary>
@@ -170,8 +170,8 @@ namespace MARC.Everest.DataTypes
             QSD<T> retVal = this.Clone() as QSD<T>;
             if (retVal.Minuend is SXPR<T>)
                 retVal.Minuend = (retVal.Minuend as SXPR<T>).TranslateToQSET();
-            if (retVal.Minuend is SXPR<T>)
-                retVal.Minuend = (retVal.Minuend as SXPR<T>).TranslateToQSET();
+            if (retVal.Subtrahend is SXPR<T>)
+                retVal.Subtrahend = (retVal.Subtrahend as SXPR<T>).TranslateToQSET();
             return retVal;
         }
     }

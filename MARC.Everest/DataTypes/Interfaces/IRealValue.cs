@@ -25,7 +25,7 @@ using System.ComponentModel;
 namespace MARC.Everest.DataTypes.Interfaces
 {
     /// <summary>
-    /// Identifies a class as implementing the REAL concept
+    /// Identifies a class which contains a number with floting point precision
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IRealValue : IPrimitiveDataValue

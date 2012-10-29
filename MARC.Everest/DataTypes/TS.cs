@@ -25,6 +25,7 @@ using MARC.Everest.DataTypes.Interfaces;
 using System.Globalization;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -641,6 +642,17 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
+        /// Validation with result details
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var result = base.ValidateEx() as List<IResultDetail>;
+            if (this.DateValue == default(DateTime))
+                result.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TS", "Value must be populated with an valid HL7 Date", null));
+            return result;
+        }
+
+        /// <summary>
         /// Determines if this instance of TS is semantically equal to <paramref name="other"/>
         /// </summary>
         public override BL SemanticEquals(IAny other)
@@ -670,6 +682,14 @@ namespace MARC.Everest.DataTypes
                 !tsOther.UncertainRange.IsNull && !this.UncertainRange.IsNull)
                 return this.UncertainRange.SemanticEquals(tsOther.UncertainRange);
             return false;
+        }
+
+        /// <summary>
+        /// Represent the timestamp ticks as a double
+        /// </summary>
+        public override double ToDouble()
+        {
+            return this.DateValue.Ticks;
         }
 
         #region IOrderedDataType<TS> Members

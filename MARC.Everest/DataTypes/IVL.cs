@@ -272,6 +272,14 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Validates the instance of IVL and returns the detected issues
         /// </summary>
+        /// <remarks>
+        /// An instance of IVL is valid if:
+        /// <list type="bullet">
+        ///     <item><description>When <see cref="P:NullFlavor"/> is specified <see cref="P:Low"/>, <see cref="P:Width"/>, <see cref="P:High"/> and <see cref="P:Value"/> are null, and</description></item>
+        ///     <item><description>When <see cref="P:LowClosed"/> is specified <see cref="P:Low"/> is specified, and </description></item>
+        ///     <item><description>When <see cref="P:HighClosed"/> is specified <see cref="P:High"/> is specified, and </description></item>
+        /// </list>
+        /// </remarks>
         public override IEnumerable<Connectors.IResultDetail> ValidateEx()
         {
             var retVal = base.ValidateEx() as List<IResultDetail>;

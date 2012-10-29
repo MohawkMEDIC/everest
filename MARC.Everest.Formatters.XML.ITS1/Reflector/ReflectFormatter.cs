@@ -223,6 +223,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
         /// <summary>
         /// Get build properties
         /// </summary>
+        /// <remarks>
+        /// This ensures that the properties in the <paramref name="instanceType"/> 
+        /// </remarks>
         private List<PropertyInfo> GetBuildProperties(Type instanceType)
         {
             List<PropertyInfo> buildProperties = new List<PropertyInfo>(10);
