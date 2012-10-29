@@ -210,7 +210,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
             // Generate the structure attribute
             sw.WriteLine("\t[Structure(Name = \"{0}\", CodeSystem = \"{1}\", StructureType = StructureAttribute.StructureAttributeType.{2})]", enu.Name, enu.ContentOid, enu.GetType().Name);
+            sw.WriteLine("#if !WINDOWS_PHONE");
             sw.WriteLine("\t[Serializable]");
+            sw.WriteLine("#endif");
 
             string renderName = enu.Name;
             if (enu.Annotations != null && enu.Annotations.Exists(o => o is RenderAsAnnotation))

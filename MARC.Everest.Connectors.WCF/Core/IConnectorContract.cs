@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading;
 
 namespace MARC.Everest.Connectors.WCF.Core
 {
@@ -36,11 +37,26 @@ namespace MARC.Everest.Connectors.WCF.Core
     [ServiceContract]
     public interface IConnectorContract
     {
+#if WINDOWS_PHONE
+        /// <summary>
+        /// Start the processing of an inbound message
+        /// </summary>
+        [OperationContract(AsyncPattern = true, Action = "*", ReplyAction = "*")]
+        IAsyncResult BeginProcessInboundMessage(Message m, AsyncCallback callback, Object state);
+
+        /// <summary>
+        /// End the processing of an inbound message
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        Message EndProcessInboundMessage(IAsyncResult result);
+#else
         //DOC: Documentation Required
         /// <summary>
         /// 
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "m"), OperationContract(Action = "*", ReplyAction = "*")]
         Message ProcessInboundMessage(Message m);
+#endif
     }
 }

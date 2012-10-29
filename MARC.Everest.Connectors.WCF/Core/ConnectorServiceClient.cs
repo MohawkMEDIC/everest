@@ -66,20 +66,6 @@ namespace MARC.Everest.Connectors.WCF.Core
         public ConnectorServiceClient(Binding binding, EndpointAddress endpointAddress) : base(binding, endpointAddress) { }
         #endregion
 
-        #region IConnectorContract Members
-        //DOC: Let's beef this up a bit here.
-        /// <summary>
-        /// Process the message.
-        /// </summary>
-        /// <param name="m">The message to send.</param>
-        /// <returns>The resulting message.</returns>
-        public System.ServiceModel.Channels.Message ProcessInboundMessage(System.ServiceModel.Channels.Message m)
-        {
-            return base.Channel.ProcessInboundMessage(m);
-        }
-
-        #endregion
-
 #if WINDOWS_PHONE
 
         /// <summary>
@@ -90,6 +76,26 @@ namespace MARC.Everest.Connectors.WCF.Core
         {
             return new ConnectorServiceChannel(this);
         }
+
+        #region IConnectorContract Members
+
+        /// <summary>
+        /// Begin inbound message process
+        /// </summary>
+        public IAsyncResult BeginProcessInboundMessage(Message m, AsyncCallback callback, object state)
+        {
+            return base.Channel.BeginProcessInboundMessage(m, callback, state);
+        }
+
+        /// <summary>
+        /// End inbound process
+        /// </summary>
+        public Message EndProcessInboundMessage(IAsyncResult result)
+        {
+            return base.Channel.EndProcessInboundMessage(result);
+        }
+
+        #endregion
 
         /// <summary>
         /// Service channel
@@ -109,31 +115,48 @@ namespace MARC.Everest.Connectors.WCF.Core
 
             #region IConnectorContract Members
 
-            public Message ProcessInboundMessage(Message m)
+            /// <summary>
+            /// Begin process inbound message
+            /// </summary>
+            public IAsyncResult BeginProcessInboundMessage(Message m, AsyncCallback callback, object state)
             {
                 object[] _args = new object[] { m };
 
-                lock (m_lockObject)
-                {
-                    IAsyncResult asyncResult = base.BeginInvoke("ProcessInboundMessage", _args, delegate(IAsyncResult state)
-                    {
-                        lock (m_lockObject)
-                            Monitor.Pulse(m_lockObject);
-                    }, null);
-
-                    Monitor.Wait(m_lockObject);
-
-                    return (Message)base.EndInvoke("ProcessInboundMessage", new object[0], asyncResult); 
-                }
+                return base.BeginInvoke("", _args, callback, state);
 
             }
 
+            /// <summary>
+            /// End process inbound message
+            /// </summary>
+            public Message EndProcessInboundMessage(IAsyncResult result)
+            {
+                return (Message)base.EndInvoke("ProcessInboundMessage", new object[0], result);
+            }
             #endregion
         }
-
 #endif
-
-
         
+        #region IConnectorContract Members
+        //DOC: Let's beef this up a bit here.
+        /// <summary>
+        /// Process the message.
+        /// </summary>
+        /// <param name="m">The message to send.</param>
+        /// <returns>The resulting message.</returns>
+        public System.ServiceModel.Channels.Message ProcessInboundMessage(System.ServiceModel.Channels.Message m)
+        {
+#if WINDOWS_PHONE
+            IAsyncResult result = base.Channel.BeginProcessInboundMessage(m, null, null);
+            return base.Channel.EndProcessInboundMessage(result);
+#else
+            return base.Channel.ProcessInboundMessage(m);
+#endif
+        }
+
+        #endregion
+
+
+
     }
 }

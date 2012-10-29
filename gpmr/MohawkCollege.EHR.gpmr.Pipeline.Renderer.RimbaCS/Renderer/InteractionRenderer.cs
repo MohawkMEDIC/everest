@@ -179,7 +179,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
             sw.Write(DocumentationRenderer.Render(interaction.Documentation, 1));
             sw.WriteLine("\t[Structure(Name = \"{0}\", StructureType = StructureAttribute.StructureAttributeType.Interaction)]", interaction.Name);
             sw.WriteLine("\t[Interaction(TriggerEvent = \"{0}\")]", interaction.TriggerEvent);
+            sw.WriteLine("\t#if !WINDOWS_PHONE");
             sw.WriteLine("\t[Serializable]");
+            sw.WriteLine("\t#endif");
             sw.WriteLine("\t[System.CodeDom.Compiler.GeneratedCode(\"gpmr\",\"{0}\")]", Assembly.GetEntryAssembly().GetName().Version.ToString());
             foreach (Interaction response in interaction.Responses)
                 sw.WriteLine("\t[InteractionResponse(Name = \"{0}\", TriggerEvent = \"{1}\")]", response.Name, response.TriggerEvent);

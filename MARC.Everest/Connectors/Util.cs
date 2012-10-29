@@ -73,7 +73,7 @@ namespace MARC.Everest.Connectors
             // Scan all types.. populate dictionaries
             foreach(Type t in typeof(II).Assembly.GetTypes())
                 if (t.IsClass && t.GetInterface("MARC.Everest.Interfaces.IGraphable", true) != null)
-                    foreach(MethodInfo mi in  t.GetMethods())
+                    foreach(MethodInfo mi in  t.GetMethods(BindingFlags.Public | BindingFlags.Static))
                     {
                         object[] fa = mi.GetCustomAttributes(typeof(FlavorAttribute), true);
                         lock (s_flavorValidation)

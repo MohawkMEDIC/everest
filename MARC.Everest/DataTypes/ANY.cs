@@ -247,7 +247,7 @@ namespace MARC.Everest.DataTypes
             StringBuilder retVal = new StringBuilder("{");
             retVal.AppendFormat("{0}", this.DataType.Name);
             if (this.IsNull)
-                retVal.AppendFormat(":NULL({1})", Util.ToWireFormat(this.NullFlavor));
+                retVal.AppendFormat(":NULL({0})", Util.ToWireFormat(this.NullFlavor));
             retVal.Append("}");
             return retVal.ToString();
         }

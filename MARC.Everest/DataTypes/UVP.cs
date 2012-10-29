@@ -163,7 +163,7 @@ namespace MARC.Everest.DataTypes
             bool result = false;
             if (other != null)
                 result = base.Equals((ANY)other) &&
-                    other.Value == null ? this.Value == null : other.Value.Equals(this.Value) &&
+                    (other.Value == null ? this.Value == null : other.Value.Equals(this.Value)) &&
                     other.Probability == this.Probability;
             return result;
         }
