@@ -233,7 +233,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
             
             // Create MSPROJ
             Microsoft.Build.BuildEngine.Project project = new Microsoft.Build.BuildEngine.Project(engine),
-                phoneProj = new Project(phoneEngine);
+                phoneProj = new Project(phoneEngine, "4.0");
+
             
             phoneProj.DefaultTargets = project.DefaultTargets = "Build";
             
@@ -253,7 +254,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
             pg.AddNewProperty("AppDesignerFolder", "Properties");
             pg.AddNewProperty("RootNamespace", parameters["rimbapi-target-ns"][0]);
             pg.AddNewProperty("AssemblyName", parameters["rimbapi-target-ns"][0]);
-
+            
             // Release AnyCPU
             pg = project.AddNewPropertyGroup(false);
             pg.Condition = "'$(Configuration)|$(Platform)' == 'Release|AnyCPU'";
