@@ -677,6 +677,8 @@ namespace MARC.Everest.Connectors.WCF
                     lock (asyncResults)
                         asyncResults.Add(result, (sender as Worker).SendResult);
                     (result.AsyncWaitHandle as AutoResetEvent).Set();
+                    if (callback != null)
+                        callback(result);
                 });
 
             ThreadPool.QueueUserWorkItem(w.WorkSend, data);
@@ -786,7 +788,7 @@ namespace MARC.Everest.Connectors.WCF
         /// </summary>
         public bool IsOpen()
         {
-            return wcfClient.State == CommunicationState.Opened;
+            return wcfClient != null && wcfClient.State == CommunicationState.Opened;
         }
 
         #endregion

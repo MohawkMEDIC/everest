@@ -219,7 +219,7 @@ namespace MARC.Everest.Connectors
         {
 
             // Null?
-            if (instanceValue == null)
+            if (instanceValue == null || instanceValue is IAny && (instanceValue as IAny).IsNull)
                 return null;
 
             // Basic formatting 

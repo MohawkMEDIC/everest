@@ -32,6 +32,7 @@ using MARC.Everest.Connectors;
 using System.ComponentModel;
 using Microsoft.Build.BuildEngine;
 using MARC.Everest.Attributes;
+using System.Xml;
 
 namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
 {
@@ -430,14 +431,22 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
                 // Add WP7 Imports
                 phoneProj.AddNewImport(@"$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets", null);
                 phoneProj.AddNewImport(@"$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets", null);
-                phoneProj.Save(Path.Combine(hostContext.Output, ProjectFileName) + ".Phone.csproj");
+
+                // HACK: Add tools version
+                string fileName = Path.Combine(hostContext.Output, ProjectFileName) + ".Phone.csproj";
+                phoneProj.Save(fileName);
+                XmlDocument doc = new XmlDocument();
+                doc.Load(fileName);
+                doc.DocumentElement.Attributes.Append(doc.CreateAttribute("ToolsVersion"));
+                doc.DocumentElement.Attributes["ToolsVersion"].Value = "4.0";
+                doc.Save(fileName);
 
                 if (parameters.ContainsKey("rimbapi-compile") && Convert.ToBoolean(parameters["rimbapi-compile"][0]))
                 {
                     System.Diagnostics.Trace.Write(String.Format("Compiling phone project..."), "information");
 
                     // Compile
-                    if (phoneEngine.BuildProject(phoneProj, "release"))
+                    if (phoneEngine.BuildProjectFile(fileName))
                         System.Diagnostics.Trace.WriteLine("Success!", "information");
                     else
                     {
