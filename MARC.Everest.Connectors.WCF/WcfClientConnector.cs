@@ -246,6 +246,45 @@ namespace MARC.Everest.Connectors.WCF
     /// section MARC.Everest.Connectors.wcf to the web.config file (see example). 
     /// </para>
     /// <para>
+    /// <b>Note:</b> Everest for Windows Phone cannot use the Send method as the Silverlight framework
+    /// does not permit synchronous calls to the WCF client base. 
+    /// </para>
+    /// <code lang="cs" title="Sending on Windows Phone Platform">
+    /// <![CDATA[
+    /// 
+    /// private WcfClientConnector m_connector;
+    /// delegate void MessageReceived(IReceiveResult message);
+    /// 
+    /// public void fooMethod() {
+    ///     // Create
+    ///     this.m_connector = new WcfClientConnector("endpointname=pds");
+    ///     this.m_connector.Formatter = new XmlIts1Formatter();
+    ///     this.m_connector.Formatter.GraphAides.Add(new DatatypeFormatter());
+    ///     this.m_connector.Open();
+    ///     this.m_connector.BeginSend(instance, this.SendCompleted, null);
+    ///     // .. Continue UI ..
+    /// }
+    /// 
+    /// private void SendCompleted(IAsyncResult sendAsyncResult)
+    /// {
+    ///      var sendResult = this.m_clientConnector.EndSend(sendAsyncResult);
+    ///      if(sendResult.Code != ResultCode.Accepted &&
+    ///         sendResult.Code != ResultCode.AcceptedNonConformant)
+    ///             return; // bail out
+    ///      
+    ///     // receive the response message
+    ///     var receiveResult = this.m_connector.Receive(sendResult);
+    ///     
+    ///     Dispatcher.BeginInvoke(new MessageReceived(this.OnMessageReceived), receiveResult);
+    /// }
+    /// 
+    /// private void OnMessageReceived(IReceiveResult result)
+    /// {
+    ///     // Do UI stuff here...
+    /// }
+    /// ]]>
+    /// </code>
+    /// <para>
     /// The WcfClient must use a connector that is an IInputChannel and IOutputChannel.
     /// </para>
     /// </remarks>

@@ -24,9 +24,9 @@ OutputBaseFilename=everest-setup
 #endif
 LicenseFile=..\License.rtf
 AppPublisher=Mohawk College of Applied Arts and Technology
-AppPublisherURL=http://marc.mohawkcollege.ca/hi
-AppSupportURL=http://marc.mohawkcollege.ca/hi
-AppUpdatesURL=http://marc.mohawkcollege.ca/hi
+AppPublisherURL=http://everest.marc-hi.ca
+AppSupportURL=http://everest.marc-hi.ca
+AppUpdatesURL=http://everest.marc-hi.ca
 DefaultDirName={pf}\Mohawk College\Everest
 DefaultGroupName=Mohawk College\Everest
 AllowNoIcons=true
@@ -43,7 +43,7 @@ WizardSmallImageFile=install-logo-small.bmp
 Name: english; MessagesFile: compiler:Default.isl
 
 [Files]
-Source: .\installsupp\netfx\dotNetFx40_Full_setup.exe; DestDir: {tmp} ; Flags: dontcopy
+Source: .\installsupp\netfx\dotNetFx35setup.exe; DestDir: {tmp} ; Flags: dontcopy
 
 ; R02.04.01
 Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020401.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020401.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
@@ -70,35 +70,7 @@ Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.dll; StrongAssemblyName: MAR
 ;Source: .\installsupp\cs\MARC.Everest.Formatters.XML.ITS1.CDAr2.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\cda
 Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\cda
 
-; Phone R020401
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020401.Phone.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\ca
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020401.Phone.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\ca
-; Phone R020402
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020402.Phone.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\ca
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020402.Phone.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\ca
-; Phone R020403
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020403.Phone.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\ca
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020403.Phone.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\ca
-; Phone NE2008
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2008.Phone.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\uv
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2008.Phone.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\uv
-; Phone NE2010
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2010.Phone.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\uv
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2010.Phone.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\uv
-; Phone CDA
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.Phone.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\cda
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.Phone.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone\cda
-
 #ifdef TFSBuild
-; Phone Components
-Source: {#buildpath}\MARC.Everest.Phone.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: {#buildpath}\MARC.Everest.Phone.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: {#buildpath}\MARC.Everest.Phone.Formatters.XML.ITS1.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: {#buildpath}\MARC.Everest.Phone.Formatters.XML.ITS1.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: {#buildpath}\MARC.Everest.Phone.Formatters.XML.Datatypes.R1.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: {#buildpath}\MARC.Everest.Phone.Formatters.XML.Datatypes.R1.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: {#buildpath}\MARC.Everest.Phone.Connectors.WCF.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: {#buildpath}\MARC.Everest.Phone.Connectors.WCF.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
 
 Source: {#buildpath}\MARC.Everest.dll; StrongAssemblyName: MARC.Everest; DestDir: {app}\lib; Flags: ignoreversion; Components: api
 Source: {#buildpath}\MARC.Everest.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api
@@ -137,14 +109,6 @@ Source: {#buildpath}\MARC.Everest.dll; DestDir: {app}; Flags: ignoreversion; Com
 Source: {#buildpath}\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
 
 #else
-Source: ..\MARC.Everest\bin\Release\MARC.Everest.Phone.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: ..\MARC.Everest\bin\Release\MARC.Everest.Phone.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: ..\MARC.Everest.Formatters.XML.ITS1\bin\Release\MARC.Everest.Phone.Formatters.XML.ITS1.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: ..\MARC.Everest.Formatters.XML.ITS1\bin\Release\MARC.Everest.Phone.Formatters.XML.ITS1.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: ..\MARC.Everest.Formatters.XML.Datatypes.R1\bin\Release\MARC.Everest.Phone.Formatters.XML.Datatypes.R1.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: ..\MARC.Everest.Formatters.XML.Datatypes.R1\bin\Release\MARC.Everest.Phone.Formatters.XML.Datatypes.R1.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: ..\MARC.Everest.Connectors.WCF\bin\release\MARC.Everest.Phone.Connectors.WCF.dll; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
-Source: ..\MARC.Everest.Connectors.WCF\bin\release\MARC.Everest.Phone.Connectors.WCF.xml; DestDir: {app}\lib\phone; Flags: ignoreversion; Components: phone
 
 Source: ..\MARC.Everest\bin\Release\MARC.Everest.dll; StrongAssemblyName: MARC.Everest; DestDir: {app}\lib; Flags: ignoreversion; Components: api
 Source: ..\MARC.Everest\bin\Release\MARC.Everest.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api
@@ -199,11 +163,11 @@ Source: ..\MARC.Everest\bin\Release\MARC.Everest.xml; DestDir: {app}; Flags: ign
 Source: .\installsupp\Help\MARC-HI Everest Framework.chm; DestDir: {app}\help; Components: doc
 Source: .\installsupp\isxdl.dll; DestDir: {tmp}
 #ifdef INCLUDE_SRC
-Source: ..\*; DestDir: {app}\src; Flags: ignoreversion recursesubdirs; Excludes: *.vssscc, *.dump, ApiExplorer, Samples,*.vspscc, MARC.Everest.Test*, MARC.Everest.Installer*, MARC.Everest.Connectors.MSMQ, MARC.Everest.VisualStudio.*,TFS Build - Nightly.txt,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, TeamBuildTypes, TestResults, api.sln, *.xsd, *.*mif, Solution Items; Components: src
+Source: ..\*; DestDir: {app}\src; Flags: ignoreversion recursesubdirs; Excludes: *.vssscc, *.dump, *.xap, ApiExplorer, Samples,*.vspscc, MARC.Everest.Test*, MARC.Everest.Installer*, MARC.Everest.Connectors.MSMQ, MARC.Everest.VisualStudio.*,TFS Build - Nightly.txt,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, TeamBuildTypes, TestResults, api.sln, *.xsd, *.*mif, Solution Items; Components: src
 #endif
 #ifdef INCLUDE_SAMPLES
-Source: ..\Samples\*; DestDir: {app}\samples; Flags: ignoreversion recursesubdirs; Excludes: *.vspscc, *.vssscc, *.dump,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, *.suo; Components: doc\samples
-Source: .\installsupp\sample\*; Flags: ignoreversion recursesubdirs; DestDir: {app}; Components: doc\samples;
+Source: ..\Samples\*; DestDir: {app}\samples; Flags: ignoreversion recursesubdirs; Excludes: Phone, *.vspscc, *.vssscc, *.dump,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, *.suo; Components: doc\samples
+Source: .\installsupp\sample\*; Flags: ignoreversion recursesubdirs; DestDir: {app}; Excludes:Phone; Components: doc\samples;
 #endif
 ; TODO: Redo this
 #ifdef TFSBuild
@@ -222,7 +186,6 @@ Source: ..\Solution Items\ICSharpCode.SharpZipLib.dll; DestDir: {tmp}; Component
 [INI]
 FileName: "{app}\everest.version"; Section: "Everest"; Key: "Version"; String: "1.2";
 
-
 [Icons]
 #ifdef INCLUDE_SRC
 Name: {group}\Source\Everest Source; FileName: {app}\src\everest.sln; Components:src
@@ -240,36 +203,36 @@ Name: {group}\MARC-HI Wiki; FileName: http://wiki.marc-hi.ca/
 Name: {group}\{cm:UninstallProgram,Everest}; Filename: {uninstallexe}
 
 [UninstallRun]
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.UV.NE2008.dll"" /nologo /silent" ; Components:api\ne; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.UV.NE2008"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.UV.NE2010.dll"" /nologo /silent" ; Components:api\ne; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.UV.NE2010"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.UV.CDAr2.dll"" /nologo /silent" ; Components:api\cda; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.UV.CDAr2"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.CA.R020401.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.CA.R020401"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.CA.R020402.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.CA.R020402"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.CA.R020403.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.CA.R020403"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.dll"" /nologo /silent" ; Components:api; StatusMsg: "Removing Native Assembly : MARC.Everest"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Formatters.XML.ITS1.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.ITS1"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R1.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R1"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R2.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R2"; Flags:runhidden
-;Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R1.CA.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R1.CA"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Connectors.WCF.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.WCF"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Connectors.File.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.File"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Connectors.Msmq.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.MSMQ"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.UV.NE2008.dll"" /nologo /silent" ; Components:api\ne; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.UV.NE2008"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.UV.NE2010.dll"" /nologo /silent" ; Components:api\ne; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.UV.NE2010"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.UV.CDAr2.dll"" /nologo /silent" ; Components:api\cda; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.UV.CDAr2"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.CA.R020401.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.CA.R020401"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.CA.R020402.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.CA.R020402"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.RMIM.CA.R020403.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Removing Native Assembly : MARC.Everest.RMIM.CA.R020403"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.dll"" /nologo /silent" ; Components:api; StatusMsg: "Removing Native Assembly : MARC.Everest"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Formatters.XML.ITS1.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.ITS1"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R1.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R1"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R2.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R2"; Flags:runhidden
+;Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R1.CA.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R1.CA"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Connectors.WCF.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.WCF"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Connectors.File.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.File"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Connectors.Msmq.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.MSMQ"; Flags:runhidden
 
 [Run]
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.UV.NE2008.dll"" /nologo /silent" ; Components:api\ne; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.UV.NE2008"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.UV.NE2010.dll"" /nologo /silent" ; Components:api\ne; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.UV.NE2010"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.UV.CDAr2.dll"" /nologo /silent" ; Components:api\cda; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.UV.CDAr2"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.CA.R020401.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.CA.R020401"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.CA.R020402.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.CA.R020402"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.CA.R020403.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.CA.R020403"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Formatters.XML.ITS1.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.ITS1"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R1.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R1"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R2.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R2"; Flags:runhidden
-;Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R1.CA.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R1.CA"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Connectors.WCF.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.WCF"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Connectors.File.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.File"; Flags:runhidden
-Filename: "{dotnet40}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Connectors.Msmq.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.MSMQ"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.UV.NE2008.dll"" /nologo /silent" ; Components:api\ne; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.UV.NE2008"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.UV.NE2010.dll"" /nologo /silent" ; Components:api\ne; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.UV.NE2010"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.UV.CDAr2.dll"" /nologo /silent" ; Components:api\cda; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.UV.CDAr2"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.CA.R020401.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.CA.R020401"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.CA.R020402.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.CA.R020402"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.CA.R020403.dll"" /nologo /silent" ; Components:api\ca; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.CA.R020403"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Formatters.XML.ITS1.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.ITS1"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R1.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R1"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R2.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R2"; Flags:runhidden
+;Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Formatters.XML.DataTypes.R1.CA.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Formatters.XML.Datatypes.R1.CA"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Connectors.WCF.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.WCF"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Connectors.File.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.File"; Flags:runhidden
+Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Connectors.Msmq.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.MSMQ"; Flags:runhidden
 Filename: "{app}\Everest Visual Studio Templates.vsi"; WorkingDir: {app}; StatusMsg: "Installing Visual Studio Components"; Components:api\vs; Flags: shellexec waituntilterminated hidewizard
 #ifdef INCLUDE_SAMPLES
 FileName: {app}\index.hta; WorkingDir:{app}; Components:doc\samples; Flags: postinstall shellexec; Description: "Start the 'Getting Started' tool"
@@ -285,13 +248,11 @@ Name: developer\cda; Description: CDA Development Environment
 Name: developer\ne; Description: Universal Edition Development Environment
 Name: developer\necda; Description: Universal/CDA Development Environment
 Name: developer\ca; Description: Canadian Edition Development Environment
-Name: phone; Description: Everest for Windows Phone Libraries
 Name: custom; Description: Custom Install; Flags: iscustom
 
 [Components]
 Name: tools; Description: Tool Files; Types: full tooling
 Name: doc; Description: Documentation; Types: full
-Name: doc\guide; Description: Developers Guide; Types: full developer developer\cda developer\ne developer\necda developer\ca
 #ifdef INCLUDE_SAMPLES
 Name: doc\samples; Description: Samples; Types: full developer developer\cda developer\ne developer\necda developer\ca
 #endif
@@ -305,9 +266,6 @@ Name: api\vs\cda; Description: CDA r2 Documentation; Types: full developer devel
 Name: api\vs\ne; Description: UV Documentation (NE2010/NE2008); Types: full developer developer\ne developer\necda
 Name: api\vs\ca; Description: CA Documentation (R02.04.01-R02.04.03); Types: full developer developer\ca
 Name: phone; Description: Everest for Windows Phone; Types: full phone
-Name: phone\ca; Description: CA Support (R02.04.01-R02.04.03); Types: full phone
-Name: phone\uv; Description: UV Support (NE2008/NE2010); Types: full phone
-Name: phone\cda; Description: CDA r2 Support; Types: full phone
 #ifdef INCLUDE_MIFS
 Name: spec; Description: Pan-Canadian Specifications; Types: full
 #endif
@@ -374,15 +332,14 @@ begin
 
   //end;
   
-  //if (not DirExists(ExpandConstant('{win}\Microsoft.NET\Framework\v3.5'))) then begin
-  if(not DirExists(ExpandConstant('{win}\Microsoft.NET\Framework\v4.0.30319'))) then begin
+  if (not DirExists(ExpandConstant('{win}\Microsoft.NET\Framework\v3.5'))) then begin
     dotNetNeeded := true;
     if (not IsAdminLoggedOn()) then begin
-      MsgBox('GPMR needs the Microsoft .NET Framework 4 to be installed by an Administrator', mbInformation, MB_OK);
+      MsgBox('GPMR needs the Microsoft .NET Framework 3.5 to be installed by an Administrator', mbInformation, MB_OK);
       Result := false;
     end else begin
-      memoDependenciesNeeded := memoDependenciesNeeded + '      .NET Framework 4' #13;
-      dotnetRedistPath := ExpandConstant('{tmp}\dotNetFx40_Full_setup.exe');
+      memoDependenciesNeeded := memoDependenciesNeeded + '      .NET Framework 3.5' #13;
+      dotnetRedistPath := ExpandConstant('{tmp}\dotNetFx35setup.exe');
 
     end;
   end;
@@ -503,15 +460,15 @@ begin
 
     if (Result = '') and (dotNetNeeded = true) then begin
 
-    ExtractTemporaryFile('dotNetFx40_Full_setup.exe')
+    ExtractTemporaryFile('dotNetFx35setup.exe')
     if Exec(ExpandConstant(dotnetRedistPath), '/passive /norestart', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then begin
         // handle success if necessary; ResultCode contains the exit code
         if not (ResultCode = 0) then begin
-          Result := '.NET Framework 4 is Required';
+          Result := '.NET Framework 3.5 is Required';
         end;
       end else begin
         // handle failure if necessary; ResultCode contains the error code
-          Result := '.NET Framework 4 is Required';
+          Result := '.NET Framework 3.5 is Required';
       end;
     end;
 end;
