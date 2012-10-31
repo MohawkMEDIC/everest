@@ -1958,7 +1958,7 @@
         </member>
         <member name="T:MARC.Everest.DataTypes.Interfaces.IRealValue">
             <summary>
-            Identifies a class as implementing the REAL concept
+            Identifies a class which contains a number with floting point precision
             </summary>
         </member>
         <member name="P:MARC.Everest.DataTypes.Interfaces.IRealValue.Precision">
@@ -1998,6 +1998,12 @@
                 <item><term>Either <see cref="M:Uncertainty"/> or <see cref="M:UncertainRange"/> are specified (but not both), or neither is set</term></item>
             </list>
             </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QTY`1.ValidateEx">
+            <summary>
+            Advanced validation with details
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:MARC.Everest.DataTypes.QTY`1.op_Implicit(MARC.Everest.DataTypes.QTY{`0})~`0">
             <summary>
@@ -7863,6 +7869,14 @@
             <summary>
             Validates the instance of IVL and returns the detected issues
             </summary>
+            <remarks>
+            An instance of IVL is valid if:
+            <list type="bullet">
+                <item><description>When <see cref="P:NullFlavor"/> is specified <see cref="P:Low"/>, <see cref="P:Width"/>, <see cref="P:High"/> and <see cref="P:Value"/> are null, and</description></item>
+                <item><description>When <see cref="P:LowClosed"/> is specified <see cref="P:Low"/> is specified, and </description></item>
+                <item><description>When <see cref="P:HighClosed"/> is specified <see cref="P:High"/> is specified, and </description></item>
+            </list>
+            </remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.IVL`1.Equals(MARC.Everest.DataTypes.IVL{`0})">
             <summary>
@@ -11659,9 +11673,19 @@
             </list>
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.TS.ValidateEx">
+            <summary>
+            Validation with result details
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.TS.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
             <summary>
             Determines if this instance of TS is semantically equal to <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.TS.ToDouble">
+            <summary>
+            Represent the timestamp ticks as a double
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.TS.NextValue">
@@ -13359,6 +13383,13 @@
             <summary>
             Compares this REAL instance to another
             </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.REAL.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
+            <summary>
+            Determine semantic equality between this REAL and another REAL instance
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
         </member>
         <member name="P:MARC.Everest.DataTypes.REAL.Precision">
             <summary>

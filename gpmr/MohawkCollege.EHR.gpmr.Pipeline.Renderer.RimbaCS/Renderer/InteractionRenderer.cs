@@ -176,7 +176,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
 
             sw.WriteLine("namespace {0}.Interactions {{\r\n", OwnerNS);
+            var vLength = sw.ToString().Length;
             sw.Write(DocumentationRenderer.Render(interaction.Documentation, 1));
+            if (sw.ToString().Length == vLength)
+                sw.WriteLine("\t/// <summary>{0}</summary>", interaction.BusinessName != null ? interaction.BusinessName.Replace("\n", "").Replace("\r", "") : interaction.Name);
             sw.WriteLine("\t[Structure(Name = \"{0}\", StructureType = StructureAttribute.StructureAttributeType.Interaction)]", interaction.Name);
             sw.WriteLine("\t[Interaction(TriggerEvent = \"{0}\")]", interaction.TriggerEvent);
             sw.WriteLine("\t#if !WINDOWS_PHONE");
