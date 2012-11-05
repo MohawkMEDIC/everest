@@ -12,6 +12,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using MARC.Everest.Formatters.XML.ITS1;
+using System.Reflection;
 
 namespace Samples.Everest.Phone.Connectors.WcfClient.ClientRegistry
 {
@@ -36,6 +38,10 @@ namespace Samples.Everest.Phone.Connectors.WcfClient.ClientRegistry
 
             // Phone-specific initialization
             InitializePhoneApplication();
+
+            // Initialize Everest
+            XmlIts1Formatter its1 = new XmlIts1Formatter();
+            its1.AddFormatterAssembly(Assembly.GetExecutingAssembly());
 
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)

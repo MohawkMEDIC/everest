@@ -33,6 +33,8 @@ namespace MARC.Everest.Test
             formatter.ValidateConformance = false;
             // Testing pregen
             formatter.GraphAides.Add(new MARC.Everest.Formatters.XML.Datatypes.R1.DatatypeFormatter());
+            formatter.BuildCache(Assembly.Load("MARC.Everest.RMIM.CA.R020402").GetTypes());
+
             IGraphable result = TypeCreator.GetCreator(instanceType).CreateInstance() as IGraphable;
 
             Trace.WriteLine("Starting Serialization");

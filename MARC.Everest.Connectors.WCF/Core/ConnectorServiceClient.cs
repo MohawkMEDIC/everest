@@ -42,7 +42,9 @@ namespace MARC.Everest.Connectors.WCF.Core
         /// Creates a new instance of the ConnectorServiceClient using the specified <paramref name="endpointConfigurationName"/>.
         /// </summary>
         /// <param name="endpointConfigurationName">The name of the endpoint configuration.</param>
-        public ConnectorServiceClient(string endpointConfigurationName) : base(endpointConfigurationName) { }
+        public ConnectorServiceClient(string endpointConfigurationName) : base(endpointConfigurationName) {
+            
+        }
         //DOC: Shouldn't this be local address
         /// <summary>
         /// Creates a new instance of the ConnectorServiceClient using the specified <paramref name="endpointConfigurationName"/> and 

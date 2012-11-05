@@ -216,7 +216,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
         /// <summary>
         /// Returns true if the property is traversable
         /// </summary>
-        public bool IsTraversable(PropertyInfo pi)
+        private bool IsTraversable(PropertyInfo pi)
         {
             object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), false);
             if (propertyAttributes.Length > 0)
@@ -228,7 +228,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
         /// <summary>
         /// Returns true if the property is traversable
         /// </summary>
-        public bool IsNonStructural(PropertyInfo pi)
+        private bool IsNonStructural(PropertyInfo pi)
         {
             object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), false);
             if (propertyAttributes.Length > 0)

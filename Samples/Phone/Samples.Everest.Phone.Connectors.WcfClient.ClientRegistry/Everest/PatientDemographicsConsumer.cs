@@ -43,8 +43,14 @@ namespace Samples.Everest.Phone.Connectors.WcfClient.ClientRegistry.Everest
             this.m_dispatcher = callbackDispatcher;
             // Create
             this.m_clientConnector = new WcfClientConnector("endpointname=pds");
-            this.m_clientConnector.Formatter = new XmlIts1Formatter();
-            this.m_clientConnector.Formatter.GraphAides.Add(new DatatypeFormatter());
+            this.m_clientConnector.Formatter = new XmlIts1Formatter()
+            {
+                ValidateConformance = false
+            };
+            this.m_clientConnector.Formatter.GraphAides.Add(new DatatypeFormatter()
+                {
+                    ValidateConformance = false
+                });
 
         }
 

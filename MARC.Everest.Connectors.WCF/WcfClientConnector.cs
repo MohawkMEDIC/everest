@@ -440,6 +440,7 @@ namespace MARC.Everest.Connectors.WCF
                     if(CustomHeaders != null)
                         SendResult.Message.Headers.CopyHeadersFrom(CustomHeaders);
                     // Validate
+#if !WINDOWS_PHONE
                     var graphResult = this.Formatter.Graph(new MemoryStream(), data);
                     SendResult.Code = graphResult.Code;
 
@@ -459,7 +460,7 @@ namespace MARC.Everest.Connectors.WCF
                             SendResult.Message = null;
                         }
                     }
-
+#endif
                 }
                 catch (MessageValidationException e)
                 {

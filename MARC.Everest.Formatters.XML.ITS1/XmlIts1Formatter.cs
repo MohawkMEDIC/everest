@@ -37,11 +37,12 @@ using System.Threading;
 using System.Collections;
 using MARC.Everest.Formatters.XML.ITS1.Reflector;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Formatters.XML.ITS1.CodeGen;
+
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
 #else
 using Microsoft.CSharp;
-using MARC.Everest.Formatters.XML.ITS1.CodeGen;
 using System.Runtime.Serialization.Formatters.Binary;
 using MARC.Everest.Threading;
 #endif
@@ -241,10 +242,10 @@ namespace MARC.Everest.Formatters.XML.ITS1
 #if !WINDOWS_PHONE
         // A shared wait thread pool for creating datatypes
         private static WaitThreadPool s_threadPool = new WaitThreadPool(1); //WaitThreadPool.Current;
-
+#endif
         // The code generator formatter
         private CodeGenFormatter m_codeGeneratorFormatter = new CodeGenFormatter();
-#endif
+
 
         // A list of generated assemblies
         private List<Assembly> m_generatedAssemblies = new List<Assembly>(10);
@@ -1041,18 +1042,14 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// </example>
         public void AddFormatterAssembly(Assembly asm)
         {
-#if WINDOWS_PHONE
-            throw new NotSupportedException("AddFormatterAssembly is not supported in Everest for Windows Phone");
-#else
             ThrowIfDisposed();
             this.m_codeGeneratorFormatter.AddFormatterAssembly(asm);
-#endif
         }
 
         /// <summary>
         /// Adds a cached formatter assembly to this type
         /// </summary>
-        internal void AddRootNameMaps(Type[] types)
+        public void AddRootNameMaps(Type[] types)
         {
             // Scan for all types
             foreach (Type t in types)
@@ -1108,7 +1105,9 @@ namespace MARC.Everest.Formatters.XML.ITS1
             }
 
 #if WINDOWS_PHONE
-            ITypeFormatter formatter = new ReflectFormatter();
+            ITypeFormatter formatter = m_codeGeneratorFormatter.GetFormatter(useType);
+            if (formatter == null)
+                formatter = new ReflectFormatter();
 #else
             ITypeFormatter formatter = m_codeGeneratorFormatter.GetFormatter(useType);
             // Is there a formatter and if there is not a formatter 
@@ -1171,7 +1170,9 @@ namespace MARC.Everest.Formatters.XML.ITS1
             }
 
 #if WINDOWS_PHONE
-            ITypeFormatter formatter = new ReflectFormatter();
+            ITypeFormatter formatter = m_codeGeneratorFormatter.GetFormatter(useType);
+            if (formatter == null)
+                formatter = new ReflectFormatter();
 #else
             ITypeFormatter formatter = m_codeGeneratorFormatter.GetFormatter(useType);
             // Is there a formatter and if there is not a formatter 
