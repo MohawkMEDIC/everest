@@ -130,7 +130,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
             if (!parameters.ContainsKey("rimbapi-api-ns"))
             {
                 parameters.Add("rimbapi-api-ns", new StringCollection());
-                parameters["rimbapi-api-ns"].Add("ca.marc.everest");
+                parameters["rimbapi-api-ns"].Add("org.marc.everest");
             }
             if (!parameters.ContainsKey("rimbapi-target-ns"))
             {
@@ -224,7 +224,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 Directory.CreateDirectory(Path.Combine(Path.Combine(hostContext.Output, "src"), JabaUtils.PackageNameToDirectory(subPkg)));
 
             // Copy JAR to output directory
-            string jarFile = Path.Combine(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "lib"), "ca.marc.everest.jar");
+            string jarFile = Path.Combine(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "lib"), "org.marc.everest.jar");
             if (!File.Exists(jarFile))
                 throw new FileNotFoundException("Cannot find the Everest JAR file");
             File.Copy(jarFile, Path.Combine(Path.Combine(hostContext.Output, "lib"), Path.GetFileName(jarFile)), true);
@@ -593,7 +593,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 foreach (String[] helpData in helpText)
                     helpString.AppendFormat("{0}\t{1}\r\n", helpData[0], helpData[1]);
 
-                helpString.Append("\r\nExample:\r\ngpmr -v 7 -s mif/*.mif -r RIMBA_JA -o .\\output --rimbapi-target-ns=ca.marc.everest.rmim.ca.\r\n");
+                helpString.Append("\r\nExample:\r\ngpmr -v 7 -s mif/*.mif -r RIMBA_JA -o .\\output --rimbapi-target-ns=org.marc.everest.rmim.ca.\r\n");
                 return helpString.ToString();
             
             }

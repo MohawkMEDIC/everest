@@ -141,7 +141,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 bool wontRenderBd = bindingDomain != null ? String.IsNullOrEmpty(EnumerationRenderer.WillRender(bindingDomain)) : true;
 
                 if (bindingDomain == null)
-                    sw.Write(" = ({2})ca.marc.everest.formatters.FormatterUtil.fromWireFormat(\"{1}\", {0}.class);",
+                    sw.Write(" = ({2})org.marc.everest.formatters.FormatterUtil.fromWireFormat(\"{1}\", {0}.class);",
                         backingFieldType.Name, property.FixedValue, dtr);
                 else if (ev == null || wontRenderBd) // Enumeration value is not known in the enumeration, fixed value fails
                 {
@@ -345,8 +345,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             retVal += "\r\n";
             if (alreadyRendered.Count > 1)
             {
-                if (!s_imports.Contains("ca.marc.everest.annotations.Properties"))
-                    s_imports.Add("ca.marc.everest.annotations.Properties");
+                if (!s_imports.Contains("org.marc.everest.annotations.Properties"))
+                    s_imports.Add("org.marc.everest.annotations.Properties");
                 return String.Format("\t@Properties( value = {{\r\n{0}\t }})\r\n", retVal);
             }
             else

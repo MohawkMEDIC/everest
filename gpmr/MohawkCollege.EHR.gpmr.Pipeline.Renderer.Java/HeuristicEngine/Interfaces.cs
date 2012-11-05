@@ -37,7 +37,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
         // Heuristic data
         private static HeuristicData s_heuristicData;
         // API namespace
-        private static string s_apiNs = "ca.marc.everest";
+        private static string s_apiNs = "org.marc.everest";
 
         /// <summary>
         /// Initialize the interfaces
