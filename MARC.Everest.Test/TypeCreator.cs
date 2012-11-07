@@ -187,7 +187,7 @@ namespace MARC.Everest.Test
                 else
                     foreach (var prop in context.PropertyAttributes)
                         if (prop.Type != null && !prop.Type.IsAbstract &&
-                                (context.PropertyAttribute.InteractionOwner == rootContext.OwnerType || context.PropertyAttribute.InteractionOwner == null))
+                                (prop.InteractionOwner == rootContext.OwnerType || prop.InteractionOwner == null))
                         {
                             context.PropertyAttribute = prop;
                             return CreateType(prop.Type, context);

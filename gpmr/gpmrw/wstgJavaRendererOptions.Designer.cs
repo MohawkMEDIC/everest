@@ -37,7 +37,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.numMaxLiterals = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
             this.txtNamespace = new System.Windows.Forms.TextBox();
             this.txtOrganization = new System.Windows.Forms.TextBox();
             this.txtProfileId = new System.Windows.Forms.TextBox();
@@ -47,6 +46,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.fbJDKPath = new System.Windows.Forms.FolderBrowserDialog();
+            this.chkGenJDoc = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxLiterals)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,7 +62,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 41);
+            this.label2.Location = new System.Drawing.Point(38, 45);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 1;
@@ -71,7 +71,7 @@
             // chkGenerateVocab
             // 
             this.chkGenerateVocab.AutoSize = true;
-            this.chkGenerateVocab.Location = new System.Drawing.Point(26, 173);
+            this.chkGenerateVocab.Location = new System.Drawing.Point(25, 147);
             this.chkGenerateVocab.Name = "chkGenerateVocab";
             this.chkGenerateVocab.Size = new System.Drawing.Size(246, 17);
             this.chkGenerateVocab.TabIndex = 3;
@@ -82,7 +82,7 @@
             // chkGenerateRim
             // 
             this.chkGenerateRim.AutoSize = true;
-            this.chkGenerateRim.Location = new System.Drawing.Point(26, 216);
+            this.chkGenerateRim.Location = new System.Drawing.Point(25, 190);
             this.chkGenerateRim.Name = "chkGenerateRim";
             this.chkGenerateRim.Size = new System.Drawing.Size(191, 17);
             this.chkGenerateRim.TabIndex = 5;
@@ -94,7 +94,7 @@
             this.chkCompile.AutoSize = true;
             this.chkCompile.Checked = true;
             this.chkCompile.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCompile.Location = new System.Drawing.Point(26, 239);
+            this.chkCompile.Location = new System.Drawing.Point(25, 213);
             this.chkCompile.Name = "chkCompile";
             this.chkCompile.Size = new System.Drawing.Size(201, 17);
             this.chkCompile.TabIndex = 6;
@@ -105,7 +105,7 @@
             // chkDllOnly
             // 
             this.chkDllOnly.AutoSize = true;
-            this.chkDllOnly.Location = new System.Drawing.Point(26, 262);
+            this.chkDllOnly.Location = new System.Drawing.Point(25, 236);
             this.chkDllOnly.Name = "chkDllOnly";
             this.chkDllOnly.Size = new System.Drawing.Size(291, 17);
             this.chkDllOnly.TabIndex = 7;
@@ -115,7 +115,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 67);
+            this.label3.Location = new System.Drawing.Point(22, 71);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(69, 13);
             this.label3.TabIndex = 6;
@@ -124,11 +124,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(52, 92);
+            this.label4.Location = new System.Drawing.Point(14, 96);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(40, 13);
+            this.label4.Size = new System.Drawing.Size(77, 13);
             this.label4.TabIndex = 7;
-            this.label4.Text = "Realm:";
+            this.label4.Text = "Realm/ Profile:";
             // 
             // numMaxLiterals
             // 
@@ -138,7 +138,7 @@
             0,
             0,
             0});
-            this.numMaxLiterals.Location = new System.Drawing.Point(48, 190);
+            this.numMaxLiterals.Location = new System.Drawing.Point(47, 164);
             this.numMaxLiterals.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -153,19 +153,10 @@
             0,
             0});
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 119);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(89, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Default profile ID:";
-            // 
             // txtNamespace
             // 
             this.txtNamespace.Enabled = false;
-            this.txtNamespace.Location = new System.Drawing.Point(98, 38);
+            this.txtNamespace.Location = new System.Drawing.Point(97, 42);
             this.txtNamespace.Name = "txtNamespace";
             this.txtNamespace.ReadOnly = true;
             this.txtNamespace.Size = new System.Drawing.Size(311, 20);
@@ -174,7 +165,7 @@
             // 
             // txtOrganization
             // 
-            this.txtOrganization.Location = new System.Drawing.Point(98, 64);
+            this.txtOrganization.Location = new System.Drawing.Point(97, 68);
             this.txtOrganization.Name = "txtOrganization";
             this.txtOrganization.Size = new System.Drawing.Size(311, 20);
             this.txtOrganization.TabIndex = 0;
@@ -182,7 +173,7 @@
             // 
             // txtProfileId
             // 
-            this.txtProfileId.Location = new System.Drawing.Point(98, 116);
+            this.txtProfileId.Location = new System.Drawing.Point(248, 93);
             this.txtProfileId.Name = "txtProfileId";
             this.txtProfileId.Size = new System.Drawing.Size(100, 20);
             this.txtProfileId.TabIndex = 2;
@@ -195,9 +186,9 @@
             this.cbxLicense.Items.AddRange(new object[] {
             "UV",
             "CA"});
-            this.cbxLicense.Location = new System.Drawing.Point(98, 89);
+            this.cbxLicense.Location = new System.Drawing.Point(97, 93);
             this.cbxLicense.Name = "cbxLicense";
-            this.cbxLicense.Size = new System.Drawing.Size(174, 21);
+            this.cbxLicense.Size = new System.Drawing.Size(145, 21);
             this.cbxLicense.TabIndex = 1;
             this.cbxLicense.Text = "UV";
             this.cbxLicense.SelectedIndexChanged += new System.EventHandler(this.cbxLicense_SelectedIndexChanged);
@@ -206,7 +197,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(112, 193);
+            this.label6.Location = new System.Drawing.Point(111, 167);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(250, 13);
             this.label6.TabIndex = 14;
@@ -215,7 +206,7 @@
             // txtJDK
             // 
             this.txtJDK.Enabled = false;
-            this.txtJDK.Location = new System.Drawing.Point(98, 142);
+            this.txtJDK.Location = new System.Drawing.Point(97, 121);
             this.txtJDK.Name = "txtJDK";
             this.txtJDK.ReadOnly = true;
             this.txtJDK.Size = new System.Drawing.Size(273, 20);
@@ -225,7 +216,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(37, 145);
+            this.label7.Location = new System.Drawing.Point(36, 124);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(55, 13);
             this.label7.TabIndex = 15;
@@ -233,7 +224,7 @@
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(377, 142);
+            this.btnBrowse.Location = new System.Drawing.Point(376, 121);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(32, 20);
             this.btnBrowse.TabIndex = 17;
@@ -241,10 +232,23 @@
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
+            // chkGenJDoc
+            // 
+            this.chkGenJDoc.AutoSize = true;
+            this.chkGenJDoc.Checked = true;
+            this.chkGenJDoc.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkGenJDoc.Location = new System.Drawing.Point(25, 259);
+            this.chkGenJDoc.Name = "chkGenJDoc";
+            this.chkGenJDoc.Size = new System.Drawing.Size(121, 17);
+            this.chkGenJDoc.TabIndex = 18;
+            this.chkGenJDoc.Text = "Generate JavaDocs";
+            this.chkGenJDoc.UseVisualStyleBackColor = true;
+            // 
             // wstgJavaRenderOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.chkGenJDoc);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.txtJDK);
             this.Controls.Add(this.label7);
@@ -253,7 +257,6 @@
             this.Controls.Add(this.txtProfileId);
             this.Controls.Add(this.txtOrganization);
             this.Controls.Add(this.txtNamespace);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.numMaxLiterals);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -282,7 +285,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown numMaxLiterals;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtNamespace;
         private System.Windows.Forms.TextBox txtOrganization;
         private System.Windows.Forms.TextBox txtProfileId;
@@ -292,5 +294,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.FolderBrowserDialog fbJDKPath;
+        private System.Windows.Forms.CheckBox chkGenJDoc;
     }
 }

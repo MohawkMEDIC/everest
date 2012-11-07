@@ -56,7 +56,7 @@ namespace gpmrw
         {
             string realmPart = Util.MakeFriendly(cbxLicense.Text);
             string profilePart = Util.MakeFriendly(txtProfileId.Text);
-            txtNamespace.Text = String.Format("ca.marc.everest.rmim.{0}.{1}", realmPart.ToLower(), profilePart.ToLower());
+            txtNamespace.Text = String.Format("org.marc.everest.rmim.{0}.{1}", realmPart.ToLower(), profilePart.ToLower());
         }
 
         private void txtProfileId_TextChanged(object sender, EventArgs e)
@@ -119,7 +119,8 @@ namespace gpmrw
                 { "rimbapi-jaronly", (chkCompile.Checked && chkDllOnly.Checked).ToString().ToLower() },
                 { "rimbapi-compile", chkCompile.Checked.ToString().ToLower() },
                 { "rimbapi-org", txtOrganization.Text },
-                { "rimbapi-jdk", txtJDK.Text }
+                { "rimbapi-jdk", txtJDK.Text },
+                { "rimbapi-jdoc", chkGenJDoc.Checked.ToString().ToLower() }
             };
 
             foreach (var kv in parameters)

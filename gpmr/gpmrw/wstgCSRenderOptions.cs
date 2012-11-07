@@ -42,7 +42,7 @@ namespace gpmrw
 
         private void chkGenerateVocab_CheckedChanged(object sender, EventArgs e)
         {
-            numMaxLiterals.Enabled = chkGenerateVocab.Checked;
+            numMaxLiterals.Enabled = chkGenPhone.Checked;
         }
 
         private void cbxLicense_SelectedIndexChanged(object sender, EventArgs e)
@@ -103,7 +103,7 @@ namespace gpmrw
 
             Dictionary<String, String> parameters = new Dictionary<string, string>()
             {
-                { "rimbapi-gen-vocab", chkGenerateVocab.Checked.ToString().ToLower() },
+                { "rimbapi-gen-vocab", chkGenPhone.Checked.ToString().ToLower() },
                 { "rimbapi-gen-rim", chkGenerateRim.Checked.ToString().ToLower() },
                 { "rimbapi-target-ns", txtNamespace.Text },
                 { "rimbapi-profileid", txtProfileId.Text },
@@ -111,7 +111,8 @@ namespace gpmrw
                 { "rimbapi-realm-pref", cbxLicense.Text },
                 { "rimbapi-dllonly", (chkCompile.Checked && chkDllOnly.Checked).ToString().ToLower() },
                 { "rimbapi-compile", chkCompile.Checked.ToString().ToLower() },
-                { "rimbapi-org", txtOrganization.Text }
+                { "rimbapi-org", txtOrganization.Text },
+                { "rimbapi-phone", chkGenPhone.Checked.ToString().ToLower() }
             };
 
             foreach (var kv in parameters)

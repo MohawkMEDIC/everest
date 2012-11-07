@@ -309,7 +309,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                     jdocArgs = new StringBuilder();
 
                 // First, the classpath 
-                compileArgs.AppendFormat("-nowarn -classpath \"{0}\" ", jarFile);
+                compileArgs.AppendFormat("-encoding UTF8 -nowarn -classpath \"{0}\" ", jarFile);
                 // Output
                 compileArgs.AppendFormat("-d \"{0}\" ", Path.Combine(hostContext.Output, "bin"));
                 // Sources
