@@ -189,6 +189,7 @@ namespace MARC.Everest.Test.DataTypes
         public void URGWidthTest()
         {
             URG<II> urg = new URG<II>();
+            urg.Probability = (decimal)1;
             urg.NullFlavor = null;
             urg.Width = 10;
             urg.Low = null;
@@ -212,6 +213,7 @@ namespace MARC.Everest.Test.DataTypes
         {
             URG<II> urg = new URG<II>();
             urg.NullFlavor = null;
+            urg.Probability = (decimal)1;
             urg.Width = "10";
             urg.Low = new II("2.1",null);
             urg.High = new II("1.4",null);
@@ -233,6 +235,7 @@ namespace MARC.Everest.Test.DataTypes
         public void URGLowHighTest()
         {
             URG<II> urg = new URG<II>();
+            urg.Probability = (decimal)1;
             urg.NullFlavor = null;
             urg.Width = null;
             urg.Low = new II("2.2",null); 
@@ -256,6 +259,7 @@ namespace MARC.Everest.Test.DataTypes
         {
             URG<II> urg = new URG<II>();
             urg.NullFlavor = null;
+            urg.Probability = (decimal)1;
             urg.Width = null;
             urg.Low = new II("1.3.6.2", null);
             urg.High = null;
@@ -279,6 +283,7 @@ namespace MARC.Everest.Test.DataTypes
             URG<II> urg = new URG<II>();
             urg.NullFlavor = null;
             urg.Width = null;
+            urg.Probability = (decimal)1;
             urg.Low = null;
             urg.High = new II("1.4", null);
             Assert.IsTrue(urg.Validate());
