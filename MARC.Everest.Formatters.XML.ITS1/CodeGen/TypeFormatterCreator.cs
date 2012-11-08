@@ -644,10 +644,6 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
                 // Add members
                 CodeMemberField fld = new CodeMemberField();
-                fld.Name = "details";
-                fld.Attributes = MemberAttributes.Private;
-                fld.Type = new CodeTypeReference(typeof(IResultDetail[]));
-                ctd.Members.Add(fld);
                 fld = new CodeMemberField();
                 fld.Name = "host";
                 fld.Attributes = MemberAttributes.Private;

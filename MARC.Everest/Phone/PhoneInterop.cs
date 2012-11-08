@@ -58,11 +58,16 @@ namespace MARC.Everest.Phone
         /// <summary>
         /// RemoveAll() method on lists
         /// </summary>
-        public static void RemoveAll<T>(this List<T> me, Predicate<T> match)
+        public static int RemoveAll<T>(this List<T> me, Predicate<T> match)
         {
+            int c = 0;
             for (int i = me.Count - 1; i > 0; i--)
                 if (match(me[i]))
+                {
+                    c++;
                     me.RemoveAt(i);
+                }
+            return c;
         }
         /// <summary>
         /// Implementation of Exists on List
