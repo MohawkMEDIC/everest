@@ -12,7 +12,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{A21E1269-8CDE-43CD-B179-2B6674413080}
 AppName=MARC-HI Everest Framework
-AppVerName=MARC-HI Everest Framework Release Candidate 1 GPMR Only
+AppVerName=MARC-HI Everest Framework 1.1 GPMR Only
 OutputBaseFilename=everest-gpmr
 ;InfoBeforeFile=.\installsupp\release\AUG-CTP-2010.txt
 LicenseFile=..\License.rtf

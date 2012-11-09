@@ -28,7 +28,7 @@ xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns="http://www.w3.org/1999/xhtml
     <meta name="container" content="MARC.Everest.Attributes" />
     <meta name="file" content="65a6d6ae-13eb-9b35-7c81-9b1cc202c179" />
     <meta name="guid" content="65a6d6ae-13eb-9b35-7c81-9b1cc202c179" />
-    <xml><MSHelp:Attr Name="AssetID" Value="N:MARC.Everest.Attributes" /><MSHelp:TOCTitle Title="MARC.Everest.Attributes Namespace" /><MSHelp:RLTitle Title="MARC.Everest.Attributes Namespace ()" /><MSHelp:Keyword Index="A" Term="N:MARC.Everest.Attributes" /><MSHelp:Keyword Index="A" Term="frlrfMARCEverestAttributes" /><MSHelp:Keyword Index="K" Term="MARC.Everest.Attributes namespace" /><MSHelp:Keyword Index="F" Term="MARC.Everest.Attributes" /><MSHelp:Attr Name="HelpPriority" Value="1" /><MSHelp:Attr Name="DevLang" Value="CSharp" /><MSHelp:Attr Name="DevLang" Value="VB" /><MSHelp:Attr Name="Locale" Value="en-us" /><MSHelp:Attr Name="TopicType" Value="kbSyntax" /><MSHelp:Attr Name="TopicType" Value="apiref" /><MSHelp:Attr Name="Abstract" Value="Everest Framework meta-data attributes. Used on RMIM and Data Type structures to dictate how the structure relates to the RMIM/RIM" /></xml>
+    <xml><mshelp:attr Name="AssetID" Value="N:MARC.Everest.Attributes" /><mshelp:toctitle Title="MARC.Everest.Attributes Namespace" /><mshelp:rltitle Title="MARC.Everest.Attributes Namespace ()" /><mshelp:keyword Index="A" Term="N:MARC.Everest.Attributes" /><mshelp:keyword Index="A" Term="frlrfMARCEverestAttributes" /><mshelp:keyword Index="K" Term="MARC.Everest.Attributes namespace" /><mshelp:keyword Index="F" Term="MARC.Everest.Attributes" /><mshelp:attr Name="HelpPriority" Value="1" /><mshelp:attr Name="DevLang" Value="CSharp" /><mshelp:attr Name="DevLang" Value="VB" /><mshelp:attr Name="Locale" Value="en-us" /><mshelp:attr Name="TopicType" Value="kbSyntax" /><mshelp:attr Name="TopicType" Value="apiref" /><mshelp:attr Name="Abstract" Value="Everest Framework meta-data attributes. Used on RMIM and Data Type structures to dictate how the structure relates to the RMIM/RIM" /></xml>
 </head>
 <body>
     <input type="hidden" id="userDataCache" class="userDataStyle" /><input type="hidden"
@@ -81,16 +81,75 @@ xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns="http://www.w3.org/1999/xhtml
                 developers to create fully compliant HL7v3 messages in a loosely coupled architecture.</p>
             <p>
                 The current distribution of Everest includes support for the Canadian Realm R2.04.1,
-                R2.04.2 and v2.04.3 as well as Universal NE2008 and XML ITS 1.0 (with datatypes
-                R1).</p>
+                R2.04.2 and v2.04.3 as well as Universal NE2008, NE2010, CDAr2 and XML ITS 1.0 (with datatypes
+                R1 or R2).</p>
             <p>
                 The MARC-HI Everest Framework integrates with Visual Studio to lower the learning
                 curve related to development of systems with the framework.</p>
             <p>
-                The 1.0 release of Everest has been hardened and contains several changes
+                The 1.2 release of Everest has been hardened and contains several changes
                 to increase the stability and reliability of several Everest components</p>
             <h2>
-                Breaking Changes</h2>
+                Everest 1.2 Changelog</h2>
+            <h4>
+                What&#39;s New</h4>
+            <p>
+                This version of Everest represents a preview release of the 1.2 version of 
+                Everest. This release contains many fixes and enhancements to the Everest 
+                Framework as well as a series of new functionality which will be included in 
+                Everest 1.2.</p>
+            <p>
+                <span style="FONT-WEIGHT: bold">Note:</span> This release will receive no bug 
+                fixes and is not guaranteed to be compatible with Everest 1.2 or Everest 1.0.2</p>
+            <h4>
+                Everest Enhancements</h4>
+            <p>
+                The following enhancements have been made to the Everest framework:</p>
+            <ul>
+                <li>Creation of EverestSerializerFormatAttribute on the WCF connector. This allows 
+                    developers to simply add Everest classes to WCF service contracts and the WCF 
+                    system will use Everest as the serialization engine. </li>
+                <li>Better reporting of exceptions generated from ParseXSIType </li>
+                <li>Allow the casting of System.Uri instances directly to a TEL </li>
+                <li>Introduction of ValidateEx function which reports detailed errors with 
+                    datatypes. These errors are returned in DataTypeValidationResultDetails with 
+                    more detail about the errors that were found in the data type instance </li>
+                <li>Support for the &lt;host&gt; elements in the Web.Config section of WCF services used 
+                    by Everest </li>
+                <li><font face="Consolas" size="2">
+                    <p>
+                    </p>
+                    </font>FormatterUtil program which can be used on a generated RMIM class to 
+                    create formatter helper classes, greatly increasing formatter performance.</li>
+            </ul>
+            <h4>
+                GPMR Enhancements</h4>
+            <p>
+                The following enhancements have been made to the GPMR tool:</p>
+            <ul>
+                <li>Support for compiling Java artifacts (class and JARs) </li>
+                <li>Support for generating JavaDocs directly from GPMR </li>
+                <li>Support for generating Windows Phone and Silverlight 4 assemblies from GPMR</li>
+            </ul>
+            <h4>
+                MARC-HI Everest for Windows Phone &amp; Silverlight</h4>
+            <p>
+                This release includes an installer which will install a preview of the new 
+                Windows Phone and Silverlight assemblies for MARC-HI Everest. These assemblies 
+                will work on Windows Phone 7.1 and Silverlight 4 applications. This platform 
+                supports:</p>
+            <ul>
+                <li>Support for HL7v3 NE2008, NE2010, CDAr2 and Canadian spec R02.04.01, R02.04.02, 
+                    and R02.04.03 </li>
+                <li>Support for the WCF Client Connector, adapted for Silverlight </li>
+                <li>Support for the XML ITS 1.0 and Data Types R1 </li>
+                <li>The core library complete with full datatypes implementations for the Phone and 
+                    Silverlight Platforms</li>
+            </ul>
+            <h2>
+                Everest 1.0 Changelog</h2>
+            <h3>
+                Breaking Changes</h3>
             <ul>
                 <li>The PQ datatype's value property has been changed from the <b>double</b> type to
                     <b>decimal</b> in order to better store decimal numbers</li>
@@ -116,8 +175,8 @@ xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns="http://www.w3.org/1999/xhtml
                     </ul>
                 </li>
             </ul>
-            <h2>
-                Changes / New Features</h2>
+            <h3>
+                Changes / New Features</h3>
             <ul>
                 <li>Changes to the <span style="font-weight: bold">MARC.Everest.DataTypes.TS</span>
                     data-type now make it more accurate in the representation of dates/times within

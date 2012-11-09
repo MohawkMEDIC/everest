@@ -18,7 +18,7 @@ OutputBaseFilename=everest-nightly
 InfoBeforeFile=..\gpmr\Readme-nightly.txt
 #else
 AppName=MARC-HI Everest Framework
-AppVerName=Everest 1.2
+AppVerName=Everest 1.1
 OutputBaseFilename=everest-setup
 ;InfoBeforeFile=.\installsupp\release\AUG-CTP-2010.txt
 #endif
@@ -134,6 +134,10 @@ Source: ..\gpmr\MohawkCollege.EHR.gpmr.Pipeline.Renderer.Deki\Resources\Classic.
 Source: ..\gpmr\bin\Release\xsl\*.xsl*; DestDir: {app}\xsl; Flags: ignoreversion recursesubdirs; Components: tools
 Source: ..\gpmr\bin\Release\xsl\*.txt*; DestDir: {app}\xsl; Flags: ignoreversion recursesubdirs; Components: tools
 Source: ..\gpmr\bin\Release\gpmr.exe.config; DestDir: {app}; Flags: ignoreversion; Components: tools
+Source: ..\gpmr\bin\Release\gpmr.exe.config; DestDir: {app}; Flags: ignoreversion; Components: tools
+Source: ..\FormatterUtil\bin\Release\FormatterUtil.exe; DestDir: {app}; Flags: ignoreversion; Components: tools
+Source: ..\MARC.Everest.Formatters.XML.ITS1\bin\Release\MARC.Everest.Formatters.XML.ITS1.dll; StrongAssemblyName: MARC.Everest.Formatters.XML.ITS1; DestDir: {app}; Flags: ignoreversion; Components: api
+
 Source: ..\gpmr\gpmrw\bin\Release\gpmrw.exe.config; DestDir: {app}; Flags: ignoreversion; Components: tools
 
 Source: ..\gpmr\bin\Release\MohawkCollege.EHR.gpmr.COR.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
@@ -265,7 +269,6 @@ Name: api\vs; Description: Visual Studio Integration; Types: full developer deve
 Name: api\vs\cda; Description: CDA r2 Documentation; Types: full developer developer\cda developer\necda
 Name: api\vs\ne; Description: UV Documentation (NE2010/NE2008); Types: full developer developer\ne developer\necda
 Name: api\vs\ca; Description: CA Documentation (R02.04.01-R02.04.03); Types: full developer developer\ca
-Name: phone; Description: Everest for Windows Phone; Types: full phone
 #ifdef INCLUDE_MIFS
 Name: spec; Description: Pan-Canadian Specifications; Types: full
 #endif
@@ -322,8 +325,8 @@ begin
   jan2010 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413079}_is1');
   // RC1
   rc1 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413080}_is1');
-  // 1.0
-  v1 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-8879-2B6674413081}_is1');
+  // 1.0 {{A21E1269-8CDE-43CD-B179-2B6674413081}
+  v1 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413081}_is1');
   needsUninstall := sept2009 or nov2009 or jan2010 or rc1 or v1;
   // Check for required netfx installation
   //if (not GetUserDefaultLangID() = 'English') then begin
@@ -439,7 +442,7 @@ begin
          end;
 
 		 // 1.0         
- 		needsUninstall := RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-8879-2B6674413081}_is1', 'UninstallString', uninstallString);
+ 		needsUninstall := RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413081}_is1', 'UninstallString', uninstallString);
   		if(needsUninstall) then begin
             // Replace
             while(Pos('"',uninstallString) > 0) do begin

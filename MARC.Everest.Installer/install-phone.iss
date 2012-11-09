@@ -24,7 +24,7 @@ DefaultGroupName=Mohawk College\Everest For Windows Phone
 AllowNoIcons=true
 OutputDir=..\dist
 ;SetupIconFile=D:\work\appicon.ico
-Compression=none
+Compression=lzma
 ;Compression=
 InfoBeforeFile=.\installsupp\release\phone.rtf
 SolidCompression=false
@@ -77,6 +77,8 @@ Source: ..\MARC.Everest.Formatters.XML.Datatypes.R1\bin\Release\MARC.Everest.Pho
 Source: ..\MARC.Everest.Formatters.XML.Datatypes.R1\bin\Release\MARC.Everest.Phone.Formatters.XML.Datatypes.R1.xml; DestDir: {app}; Flags: ignoreversion; 
 Source: ..\MARC.Everest.Connectors.WCF\bin\release\MARC.Everest.Phone.Connectors.WCF.dll; DestDir: {app}; Flags: ignoreversion; 
 Source: ..\MARC.Everest.Connectors.WCF\bin\release\MARC.Everest.Phone.Connectors.WCF.xml; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\FormatterUtil\bin\Release\FormatterUtil.exe; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\MARC.Everest.Formatters.XML.ITS1\bin\Release\MARC.Everest.Formatters.XML.ITS1.dll; StrongAssemblyName: MARC.Everest.Formatters.XML.ITS1; DestDir: {app}; Flags: ignoreversion; Components: api
 
 
 #endif
