@@ -175,7 +175,7 @@ namespace Samples.Everest.Connectors.WcfClient
                 WcfReceiveResult rcvResult = client.EndReceive(iaRcvResult) as WcfReceiveResult;
 
                 // Now lets print out the structure
-                client.Formatter.GraphObject(Console.OpenStandardOutput(), rcvResult.Structure);
+                client.Formatter.Graph(Console.OpenStandardOutput(), rcvResult.Structure);
             }
 
             // Close the connection

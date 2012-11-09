@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <system.serviceModel>
+    <bindings>
+      <customBinding>
+        <binding name="pdqBinding">
+          <httpTransport maxBufferSize="2147483647" maxReceivedMessageSize="2147483647"/>
+          <!--<textMessageEncoding messageVersion="Soap12Addressing10"/>-->
+        </binding>
+      </customBinding>
+    </bindings>
+    <client>
+      <endpoint name="pds" address="http://cr.marc-hi.ca:8080/pdqsupplier" contract="MARC.Everest.Connectors.WCF.Core.IConnectorContract" binding="customBinding" bindingConfiguration="pdqBinding"/>
+    </client>
+  </system.serviceModel>
+</configuration>

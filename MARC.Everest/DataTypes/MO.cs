@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -49,10 +50,13 @@ namespace MARC.Everest.DataTypes
     /// </code>
     /// </example>
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance")]
     [Structure(Name = "MO", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("MO", Namespace = "urn:hl7-org:v3")]
-    public class MO : QTY<Nullable<Decimal>>, IEquatable<MO>, IComparable<MO>
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
+    public class MO : QTY<Nullable<Decimal>>, IEquatable<MO>, IComparable<MO>, IRealValue
     {
 
 
@@ -80,7 +84,7 @@ namespace MARC.Everest.DataTypes
         /// The currency code as defined by ISO 4217
         /// </summary>
         [Property(Name = "currency", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, 
-            Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+            Conformance = PropertyAttribute.AttributeConformanceType.Required)]
         public string Currency { get; set; }
 
         /// <summary>
@@ -118,6 +122,31 @@ namespace MARC.Everest.DataTypes
                 ((Value != null) ^ (UncertainRange != null) || (Value == null && UncertainRange == null));
         }
 
+        /// <summary>
+        /// Validate returning a list of detected issues
+        /// </summary>
+        /// <remarks>
+        /// An instance of MO is considered valid when:
+        /// <list type="number">
+        ///     <item><description>If the <see cref="P:NullFlavor"/> property has a value and the <see cref="P:Value"/> and <see cref="P:UncertainRange"/> properties are not set, and</description></item>
+        ///     <item><description>If the <see cref="P:Value"/> property is set, the <see cref="P:NullFlavor"/> and <see cref="P:UncertainRange"/> properties have no value, and</description></item>
+        ///     <item><description>If the <see cref="P:UncertainRange"/> property is set, the <see cref="P:NullFlavor"/> and <see cref="P:Value"/> properties are not set, and</description></item>
+        ///     <item><description>If the <see cref="P:NullFlavor"/> property is not set then <see cref="P:Currency"/> property is set</description></item>
+        /// </list>
+        /// </remarks>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            List<IResultDetail> retVal = base.ValidateEx() as List<IResultDetail>;
+            if(this.NullFlavor != null && (this.Value != null || this.UncertainRange != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "MO", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.Value == null && this.NullFlavor == null && this.UncertainRange == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "MO", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            if (!((this.Value != null) ^ (this.UncertainRange != null)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "MO", String.Format(ValidationMessages.MSG_INDEPENDENT_VALUE, "UncertainRange", "Value")));
+            if (this.NullFlavor == null && String.IsNullOrEmpty(this.Currency))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "MO", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Value or UncertainRange", "Currency"), null));
+            return retVal;
+        }
         #region IEquatable<MO> Members
 
         /// <summary>
@@ -142,7 +171,8 @@ namespace MARC.Everest.DataTypes
                 return Equals(obj as MO);
             return base.Equals(obj);
         }
-
+        #endregion
+        #region Operators
 
         /// <summary>
         /// Negates <paramref name="a"/>
@@ -290,8 +320,8 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Determines if this instance of MO semantically equals <paramref name="other"/>
         /// </summary>
-        /// <param name="b"></param>
-        /// <returns></returns>
+        /// <remarks>Two non-null non-null flavored instance of MO are considered equal when their currencies and values are equal or if their uncertain range properties
+        /// are non-null, not null-flavored and equal.</remarks>
         public override BL SemanticEquals(IAny other)
         {
             var baseSem = base.SemanticEquals(other);

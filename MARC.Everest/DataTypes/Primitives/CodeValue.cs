@@ -18,7 +18,9 @@ namespace MARC.Everest.DataTypes.Primitives
     /// will return true so long as the supplied value does not fall
     /// within the range of <typeparam name="T"/></para>
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class CodeValue<T> : IEquatable<CodeValue<T>>
         
     {

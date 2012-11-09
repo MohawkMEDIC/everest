@@ -75,7 +75,7 @@ namespace MARC.Everest.Test.DataTypes.Manual
             condition.Code = AcknowledgementCondition.ErrorRejectOnly;
             // Assignment of a non-bound code
             condition.Code = CodeValue<AcknowledgementCondition>.Parse("OTHER CODE");
-            Assert.IsTrue(condition.Validate());
+            Assert.IsFalse(condition.Validate());
         }
 
 

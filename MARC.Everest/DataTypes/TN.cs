@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -37,9 +38,11 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [Serializable]
     [Structure(Name = "TN", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("TN", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class TN : EN, IEquatable<TN>
     {
         /// <summary>
@@ -111,6 +114,33 @@ namespace MARC.Everest.DataTypes
             if (NullFlavor == null)
                 return isBasicValid && (Part.Count == 1 && Part[0].Type == null && Part[0].Qualifier == null);
             return isBasicValid;
+        }
+
+        /// <summary>
+        /// Validate this TN
+        /// </summary>
+        /// <remarks>
+        /// A Trivial name is valid if
+        /// <list type="bullet">
+        ///     <item>Null Flavor is specified XOR,</item>
+        ///     <item>There are exactly one name parts, AND</item>
+        ///     <item>The only name part has no part type</item>
+        /// </list>
+        /// </remarks>
+        /// <returns>A collection of result details explaining validation issues</returns>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+            if (this.NullFlavor == null)
+            {
+                if (Part.Count != 1)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TN", ValidationMessages.MSG_INSUFFICIENT_TERMS, null));
+                if (this.Part[0].Type != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TN" , String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Type", "Part"), null));
+                if(this.Part[0].Qualifier != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TN" , String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Qualifier", "Part"), null));
+            }
+            return retVal;
         }
 
         #region IEquatable<TN> Members

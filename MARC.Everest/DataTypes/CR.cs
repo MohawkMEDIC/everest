@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -47,8 +48,11 @@ namespace MARC.Everest.DataTypes
     /// <example>
     /// An example of the use of CR can be seen in the <see cref="T:MARC.Everest.DataTypes.CD{}"/> datatype
     /// </example>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
     [Structure(Name = "CR", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(String))]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class CR<T> : ANY, IConceptQualifier, IEquatable<CR<T>>
     {
 
@@ -99,6 +103,32 @@ namespace MARC.Everest.DataTypes
         {
             bool isValid = (NullFlavor != null) ^ (Value != null && Name != null && Value.OriginalText == null && Value.Validate() && Name.Validate());
             return isValid;
+        }
+
+        /// <summary>
+        /// Validates this instance of the data type and returns the validations errors
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+
+            if (this.NullFlavor == null)
+            {
+                // Name
+                if (Name == null || !this.Name.Validate())
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", String.Format(ValidationMessages.MSG_PROPERTY_NOT_POPULATED, "Name", "CV"), null));
+                else
+                    retVal.AddRange(this.Name.ValidateEx());
+
+                // Value
+                if (Value == null || !this.Value.Validate())
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", String.Format(ValidationMessages.MSG_PROPERTY_NOT_POPULATED, "Value", "CD"), null));
+                else
+                    retVal.AddRange(this.Value.ValidateEx());
+            }
+            else if (this.Value != null || this.Name != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CR", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            return retVal;
         }
 
         #region IConceptQualifier Members

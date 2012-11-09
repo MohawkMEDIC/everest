@@ -48,9 +48,12 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "REAL"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "REAL")]
     [Structure(Name = "REAL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("REAL", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class REAL : QTY<Nullable<Double>>, IRealValue, IEquatable<REAL>, IComparable<REAL>, IImplicitInterval<REAL>
     {
 
@@ -561,6 +564,11 @@ namespace MARC.Everest.DataTypes
 
         #endregion
 
+        /// <summary>
+        /// Determine semantic equality between this REAL and another REAL instance
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public override BL SemanticEquals(IAny other)
         {
             var baseEq = base.SemanticEquals(other);

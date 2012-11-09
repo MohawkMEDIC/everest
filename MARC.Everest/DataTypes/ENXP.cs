@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.Interfaces;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -170,13 +171,13 @@ namespace MARC.Everest.DataTypes
         [XmlEnum("MID")]
         Middle,
         /// <summary>
-        /// Identifies a middle name
+        /// Identifies a prefix
         /// </summary>
         [Enumeration(Value = "PFX")]
         [XmlEnum("PFX")]
         Prefix,
         /// <summary>
-        /// Identifies a middle name
+        /// Identifies a suffix
         /// </summary>
         [Enumeration(Value = "SFX")]
         [XmlEnum("SFX")]
@@ -187,9 +188,12 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// A character string token representing a part of a name
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ENXP"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ENXP")]
     [Structure(Name = "ENXP", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("ENXP", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class ENXP : ANY, IGraphable, IEquatable<ENXP>
     {
         /// <summary>
@@ -203,9 +207,11 @@ namespace MARC.Everest.DataTypes
         static ENXP()
         {
             // Create keys
-            foreach (EntityNamePartQualifier key in Enum.GetValues(typeof(EntityNamePartQualifier)))
+            foreach (var fi in typeof(EntityNamePartQualifier).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+            {
+                EntityNamePartQualifier key = (EntityNamePartQualifier)fi.GetValue(null);
                 validation.Add(key, new List<EntityNamePartType?>());
-
+            }
             // Add
             validation[EntityNamePartQualifier.LegalStatus].AddRange(new EntityNamePartType?[] { EntityNamePartType.Title });
             validation[EntityNamePartQualifier.Academic].AddRange(new EntityNamePartType?[] { EntityNamePartType.Title });
@@ -248,7 +254,7 @@ namespace MARC.Everest.DataTypes
         /// The value of the ENXP
         /// </summary>
         [Property(Name = "value", PropertyType = PropertyAttribute.AttributeAttributeType.Structural,
-            Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+            Conformance = PropertyAttribute.AttributeConformanceType.Required)]
         [XmlAttribute("value")]
         public string Value { get; set; }
         /// <summary>
@@ -322,7 +328,24 @@ namespace MARC.Everest.DataTypes
                     retVal &= validation[qlfr].Contains(this.Type);
             }
             return retVal;
-            
+        }
+
+        /// <summary>
+        /// Extended validation function which returns the details of the validation
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+
+            if (NullFlavor != null && Value != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (CodeSystem != null && Code == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystem", "Code"), null));
+            foreach (var q in this.Qualifier ?? new SET<CS<EntityNamePartQualifier>>())
+                if (!q.Code.IsAlternateCodeSpecified && !validation[q].Contains(this.Type))
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format("Qualifier must be one of '{0}' when type is populated with '{1}'", Util.ToWireFormat(validation[q]), this.Type), null));
+
+            return retVal;                
         }
 
         #region IEquatable<ENXP> Members

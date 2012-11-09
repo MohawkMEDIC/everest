@@ -337,7 +337,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
                             // HACK: Does the trick though
                             if (alreadySupplemented.Contains(supplementObject))
                             {
-                                Trace.WriteLine(String.Format("Object '{0}' has already been supplemented, skipping", supplementObject.Name), "warn");
+                                if(supplementObject != null)
+                                    Trace.WriteLine(String.Format("Object '{0}' has already been supplemented, skipping", supplementObject.Name), "warn");
                                 continue;
                             }
                             alreadySupplemented.Add(supplementObject);

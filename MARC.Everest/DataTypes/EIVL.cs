@@ -154,7 +154,9 @@ namespace MARC.Everest.DataTypes
     /// </code>        
     /// </example>
     [Structure(Name = "EIVL", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(TS))]
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public sealed class EIVL<T> : SXCM<T>, IEquatable<EIVL<T>>, IOriginalText
         where T : IAny
     {
@@ -219,8 +221,31 @@ namespace MARC.Everest.DataTypes
             string cc = Util.ToWireFormat(this.Event);
             valid &= (cc.StartsWith("IC") || cc.StartsWith("AC") || cc.StartsWith("PC")) ^ (this.Offset != null);
 
-
             return valid;
+        }
+
+        /// <summary>
+        /// Validate the data type and return the validation errors detected
+        /// </summary>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            List<IResultDetail> retVal = new List<IResultDetail>(base.ValidateEx());
+            if (this.Offset != null)
+            {
+                if (this.Offset.Low != null && !this.Offset.Low.IsNull && !PQ.IsValidTimeFlavor(this.Offset.Low))
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EIVL", "When populated, the Offset.Low property must contain a valid PQ.TIME instance", null));
+                if (this.Offset.High != null && !this.Offset.High.IsNull && !PQ.IsValidTimeFlavor(this.Offset.High))
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EIVL", "When populated, the Offset.High property must contain a valid PQ.TIME instance", null));
+                if (this.Offset.Width != null && !this.Offset.Width.IsNull && !PQ.IsValidTimeFlavor(this.Offset.Width))
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EIVL", "When populated, the Offset.Width property must contain a valid PQ.TIME instance", null));
+                if (this.Offset.Value != null && !this.Offset.Value.IsNull && !PQ.IsValidTimeFlavor(this.Offset.Value))
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EIVL", "When populated, the Offset.Value property must contain a valid PQ.TIME instance", null));
+            }
+            string cc = Util.ToWireFormat(this.Event);
+            if (!((cc.StartsWith("IC") || cc.StartsWith("AC") || cc.StartsWith("PC")) ^ (this.Offset != null)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EIVL", "When the Event property implies before, after or between meals the Offset property must not be populated", null));
+            return retVal;
+            
         }
 
         #region IEquatable<EIVL<T>> Members

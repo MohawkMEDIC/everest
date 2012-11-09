@@ -24,9 +24,17 @@ using System.Text;
 using MARC.Everest.Interfaces;
 using MARC.Everest.Attributes;
 using System.ComponentModel;
-using MARC.Everest.Design;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
+
+// Windows Phone Cross-Compile
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#else
+using MARC.Everest.Design;
+#endif
+
 
 namespace MARC.Everest.DataTypes
 {
@@ -38,9 +46,13 @@ namespace MARC.Everest.DataTypes
     /// can be just a data value without belonging to any concrete type. Every concrete type is a specialization
     /// of this general abstract data value type    
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1012:AbstractTypesShouldNotHaveConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ANY"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1012:AbstractTypesShouldNotHaveConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ANY")]
     [Structure(Name = "ANY", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("ANY", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
+
     public class ANY : HXIT, IAny, IImplementsNullFlavor, IEquatable<ANY>, ISemanticEquatable
     {
 
@@ -62,9 +74,12 @@ namespace MARC.Everest.DataTypes
         /// provides a mechanism for determining the implies relationship between null flavors
         /// </para>
         /// </remarks>
+        // Windows Phone Cross-Compile
+        #if !WINDOWS_PHONE
+        [TypeConverter(typeof(DataTypeConverter))]
+        #endif
         [Property(Name = "nullFlavor", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.Structural)]
         [Marker(MarkerType = MarkerAttribute.MarkerAttributeType.NullFlavor)]
-        [TypeConverter(typeof(DataTypeConverter))]
         [XmlElement("nullFlavor")]
         public CS<NullFlavor> NullFlavor { get; set; }
 
@@ -76,8 +91,11 @@ namespace MARC.Everest.DataTypes
         /// </remarks>
         [Property(Name = "updateMode", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.Structural)]
         [Marker(MarkerType = MarkerAttribute.MarkerAttributeType.UpdateMode)]
-        [TypeConverter(typeof(DataTypeConverter))]
         [XmlElement("updateMode")]
+        // Windows Phone Cross Compile
+        #if !WINDOWS_PHONE
+        [TypeConverter(typeof(DataTypeConverter))]
+        #endif
         public CS<UpdateMode> UpdateMode { get; set; }
 
         /// <summary>
@@ -169,7 +187,7 @@ namespace MARC.Everest.DataTypes
         /// <item><description>If <paramref name="other"/> is null the result is null</description></item>
         /// <item><description>If <paramref name="other"/> has a nullFlavor or this instance has a nullflavor the result is a BL with a nullFlavor of NA (as per 7.1.4 of reference guide) or the most common null flavor between the two. </description></item>
         /// <item><description>If <paramref name="other"/>'s data type does not equal this instance's data type the result is false</description></item>
-        /// <item><description>If <paramref name="other"/> and this instance have a null flavor </description></item>
+        /// <item><description>If <paramref name="other"/> and this instance have a null flavor, the common anscestor </description></item>
         /// </list>
         /// </para></remarks>
         public virtual BL SemanticEquals(IAny other)
@@ -177,7 +195,7 @@ namespace MARC.Everest.DataTypes
             if (other == null)
                 return null;
             else if (this.IsNull && other.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, other.NullFlavor) };
+                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, other.NullFlavor) };
             else if (this.IsNull ^ other.IsNull)
                 return new BL() { NullFlavor = DataTypes.NullFlavor.NotApplicable };
             // Have the same type
@@ -201,6 +219,37 @@ namespace MARC.Everest.DataTypes
 
             return base.Validate() &&
                 !isAny || (isAny && isNullFlavorSet && !isNullFlavorINV);
+        }
+
+        /// <summary>
+        /// Validate the ANY meets validaton criteria and identifies the problems
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            bool isAny = this.GetType() == typeof(ANY),
+                isNullFlavorSet = this.NullFlavor != null,
+                isNullFlavorINV = isNullFlavorSet && ((NullFlavor)this.NullFlavor).IsChildConcept(MARC.Everest.DataTypes.NullFlavor.Invalid);
+
+            if (isAny && !isNullFlavorSet)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ANY", "When ANY is used it must carry a NullFlavor", null));
+            else if (isAny && !isNullFlavorINV)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ANY", "NullFlavor must imply 'Invalid'", null));
+            return retVal;
+        }
+
+        /// <summary>
+        /// Represent this ANY instance as a string
+        /// </summary>
+        /// <remarks>Returns the HL7 datatype name and null-flavor if present</remarks>
+        public override string ToString()
+        {
+            StringBuilder retVal = new StringBuilder("{");
+            retVal.AppendFormat("{0}", this.DataType.Name);
+            if (this.IsNull)
+                retVal.AppendFormat(":NULL({0})", Util.ToWireFormat(this.NullFlavor));
+            retVal.Append("}");
+            return retVal.ToString();
         }
     }
 }

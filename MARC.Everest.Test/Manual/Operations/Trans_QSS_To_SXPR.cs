@@ -75,7 +75,7 @@ namespace MARC.Everest.Test.DataTypes.Manual.Operations
         public void QSSToSXPRTest01()
         {
             // A QSS of times that shift by month each year
-            QSS<TS> times = new QSS<TS>
+            QSS<TS> times = QSS<TS>.CreateQSS
             (
                 new TS(new DateTime(2008, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2009, 02, 01), DatePrecision.Month),
@@ -138,7 +138,7 @@ namespace MARC.Everest.Test.DataTypes.Manual.Operations
         public void QSSToSXPRTest04()
         {
             // A QSS of times that shift by month each year
-            QSS<TS> times = new QSS<TS>(
+            QSS<TS> times = QSS<TS>.CreateQSS(
                 new TS(new DateTime(2008, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2009, 02, 01), DatePrecision.Month),
                 new TS(new DateTime(2010, 03, 01), DatePrecision.Month)
@@ -162,7 +162,7 @@ namespace MARC.Everest.Test.DataTypes.Manual.Operations
         public void QSSToSXPRTest05()
         {
             // A QSS of times that shift by month each year
-            QSS<TS> times = new QSS<TS>(
+            QSS<TS> times = QSS<TS>.CreateQSS(
                 new TS(new DateTime(2008, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2009, 02, 01), DatePrecision.Month),
                 new TS(new DateTime(2010, 03, 01), DatePrecision.Month)
@@ -188,7 +188,7 @@ namespace MARC.Everest.Test.DataTypes.Manual.Operations
         public void QSSToSXPRTest06()
         {
             // A QSS of times that shift by month each year
-            QSS<TS> times = new QSS<TS>(
+            QSS<TS> times = QSS<TS>.CreateQSS(
                 new TS(new DateTime(2008, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2009, 02, 01), DatePrecision.Month),
                 new TS(new DateTime(2010, 03, 01), DatePrecision.Month)

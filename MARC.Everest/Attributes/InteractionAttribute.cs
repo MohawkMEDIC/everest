@@ -23,9 +23,8 @@ using System.Text;
 
 namespace MARC.Everest.Attributes
 {
-    //TODO: InteractionAttribute needs a summary.
     /// <summary>
-    /// Summary of InteractionAttribute
+    /// Identifies that a particular structure represents a complete HL7v3 interaction with transport, controlAct and payload wrappers
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes"), AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class InteractionAttribute : NamedAttribute

@@ -29,6 +29,10 @@ using System.Collections;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.DataTypes;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.Formatters.XML.ITS1.Reflector
 {
     /// <summary>
@@ -131,7 +135,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                             if (instance == null || isInstanceNull)
                                 continue;
 
-                            // TODO: Impose flavors or code?
+                            // Impose flavors or code?
                             if (pa.DefaultUpdateMode != MARC.Everest.DataTypes.UpdateMode.Unknown &&
                                 pi.PropertyType.GetProperty("UpdateMode") != null &&
                                 pi.PropertyType.GetProperty("UpdateMode").GetValue(instance, null) == null &&
@@ -153,6 +157,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                             if (instance is IGraphable)
                             {
                                 // Ensure the data is not empty
+                                // TODO: Check whether this causes issues with R2
                                 if (instance is IColl && (instance as IColl).IsEmpty)
                                     continue;
                                 rc = Host.WriteElementUtil(s, pa.Name, instance as IGraphable, pi.PropertyType, context, resultContext);
@@ -170,8 +175,11 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 }
                 else if(propertyAttributes.Length > 1 && instance != null && !isInstanceNull) // Choice
                 {
+#if WINDOWS_PHONE
+                    PropertyAttribute formatAs = propertyAttributes.Find(cpa => (cpa as PropertyAttribute).Type == null) as PropertyAttribute;
+#else
                     PropertyAttribute formatAs = Array.Find(propertyAttributes, cpa => (cpa as PropertyAttribute).Type == null) as PropertyAttribute;
-
+#endif
                     // Search by type and interaction
                     foreach (PropertyAttribute pa in propertyAttributes)
                     {
@@ -194,9 +202,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     // Format
                     if (formatAs == null)
                         resultContext.AddResultDetail(new NotSupportedChoiceResultDetail(ResultDetailType.Error, String.Format("Type {0} is not a valid choice according to available choice elements and won't be formatted", instance.GetType()), s.ToString(), null));
-                    else if (instance.GetType().GetInterface("MARC.Everest.Interfaces.IGraphable") != null) // Non Graphable
+                    else if (instance.GetType().GetInterface("MARC.Everest.Interfaces.IGraphable", false) != null) // Non Graphable
                         rc = Host.WriteElementUtil(s, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.GetType(), context, resultContext);
-                    else if (instance.GetType().GetInterface("System.Collections.IEnumerable") != null) // List
+                    else if (instance.GetType().GetInterface("System.Collections.IEnumerable", false) != null) // List
                         foreach (MARC.Everest.Interfaces.IGraphable ig in instance as IEnumerable) { rc = Host.WriteElementUtil(s, formatAs.Name, ig, instance.GetType(), context, resultContext); }
                     else // Not recognized
                         s.WriteElementString(formatAs.Name, "urn:hl7-org:v3", instance.ToString());
@@ -215,6 +223,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
         /// <summary>
         /// Get build properties
         /// </summary>
+        /// <remarks>
+        /// This ensures that the properties in the <paramref name="instanceType"/> 
+        /// </remarks>
         private List<PropertyInfo> GetBuildProperties(Type instanceType)
         {
             List<PropertyInfo> buildProperties = new List<PropertyInfo>(10);
@@ -222,12 +233,21 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             int nonTrav = 0, nonStruct = 0;
             while (cType != typeof(System.Object))
             {
+
+#if WINDOWS_PHONE
+                PropertyInfo[] typeTypes = cType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                typeTypes = typeTypes.FindAll(o => o.GetCustomAttributes(typeof(PropertyAttribute), false).Length > 0);
+                PropertyInfo[] nonTraversable = typeTypes.FindAll(o => !IsTraversable(o) && !IsNonStructural(o) && !buildProperties.Exists(f => f.Name == o.Name)),
+                    traversable = typeTypes.FindAll(o => IsTraversable(o) && !buildProperties.Exists(f => f.Name == o.Name)),
+               nonStructural = typeTypes.FindAll(o => IsNonStructural(o) && !buildProperties.Exists(f => f.Name == o.Name));
+                //Array.Sort<PropertyInfo>(traversable, (a, b) => (a.GetCustomAttributes(typeof(PropertyAttribute), false)[0] as PropertyAttribute).SortKey.CompareTo((b.GetCustomAttributes(typeof(PropertyAttribute), false)[0] as PropertyAttribute).SortKey));
+#else
                 PropertyInfo[] typeTypes = cType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
                 typeTypes = Array.FindAll(typeTypes, o => o.GetCustomAttributes(typeof(PropertyAttribute), false).Length > 0);
                 PropertyInfo[] nonTraversable = Array.FindAll(typeTypes, o => !IsTraversable(o) && !IsNonStructural(o) && !buildProperties.Exists(f => f.Name == o.Name)),
                     traversable = Array.FindAll(typeTypes, o => IsTraversable(o) && !buildProperties.Exists(f => f.Name == o.Name)),
-                    nonStructural = Array.FindAll(typeTypes, o=> IsNonStructural(o) && !buildProperties.Exists(f=>f.Name == o.Name));
-
+               nonStructural = Array.FindAll(typeTypes, o=> IsNonStructural(o) && !buildProperties.Exists(f=>f.Name == o.Name));
+#endif
                 //Array.Sort<PropertyInfo>(traversable, (a, b) => (a.GetCustomAttributes(typeof(PropertyAttribute), false)[0] as PropertyAttribute).SortKey.CompareTo((b.GetCustomAttributes(typeof(PropertyAttribute), false)[0] as PropertyAttribute).SortKey));
                 nonTrav += nonTraversable.Length + nonStructural.Length;
                 nonStruct += nonTraversable.Length;
@@ -289,8 +309,11 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 // Now we read the attributes and match with the properties
                 do
                 {
+#if WINDOWS_PHONE
+                    PropertyInfo pi = properties.Find(o => o.GetCustomAttributes(true).Count(pa => pa is PropertyAttribute && (pa as PropertyAttribute).Name == s.LocalName) > 0);
+#else
                     PropertyInfo pi = Array.Find<PropertyInfo>(properties, o => o.GetCustomAttributes(true).Count(pa => pa is PropertyAttribute && (pa as PropertyAttribute).Name == s.LocalName) > 0);
-                   
+#endif              
                     // Can we set the PI?
                     if (s.LocalName == "ITSVersion" && s.Value != "XML_1.0")
                         throw new System.InvalidOperationException(System.String.Format("This formatter can only parse XML_1.0 structures. This structure claims to be '{0}'.", s.Value));
@@ -354,11 +377,17 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 else if (s.NodeType == System.Xml.XmlNodeType.Element)
                 {
                     // Get the element choice property
+#if WINDOWS_PHONE
+                    PropertyInfo pi = properties.Find(o => o.GetCustomAttributes(true).Count(a => 
+                        a is PropertyAttribute && 
+                        (a as PropertyAttribute).Name == s.LocalName && 
+                        ((a as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) > 0);
+#else
                     PropertyInfo pi = Array.Find(properties, o => o.GetCustomAttributes(true).Count(a => 
                         a is PropertyAttribute && 
                         (a as PropertyAttribute).Name == s.LocalName && 
                         ((a as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) > 0);
-
+#endif
                     if (pi == null)
                     {
                         resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null));
@@ -366,11 +395,17 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     }
 
                     // Get the property attribute that defined the choice
+#if WINDOWS_PHONE
+                    PropertyAttribute pa = pi.GetCustomAttributes(true).Find(p => 
+                        p is PropertyAttribute && 
+                        (p as PropertyAttribute).Name == s.LocalName && 
+                        ((p as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) as PropertyAttribute;
+#else
                     PropertyAttribute pa = Array.Find(pi.GetCustomAttributes(true), p => 
                         p is PropertyAttribute && 
                         (p as PropertyAttribute).Name == s.LocalName && 
                         ((p as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) as PropertyAttribute;
-
+#endif
                     // Can we set the PI?
                     if (pi == null || !pi.CanWrite) continue;
 
@@ -382,8 +417,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, pi.Name, "urn:hl7-org:v3", s.ToString(), null));
                     // Simple deserialization if PA type has IGraphable or PI type has IGraphable and PA type not specified
                     else if (pi.GetSetMethod() != null &&
-                        (pa.Type != null && pa.Type.GetInterface(typeof(IGraphable).FullName) != null) ||
-                        (pa.Type == null && pi.PropertyType.GetInterface(typeof(IGraphable).FullName) != null))
+                        (pa.Type != null && pa.Type.GetInterface(typeof(IGraphable).FullName, false) != null) ||
+                        (pa.Type == null && pi.PropertyType.GetInterface(typeof(IGraphable).FullName, false) != null))
                     {
                         object tempFormat = Host.ParseObject(s, pa.Type ?? pi.PropertyType, currentInteractionType, resultContext);
                         if (!String.IsNullOrEmpty(pa.FixedValue) && !pa.FixedValue.Equals(Util.ToWireFormat(tempFormat)) && pa.PropertyType != PropertyAttribute.AttributeAttributeType.Traversable)

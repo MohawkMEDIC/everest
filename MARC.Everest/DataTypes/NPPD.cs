@@ -22,8 +22,11 @@ namespace MARC.Everest.DataTypes
     /// </para>
     /// </remarks>
     [Structure(Name = "NPPD", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class NPPD<T> : SET<UVP<T>>, IEnumerable<UVP<T>>, IColl
+        where T: IAny
     {
 
         /// <summary>
@@ -83,7 +86,7 @@ namespace MARC.Everest.DataTypes
             if (other == null)
                 return null;
             else if (this.IsNull && other.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, other.NullFlavor) };
+                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, other.NullFlavor) };
             else if (this.IsNull ^ other.IsNull)
                 return new BL() { NullFlavor = DataTypes.NullFlavor.NotApplicable };
             else if (!other.GetType().IsGenericType ||

@@ -24,12 +24,15 @@ using System.Reflection;
 using MARC.Everest.Attributes;
 using MARC.Everest.Connectors;
 using System.CodeDom;
-using MARC.Everest.Threading;
 using System.Threading;
-using Microsoft.CSharp;
 using MARC.Everest.DataTypes;
 using System.CodeDom.Compiler;
 using System.Diagnostics;
+
+#if !WINDOWS_PHONE
+using Microsoft.CSharp;
+using MARC.Everest.Threading;
+#endif
 
 namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 {
@@ -62,6 +65,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             return ctor.Invoke(null) as ITypeFormatter;
         }
 
+#if !WINDOWS_PHONE
         /// <summary>
         /// Get unique types that <paramref name="rmimTypes"/> references
         /// </summary>
@@ -243,7 +247,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             CompilerParameters compilerParms = new CompilerParameters();
             compilerParms.GenerateInMemory = !generateDeep;
             compilerParms.WarningLevel = 4;
-            compilerParms.TempFiles.KeepFiles = false;
+            compilerParms.TempFiles.KeepFiles = !generateDeep;
 
 
             // Compile code dom
@@ -262,7 +266,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                 return a;
             }
         }
-
+#endif
         /// <summary>
         /// Add a formatter assembly to the dict formatters
         /// </summary>
@@ -270,7 +274,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
         {
             // Scan for all types
             foreach (Type t in assembly.GetTypes())
-                if (t.GetInterface("MARC.Everest.Formatters.XML.ITS1.ITypeFormatter") != null)
+                if (t.GetInterface("MARC.Everest.Formatters.XML.ITS1.ITypeFormatter", true) != null)
                 {
                     ITypeFormatter tf = (ITypeFormatter)assembly.CreateInstance(t.FullName);
                     lock (s_dictFormatters)

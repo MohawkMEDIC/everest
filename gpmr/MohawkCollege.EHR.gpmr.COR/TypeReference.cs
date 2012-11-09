@@ -172,6 +172,7 @@ namespace MohawkCollege.EHR.gpmr.COR
             object retVal = this.MemberwiseClone();
             (retVal as TypeReference).Container = null;
             (retVal as TypeReference).GenericSupplier = new List<TypeReference>(this.genericSuppliers ?? new List<TypeReference>());
+            
             return retVal;
         }
 

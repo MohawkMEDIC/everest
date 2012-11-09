@@ -63,9 +63,11 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [Serializable]
     [Structure(Name = "BL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("BL", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class BL : PDV<Boolean?>, IBooleanValue, IEquatable<BL>, IComparable<BL>
     {
         /// <summary>
@@ -199,7 +201,7 @@ namespace MARC.Everest.DataTypes
         {
 
             if(this.IsNull && b1.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, b1.NullFlavor) };
+                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, b1.NullFlavor) };
 
             // Truth table
             // b1 > f t n
@@ -269,7 +271,7 @@ namespace MARC.Everest.DataTypes
         {
 
              if(this.IsNull && b1.IsNull)
-                 return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, b1.NullFlavor) };
+                 return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, b1.NullFlavor) };
 
             // Truth table
             // b1 > f t n

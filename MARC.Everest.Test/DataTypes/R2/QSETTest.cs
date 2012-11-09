@@ -100,10 +100,10 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSIMixedTermsSerializationTest()
         {
-            QSI<INT> set = new QSI<INT>(
+            QSI<INT> set = QSI<INT>.CreateQSI(
                 new IVL<INT>(1, 3),
                 new IVL<INT>(2, 7),
-                new SXPR<INT>(
+                SXPR<INT>.CreateSXPR(
                     new IVL<INT>(4, 10) { Operator = SetOperator.Inclusive },
                     new IVL<INT>(5, 30) { Operator = SetOperator.Inclusive },
                     new IVL<INT>(1, 300) { Operator = SetOperator.Intersect }
@@ -129,7 +129,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSISerializationTest()
         {
-            QSI<INT> set = new QSI<INT>(
+            QSI<INT> set = QSI<INT>.CreateQSI(
                 new IVL<INT>(1, 3),
                 new IVL<INT>(2, 7)
             );
@@ -161,7 +161,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSISerializationTest02()
         {
-            QSI<INT> set = new QSI<INT>(
+            QSI<INT> set = QSI<INT>.CreateQSI(
                 new IVL<INT>(1, 3),
                 new IVL<INT>(2, 7)
             );
@@ -223,7 +223,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSIParseTest()
         {
-            QSI<INT> set = new QSI<INT>(
+            QSI<INT> set = QSI<INT>.CreateQSI(
                 new IVL<INT>(1, 3),
                 new IVL<INT>(2, 7)
             );
@@ -255,7 +255,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSIParseTest02()
         {
-            QSI<INT> set = new QSI<INT>(
+            QSI<INT> set = QSI<INT>.CreateQSI(
                 new IVL<INT>(1, 3),
                 new IVL<INT>(2, 7)
             );
@@ -287,7 +287,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSS_REAL_SerializationTest()
         {
-            QSS<REAL> set = new QSS<REAL>(
+            QSS<REAL> set = QSS<REAL>.CreateQSS(
                 new REAL(100),
                 new REAL(200),
                 new REAL(10)
@@ -308,7 +308,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSS_REAL_SerializationTest02()
         {
-            QSS<REAL> set = new QSS<REAL>(
+            QSS<REAL> set = QSS<REAL>.CreateQSS(
                 new REAL(100) { Precision = 2 },
                 new REAL(200) { Precision = 2 },
                 new REAL(10) { Precision = 2 }
@@ -329,17 +329,15 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSS_TS_SerializationTest()
         {
-            QSS<TS> set = new QSS<TS>(
+            QSS<TS> set = QSS<TS>.CreateQSS(
                 new TS(new DateTime(2008, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2010, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2012, 01, 01), DatePrecision.Month)
-                )
-            {
-                NullFlavor = null,
-                ValidTimeLow = new TS() { NullFlavor = NullFlavor.Unknown },
-                ValidTimeHigh = new TS() { NullFlavor = NullFlavor.Unknown },
-                UpdateMode = null
-            };
+                );
+            set.NullFlavor = null;
+            set.ValidTimeLow = new TS() { NullFlavor = NullFlavor.Unknown };
+            set.ValidTimeHigh = new TS() { NullFlavor = NullFlavor.Unknown };
+            set.UpdateMode = null;
 
             // Should result in a Timestamp Interval containing all dates in
             // January 2008, January 2010, and January 2012
@@ -358,16 +356,14 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSS_TS_SerializationTest02()
         {
-            QSS<TS> set = new QSS<TS>(
+            QSS<TS> set = QSS<TS>.CreateQSS(
                 new TS(new DateTime(2008, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2010, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2012, 01, 01), DatePrecision.Month)
-            )
-            {
-                NullFlavor = null,
-                ValidTimeLow = new TS() { NullFlavor = NullFlavor.Unknown },
-                ValidTimeHigh = new TS() { NullFlavor = NullFlavor.Unknown }
-            };
+            );
+            set.NullFlavor = null;
+            set.ValidTimeLow = new TS() { NullFlavor = NullFlavor.Unknown };
+            set.ValidTimeHigh = new TS() { NullFlavor = NullFlavor.Unknown };
 
             // The QSS does not want to be serialized
             // when an update mode is assigned.
@@ -395,7 +391,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSS_REAL_ParseTest()
         {
-            QSS<REAL> set = new QSS<REAL>(
+            QSS<REAL> set = QSS<REAL>.CreateQSS(
                 new REAL(100),
                 new REAL(200),
                 new REAL(10)
@@ -415,7 +411,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSS_REAL_ParseTest02()
         {
-            QSS<REAL> set = new QSS<REAL>(
+            QSS<REAL> set = QSS<REAL>.CreateQSS(
                 new REAL(100) { Precision = 2 },
                 new REAL(200) { Precision = 2 },
                 new REAL(10) { Precision = 2 }
@@ -435,17 +431,15 @@ namespace MARC.Everest.Test.DataTypes.R2
         public void R2QSS_TS_ParseTest()
         {
             // create timestamp QSS
-            QSS<TS> set = new QSS<TS>(
+            QSS<TS> set = QSS<TS>.CreateQSS(
                 new TS(new DateTime(2008, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2010, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2012, 01, 01), DatePrecision.Month)
-            )
-            {
-                NullFlavor = null,
-                ValidTimeLow = null,
-                ValidTimeHigh = null,
-                UpdateMode = null
-            };
+            );
+            set.NullFlavor = null;
+            set.ValidTimeLow = null;
+            set.ValidTimeHigh = null;
+            set.UpdateMode = null;
 
             set = set.Normalize() as QSS<TS>;
             var actualXml = R2SerializationHelper.SerializeAsString(set);
@@ -462,17 +456,16 @@ namespace MARC.Everest.Test.DataTypes.R2
         public void R2QSS_TS_ParseTest02()
         {
             // create timestamp QSS
-            QSS<TS> set = new QSS<TS>(
+            QSS<TS> set = QSS<TS>.CreateQSS(
                 new TS(new DateTime(2008, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2010, 01, 01), DatePrecision.Month),
                 new TS(new DateTime(2012, 01, 01), DatePrecision.Month)
-            )
-            {
-                NullFlavor = null,
-                ValidTimeLow = null,
-                ValidTimeHigh = null,
-                UpdateMode = UpdateMode.Add
-            };
+            );
+            set.NullFlavor = null;
+            set.ValidTimeLow = null;
+            set.ValidTimeHigh = null;
+            set.UpdateMode = UpdateMode.Add;
+            
 
             set = set.Normalize() as QSS<TS>;
             var actualXml = R2SerializationHelper.SerializeAsString(set);
@@ -669,7 +662,7 @@ namespace MARC.Everest.Test.DataTypes.R2
                         HighClosed = true
                     },
                     // subtrahend
-                    new SXPR<INT>(
+                    SXPR<INT>.CreateSXPR(
                         new IVL<INT>(4,6) { 
                             Operator = SetOperator.Intersect,
                             LowClosed = true,
@@ -874,7 +867,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSUSerializationTest()
         {
-            QSU<INT> set = new QSU<INT>(
+            QSU<INT> set = QSU<INT>.CreateQSU(
                 new IVL<INT>(1,5)
                 {
                     LowClosed = true,
@@ -906,7 +899,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSUSerializationTest02()
         {
-            QSU<INT> set = new QSU<INT>(
+            QSU<INT> set = QSU<INT>.CreateQSU(
                 new IVL<INT>(1, 5)
                 {
                     LowClosed = true,
@@ -945,7 +938,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSUSerializationTest03()
         {
-            QSU<INT> set = new QSU<INT>(
+            QSU<INT> set = QSU<INT>.CreateQSU(
                 new IVL<INT>(1, 5)
                 {
                     LowClosed = true,
@@ -981,7 +974,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSUMixedTermsSerializationTest()
         {
-            QSU<INT> set = new QSU<INT>(
+            QSU<INT> set = QSU<INT>.CreateQSU(
                 new IVL<INT>(1, 5)
                 {
                     LowClosed = true,
@@ -992,7 +985,7 @@ namespace MARC.Everest.Test.DataTypes.R2
                     LowClosed = true,
                     HighClosed = true
                 },
-                new SXPR<INT>(
+                SXPR<INT>.CreateSXPR(
                     new IVL<INT>(4,6) { 
                             Operator = SetOperator.Inclusive,
                             LowClosed = true,
@@ -1030,7 +1023,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSUParseTest()
         {
-            QSU<INT> set = new QSU<INT>(
+            QSU<INT> set = QSU<INT>.CreateQSU(
                 new IVL<INT>(1, 5)
                 {
                     LowClosed = true,
@@ -1059,7 +1052,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSUParseTest02()
         {
-            QSU<INT> set = new QSU<INT>(
+            QSU<INT> set = QSU<INT>.CreateQSU(
                 new IVL<INT>(1, 5)
                 {
                     LowClosed = true,
@@ -1093,7 +1086,7 @@ namespace MARC.Everest.Test.DataTypes.R2
         [TestMethod]
         public void R2QSUParseTest03()
         {
-            QSU<INT> set = new QSU<INT>(
+            QSU<INT> set = QSU<INT>.CreateQSU(
                 new IVL<INT>(1, 5)
                 {
                     LowClosed = true,
@@ -1181,7 +1174,7 @@ namespace MARC.Everest.Test.DataTypes.R2
 
                 // This set will result in an interval of 1..10,
                 // and is also the Low part of the overall Periodic Hull
-                new SXPR<INT>(
+                SXPR<INT>.CreateSXPR(
                     new IVL<INT>(1, 5)
                     {
                         LowClosed = true,

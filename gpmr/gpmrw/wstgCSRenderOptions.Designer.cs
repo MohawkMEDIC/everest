@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.chkGenerateVocab = new System.Windows.Forms.CheckBox();
+            this.chkGenPhone = new System.Windows.Forms.CheckBox();
             this.chkGenerateRim = new System.Windows.Forms.CheckBox();
             this.chkCompile = new System.Windows.Forms.CheckBox();
             this.chkDllOnly = new System.Windows.Forms.CheckBox();
@@ -43,6 +43,7 @@
             this.txtProfileId = new System.Windows.Forms.TextBox();
             this.cbxLicense = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxLiterals)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,16 +65,16 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Namespace:";
             // 
-            // chkGenerateVocab
+            // chkGenPhone
             // 
-            this.chkGenerateVocab.AutoSize = true;
-            this.chkGenerateVocab.Location = new System.Drawing.Point(26, 155);
-            this.chkGenerateVocab.Name = "chkGenerateVocab";
-            this.chkGenerateVocab.Size = new System.Drawing.Size(246, 17);
-            this.chkGenerateVocab.TabIndex = 3;
-            this.chkGenerateVocab.Text = "Enumerate vocabularies using business names";
-            this.chkGenerateVocab.UseVisualStyleBackColor = true;
-            this.chkGenerateVocab.CheckedChanged += new System.EventHandler(this.chkGenerateVocab_CheckedChanged);
+            this.chkGenPhone.AutoSize = true;
+            this.chkGenPhone.Location = new System.Drawing.Point(26, 267);
+            this.chkGenPhone.Name = "chkGenPhone";
+            this.chkGenPhone.Size = new System.Drawing.Size(254, 17);
+            this.chkGenPhone.TabIndex = 3;
+            this.chkGenPhone.Text = "Generate Windows Phone / Silverlight Assembly";
+            this.chkGenPhone.UseVisualStyleBackColor = true;
+            this.chkGenPhone.CheckedChanged += new System.EventHandler(this.chkGenerateVocab_CheckedChanged);
             // 
             // chkGenerateRim
             // 
@@ -208,10 +209,21 @@
             this.label6.TabIndex = 14;
             this.label6.Text = "Maximum number of terms in an enumerated vocab.";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(76, 138);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(291, 17);
+            this.checkBox1.TabIndex = 15;
+            this.checkBox1.Text = "After compiling, remove source files (just produce a DLL)";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // wstgCSRenderOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.cbxLicense);
             this.Controls.Add(this.txtProfileId);
@@ -224,7 +236,7 @@
             this.Controls.Add(this.chkDllOnly);
             this.Controls.Add(this.chkCompile);
             this.Controls.Add(this.chkGenerateRim);
-            this.Controls.Add(this.chkGenerateVocab);
+            this.Controls.Add(this.chkGenPhone);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "wstgCSRenderOptions";
@@ -239,7 +251,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox chkGenerateVocab;
+        private System.Windows.Forms.CheckBox chkGenPhone;
         private System.Windows.Forms.CheckBox chkGenerateRim;
         private System.Windows.Forms.CheckBox chkCompile;
         private System.Windows.Forms.CheckBox chkDllOnly;
@@ -252,5 +264,6 @@
         private System.Windows.Forms.TextBox txtProfileId;
         private System.Windows.Forms.ComboBox cbxLicense;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

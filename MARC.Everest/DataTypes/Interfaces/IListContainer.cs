@@ -27,6 +27,11 @@ namespace MARC.Everest.DataTypes.Interfaces
     /// <summary>
     /// Represents a structure that contains a set
     /// </summary>
+    /// <remarks>
+    /// This interface is primarily used by formatters which must be able to populate
+    /// a list of a known interface (IGraphable) without knowing the specific 
+    /// types in the constructed instance.
+    /// </remarks>
     public interface IListContainer
     {
 

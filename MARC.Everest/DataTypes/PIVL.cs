@@ -25,6 +25,7 @@ using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Interfaces;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -173,9 +174,12 @@ namespace MARC.Everest.DataTypes
     /// </code>
     /// </example>
     /// <seealso cref="T:MARC.Everest.DataTypes.SXCM{T}"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "PIVL"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "PIVL")]
     [Structure(Name = "PIVL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("PIVL", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class PIVL<T> : SXCM<T>, IEquatable<PIVL<T>>, IOriginalText
         where T : IAny
     {
@@ -227,9 +231,36 @@ namespace MARC.Everest.DataTypes
             Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         public INT Count { get; set; }
         /// <summary>
-        /// Indicates the number of times that 
+        /// Indicates the frequency that the period repeats. 
         /// </summary>
-        /// <remarks>Only <see cref="P:Frequency"/> OR <see cref="P:Period"/> should be specified</remarks>
+        /// <remarks>Only <see cref="P:Frequency"/> OR <see cref="P:Period"/> should be specified
+        /// <para>
+        /// <see cref="P:Period"/> should be used in cases where it is easier for humans to read.</para>
+        /// <example>Repeat every 5 days:
+        /// <code lang="cs" title="Preferred">
+        /// var pivl = new PIVL&lt;TS>();
+        /// pivl.Period = new PQ(5, "d");
+        /// </code>
+        /// instead of :
+        /// <code lang="cs" title="Correct, but not preferable">
+        /// var pivl = new PIVL&lt;TS>();
+        /// pivl.Frequency = new RTO&lt;INT, PQ>(1, new PQ(5, "d"));
+        /// </code>
+        /// </para>
+        /// </example>
+        /// <example>Repeat twice per day:
+        /// <code lang="cs" title="Preferred">
+        /// var pivl = new PIVL&lt;TS>();
+        /// pivl.Frequency = new RTO&lt;INT, PQ>(2, new PQ(1, "d"));
+        /// </code>
+        /// instead of :
+        /// <code lang="cs" title="Correct, but not preferable">
+        /// var pivl = new PIVL&lt;TS>();
+        /// pivl.Period = new PQ(0.5, "d");
+        /// </code>
+        /// </example>
+        /// </remarks>
+        /// 
         public RTO<INT, PQ> Frequency { get; set; }
         /// <summary>
         /// Gets or sets the reason why the specified interval was supplied
@@ -355,7 +386,7 @@ namespace MARC.Everest.DataTypes
             // Get the desired translation in repeats
             desiredTranslation /= period;
             desiredTranslation.Value = Math.Round(desiredTranslation.Value.Value, 0);
-
+            
             if (this.Count != null && this.Count.CompareTo((int)desiredTranslation.Value) > 0) // number of iterations exceeds limit
                 return false;
             else if (desiredTranslation.Value < 0) // Happens before offset, meaning first 
@@ -367,6 +398,45 @@ namespace MARC.Everest.DataTypes
             // Translate phase
             var translatedPhase = this.Phase.Translate(desiredTranslation);
             return translatedPhase.Contains(member);
+        }
+
+        /// <summary>
+        /// Extended validation routine which returns the detected issues with the
+        /// validated data type
+        /// </summary>
+        /// <remarks>
+        /// An instance of PIVL is considered valid when :
+        /// <list type="number">
+        ///     <item>
+        ///         <description>When the <see cref="P:NullFlavor"/> property is populated, neither <see cref="P:Period"/>, <see cref="P:Frequency"/> nor <see cref="P:Phase"/> are populated</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>When <see cref="P:NullFlavor"/> is not populated <see cref="P:Frequency"/> or <see cref="P:Period"/> must be set
+        ///     </item>
+        ///     <item>
+        ///         <description>When <see cref="P:Frequency"/> is set <see cref="P:Period"/> must not be set
+        ///     </item>
+        ///     <item>
+        ///         <description>When <see cref="P:Period"/> is set <see cref="P:Frequency"/> must not be set</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>If <see cref="P:Phase"/> is set and the <see cref="P:IVL.Width"/> property of <see cref="P:Phase"/> is populated, then it must be less than or equal to to value of the <see cref="P:Period"/> property</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+
+            if(this.NullFlavor != null && (this.Period != null || this.Frequency != null || this.Phase != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            else if(this.NullFlavor == null && this.Period == null && this.Period == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            if((this.Frequency != null) ^ (this.Period != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", String.Format(ValidationMessages.MSG_INDEPENDENT_VALUE, "Frequency", "Period"), null));
+            if(this.Phase != null && (this.Phase.Width == null || this.Phase.Width.IsNull || this.Phase.Width > this.Period))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", "Width property of Phase must be less than the Period property", null));
+            return retVal;
         }
 
         /// <summary>

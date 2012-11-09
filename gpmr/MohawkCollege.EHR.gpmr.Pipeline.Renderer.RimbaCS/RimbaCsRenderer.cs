@@ -32,6 +32,7 @@ using MARC.Everest.Connectors;
 using System.ComponentModel;
 using Microsoft.Build.BuildEngine;
 using MARC.Everest.Attributes;
+using System.Xml;
 
 namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
 {
@@ -97,7 +98,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
                 new string[] {"--rimbapi-realm-pref", "When there is a conflict of names\r\n\t\t\tdetermines which 'realm' is preferred" },
                 new string[] {"--rimbapi-max-literals", "Specifies the maximum size of an\r\n\t\t\tenumeration. Default is 100" },
                 new string[] {"--rimbapi-partials", "When true, specifies that GPMR should\r\n\t\t\tenumerate partial vocabularies" },
-                new string[] {"--rimbapi-suppress-doc", "Supresses documentation generation" }
+                new string[] {"--rimbapi-suppress-doc", "Supresses documentation generation" },
+                new string[] {"--rimbapi-phone","Generate Windows Phone project" }
             };
 
         //DOC: Documentation Required
@@ -137,6 +139,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
             Dictionary<String, StringCollection> parameters = hostContext.Data["CommandParameters"] as Dictionary<String, StringCollection>;
             System.Diagnostics.Trace.WriteLine("\r\nStarting RIMBA Renderer", "information");
             StringCollection genFormatters = new StringCollection();
+            bool makeWP7Proj = false;
 
             if (hostContext.Mode == Pipeline.OperationModeType.Quirks)
                 System.Diagnostics.Trace.WriteLine("--- WARNING ---\r\n Host context is operating in Quirks mode, GPMR cannot guarantee output will be accurate\r\n--- WARNING ---");
@@ -169,6 +172,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
                 InteractionRenderer.triggerEventOid = parameters["rimbapi-oid-triggerevent"][0];
             if (parameters.ContainsKey("rimbapi-gen-its"))
                 genFormatters = parameters["rimbapi-gen-its"];
+            if (parameters.ContainsKey("rimbapi-phone"))
+                makeWP7Proj = bool.Parse(parameters["rimbapi-phone"][0]);
 
             #endregion
 
@@ -223,29 +228,34 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
             #region Setup the project
             // Create engine reference
             Microsoft.Build.BuildEngine.Engine engine = new Microsoft.Build.BuildEngine.Engine(
-                Path.Combine(Path.Combine(Path.Combine(System.Environment.SystemDirectory, "..\\Microsoft.NET"), "Framework"), "v3.5"));
+                Path.Combine(Path.Combine(Path.Combine(System.Environment.SystemDirectory, "..\\Microsoft.NET"), "Framework"), "v3.5")),
+                phoneEngine = new Microsoft.Build.BuildEngine.Engine(
+                Path.Combine(Path.Combine(Path.Combine(System.Environment.SystemDirectory, "..\\Microsoft.NET"), "Framework"), "v4.0.30319"));
             
             // Create MSPROJ
-            Microsoft.Build.BuildEngine.Project project = new Microsoft.Build.BuildEngine.Project(engine);
+            Microsoft.Build.BuildEngine.Project project = new Microsoft.Build.BuildEngine.Project(engine),
+                phoneProj = new Project(phoneEngine, "4.0");
+
             
-            project.DefaultTargets = "Build";
+            phoneProj.DefaultTargets = project.DefaultTargets = "Build";
             
 
             // Setup project attributes
             Microsoft.Build.BuildEngine.BuildPropertyGroup pg = project.AddNewPropertyGroup(false);
 
             Microsoft.Build.BuildEngine.BuildProperty property = pg.AddNewProperty("Configuration", "Release");
+
             property.Condition = "'$(Configuration)' == ''";
             property = pg.AddNewProperty("Platform", "AnyCPU");
             property.Condition = "'$(Platform)' == ''";
-            pg.AddNewProperty("ProductVersion", "9.0.30729");
+            pg.AddNewProperty("ProductVersion", "10.0.20506");
             pg.AddNewProperty("SchemaVersion", "2.0");
             pg.AddNewProperty("ProjectGuid", Guid.NewGuid().ToString());
             pg.AddNewProperty("OutputType", "Library");
             pg.AddNewProperty("AppDesignerFolder", "Properties");
             pg.AddNewProperty("RootNamespace", parameters["rimbapi-target-ns"][0]);
             pg.AddNewProperty("AssemblyName", parameters["rimbapi-target-ns"][0]);
-
+            
             // Release AnyCPU
             pg = project.AddNewPropertyGroup(false);
             pg.Condition = "'$(Configuration)|$(Platform)' == 'Release|AnyCPU'";
@@ -269,6 +279,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
 
             // Add References
             File.Copy(Path.Combine(System.Windows.Forms.Application.StartupPath, "MARC.Everest.dll"), Path.Combine(Path.Combine(hostContext.Output, "lib"), "MARC.Everest.dll"), true);
+
+            if(makeWP7Proj)
+                File.Copy(Path.Combine(Path.Combine(System.Windows.Forms.Application.StartupPath, "lib"), "MARC.Everest.Phone.dll"), Path.Combine(Path.Combine(hostContext.Output, "lib"), "MARC.Everest.Phone.dll"), true);
+
             File.Copy(Path.Combine(System.Windows.Forms.Application.StartupPath, "MARC.Everest.xml"), Path.Combine(Path.Combine(hostContext.Output, "lib"), "MARC.Everest.xml"), true);
             refItemGroup.AddNewItem("Reference", "System");
             refItemGroup.AddNewItem("Reference", "System.Drawing");
@@ -279,7 +293,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
 
             project.AddNewImport("$(MSBuildBinPath)\\Microsoft.CSharp.targets", null);
 
-            Microsoft.Build.BuildEngine.BuildItemGroup fileItemGroup = project.AddNewItemGroup();
+            Microsoft.Build.BuildEngine.BuildItemGroup fileItemGroup = project.AddNewItemGroup(),
+                phoneFileItemGroup = phoneProj.AddNewItemGroup();
 
             #region Assembly Info
             try
@@ -301,7 +316,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
                     tw.Close();
                 }
                 fileItemGroup.AddNewItem("Compile", Path.Combine("Properties", "AssemblyInfo.cs"));
-
+                phoneFileItemGroup.AddNewItem("Compile", Path.Combine("Properties", "AssemblyInfo.cs"));
             }
             catch(Exception)
             {
@@ -323,7 +338,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
                 else return a.GetType().Name.CompareTo(b.GetType().Name);
             });
 
-            RenderFeatureList(features, templateFields, renderers, fileItemGroup, parameters);
+            RenderFeatureList(features, templateFields, renderers, fileItemGroup, phoneFileItemGroup, parameters);
 
             // Any added features?
             // HACK: This should be fixed soon, but meh... I'll get around to it
@@ -331,7 +346,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
             foreach (KeyValuePair<String, Feature> kv in classRep)
                 if(!features.Contains(kv.Value))
                     addlFeatures.Add(kv.Value);
-            RenderFeatureList(addlFeatures, templateFields, renderers, fileItemGroup, parameters);
+            RenderFeatureList(addlFeatures, templateFields, renderers, fileItemGroup, phoneFileItemGroup, parameters);
 
             // Save the project
             project.Save(Path.Combine(hostContext.Output, ProjectFileName) + ".csproj");
@@ -359,7 +374,89 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
                     throw new InvalidOperationException("Failed compilation, operation cannot continue");
 
                 }
+                engine.UnregisterAllLoggers();
+                
             }
+            #endregion
+
+            #region Windows Phone
+
+            if (makeWP7Proj)
+            {
+
+                // Setup project attributes
+                pg = phoneProj.AddNewPropertyGroup(false);
+                property = pg.AddNewProperty("Configuration", "Release");
+                property.Condition = "'$(Configuration)' == ''";
+                property = pg.AddNewProperty("Platform", "AnyCPU");
+                property.Condition = "'$(Platform)' == ''";
+                pg.AddNewProperty("ProductVersion", "10.0.20506");
+                pg.AddNewProperty("SchemaVersion", "2.0");
+                pg.AddNewProperty("ProjectGuid", Guid.NewGuid().ToString());
+                pg.AddNewProperty("OutputType", "Library");
+                pg.AddNewProperty("AppDesignerFolder", "Properties");
+                pg.AddNewProperty("RootNamespace", parameters["rimbapi-target-ns"][0]);
+                pg.AddNewProperty("AssemblyName", parameters["rimbapi-target-ns"][0] + ".Phone");
+                pg.AddNewProperty("ProjectTypeGuids", "{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}");
+                pg.AddNewProperty("TargetFrameworkVersion", "v4.0");
+                pg.AddNewProperty("SilverlightVersion", "$(TargetFrameworkVersion)");
+                pg.AddNewProperty("TargetFrameworkProfile", "WindowsPhone71");
+                pg.AddNewProperty("TargetFrameworkIdentifier", "Silverlight");
+                pg.AddNewProperty("SilverlightApplication", "false");
+                pg.AddNewProperty("ValidateXaml", "true");
+                pg.AddNewProperty("ThrowErrorsInValidation", "true");
+
+                // Release AnyCPU
+                pg = phoneProj.AddNewPropertyGroup(false);
+                pg.Condition = "'$(Configuration)|$(Platform)' == 'Release|AnyCPU'";
+                pg.AddNewProperty("DebugType", "pdbonly");
+                pg.AddNewProperty("Optimize", "true");
+                pg.AddNewProperty("OutputPath", "bin\\release");
+                pg.AddNewProperty("DefineConstants", "TRACE;SILVERLIGHT;WINDOWS_PHONE");
+                pg.AddNewProperty("ErrorReport", "prompt");
+                pg.AddNewProperty("NoStdLib", "true");
+                pg.AddNewProperty("NoConfig", "true");
+                pg.AddNewProperty("WarningLevel", "4");
+                pg.AddNewProperty("DocumentationFile", "bin\\release\\" + parameters["rimbapi-target-ns"][0] + ".Phone.xml");
+
+                // Add reference structure
+                refItemGroup = phoneProj.AddNewItemGroup();
+                refItemGroup.AddNewItem("Reference", "System");
+                refItemGroup.AddNewItem("Reference", "System.Xml");
+
+                BuildItem evReference = refItemGroup.AddNewItem("Reference", @"MARC.Everest.Phone");
+                evReference.SetMetadata("SpecificVersion", "false");
+                evReference.SetMetadata("HintPath", "lib\\MARC.Everest.Phone.dll");
+
+                // Add WP7 Imports
+                phoneProj.AddNewImport(@"$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets", null);
+                phoneProj.AddNewImport(@"$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets", null);
+
+                // HACK: Add tools version
+                string fileName = Path.Combine(hostContext.Output, ProjectFileName) + ".Phone.csproj";
+                phoneProj.Save(fileName);
+                XmlDocument doc = new XmlDocument();
+                doc.Load(fileName);
+                doc.DocumentElement.Attributes.Append(doc.CreateAttribute("ToolsVersion"));
+                doc.DocumentElement.Attributes["ToolsVersion"].Value = "4.0";
+                doc.Save(fileName);
+
+                if (parameters.ContainsKey("rimbapi-compile") && Convert.ToBoolean(parameters["rimbapi-compile"][0]))
+                {
+                    System.Diagnostics.Trace.Write(String.Format("Compiling phone project..."), "information");
+
+                    // Compile
+                    if (phoneEngine.BuildProjectFile(fileName))
+                        System.Diagnostics.Trace.WriteLine("Success!", "information");
+                    else
+                    {
+                        System.Diagnostics.Trace.WriteLine("Fail", "information");
+                        throw new InvalidOperationException("Failed compilation, operation cannot continue");
+
+                    }
+                }
+            }
+
             #endregion
 
             #region Generate Formatter Assemblies
@@ -432,7 +529,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
         /// <summary>
         /// Render feature list
         /// </summary>
-        private void RenderFeatureList(List<Feature> features, string[][] templateFields, List<KeyValuePair<FeatureRendererAttribute, IFeatureRenderer>> renderers, BuildItemGroup fileItemGroup, Dictionary<String, StringCollection> parameters)
+        private void RenderFeatureList(List<Feature> features, string[][] templateFields, List<KeyValuePair<FeatureRendererAttribute, IFeatureRenderer>> renderers, BuildItemGroup fileItemGroup, BuildItemGroup mobileItemGroup, Dictionary<String, StringCollection> parameters)
         {
             // Scan the class repo and start processing
             foreach (Feature f in features)
@@ -485,6 +582,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS
                             if (Array.Find<BuildItem>(fileItemGroup.ToArray(), itm => itm.Include.Equals(projName)) == null)
                             {
                                 fileItemGroup.AddNewItem("Compile", projName);
+                                mobileItemGroup.AddNewItem("Compile", projName);
                             }
                             else
                                 Trace.WriteLine(String.Format("Class '{0}' is defined more than once, second include is ignored", projName), "warn");

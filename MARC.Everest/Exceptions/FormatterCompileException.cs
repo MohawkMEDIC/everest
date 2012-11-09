@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 
 namespace MARC.Everest.Exceptions
 {
+    #if !WINDOWS_PHONE
     /// <summary>
     /// Extends FormatterException to add more detail.
     /// </summary>
@@ -18,7 +19,8 @@ namespace MARC.Everest.Exceptions
     /// seen when developing custom Code Dom based formatters.
     /// </para>
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly")]
+    [Serializable]
     public class FormatterCompileException : FormatterException
     {
         /// <summary>
@@ -83,4 +85,5 @@ namespace MARC.Everest.Exceptions
             return sb.ToString();
         }
     }
+    #endif
 }

@@ -24,6 +24,7 @@ using System.Text;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -39,9 +40,11 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:SXPR{T}"/>
     /// <seealso cref="T:SXCM{T}"/>
     /// <seealso cref="T:GTS"/>
-    [Serializable]
     [Structure(Name = "QSP", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QSP", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class QSP<T> : QSET<T>, IEnumerable<ISetComponent<T>>, IEquatable<QSP<T>>
         where T : IAny
     {
@@ -65,15 +68,15 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// The set that forms the basis of the hull operation
         /// </summary>
-        [Property(Name = "first", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
-        [XmlElement("first")]
+        [Property(Name = "low", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
+        [XmlElement("low")]
         public ISetComponent<T> Low { get; set; }
 
         /// <summary>
         /// The set used as a parameter to the hull operation
         /// </summary>
-        [Property(Name = "second", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
-        [XmlElement("second")]
+        [Property(Name = "high", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
+        [XmlElement("high")]
         public ISetComponent<T> High { get; set; }
 
         /// <summary>
@@ -84,6 +87,22 @@ namespace MARC.Everest.DataTypes
         {
             bool isValid = (this.NullFlavor != null) ^ (this.Low != null && !this.Low.IsNull && this.High != null && !this.High.IsNull);
             return isValid;
+        }
+
+        /// <summary>
+        /// Validate that the QSET is valid. A QSET is valid when it contains <see cref="P:First"/> and
+        /// <paramref name="P:Second"/> and contains no-null terms.
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            List<IResultDetail> retVal = new List<IResultDetail>();
+            if(!((this.NullFlavor != null) ^ (this.Low != null && !this.Low.IsNull && this.High != null && !this.High.IsNull)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSP", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.Low == null || this.Low.IsNull)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Low", String.Format("ISetComponent<{0}>", typeof(T).Name)), null));
+            if (this.High == null || this.High.IsNull)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "High", String.Format("ISetComponent<{0}>", typeof(T).Name)), null));
+            return retVal;
         }
 
         /// <summary>

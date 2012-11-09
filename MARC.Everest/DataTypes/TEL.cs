@@ -53,9 +53,12 @@ namespace MARC.Everest.DataTypes
     /// by time specification and use codes that help in deciding which address to use for a given time 
     /// and purpose
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TEL"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TEL")]
     [Structure(Name = "TEL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("TEL", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class TEL : PDV<String>, ITelecommunicationAddress, IEquatable<TEL>
     {
 
@@ -85,6 +88,31 @@ namespace MARC.Everest.DataTypes
         {
             this.Use = new SET<CS<TelecommunicationAddressUse>>(use);
         }
+        /// <summary>
+        /// Creates a new telecommunications address with the specified <paramref name="value"/> 
+        /// </summary>
+        /// <param name="value">The initial value of the telecommunications address</param>
+        public TEL(Uri value)
+            : this(value.ToString())
+        { }
+        /// <summary>
+        /// Creates a new telecommunications address with the specified <paramref name="value"/> and
+        /// <paramref name="use"/> set.
+        /// </summary>
+        /// <param name="value">The initial value of the telecommunications address</param>
+        /// <param name="use">A set of unique values describing the use of the telecommunications address</param>
+        public TEL(Uri value, TelecommunicationAddressUse use)
+            : this(value.ToString(), use)
+        { }
+        /// <summary>
+        /// Creates a new telecommunications address with the specified <paramref name="value"/> and
+        /// <paramref name="use"/> set.
+        /// </summary>
+        /// <param name="value">The initial value of the telecommunications address</param>
+        /// <param name="use">A set of unique values describing the use of the telecommunications address</param>
+        public TEL(Uri value, IEnumerable<CS<TelecommunicationAddressUse>> use)
+            : this(value.ToString(), use)
+        { }
 
         /// <summary>
         /// Identifies the value of the telecommunications address. Note that valid telecommunications
@@ -215,7 +243,20 @@ namespace MARC.Everest.DataTypes
         {
             return o.Value;
         }
-
+        /// <summary>
+        /// Converts a <see cref="T:TEL"/> to a <see cref="T:System.String"/>
+        /// </summary>
+        public static explicit operator Uri(TEL o)
+        {
+            return new Uri(o);
+        }
+        /// <summary>
+        /// Converts a <see cref="T:System.Uri"/> to a <see cref="T:TEL"/>
+        /// </summary>
+        public static implicit operator TEL(Uri o)
+        {
+            return new TEL(o);
+        }
         /// <summary>
         /// Converets a <see cref="String"/> to a <see cref="TEL"/>
         /// </summary>
@@ -251,8 +292,9 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public override bool Equals(object obj)
         {
-            if (obj is TEL)
+            if (obj is TEL || obj is string || obj is Uri)
                 return Equals(obj as TEL);
+            
             return base.Equals(obj);
         }
 
@@ -269,6 +311,18 @@ namespace MARC.Everest.DataTypes
             if (!(bool)baseSem)
                 return baseSem;
             return this.Value == ((TEL)other).Value;
+        }
+
+        #endregion
+
+        #region ITelecommunicationAddress Members
+
+        /// <summary>
+        /// Gets the usable period as an ISetComponent
+        /// </summary>
+        ISetComponent<IPointInTime> ITelecommunicationAddress.UseablePeriod
+        {
+            get { return this.UseablePeriod; }
         }
 
         #endregion

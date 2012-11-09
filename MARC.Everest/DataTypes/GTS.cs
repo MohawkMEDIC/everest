@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -77,7 +78,7 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:MARC.Everest.DataType.SXCM&lt;>"/>
     /// <seealso cref="T:MARC.Everest.DataType.PIVL_TS"/>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "GTS")]
-    [Serializable][Structure(Name = "GTS", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "GTS", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("GTS", Namespace = "urn:hl7-org:v3")]
     [TypeMap(Name = "QSI", ArgumentType = "TS")]
     [TypeMap(Name = "QSET", ArgumentType= "TS")]
@@ -86,7 +87,11 @@ namespace MARC.Everest.DataTypes
     [TypeMap(Name = "QSD", ArgumentType = "TS")]
     [TypeMap(Name = "SXPR", ArgumentType = "TS")]
     [TypeMap(Name = "SXCM", ArgumentType = "TS")]
-    public class GTS : ANY, IEquatable<GTS>
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
+
+    public class GTS : ANY, IEquatable<GTS>, ISetComponent<IPointInTime>
     {
 
         /// <summary>
@@ -316,6 +321,21 @@ namespace MARC.Everest.DataTypes
         {
             return (this.Hull != null) ^ (this.NullFlavor != null) &&
                 ((this.Hull != null && this.Hull.Validate()) || this.Hull == null);
+        }
+
+        /// <summary>
+        /// Validates the GTS and returns the detected issues with the data type instance
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<Connectors.IResultDetail>;
+            if (this.NullFlavor != null && this.Hull != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "GTS", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.Hull == null && this.NullFlavor == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "GTS", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            if(this.Hull != null)
+                retVal.AddRange(this.Hull.ValidateEx());
+            return retVal;
         }
 
         /// <summary>

@@ -10,7 +10,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{A21E1269-8CDE-43CD-B179-2B6674413081}
+AppID={{A0BA6EF4-24AC-47F8-AEFE-FFBA1904024C}
 #ifdef TFSBuild
 AppName=MARC-HI Everest Framework
 AppVerName=MARC-HI Everest Framework (Nightly build {code:CurrentDate})
@@ -18,23 +18,23 @@ OutputBaseFilename=everest-nightly
 InfoBeforeFile=..\gpmr\Readme-nightly.txt
 #else
 AppName=MARC-HI Everest Framework
-AppVerName=1.2
+AppVerName=Everest 1.2
 OutputBaseFilename=everest-setup
 ;InfoBeforeFile=.\installsupp\release\AUG-CTP-2010.txt
 #endif
 LicenseFile=..\License.rtf
 AppPublisher=Mohawk College of Applied Arts and Technology
-AppPublisherURL=http://marc.mohawkcollege.ca/hi
-AppSupportURL=http://marc.mohawkcollege.ca/hi
-AppUpdatesURL=http://marc.mohawkcollege.ca/hi
+AppPublisherURL=http://everest.marc-hi.ca
+AppSupportURL=http://everest.marc-hi.ca
+AppUpdatesURL=http://everest.marc-hi.ca
 DefaultDirName={pf}\Mohawk College\Everest
 DefaultGroupName=Mohawk College\Everest
-AllowNoIcons=yes
+AllowNoIcons=true
 OutputDir=..\dist
 ;SetupIconFile=D:\work\appicon.ico
-Compression=lzma
-;Compression=none
-SolidCompression=no
+Compression=lzma/ultra
+;Compression=
+SolidCompression=false
 AppCopyright=Copyright (C) 2008-2012, Mohawk College of Applied Arts and Technology
 WizardImageFile=install-logo.bmp
 WizardSmallImageFile=install-logo-small.bmp
@@ -71,6 +71,7 @@ Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.dll; StrongAssemblyName: MAR
 Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\cda
 
 #ifdef TFSBuild
+
 Source: {#buildpath}\MARC.Everest.dll; StrongAssemblyName: MARC.Everest; DestDir: {app}\lib; Flags: ignoreversion; Components: api
 Source: {#buildpath}\MARC.Everest.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api
 Source: {#buildpath}\MARC.Everest.Connectors.File.XML; DestDir: {app}\lib; Flags: ignoreversion; Components: api
@@ -108,6 +109,7 @@ Source: {#buildpath}\MARC.Everest.dll; DestDir: {app}; Flags: ignoreversion; Com
 Source: {#buildpath}\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
 
 #else
+
 Source: ..\MARC.Everest\bin\Release\MARC.Everest.dll; StrongAssemblyName: MARC.Everest; DestDir: {app}\lib; Flags: ignoreversion; Components: api
 Source: ..\MARC.Everest\bin\Release\MARC.Everest.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api
 Source: ..\MARC.Everest.Connectors.File\bin\Release\MARC.Everest.Connectors.File.XML; DestDir: {app}\lib; Flags: ignoreversion; Components: api
@@ -161,11 +163,11 @@ Source: ..\MARC.Everest\bin\Release\MARC.Everest.xml; DestDir: {app}; Flags: ign
 Source: .\installsupp\Help\MARC-HI Everest Framework.chm; DestDir: {app}\help; Components: doc
 Source: .\installsupp\isxdl.dll; DestDir: {tmp}
 #ifdef INCLUDE_SRC
-Source: ..\*; DestDir: {app}\src; Flags: ignoreversion recursesubdirs; Excludes: *.vssscc, *.dump, ApiExplorer, Samples,*.vspscc, MARC.Everest.Test*, MARC.Everest.Installer*, MARC.Everest.Connectors.MSMQ, MARC.Everest.VisualStudio.*,TFS Build - Nightly.txt,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, TeamBuildTypes, TestResults, api.sln, *.xsd, *.*mif, Solution Items; Components: src
+Source: ..\*; DestDir: {app}\src; Flags: ignoreversion recursesubdirs; Excludes: *.vssscc, *.dump, *.xap, ApiExplorer, Samples,*.vspscc, MARC.Everest.Test*, MARC.Everest.Installer*, MARC.Everest.Connectors.MSMQ, MARC.Everest.VisualStudio.*,TFS Build - Nightly.txt,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, TeamBuildTypes, TestResults, api.sln, *.xsd, *.*mif, Solution Items; Components: src
 #endif
 #ifdef INCLUDE_SAMPLES
-Source: ..\Samples\*; DestDir: {app}\samples; Flags: ignoreversion recursesubdirs; Excludes: *.vspscc, *.vssscc, *.dump,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, *.suo; Components: doc\samples
-Source: .\installsupp\sample\*; Flags: ignoreversion recursesubdirs; DestDir: {app}; Components: doc\samples;
+Source: ..\Samples\*; DestDir: {app}\samples; Flags: ignoreversion recursesubdirs; Excludes: Phone, *.vspscc, *.vssscc, *.dump,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, *.suo; Components: doc\samples
+Source: .\installsupp\sample\*; Flags: ignoreversion recursesubdirs; DestDir: {app}; Excludes:Phone; Components: doc\samples;
 #endif
 ; TODO: Redo this
 #ifdef TFSBuild
@@ -182,8 +184,7 @@ Source: ..\Solution Items\ICSharpCode.SharpZipLib.dll; DestDir: {tmp}; Component
 
 
 [INI]
-FileName: "{app}\everest.version"; Section: "Everest"; Key: "Version"; String: "1.0.1";
-
+FileName: "{app}\everest.version"; Section: "Everest"; Key: "Version"; String: "1.2";
 
 [Icons]
 #ifdef INCLUDE_SRC
@@ -252,7 +253,6 @@ Name: custom; Description: Custom Install; Flags: iscustom
 [Components]
 Name: tools; Description: Tool Files; Types: full tooling
 Name: doc; Description: Documentation; Types: full
-Name: doc\guide; Description: Developers Guide; Types: full developer developer\cda developer\ne developer\necda developer\ca
 #ifdef INCLUDE_SAMPLES
 Name: doc\samples; Description: Samples; Types: full developer developer\cda developer\ne developer\necda developer\ca
 #endif
@@ -265,6 +265,7 @@ Name: api\vs; Description: Visual Studio Integration; Types: full developer deve
 Name: api\vs\cda; Description: CDA r2 Documentation; Types: full developer developer\cda developer\necda
 Name: api\vs\ne; Description: UV Documentation (NE2010/NE2008); Types: full developer developer\ne developer\necda
 Name: api\vs\ca; Description: CA Documentation (R02.04.01-R02.04.03); Types: full developer developer\ca
+Name: phone; Description: Everest for Windows Phone; Types: full phone
 #ifdef INCLUDE_MIFS
 Name: spec; Description: Pan-Canadian Specifications; Types: full
 #endif
@@ -276,7 +277,7 @@ Name: src; Description: Source; Types: full
 [Code]
 var
   dotnetRedistPath: string;
-  downloadNeeded, needsUninstall, sept2009, nov2009, jan2010, rc1: boolean;
+  downloadNeeded, needsUninstall, sept2009, nov2009, jan2010, rc1, v1: boolean;
   dotNetNeeded: boolean;
   memoDependenciesNeeded: string;
 	lblSelectMode:	TLabel;
@@ -310,6 +311,7 @@ end;
 function InitializeSetup(): Boolean;
 
 begin
+ 
   Result := true;
   dotNetNeeded := false;
   // CTP SEP 2009
@@ -320,14 +322,16 @@ begin
   jan2010 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413079}_is1');
   // RC1
   rc1 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413080}_is1');
-  needsUninstall := sept2009 or nov2009 or jan2010 or rc1;
+  // 1.0
+  v1 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-8879-2B6674413081}_is1');
+  needsUninstall := sept2009 or nov2009 or jan2010 or rc1 or v1;
   // Check for required netfx installation
   //if (not GetUserDefaultLangID() = 'English') then begin
 
         //msgbox('Language Is Not English');
 
   //end;
-
+  
   if (not DirExists(ExpandConstant('{win}\Microsoft.NET\Framework\v3.5'))) then begin
     dotNetNeeded := true;
     if (not IsAdminLoggedOn()) then begin
@@ -434,6 +438,24 @@ begin
             end;
          end;
 
+		 // 1.0         
+ 		needsUninstall := RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-8879-2B6674413081}_is1', 'UninstallString', uninstallString);
+  		if(needsUninstall) then begin
+            // Replace
+            while(Pos('"',uninstallString) > 0) do begin
+              Delete(uninstallString, Pos('"',uninstallString), 1);
+            end;
+
+           if(Exec(ExpandConstant(uninstallString), '/silent', '', SW_SHOW, ewWaitUntilTerminated, ResultCode)) then begin
+
+             if not (ResultCode = 0) then begin
+              Result := 'Couldn''t uninstall old version of MARC-HI Everest';
+             end;
+             end
+             else begin
+              Result := 'Couldn''t launch the Everest uninstall';
+            end;
+         end;
      end;
 
     if (Result = '') and (dotNetNeeded = true) then begin
@@ -468,6 +490,8 @@ begin
 			s := s + '       Uninstall January 2010 CTP of MARC-HI Everest' + NewLine;
 		if(rc1) then
 			s := s + '       Uninstall Release Candidate 1 of MARC-HI Everest' + NewLine;
+		if(v1) then
+			s := s + '       Release 1.x of MARC-HI Everest' + NewLine;
 	end;
 	
   s := s + MemoDirInfo + NewLine;

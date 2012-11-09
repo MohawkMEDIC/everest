@@ -22,7 +22,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         /// <summary>
         /// Structure contains the factory method information
         /// </summary>
-        private struct FactoryMethodInfo
+        internal struct FactoryMethodInfo
         {
             public string documentation;
             public string signature;
@@ -43,7 +43,6 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         // MCCI_MTxxxxxxCA.Patient3         COCT_MTxxxxxxxCA.CreatePatient(x,y,z);
         static Dictionary<string, List<FactoryMethodInfo>> factoryMethods = new Dictionary<string, List<FactoryMethodInfo>>();
 
-
         // Method signatures that have been decleared 
         internal List<String> s_methodDeclarations = new List<string>();
 
@@ -53,7 +52,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         /// <summary>
         /// Render class content to class file
         /// </summary>
-        private string RenderClassContent(ClassContent cc, string ownerPackage)
+        private string RenderClassContent(ClassContent cc, string ownerPackage, int propertySort)
         {
 
             StringWriter sw = new StringWriter();
@@ -61,7 +60,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             // Render the backing field
             TypeReference backingFieldType = null;
             if (cc is Property)
-                backingFieldType = (cc as Property).Type;
+            {
+                // HACK: Java can't hide members, so what we need to do 
+                //       is detect if the model changes data types between overridden
+                //       classes.
+                backingFieldType = GetBackingFieldTypeThroughChildren((cc as Property), cc.Container as Class);
+            //    backingFieldType = (cc as Property).Type;
+
+            }
             else
             {
 
@@ -82,50 +88,84 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         backingFieldType = new TypeReference() { Name = null };
                 }
             }
-
+            
+            
             // Backing field write
             sw.WriteLine("\t// Backing field for {0}", cc.Name);
             sw.Write("\tprivate ");
             
             // Fixed value?
-            if (cc is Property && !String.IsNullOrEmpty((cc as Property).FixedValue))
-                sw.Write("final ");
+            //if (cc is Property && !String.IsNullOrEmpty((cc as Property).FixedValue))
+            //    sw.Write("final ");
 
             // Datatype reference
             string dtr = CreateDatatypeRef(backingFieldType, cc as Property, ownerPackage);
-            bool initialize = false;
+            bool initialize = false,
+                isNativeCollection = false;
             if (cc.MaxOccurs != "1" &&
-                    (!backingFieldType.Name.StartsWith("LIST") && !backingFieldType.Name.StartsWith("DSET") &&  !backingFieldType.Name.StartsWith("SET") && !backingFieldType.Name.StartsWith("COLL") && !backingFieldType.Name.StartsWith("BAG")))
+                    !Datatypes.IsCollectionType(backingFieldType))
             {
                 dtr = string.Format("ArrayList<{0}>", dtr);
                 initialize = true;
+                isNativeCollection = true;
             }
 
             sw.Write("{0} m_{1}", dtr, Util.Util.MakeFriendly(cc.Name));
 
             if (initialize)
                 sw.Write(" = new {0}()", dtr);
-            
-            // TODO: Fixed Values here
-            if (cc is Property && !String.IsNullOrEmpty((cc as Property).FixedValue))
-            {
-                var property = cc as Property;
-                Enumeration.EnumerationValue ev = null;
-                if(property.SupplierDomain != null)
-                    ev = property.SupplierDomain.Literals.Find(o => o.Name == property.FixedValue);
 
-                if (property.SupplierDomain == null)
-                    sw.Write(" = new {0}(\"{1}\");",
-                        dtr, property.FixedValue);
-                else if (ev == null) // Enumeration value is not known in the enumeration, fixed value fails
+            string setterName = "set";
+
+            // TODO: Fixed Values here
+            var property = cc as Property;
+            // Only render fixed values when:
+            // 1. The property is a property
+            // 2. The property has a fixed value
+            // 3. The property is mandatory or populated
+            // 4. The property is not a traversable association.
+            if (property != null && !String.IsNullOrEmpty(property.FixedValue) && (property.Conformance == ClassContent.ConformanceKind.Populated || property.Conformance == ClassContent.ConformanceKind.Mandatory) &&
+                property.PropertyType != Property.PropertyTypes.TraversableAssociation)
+            {
+                // Get the real supplier (value set, or code system if concept domain)
+                var splrCd = property.SupplierDomain as ConceptDomain;
+                var bindingDomain = property.SupplierDomain;
+                Enumeration.EnumerationValue ev = null;
+                if (splrCd != null && splrCd.ContextBinding != null &&
+                    splrCd.ContextBinding.Count == 1)
+                    bindingDomain = splrCd.ContextBinding[0];
+
+                if(bindingDomain != null)
+                    ev = bindingDomain.GetEnumeratedLiterals().Find(o => o.Name == (property.FixedValue ?? property.DefaultValue));
+
+                bool wontRenderBd = bindingDomain != null ? String.IsNullOrEmpty(EnumerationRenderer.WillRender(bindingDomain)) : true;
+
+                if (bindingDomain == null)
+                    sw.Write(" = ({2})org.marc.everest.formatters.FormatterUtil.fromWireFormat(\"{1}\", {0}.class);",
+                        backingFieldType.Name, property.FixedValue, dtr);
+                else if (ev == null || wontRenderBd) // Enumeration value is not known in the enumeration, fixed value fails
                 {
                     System.Diagnostics.Trace.WriteLine(String.Format("Can't find literal '{0}' in supplier domain for property '{1}'", property.FixedValue, property.Name), "error");
-                    sw.Write(" = new {0}(new {2}(\"{3}\"))",
-                       dtr, ownerPackage, Util.Util.MakeFriendly(property.SupplierDomain.Name), property.FixedValue);
+                    if (wontRenderBd) // wont be rendering binding domain, so best to just emit it
+                    {
+                        if(Datatypes.GetOverrideSetters(backingFieldType, property, ownerPackage).FirstOrDefault(o=>o.Parameters.Count == 2) != null)
+                            sw.Write(" = new {0}(\"{1}\", {2})",
+                                dtr, property.FixedValue, ev == null ? "null" : String.Format("\"{0}\"", ev.CodeSystem));
+                        else
+                            sw.Write(" = new {0}(\"{1}\")",
+                                dtr, property.FixedValue, ev == null ? "null" : String.Format("\"{0}\"", ev.CodeSystem));
+                    }
+                    else
+                        sw.Write(" = new {0}(new {2}(\"{3}\"))",
+                            dtr, ownerPackage, Util.Util.MakeFriendly(EnumerationRenderer.WillRender(property.SupplierDomain)), property.FixedValue);
                 }
                 else // Fixed value is known
                     sw.Write(" = new {2}({0}.{1})",
-                    Util.Util.MakeFriendly(property.SupplierDomain.Name), Util.Util.PascalCase(ev.BusinessName ?? ev.Name), dtr, ownerPackage);
+                    Util.Util.MakeFriendly(EnumerationRenderer.WillRender(bindingDomain)), Util.Util.PascalCase(ev.BusinessName ?? ev.Name), dtr, ownerPackage);
+
+                // Update setter name so the output method has the right naming convention
+                setterName = "override";
+
             }
 
             sw.WriteLine(";");
@@ -134,38 +174,43 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
 
             // Render the property attribute
-            sw.Write(RenderPropertyAttribute(cc, ownerPackage));
+            sw.Write(RenderPropertyAttribute(cc, ownerPackage, propertySort));
 
             // Render the getter
             sw.WriteLine("\tpublic {0} get{1}() {{ return this.m_{2}; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name));
             
             // Render setters
-            if (cc is Choice || string.IsNullOrEmpty((cc as Property).FixedValue))
-            {
-                // Default setter
-                sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
-                sw.WriteLine("\tpublic void set{1}({0} value) {{ this.m_{2} = value; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name));
+            // Default setter
+            sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
 
-                // Is choice?
-                if (cc is Choice)
-                    ; // TODO: Factory methods and etc
-                else
+            sw.WriteLine("\tpublic void {3}{1}({0} value) {{ this.m_{2} = value; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name), setterName);
+
+            // Now to render the helper methods that can set the backing property, these are convenience methods
+            if (cc is Choice && !isNativeCollection)
+                ; // TODO: Factory methods and etc
+            else if(!isNativeCollection)
+            {
+                foreach (var sod in MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine.Datatypes.GetOverrideSetters(backingFieldType, cc as Property, ownerPackage))
                 {
-                    foreach (var sod in MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine.Datatypes.GetOverrideSetters(backingFieldType, cc as Property, ownerPackage))
+                    sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
+                    sw.Write("\tpublic void {1}{0}(", Util.Util.PascalCase(cc.Name), setterName);
+                    foreach (var parm in sod.Parameters)
                     {
-                        sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
-                        sw.Write("\tpublic void set{0}(", Util.Util.PascalCase(cc.Name));
-                        foreach (var parm in sod.Parameters)
-                        {
-                            sw.Write("{0} {1}", parm.DataType, parm.Name);
-                            if (sod.Parameters.Last() != parm)
-                                sw.Write(", ");
-                        }
-                        sw.WriteLine(") {");
-                        sw.WriteLine("\t\t{0}", sod.SetterText);
-                        sw.WriteLine("\t\tthis.m_{0} = {1};", Util.Util.MakeFriendly(cc.Name), sod.ValueInstance.Name);
-                        sw.WriteLine("\t}");
+                        sw.Write("{0} {1}", parm.DataType, parm.Name);
+                        if (sod.Parameters.Last() != parm)
+                            sw.Write(", ");
                     }
+                    sw.Write(")");
+                    if (sod.Throws != null && sod.Throws.Count > 0)
+                    {
+                        sw.Write(" throws ");
+                        foreach (var thrw in sod.Throws)
+                            sw.Write("{0} {1}", thrw.Type, thrw == sod.Throws.Last() ? "" : ",");
+                    }
+                    sw.WriteLine("{");
+                    sw.WriteLine("\t\t{0}", sod.SetterText);
+                    sw.WriteLine("\t\tthis.m_{0} = {1};", Util.Util.MakeFriendly(cc.Name), sod.ValueInstance.Name);
+                    sw.WriteLine("\t}");
                 }
             }
 
@@ -174,9 +219,29 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         }
 
         /// <summary>
+        /// Gets a common backing type for a particular property type reference through children
+        /// Handles when data types change through child implementations ( handled by .NET via NEW )
+        /// </summary>
+        private TypeReference GetBackingFieldTypeThroughChildren(Property property, Class searchClass)
+        {
+            TypeReference initialType = property.Type;
+            foreach (var child in searchClass.SpecializedBy) // iterate through children
+            {
+                var childProp = child.Class.Content.Find(o => o.Name == property.Name);
+                if (childProp is Property)
+                {
+                    TypeReference candidate = GetBackingFieldTypeThroughChildren(childProp as Property, child.Class);
+                    if (!candidate.Name.Equals(initialType.Name))
+                        initialType = new TypeReference() { Name = null };
+                }
+            }
+            return initialType;
+        }
+
+        /// <summary>
         /// Render property attribute
         /// </summary>
-        private String RenderPropertyAttribute(ClassContent cc, string ownerPackage)
+        private String RenderPropertyAttribute(ClassContent cc, string ownerPackage, int propertySort)
         {
 
             StringWriter retBuilder = new StringWriter();
@@ -216,8 +281,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                     // Already rendered
                     if (!alreadyRendered.Contains(key))
                     {
-                        retBuilder.Write("\t@Property(name = \"{0}\", conformance = ConformanceType.{1}, propertyType = PropertyType.{2}",
-                            kv.TraversalName, cc.Conformance.ToString().ToUpper(), (options.Content[0] as Property).PropertyType.ToString().ToUpper());
+                        retBuilder.Write("\t@Property(name = \"{0}\", conformance = ConformanceType.{1}, propertyType = PropertyType.{2}, sortKey = {3}",
+                            kv.TraversalName, cc.Conformance.ToString().ToUpper(), (options.Content[0] as Property).PropertyType.ToString().ToUpper(), propertySort);
 
                         // Now a type hint
                         if (tr.Class != null && (property.Container is Choice || property.AlternateTraversalNames != null))
@@ -225,7 +290,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
                         // Now for an interaction hint
                         if (tr.Class != null && (property.Container is Choice || property.AlternateTraversalNames != null) && kv.InteractionOwner != null)
-                            retBuilder.Write(", interactionOwner = {0}.Interactions.{1}.class", ownerPackage, kv.InteractionOwner.Name);
+                            retBuilder.Write(", interactionOwner = {0}.interaction.{1}.class", ownerPackage, kv.InteractionOwner.Name);
                         // Impose a flavor?
                         if (tr.Flavor != null)
                             retBuilder.Write(", imposeFlavorId = \"{0}\"", tr.Flavor);
@@ -233,19 +298,41 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         // Is this a set?
                         if (property.MaxOccurs != "1")
                             retBuilder.Write(", minOccurs = {0}, maxOccurs = {1}", property.MinOccurs, property.MaxOccurs == "*" ? "-1" : property.MaxOccurs);
-                        //if (property.MinLength != null)
-                        //    retBuilder.Write(", MinLength = {0}", property.MinLength);
-                        //if (property.MaxLength != null)
-                        //    retBuilder.Write(", MaxLength = {0}", property.MaxLength);
+                        if (property.MinLength != null)
+                            retBuilder.Write(", minLength = {0}", property.MinLength);
+                        if (property.MaxLength != null)
+                            retBuilder.Write(", maxLength = {0}", property.MaxLength);
 
                         // Is there an update mode
                         //if (property.UpdateMode != null)
-                        //    retBuilder.Write(", DefaultUpdateMode = UpdateMode.{0}", property.UpdateMode);
+                        //    retBuilder.Write(", defaultUpdateMode = UpdateMode.{0}", property.UpdateMode);
 
                         // Is there a supplier domain?
                         if (property.SupplierDomain != null &&
                             property.SupplierStrength == MohawkCollege.EHR.gpmr.COR.Property.CodingStrengthKind.CodedNoExtensions)
                             retBuilder.Write(", supplierDomain = \"{0}\"", (property.SupplierDomain.ContentOid));
+
+                        // Fixed value
+                        if (!String.IsNullOrEmpty(property.FixedValue))
+                            retBuilder.Write(", fixedValue = \"{0}\"", property.FixedValue);
+
+                        // generic supplier
+                        if (property.Type != null && property.Type.GenericSupplier != null &&
+                            property.Type.GenericSupplier.Count > 0)
+                        {
+                            retBuilder.Write(", genericSupplier = {");
+                            foreach (var genSupp in property.Type.GenericSupplier)
+                                if((property.Container as Class).TypeParameters == null ||
+                                    !(property.Container as Class).TypeParameters.Exists(o=>o.Name == genSupp.Name))
+                                    retBuilder.Write("{0}.class{1}", CreateDatatypeRef(genSupp, property, ownerPackage, false), genSupp == property.Type.GenericSupplier.Last() ? "" : ",");
+                            retBuilder.Write("}");
+                        }
+                        else if (property.MaxOccurs != "1" && !Datatypes.IsCollectionType(property.Type)) // Array list so we still need to put this in
+                        {
+                            retBuilder.Write(", genericSupplier = {");
+                            CreateDatatypeRef(property.Type, property, ownerPackage);
+                            retBuilder.Write("}");
+                        }
 
                         retBuilder.WriteLine("),");
                         alreadyRendered.Add(key);
@@ -257,7 +344,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             retVal = retVal.Substring(0, retVal.LastIndexOf(","));
             retVal += "\r\n";
             if (alreadyRendered.Count > 1)
-                return String.Format("\t@Properties(\r\n{0}\t)\r\n", retVal);
+            {
+                if (!s_imports.Contains("org.marc.everest.annotations.Properties"))
+                    s_imports.Add("org.marc.everest.annotations.Properties");
+                return String.Format("\t@Properties( value = {{\r\n{0}\t }})\r\n", retVal);
+            }
             else
                 return retVal;
         }
@@ -283,10 +374,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                     "CE", 
                     "CR", 
                     "CD" }).Contains(tr.Name)
-                && EnumerationRenderer.WillRender(p.SupplierDomain))
+                && !String.IsNullOrEmpty(EnumerationRenderer.WillRender(p.SupplierDomain)))
             {
 
-                
+                EnumerationRenderer.MarkAsUsed(p.SupplierDomain);
+
                 // Since we are going to reference it, we better ensure that any value we use will have it in the
                 // domain
                 if (p.FixedValue != null && p.FixedValue.Length > 0 &&
@@ -297,7 +389,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                     p.SupplierDomain.Literals.Add(ev);
                 }
 
-                return Util.Util.MakeFriendly(p.SupplierDomain.Name);
+                return Util.Util.MakeFriendly(EnumerationRenderer.WillRender(p.SupplierDomain));
             }
             return null;
         }
@@ -311,6 +403,18 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         internal static string CreateDatatypeRef(TypeReference tr, Property p, string ownerPackage)
         {
+            return CreateDatatypeRef(tr, p, ownerPackage, true);    
+        }
+
+        /// <summary>
+        /// Create datatype reference
+        /// </summary>
+        /// <param name="tr">The datatype reference to emit</param>
+        /// <param name="p">The property containing the datatype reference</param>
+        /// <param name="ownerPackage">The package owner</param>
+        /// <param name="emitGenerics">True if generic parameter should be emitted</param>
+        private static string CreateDatatypeRef(TypeReference tr, Property p, string ownerPackage, bool emitGenerics)
+        {
             tr = HeuristicEngine.Datatypes.MapDatatype(tr);
             string retVal = tr is TypeParameter && tr.Name == null ? Util.Util.MakeFriendly((tr as TypeParameter).ParameterName) :
                 tr.Class == null ? tr.Name : String.Format("{0}", Util.Util.PascalCase(tr.Class.Name));
@@ -318,25 +422,37 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             if (tr.Class != null)
             {
                 string import = String.Format("{0}.{1}.{2}", ownerPackage, tr.Class.ContainerName.ToLower(), Util.Util.PascalCase(tr.Class.Name));
-                if (!s_imports.Exists(o => o.EndsWith(retVal)))
+                if (!s_imports.Exists(o => o.EndsWith(retVal))) // Ensure duplicate class isn't imported
                     s_imports.Add(import);
-                else if(!s_imports.Contains(import))
+                else if (!s_imports.Contains(import)) // Ensure duplicate import isn't imported
                     retVal = String.Format("{0}.{1}.{2}", ownerPackage, tr.Class.ContainerName.ToLower(), retVal);
 
                 // Correct the import
             }
 
             // Domain for a code?
-            if (!String.IsNullOrEmpty(GetSupplierDomain(tr, p, ownerPackage)))
+            if (emitGenerics && !String.IsNullOrEmpty(GetSupplierDomain(tr, p, ownerPackage)))
             {
-                // Bind if appropriate
-                retVal += String.Format("<{0}>", GetSupplierDomain(tr, p, ownerPackage)); 
+                string vocabDomain = GetSupplierDomain(tr, p, ownerPackage);
 
+                if (String.IsNullOrEmpty(Datatypes.GetBuiltinVocabulary(vocabDomain)))
+                {
+                    // Output the import for vocab if it doesn't exist
+                    string import = String.Format("{0}.vocabulary.{1}", ownerPackage, vocabDomain);
+                    if (!s_imports.Exists(o => o.EndsWith(vocabDomain))) // Ensure duplicate class isn't imported
+                        s_imports.Add(import);
+                    else if (!s_imports.Contains(import)) // Didn't add the import so we must reference by full name
+                        vocabDomain = import;
+                }
+
+                // Bind if appropriate
+                retVal += String.Format("<{0}>", vocabDomain);
+                
             }
 
 
             // Generics?
-            if (tr.Class != null && tr.Class.TypeParameters != null)
+            if (emitGenerics && tr.Class != null && tr.Class.TypeParameters != null)
             {
                 retVal += "<";
                 foreach (var parm in tr.Class.TypeParameters)
@@ -354,7 +470,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 retVal = retVal.Substring(0, retVal.Length - 1);
                 retVal += ">";
             }
-            else if (tr.GenericSupplier != null && tr.GenericSupplier.Count > 0 && !retVal.Contains("<"))
+            else if (emitGenerics && tr.GenericSupplier != null && tr.GenericSupplier.Count > 0 && !retVal.Contains("<"))
             {
                 retVal += "<";
                 foreach (TypeReference gr in tr.GenericSupplier)
@@ -366,7 +482,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             return retVal;
         }
 
-
+        
+        
         #region IFeatureRenderer Members
 
         /// <summary>
@@ -379,7 +496,6 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         public void Render(string ownerPackage, string apiNs, MohawkCollege.EHR.gpmr.COR.Feature f, System.IO.TextWriter tw)
         {
             s_imports.Clear();
-
             // Validate arguments
             if (String.IsNullOrEmpty(ownerPackage))
                 throw new ArgumentNullException("ownerPackage");
@@ -428,10 +544,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 sw.Write("{0}", RimbaJavaRenderer.RootClass);
 
             // Interfaces
+            sw.Write(" implements IGraphable ");
             List<String> interfaces = MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine.Interfaces.MapInterfaces(cls, ownerPackage);
             if (interfaces.Count > 0)
             {
-                sw.Write(" implements ");
+                sw.Write(",");
                 foreach (string s in interfaces)
                     sw.Write("{0} {1}", s, s == interfaces.Last() ? "" : ",");
             }
@@ -442,8 +559,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             #region Render Properties
 
+            int propertySort = 0;
             foreach (ClassContent cc in cls.Content)
-                sw.WriteLine(RenderClassContent(cc, ownerPackage));
+                sw.WriteLine(RenderClassContent(cc, ownerPackage, propertySort++));
 
             #endregion
 
@@ -479,110 +597,132 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 //#endregion
             }
 
+            // Move to a factory
             // Is this an emtpy class that facilitates a choice?
-            if (cls.SpecializedBy != null && cls.SpecializedBy.Count > 0 &&
-                cls.IsAbstract)
-            {
-                #region Generate creator methods for each of the children
+            //if (cls.SpecializedBy != null && cls.SpecializedBy.Count > 0 &&
+            //    cls.IsAbstract)
+            //{
+            //    // NB: This isn't possible in Java (at least I don't have time to work around Java's weirdness) so
+            //    //      I'm going to disable it. This causes problems when
+            //    //
+            //    //      abstract A.A
+            //    //      abstract B.B extends A.A
+            //    //      C.C extends A.A
+            //    //      B.C extends B.B
+            //    //
+            //    // Results in :
+            //    //     A.A { C.C CreateC(); }
+            //    //     B.B { B.C CreateC(); }
+            //    //
+            //    // Java freaks out because the return type of CreateC has changed.
+            //    // The only thing I can think of is to blow out the method name...
+            //    // wait a tick, I'll do that :@
 
-                foreach (TypeReference tr in CascadeSpecializers(cls.SpecializedBy))
-                {
+            //    //#region Generate creator methods for each of the children
 
-                    if (tr.Class == null || tr.Class.ContainerName == "RIM" && !RimbaJavaRenderer.GenerateRim ||
-                        tr.Class.IsAbstract)
-                        continue;
+            //    //// NB: In Java apparently super classes' static methods are acceessable
+            //    ////     in child classes which is different than .NET, so we're not going to cascade specializers
+            //    foreach (TypeReference tr in cls.SpecializedBy)
+            //    {
 
-                    Class child = tr.Class;
+            //        if (tr.Class == null || tr.Class.ContainerName == "RIM" && !RimbaJavaRenderer.GenerateRim ||
+            //            tr.Class.IsAbstract)
+            //            continue;
 
-                    // Create factory for the child
-                    Dictionary<String, String[]> ctors = CreateFactoryMethod(tr, "retVal", ownerPackage);
-                    // Write factory
-                    foreach (var kv in ctors)
-                    {
+            //        Class child = tr.Class;
 
-                        string methodSignature = String.Format("{1}.{0}.{2}.create{3}", cls.ContainerName, ownerPackage, Util.Util.PascalCase(cls.Name), Util.Util.PascalCase(child.Name)),
-                            publicName = methodSignature;
+            //        // Create factory for the child
+            //        Dictionary<String, String[]> ctors = CreateFactoryMethod(tr, "retVal", ownerPackage);
+            //        // Write factory
+            //        foreach (var kv in ctors)
+            //        {
 
-                        // Regex for extracting the parameter type rather than the type/name
-                        Regex parmRegex = new Regex(@"(([\w<>,.]*)\s(\w*)),?\s?");
-                        MatchCollection parmMatches = parmRegex.Matches(kv.Value[0]);
-                        foreach (Match match in parmMatches)
-                            methodSignature += match.Groups[1].Value.Substring(0, match.Groups[1].Value.IndexOf(" "));
+            //            string methodSignature = String.Format("{1}.{0}.{2}.create{3}", cls.ContainerName, ownerPackage, Util.Util.PascalCase(cls.Name), Util.Util.PascalCase(child.Name)),
+            //                publicName = methodSignature;
 
-
-                        // JF: Added to protected against rendering the same factory method
-                        if (s_methodDeclarations.Contains(methodSignature))
-                            continue;
-                        s_methodDeclarations.Add(methodSignature);
-
-                        // Render if there is even any content
-                        if (kv.Value[0].Length > 0)
-                        {
-                            string clsDoc = DocumentationRenderer.Render(child.Documentation, 1);
-
-                            string ctorClassName = String.Format("{0}.{2}.{1}",ownerPackage, tr.Class.Name, tr.Class.ContainerName.ToLower());
-                            // import already exists?
-                            if(!s_imports.Exists(o=>o.EndsWith(Util.Util.PascalCase(tr.Class.Name))))
-                            {
-                                s_imports.Add(ctorClassName);
-                                ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
-                            }
-                            if (s_imports.Contains(ctorClassName))
-                                ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
-
-                            if(clsDoc.Contains("*/"))
-                                sw.Write(clsDoc.Substring(0, clsDoc.LastIndexOf("*/")));
-                            sw.WriteLine("* This function creates a new instance of {1}\r\n\t {4}\r\n\t*/\t\n\tpublic static {0} create{2}({3}) {{ ", ctorClassName, tr.Class.Name, Util.Util.PascalCase(child.Name), kv.Value[0].Substring(0, kv.Value[0].Length - 1), kv.Value[2], tr.Class.ContainerName.ToLower());
-                            sw.WriteLine("\t\t{0} retVal = new {0}();", ctorClassName);
-                            sw.WriteLine("{0}", kv.Value[1]);
-                            sw.WriteLine("\t\treturn retVal;");
-                            sw.WriteLine("\t}");
-
-                            if (!factoryMethods.ContainsKey(tr.Name))
-                                factoryMethods.Add(tr.Name, new List<FactoryMethodInfo>());
-
-                            FactoryMethodInfo myInfo = new FactoryMethodInfo(publicName, kv.Value[2], methodSignature);
+            //            // Regex for extracting the parameter type rather than the type/name
+            //            Regex parmRegex = new Regex(@"(([\w<>,.]*)\s(\w*)),?\s?");
+            //            MatchCollection parmMatches = parmRegex.Matches(kv.Value[0]);
+            //            foreach (Match match in parmMatches)
+            //                methodSignature += match.Groups[1].Value.Substring(0, match.Groups[1].Value.IndexOf(" "));
 
 
-                            //Match the regular expression below and capture its match into backreference number 1 «(([\w<>,]*?)\s(\w*),?\s?)»
-                            //Match the regular expression below and capture its match into backreference number 2 «([\w<>,]*?)»
-                            //Match a single character present in the list below «[\w<>,]*?»
-                            //Between zero and unlimited times, as few times as possible, expanding as needed (lazy) «*?»
-                            //A word character (letters, digits, etc.) «\w»
-                            //One of the characters “<>,” «<>,»
-                            //Match a single character that is a “whitespace character” (spaces, tabs, line breaks, etc.) «\s»
-                            //Match the regular expression below and capture its match into backreference number 3 «(\w*)»
-                            //Match a single character that is a “word character” (letters, digits, etc.) «\w*»
-                            //Between zero and unlimited times, as many times as possible, giving back as needed (greedy) «*»
-                            //Match the character “,” literally «,?»
-                            //Between zero and one times, as many times as possible, giving back as needed (greedy) «?»
-                            //Match a single character that is a “whitespace character” (spaces, tabs, line breaks, etc.) «\s?»
-                            //Between zero and one times, as many times as possible, giving back as needed (greedy) «?»
-                            foreach (Match match in parmMatches)
-                                myInfo.parameters.Add(match.Groups[1].Value);
+            //            // JF: Added to protected against rendering the same factory method
+            //            if (s_methodDeclarations.Contains(methodSignature))
+            //                continue;
+            //            s_methodDeclarations.Add(methodSignature);
 
-                            // ADd the factory signature to the dictionary
-                            factoryMethods[tr.Name].Add(myInfo);
-                        }
+            //            // Render if there is even any content
+            //            if (kv.Value[0].Length > 0)
+            //            {
+            //                string clsDoc = DocumentationRenderer.Render(child.Documentation, 1);
 
-                    }
-                }
+            //                string ctorClassName = String.Format("{0}.{2}.{1}", ownerPackage, tr.Class.Name, tr.Class.ContainerName.ToLower());
+            //                //// import already exists?
+            //                //if(!s_imports.Exists(o=>o.EndsWith(Util.Util.PascalCase(tr.Class.Name))))
+            //                //{
+            //                //    s_imports.Add(ctorClassName);
+            //                //    ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
+            //                //}
+            //                //if (s_imports.Contains(ctorClassName))
+            //                //    ctorClassName = ctorClassName.Substring(ctorClassName.LastIndexOf(".") + 1);
 
-                #endregion
-            }
+            //                if (clsDoc.Contains("*/"))
+            //                    sw.Write(clsDoc.Substring(0, clsDoc.LastIndexOf("*/")));
+            //                sw.WriteLine("* This function creates a new instance of {5}.{1}\r\n\t {4}\r\n\t*/\t\n\tpublic static {0} create{6}{2}({3}) {{ ", ctorClassName, tr.Class.Name, Util.Util.PascalCase(child.Name), kv.Value[0].Substring(0, kv.Value[0].Length - 1), kv.Value[2], tr.Class.ContainerName.ToLower(), Util.Util.PascalCase(cls.Name));
+            //                sw.WriteLine("\t\t{0} retVal = new {0}();", ctorClassName);
+            //                sw.WriteLine("{0}", kv.Value[1]);
+            //                sw.WriteLine("\t\treturn retVal;");
+            //                sw.WriteLine("\t}");
+
+            //                if (!factoryMethods.ContainsKey(tr.Name))
+            //                    factoryMethods.Add(tr.Name, new List<FactoryMethodInfo>());
+
+            //                FactoryMethodInfo myInfo = new FactoryMethodInfo(publicName, kv.Value[2], methodSignature);
+
+
+            //                //Match the regular expression below and capture its match into backreference number 1 «(([\w<>,]*?)\s(\w*),?\s?)»
+            //                //Match the regular expression below and capture its match into backreference number 2 «([\w<>,]*?)»
+            //                //Match a single character present in the list below «[\w<>,]*?»
+            //                //Between zero and unlimited times, as few times as possible, expanding as needed (lazy) «*?»
+            //                //A word character (letters, digits, etc.) «\w»
+            //                //One of the characters “<>,” «<>,»
+            //                //Match a single character that is a “whitespace character” (spaces, tabs, line breaks, etc.) «\s»
+            //                //Match the regular expression below and capture its match into backreference number 3 «(\w*)»
+            //                //Match a single character that is a “word character” (letters, digits, etc.) «\w*»
+            //                //Between zero and unlimited times, as many times as possible, giving back as needed (greedy) «*»
+            //                //Match the character “,” literally «,?»
+            //                //Between zero and one times, as many times as possible, giving back as needed (greedy) «?»
+            //                //Match a single character that is a “whitespace character” (spaces, tabs, line breaks, etc.) «\s?»
+            //                //Between zero and one times, as many times as possible, giving back as needed (greedy) «?»
+            //                foreach (Match match in parmMatches)
+            //                    myInfo.parameters.Add(match.Groups[1].Value);
+
+            //                // ADd the factory signature to the dictionary
+            //                factoryMethods[tr.Name].Add(myInfo);
+            //            }
+
+            //        }
+            //    }
+
+            //    //#endregion
+            //}
             // End class
             sw.WriteLine("}");
 
 
             #region Render the imports
-            string[] apiImports = { "annotations.*", "datatypes.*", "datatypes.generic.*" },
-                jImports = { "java.lang.*", "java.util.*", String.Format("{0}.vocabulary.*", ownerPackage) };
+            string[] apiImports = { "annotations.*", "datatypes.*", "datatypes.generic.*", "interfaces.IGraphable" },
+                jImports = { "java.lang.*", "java.util.*" };
             foreach (var import in apiImports)
                 tw.WriteLine("import {0}.{1};", apiNs, import);
             foreach (var import in jImports)
                 tw.WriteLine("import {0};", import);
             foreach (var import in s_imports)
-                tw.WriteLine("import {0};", import);
+            {
+                if (!import.EndsWith(String.Format(".{0}", Util.Util.PascalCase(f.Name)))) 
+                    tw.WriteLine("import {0};", import);
+            }
 
             tw.WriteLine(sw.ToString());
             #endregion
@@ -705,13 +845,13 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
                         // Variable initializor
                         string varInitValue = string.Empty, 
-                            varInitType = cc.Name;
+                            varInitType = Util.Util.MakeFriendly(cc.Name);
 
                         // Documentation
                         string doc = String.Format("\t * @param {0} ({2}) {1}\r\n", cc.Name, cc.Documentation != null && cc.Documentation.Definition != null && cc.Documentation.Definition.Count > 0 ? cc.Documentation.Definition[0] : "No documentation available", cc.Conformance);
 
                         // Is this a list?
-                        if (p.MaxOccurs != "1" && (!p.Type.Name.StartsWith("LIST") && !p.Type.Name.StartsWith("COLL") && !p.Type.Name.StartsWith("SET") && !p.Type.Name.StartsWith("BAG") && !p.Type.Name.StartsWith("DSET")))
+                        if (p.MaxOccurs != "1" && !Datatypes.IsCollectionType(p.Type))
                         {
                             varInitValue = String.Format(".add({0})", varInitType);
                             varInitType = String.Format("new ArrayList<{0}>()",
@@ -733,10 +873,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                             var setter = Array.Find(setters, o => o.Parameters != null && o.Parameters.Count == 1);
                             if (setter != null) // We found one, now capitilize on the opportunity
                             {
-                                varInitType = String.Format("d{0:N}", Guid.NewGuid());
+                                var varName = String.Format("d{0:N}", Guid.NewGuid());
                                 string setterText = setter.SetterText;
                                 setterText = setterText.Replace(setter.Parameters[0].Name, Util.Util.MakeFriendly(cc.Name)); // Replace all instance of the parameter to our parameter
-                                setterText = setterText.Replace(setter.ValueInstance.Name, varInitType);
+                                setterText = setterText.Replace(setter.ValueInstance.Name, varName);
                                 if (p.Conformance == ClassContent.ConformanceKind.Mandatory)                            
                                     ctors["mandatory"][1] += setterText;
                                 if (p.Conformance == ClassContent.ConformanceKind.Mandatory && (p.PropertyType == Property.PropertyTypes.Structural || p.PropertyType == Property.PropertyTypes.NonStructural)) // Structural
@@ -745,11 +885,20 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                                     ctors["required"][1] += setterText;
                                 ctors["all"][1] += setterText;
 
+                                // Create the datatype reference so the import gets registered
+                                CreateDatatypeRef(tr, p, ownerPackage);
+
+                                if (p.MaxOccurs != "1" && !Datatypes.IsCollectionType(p.Type))
+                                    varInitValue = String.Format(".add({0})", varName);
+                                else
+                                    varInitType = varName;
+
                                 // Update the class signature
                                 tr = new TypeReference()
                                 {
-                                    Name = String.Format("{1}", ownerPackage, GetSupplierDomain(tr, p, ownerPackage))
+                                    Name = String.Format("{1}", ownerPackage, Util.Util.MakeFriendly(GetSupplierDomain(tr, p, ownerPackage)))
                                 };
+
 
                             }
 
@@ -804,7 +953,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         // Now the signature (Mandatory)
                         if (choice.Conformance == ClassContent.ConformanceKind.Mandatory)
                         {
-                            ctors["mandatory"][0] += string.Format("{0} {1},", tr == null ? "System.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                            ctors["mandatory"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
                             ctors["mandatory"][1] += string.Format("\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                             ctors["mandatory"][2] += String.Format("\t * @param {0} ({1}) No documentation available", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
                         }
@@ -812,11 +961,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         {
 
                             // Required (default)
-                            ctors["required"][0] += string.Format("{0} {1},", tr == null ? "System.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                            ctors["required"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
                             ctors["required"][1] += string.Format("\t\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                             ctors["required"][2] += String.Format("\t\t * @param {0} ({1}) No documentation available\r\n", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
                         }
-                        ctors["all"][0] += string.Format("{0} {1},", tr == null ? "System.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                        ctors["all"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
                         ctors["all"][1] += string.Format("\t\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                         ctors["all"][2] += String.Format("\t\t/* @param {0} ({1}) No documentation available\r\n", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
 

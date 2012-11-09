@@ -50,9 +50,12 @@ namespace MARC.Everest.DataTypes
     /// </example>
     /// </para>
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "INT"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "INT")]
     [Structure(Name = "INT", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("INT", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class INT : QTY<Nullable<Int32>>, IIntegerValue, IEquatable<INT>, IComparable<INT>, IOrderedDataType<INT>
     {
 
@@ -559,7 +562,7 @@ namespace MARC.Everest.DataTypes
                 return true;
             else if (this.IsNull ^ other.IsNull)
                 return false;
-
+            
             // Values are equal?
             INT intOther = other as INT;
             if (intOther == null)

@@ -24,6 +24,7 @@ using System.Text;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -39,9 +40,11 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:SXPR{T}"/>
     /// <seealso cref="T:SXCM{T}"/>
     /// <seealso cref="T:GTS"/>
-    [Serializable]
     [Structure(Name = "QSD", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QSD", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class QSD<T> : QSET<T>, IEnumerable<ISetComponent<T>>, IEquatable<QSD<T>>
         where T : IAny
     {
@@ -65,15 +68,15 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// The set from which <see cref="P:Subtrahend"/> is subtracted
         /// </summary>
-        [Property(Name = "first", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
-        [XmlElement("first")]
+        [Property(Name = "minuend", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
+        [XmlElement("minuend")]
         public ISetComponent<T> Minuend { get; set; }
 
         /// <summary>
         /// The set by which <see cref="P:Minuend"/> is to be subtracted
         /// </summary>
-        [Property(Name = "second", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
-        [XmlElement("second")]
+        [Property(Name = "subtrahend", Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
+        [XmlElement("subtrahend")]
         public ISetComponent<T> Subtrahend { get; set; }
 
         /// <summary>
@@ -86,6 +89,21 @@ namespace MARC.Everest.DataTypes
             return isValid;
         }
 
+        /// <summary>
+        /// Validate that the QSET is valid. A QSET is valid when it contains <see cref="P:First"/> and
+        /// <paramref name="P:Second"/> and contains no-null terms.
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            List<IResultDetail> retVal = new List<IResultDetail>();
+            if (!((this.NullFlavor != null) ^ (this.Minuend != null && !this.Minuend.IsNull && this.Subtrahend != null && !this.Subtrahend.IsNull)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.Minuend == null || this.Minuend.IsNull)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Minuend", String.Format("ISetComponent<{0}>", typeof(T).Name)), null));
+            if (this.Subtrahend == null || this.Subtrahend.IsNull)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Subtrahend", String.Format("ISetComponent<{0}>", typeof(T).Name)), null));
+            return retVal;
+        }
         /// <summary>
         /// Get equivalent set operator
         /// </summary>
@@ -152,8 +170,8 @@ namespace MARC.Everest.DataTypes
             QSD<T> retVal = this.Clone() as QSD<T>;
             if (retVal.Minuend is SXPR<T>)
                 retVal.Minuend = (retVal.Minuend as SXPR<T>).TranslateToQSET();
-            if (retVal.Minuend is SXPR<T>)
-                retVal.Minuend = (retVal.Minuend as SXPR<T>).TranslateToQSET();
+            if (retVal.Subtrahend is SXPR<T>)
+                retVal.Subtrahend = (retVal.Subtrahend as SXPR<T>).TranslateToQSET();
             return retVal;
         }
     }

@@ -67,7 +67,7 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Gets a common ancestor
         /// </summary>
-        public static NullFlavor CommonAncestorWith(this NullFlavor a, NullFlavor other)
+        public static NullFlavor GetCommonParent(this NullFlavor a, NullFlavor other)
         {
             NullFlavor parentAttempt = a;
             do
@@ -81,18 +81,20 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Gets a common ancestor
         /// </summary>
-        public static NullFlavor CommonAncestorWith(this CS<NullFlavor> a, CS<NullFlavor> other)
+        public static NullFlavor GetCommonParent(this CS<NullFlavor> a, CS<NullFlavor> other)
         {
-            return NullFlavorUtil.CommonAncestorWith((NullFlavor)a, (NullFlavor)other);
+            return NullFlavorUtil.GetCommonParent((NullFlavor)a, (NullFlavor)other);
         }
     }
 
     /// <summary>
     /// Indicates why a value is not present.
     /// </summary>
-    [Serializable]
     [Structure(Name = "NullFlavor", CodeSystem = "2.16.840.1.113883.5.1008", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
     [XmlType("NullFlavor", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public enum NullFlavor
     {
         /// <summary>

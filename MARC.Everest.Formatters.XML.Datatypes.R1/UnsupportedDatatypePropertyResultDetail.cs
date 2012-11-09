@@ -30,7 +30,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
     /// </summary>
     /// <remarks>
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class UnsupportedDatatypeR1PropertyResultDetail : UnsupportedDatatypePropertyResultDetail
     {
         /// <summary>

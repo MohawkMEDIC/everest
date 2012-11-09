@@ -13,8 +13,12 @@ namespace MARC.Everest.Exceptions
     /// <remarks>
     /// This exception occurs as the result of an exceptional condition during the formatting of an instance.
     /// </remarks>
+#if WINDOWS_PHONE
+    public class FormatterException : Exception
+#else
     [Serializable]
     public class FormatterException : ApplicationException
+#endif
     {
         /// <summary>
         /// Initializes a new instance of the System.Exception class.
@@ -33,6 +37,8 @@ namespace MARC.Everest.Exceptions
         {
 
         }
+
+#if !WINDOWS_PHONE
         /// <summary>
         /// Initializes a new instance of the System.Exception class with serialized
         /// data.
@@ -45,6 +51,8 @@ namespace MARC.Everest.Exceptions
             : base(info, context)
         {
         }
+#endif
+
         /// <summary>
         /// Initializes a new instance of the System.Exception class with a specified
         /// error message and a reference to the inner exception that is the cause of

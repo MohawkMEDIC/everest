@@ -25,6 +25,7 @@ using MARC.Everest.Attributes;
 using MARC.Everest.Interfaces;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -81,9 +82,12 @@ namespace MARC.Everest.DataTypes
     /// quantity type abstraction is needed in defining certain other types such as the interval and 
     /// probability distribution
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "QTY"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "QTY")]
     [Structure(Name = "QTY", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QTY", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public abstract class QTY<T> : PDV<T>, IQuantity, IRealValue, IGraphable, IEquatable<QTY<T>>
         //where T : IComparable<T>
     {
@@ -136,6 +140,7 @@ namespace MARC.Everest.DataTypes
         /// single value along with a distribution of uncertainty for the value.
         /// </para>
         /// </remarks>
+        [Property(Name = "uncertainRange", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Required)]
         public virtual IVL<IQuantity> UncertainRange { get; set; }
 
         /// <summary>
@@ -189,8 +194,28 @@ namespace MARC.Everest.DataTypes
 
             return valid;
 
+        }
 
+        /// <summary>
+        /// Advanced validation with details
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            List<IResultDetail> retVal = new List<IResultDetail>();
             
+            // Either null Flavor or Value or Uncertain range
+            if ((Value != null) && NullFlavor != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QTY", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if(Value == null && NullFlavor == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QTY", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            if(!((UncertainRange != null) ^ (Uncertainty != null)|| UncertainRange == null && Uncertainty == null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QTY", String.Format(ValidationMessages.MSG_INDEPENDENT_VALUE, "Uncertainty", "UncertainRange"), null));
+            if (!((Uncertainty != null && UncertaintyType != null) || Uncertainty == null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QTY", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Uncertainty", "UncertaintyType"), null));
+            if(!((UncertainRange != null && UncertainRange.Width == null && UncertainRange.Value == null) || UncertainRange == null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QTY", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Width or Value", "UncertainRange"), null));
+            return retVal;
         }
 
         /// <summary>
@@ -310,6 +335,18 @@ namespace MARC.Everest.DataTypes
 
         #endregion
 
+        /// <summary>
+        /// Determine if this instance of QTY semantically equals <paramref name="other"/>
+        /// </summary>
+        /// <param name="other">The other datatype to compare for semantic equality</param>
+        /// <remarks>There are not specific restrictions on QTY and semantic equality however 
+        /// because QTY is described as a generic type in Everest, the semantic equality check 
+        /// must be performed to ensure the type of encapsulated data matches</remarks>
+        /// <returns></returns>
+        public override BL SemanticEquals(IAny other)
+        {
+            return base.SemanticEquals(other);
+        }
 
     }
 }

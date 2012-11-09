@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F8A9EA04-DA15-4E32-A563-82FDB52FC2AD}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MARC.Everest.Phone</RootNamespace>
+    <AssemblyName>MARC.Everest.Phone</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Bin\Debug\MARC.Everest.Phone.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Bin\Release\MARC.Everest.Phone.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\FlavorMapAttribute.cs" />
+    <Compile Include="Attributes\InteractionResponseAttribute.cs" />
+    <Compile Include="Attributes\PropertyAttribute.cs" />
+    <Compile Include="Attributes\EnumerationAttribute.cs" />
+    <Compile Include="Attributes\FlavorAttribute.cs" />
+    <Compile Include="Attributes\InteractionAttribute.cs" />
+    <Compile Include="Attributes\MarkerAttribute.cs" />
+    <Compile Include="Attributes\NamedAttribute.cs" />
+    <Compile Include="Attributes\PropertyCollapseAttribute.cs" />
+    <Compile Include="Attributes\RealizationAttribute.cs" />
+    <Compile Include="Attributes\StateAttribute.cs" />
+    <Compile Include="Attributes\StateTransitionAttribute.cs" />
+    <Compile Include="Attributes\StructureAttribute.cs" />
+    <Compile Include="Attributes\TypeMapAttribute.cs" />
+    <Compile Include="Connectors\ConnectionStringParser.cs" />
+    <Compile Include="Connectors\ICodeDomStructureFormatter.cs" />
+    <Compile Include="Connectors\IConnector.cs" />
+    <Compile Include="Connectors\IDatatypeStructureFormatter.cs" />
+    <Compile Include="Connectors\IFilteredConnector.cs" />
+    <Compile Include="Connectors\IFormattedConnector.cs" />
+    <Compile Include="Connectors\IFormatterGraphResult.cs" />
+    <Compile Include="Connectors\IFormatterParseResult.cs" />
+    <Compile Include="Connectors\IListenWaitConnector.cs" />
+    <Compile Include="Connectors\IListenWaitRespondConnector.cs" />
+    <Compile Include="Connectors\IReceiveResult.cs" />
+    <Compile Include="Connectors\IReceivingConnector.cs" />
+    <Compile Include="Connectors\ISendingConnector.cs" />
+    <Compile Include="Connectors\ISendReceiveConnector.cs" />
+    <Compile Include="Connectors\ISendResult.cs" />
+    <Compile Include="Connectors\IResultDetail.cs" />
+    <Compile Include="Connectors\IStructureFormatter.cs" />
+    <Compile Include="Connectors\IValidatingStructureFormatter.cs" />
+    <Compile Include="Connectors\IXmlStructureFormatter.cs" />
+    <Compile Include="Connectors\MessageEventArgs.cs" />
+    <Compile Include="Connectors\ReceiveResultAsyncResult.cs" />
+    <Compile Include="Connectors\ResultDetail.cs" />
+    <Compile Include="Connectors\SendResultAsyncResult.cs" />
+    <Compile Include="Connectors\UnsolicitedDataEventArgs.cs" />
+    <Compile Include="Connectors\Util.cs" />
+    <Compile Include="DataTypes\AD.cs" />
+    <Compile Include="DataTypes\ADXP.cs" />
+    <Compile Include="DataTypes\ANY.cs" />
+    <Compile Include="DataTypes\BAG.cs" />
+    <Compile Include="DataTypes\BL.cs" />
+    <Compile Include="DataTypes\CD.cs" />
+    <Compile Include="DataTypes\CDGroup.cs" />
+    <Compile Include="DataTypes\CE.cs" />
+    <Compile Include="DataTypes\CO.cs" />
+    <Compile Include="DataTypes\COLL.cs" />
+    <Compile Include="DataTypes\Converters\SiUnitConverter.cs" />
+    <Compile Include="DataTypes\Interfaces\IAny.cs" />
+    <Compile Include="DataTypes\CR.cs" />
+    <Compile Include="DataTypes\CS.cs" />
+    <Compile Include="DataTypes\CV.cs" />
+    <Compile Include="DataTypes\DatePrecision.cs" />
+    <Compile Include="DataTypes\ED.cs" />
+    <Compile Include="DataTypes\EIVL.cs" />
+    <Compile Include="DataTypes\EN.cs" />
+    <Compile Include="DataTypes\ENXP.cs" />
+    <Compile Include="DataTypes\GTS.cs" />
+    <Compile Include="DataTypes\HXIT.cs" />
+    <Compile Include="DataTypes\II.cs" />
+    <Compile Include="DataTypes\INT.cs" />
+    <Compile Include="DataTypes\Interfaces\IBooleanValue.cs" />
+    <Compile Include="DataTypes\Interfaces\ICodedEquivalents.cs" />
+    <Compile Include="DataTypes\Interfaces\ICodedSimple.cs" />
+    <Compile Include="DataTypes\Interfaces\ICodedValue.cs" />
+    <Compile Include="DataTypes\Interfaces\IColl.cs" />
+    <Compile Include="DataTypes\Interfaces\IConceptDescriptor.cs" />
+    <Compile Include="DataTypes\Interfaces\IConceptQualifier.cs" />
+    <Compile Include="DataTypes\Interfaces\IDistanceable.cs" />
+    <Compile Include="DataTypes\Interfaces\IEncapsulatedData.cs" />
+    <Compile Include="DataTypes\Interfaces\IImplicitInterval.cs" />
+    <Compile Include="DataTypes\Interfaces\IListContainer.cs" />
+    <Compile Include="DataTypes\Interfaces\INormalizable.cs" />
+    <Compile Include="DataTypes\Interfaces\IOrderedDataType.cs" />
+    <Compile Include="DataTypes\Interfaces\IInstanceIdentifier.cs" />
+    <Compile Include="DataTypes\Interfaces\IIntegerValue.cs" />
+    <Compile Include="DataTypes\Interfaces\IInterval.cs" />
+    <Compile Include="DataTypes\Interfaces\IOriginalText.cs" />
+    <Compile Include="DataTypes\Interfaces\IPointInTime.cs" />
+    <Compile Include="DataTypes\Interfaces\IPqScalar.cs" />
+    <Compile Include="DataTypes\Interfaces\IPqTranslatable.cs" />
+    <Compile Include="DataTypes\Interfaces\IPrimitiveDataValue.cs" />
+    <Compile Include="DataTypes\Interfaces\IProbability.cs" />
+    <Compile Include="DataTypes\Interfaces\IQuantity.cs" />
+    <Compile Include="DataTypes\Interfaces\IBag.cs" />
+    <Compile Include="DataTypes\Interfaces\IRealValue.cs" />
+    <Compile Include="DataTypes\Interfaces\ISampledList.cs" />
+    <Compile Include="DataTypes\Interfaces\ISemanticEquatable.cs" />
+    <Compile Include="DataTypes\Interfaces\ISequence.cs" />
+    <Compile Include="DataTypes\Interfaces\ISet.cs" />
+    <Compile Include="DataTypes\Interfaces\ISetComponent.cs" />
+    <Compile Include="DataTypes\Interfaces\ITelecommunicationAddress.cs" />
+    <Compile Include="DataTypes\Interfaces\IUnitConverter.cs" />
+    <Compile Include="DataTypes\Interfaces\NamespaceDoc.cs" />
+    <Compile Include="DataTypes\IVL.cs" />
+    <Compile Include="DataTypes\LIST.cs" />
+    <Compile Include="DataTypes\MO.cs" />
+    <Compile Include="DataTypes\NamespaceDoc.cs" />
+    <Compile Include="DataTypes\NPPD.cs" />
+    <Compile Include="DataTypes\NullFlavor.cs" />
+    <Compile Include="DataTypes\ON.cs" />
+    <Compile Include="DataTypes\PDV.cs" />
+    <Compile Include="DataTypes\PIVL.cs" />
+    <Compile Include="DataTypes\PN.cs" />
+    <Compile Include="DataTypes\PQ.cs" />
+    <Compile Include="DataTypes\PQR.cs" />
+    <Compile Include="DataTypes\Primitives\CodeValue.cs" />
+    <Compile Include="DataTypes\Primitives\NamespaceDoc.cs" />
+    <Compile Include="DataTypes\Primitives\OID.cs" />
+    <Compile Include="DataTypes\QSC.cs" />
+    <Compile Include="DataTypes\QSD.cs" />
+    <Compile Include="DataTypes\QSET.cs" />
+    <Compile Include="DataTypes\QSI.cs" />
+    <Compile Include="DataTypes\QSP.cs" />
+    <Compile Include="DataTypes\QSS.cs" />
+    <Compile Include="DataTypes\QSU.cs" />
+    <Compile Include="DataTypes\QTY.cs" />
+    <Compile Include="DataTypes\REAL.cs" />
+    <Compile Include="DataTypes\SC.cs" />
+    <Compile Include="DataTypes\SET.cs" />
+    <Compile Include="DataTypes\RTO.cs" />
+    <Compile Include="DataTypes\SLIST.cs" />
+    <Compile Include="DataTypes\ST.cs" />
+    <Compile Include="DataTypes\SXCM.cs" />
+    <Compile Include="DataTypes\SXPR.cs" />
+    <Compile Include="DataTypes\TEL.cs" />
+    <Compile Include="DataTypes\TN.cs" />
+    <Compile Include="DataTypes\TS.cs" />
+    <Compile Include="DataTypes\UpdateMode.cs" />
+    <Compile Include="DataTypes\URG.cs" />
+    <Compile Include="DataTypes\UVP.cs" />
+    <Compile Include="DataTypes\ValidationMessages.cs" />
+    <Compile Include="Exceptions\ConnectorException.cs" />
+    <Compile Include="Exceptions\DuplicateItemException.cs" />
+    <Compile Include="Exceptions\FormatterCompileException.cs" />
+    <Compile Include="Exceptions\FormatterException.cs" />
+    <Compile Include="Exceptions\JsonException.cs" />
+    <Compile Include="Exceptions\MessageValidationException.cs" />
+    <Compile Include="Exceptions\NamespaceDoc.cs" />
+    <Compile Include="Exceptions\VocabularyException.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Interfaces\IGraphable.cs" />
+    <Compile Include="Interfaces\IIdentifiable.cs" />
+    <Compile Include="Interfaces\IImplementsProfileId.cs" />
+    <Compile Include="Interfaces\IImplementsAcceptAckCode.cs" />
+    <Compile Include="Interfaces\IImplementsMoodCode.cs" />
+    <Compile Include="Interfaces\IImplementsNullFlavor.cs" />
+    <Compile Include="Interfaces\IImplementsProcessingCode.cs" />
+    <Compile Include="Interfaces\IImplementsReasonCode.cs" />
+    <Compile Include="Interfaces\IImplementsResponseModeCode.cs" />
+    <Compile Include="Interfaces\IImplementsStatusCode.cs" />
+    <Compile Include="Interfaces\IImplementsText.cs" />
+    <Compile Include="Interfaces\IImplementsTitle.cs" />
+    <Compile Include="Interfaces\IImplementsTypeId.cs" />
+    <Compile Include="Interfaces\IInteraction.cs" />
+    <Compile Include="Interfaces\NamespaceDoc.cs" />
+    <Compile Include="Json\JsonStackObject.cs" />
+    <Compile Include="Json\JsonStateReader.cs" />
+    <Compile Include="Json\JsonStateWriter.cs" />
+    <Compile Include="Json\JsonWriterSettings.cs" />
+    <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="Phone\PhoneInterop.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xml\NamespaceDoc.cs" />
+    <Compile Include="Xml\XmlStateReader.cs" />
+    <Compile Include="Xml\XmlStateWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Xml\app.config" />
+    <None Include="MohawkCollege.EHR.API.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataTypes\FlavorChangers.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -578,6 +578,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                 // Which type converter?
                 TypeReference tr = Datatypes.MapDatatype((cc as Property).Type);
 
+                sw.WriteLine("#if !WINDOWS_PHONE");
                 if (property.SupplierDomain != null)
                     sw.WriteLine("\t\t[System.ComponentModel.TypeConverter(typeof(MARC.Everest.Design.DataTypeConverter))]");
                 else
@@ -587,10 +588,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                     (!Datatypes.IsCollectionType(tr))))
                         sw.WriteLine("\t\t[System.ComponentModel.Editor(typeof(MARC.Everest.Design.NewInstanceTypeEditor), typeof(System.Drawing.Design.UITypeEditor))]");
                 }
-
                 // Default value
                 if (property.DefaultValue != null)
                     sw.WriteLine("\t\t[System.ComponentModel.DefaultValue(\"{0}\")]", property.DefaultValue);
+                sw.WriteLine("#endif");
 
                 // Determine the datatype
                 string dt = "";
@@ -678,10 +679,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
 
                 // Write editor attributes
+                sw.WriteLine("#if !WINDOWS_PHONE");
                 sw.WriteLine("\t\t[System.ComponentModel.TypeConverter(typeof(System.ComponentModel.ExpandableObjectConverter))]");
                 if (!(cc.MaxOccurs != "1" && !Datatypes.IsCollectionType(tr)))
                     sw.WriteLine("\t\t[System.ComponentModel.Editor(typeof(MARC.Everest.Design.NewInstanceTypeEditor), typeof(System.Drawing.Design.UITypeEditor))]");
-
+                sw.WriteLine("#endif");
                 // Get the type reference
                 tr = (choice.Content[0] as Property).Type.Class.BaseClass;
                 List<String> methods = new List<string>();
@@ -1070,7 +1072,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
             
             // Open Class 
             sw.WriteLine("\t[System.ComponentModel.Description(\"{0}\")]", cls.BusinessName != null ? cls.BusinessName.Replace("\n", "").Replace("\r", "") : cls.Name);
+            sw.WriteLine("\t#if !WINDOWS_PHONE");
             sw.WriteLine("\t[Serializable]");
+            sw.WriteLine("\t#endif");
             sw.WriteLine("\t[System.CodeDom.Compiler.GeneratedCode(\"gpmr\",\"{0}\")]", Assembly.GetEntryAssembly().GetName().Version.ToString());
 
             // JF-19/04/10 : Used to support mapping back to RIM
@@ -1082,7 +1086,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                 sw.WriteLine(")]");
             }
 
-            sw.Write("\tpublic {0}class {1}{2} : {3}.{4}, IGraphable, IEquatable<{1}{2}>, ICloneable", 
+            sw.Write("\tpublic {0}class {1}{2} : {3}.{4}, IGraphable, IEquatable<{1}{2}>\r\n#if !WINDOWS_PHONE\r\n, ICloneable\r\n#endif\r\n", 
                 cls.IsAbstract ? "abstract " : "", Util.Util.PascalCase(cls.Name), genericString.Length == 0 ? "" : "<" + genericString.Substring(0, genericString.Length - 1) + ">",
                 "RIM." + Util.Util.PascalCase(cls.Name) == RimbaCsRenderer.RootClass ? "System" : OwnerNs, "RIM." + Util.Util.PascalCase(cls.Name) == RimbaCsRenderer.RootClass ? "Object" : cls.BaseClass != null ? String.Format("{0}.{1}", cls.BaseClass.Class.ContainerName, Util.Util.PascalCase(cls.BaseClass.Class.Name)) : RimbaCsRenderer.RootClass); // Start of class structure
 

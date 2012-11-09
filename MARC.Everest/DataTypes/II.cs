@@ -23,13 +23,17 @@ using System.Xml.Serialization;
 using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.DataTypes.Primitives;
+using System.Collections.Generic;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
     /// Identifies the scope to which an II applies
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     [Structure(Name = "IdentifierScope", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
     [XmlType("IdentifierScope", Namespace = "urn:hl7-org:v3")]
     public enum IdentifierScope
@@ -138,7 +142,9 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     [Structure(Name = "II", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("II", Namespace = "urn:hl7-org:v3")]
     public class II : ANY, IInstanceIdentifier, IEquatable<II>
@@ -285,6 +291,20 @@ namespace MARC.Everest.DataTypes
             if(NullFlavor == null)
                 return IsRootOid(this) ^ IsRootGuid(this);
             return ((Root != null) ^ (NullFlavor != null));
+        }
+
+        /// <summary>
+        /// Validate the instance identifier is valid, returning the detected issues
+        /// </summary>
+        public override System.Collections.Generic.IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>( base.ValidateEx());
+
+            if (!((Root != null) ^ (NullFlavor != null)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            else if (!(IsRootOid(this) ^ IsRootGuid(this)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", String.Format(ValidationMessages.MSG_INVALID_VALUE, "Root", this.Root), null));
+            return retVal;
         }
 
         /// <summary>

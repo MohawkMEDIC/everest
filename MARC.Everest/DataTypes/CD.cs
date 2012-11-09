@@ -32,7 +32,10 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// A CD represents any kind of concept usually by giving a code defined in a code system. A CD builds upon a CE by allowing the assignment of qualifiers.
     /// </summary>
-    [Serializable][Structure(Name = "CodingRationale", CodeSystem = "2.16.840.1.113883.5.1074", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
+    [Structure(Name = "CodingRationale", CodeSystem = "2.16.840.1.113883.5.1074", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
     [XmlType("CodingRationale", Namespace = "urn:hl7-org:v3")]
     public enum CodingRationale
     {
@@ -244,10 +247,13 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance")]
     [Structure(Name = "CD", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(String))]
     [FlavorMapAttribute(FlavorId = "CV", Implementer = typeof(CV<>))]
     [FlavorMapAttribute(FlavorId = "CE", Implementer = typeof(CE<>))]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class CD<T> : CE<T>, IConceptDescriptor, IEquatable<CD<T>>
     {
 
@@ -325,6 +331,17 @@ namespace MARC.Everest.DataTypes
         {
             bool isValid = ((Qualifier != null && Code != null) || (Qualifier == null));
             return isValid && base.Validate();
+        }
+
+        /// <summary>
+        /// Validates the data type returning the validation errors that occur
+        /// </summary>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (this.Qualifier != null && this.Code == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CD", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Qualifier", "Code"), null));
+            return retVal;
         }
 
         #region Operators

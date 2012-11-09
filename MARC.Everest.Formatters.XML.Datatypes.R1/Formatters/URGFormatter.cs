@@ -24,8 +24,8 @@ using MARC.Everest.Connectors;
 using MARC.Everest.Exceptions;
 using MARC.Everest.Interfaces;
 using MARC.Everest.Xml;
-using MARC.Everest.DataTypes.Surrogates;
 using System.Reflection;
+using MARC.Everest.DataTypes.Interfaces;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 {
@@ -187,69 +187,96 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Parse the base PDV first
-            PDVFormatter pdvFormatter = new PDVFormatter();
-            URG<Object> retVal = pdvFormatter.Parse<URG<Object>>(s, result);
-
-            if (retVal.NullFlavor != null) // Null, no longer process
-                return retVal;
-
-            if (s.GetAttribute("probability") != null) // Probability
-            {
-                decimal prob = (decimal)0.0f;
-                if (!Decimal.TryParse(s.GetAttribute("probability"), out prob)) // Try to parse
-                    result.AddResultDetail(new ResultDetail(ResultDetailType.Warning, string.Format("Value '{0}' can't be processed into 'Probability' on data type UVP", s.GetAttribute("probability")), s.ToString(), null));
-                else // Success, so assign
-                    retVal.Probability = prob;
-            }
-
-            // Serialization
-            IXmlStructureFormatter serHost = this.Host;
+            //PDVFormatter pdvFormatter = new PDVFormatter();
+            Type urgType = typeof(URG<>);
+            Type urgGenericType = urgType.MakeGenericType(GenericArguments);
             
-            // Elements
-            #region Elements
-            if (!s.IsEmptyElement)
+            // Create an instance of rto from the rtoType
+            object instance = urgGenericType.GetConstructor(Type.EmptyTypes).Invoke(null);
+
+            if (s.GetAttribute("nullFlavor") != null)
+                ((ANY)instance).NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
+            else
             {
-
-                int sDepth = s.Depth;
-                string sName = s.Name;
-
-                s.Read();
-                // string Name
-                while (!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Depth == sDepth && s.Name == sName))
+                if (s.GetAttribute("probability") != null) // Probability
                 {
-                    string oldName = s.Name; // Name
-                    try
+                    decimal prob = (decimal)0.0f;
+                    if (!Decimal.TryParse(s.GetAttribute("probability"), out prob)) // Try to parse
+                        result.AddResultDetail(new ResultDetail(ResultDetailType.Warning, string.Format("Value '{0}' can't be processed into 'Probability' on data type UVP", s.GetAttribute("probability")), s.ToString(), null));
+                    else // Success, so assign
+                        ((IProbability)instance).Probability = prob;
+                }
+                if (s.GetAttribute("value") != null)
+                {
+                    urgGenericType.GetProperty("Value").SetValue(instance, Util.FromWireFormat(s.GetAttribute("value"), GenericArguments[0]), null);
+                    result.AddResultDetail(new NotSupportedChoiceResultDetail(
+                            ResultDetailType.Warning, "Though XML ITS supports it, use of the IVL 'value' attribute should be avoided. The data has been parsed anyways.", s.ToString(), null));
+                }
+                if (s.GetAttribute("specializationType") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
+                    ((ANY)instance).Flavor = s.GetAttribute("specializationType");
+
+                // Serialization
+                IXmlStructureFormatter serHost = this.Host;
+
+                // Get property information
+                PropertyInfo lowProperty = urgGenericType.GetProperty("Low"),
+                    highProperty = urgGenericType.GetProperty("High"),
+                    widthProperty = urgGenericType.GetProperty("Width"),
+                    lowClosedProperty = urgGenericType.GetProperty("LowClosed"),
+                    highClosedProperty = urgGenericType.GetProperty("HighClosed");
+
+                // Elements
+                #region Elements
+                if (!s.IsEmptyElement)
+                {
+
+                    int sDepth = s.Depth;
+                    string sName = s.Name;
+
+                    s.Read();
+                    // string Name
+                    while (!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Depth == sDepth && s.Name == sName))
                     {
-                        if (s.LocalName == "low") // Low , parse using the proper type
+                        string oldName = s.Name; // Name
+                        try
                         {
-                            var hostResult = serHost.Parse(s, GenericArguments[0]);
-                            result.Code = hostResult.Code;
-                            result.AddResultDetail(hostResult.Details);
-                            retVal.Low = hostResult.Structure;
+                            if (s.NodeType == System.Xml.XmlNodeType.Element && s.LocalName == "low") // low value
+                            {
+                                if (!String.IsNullOrEmpty(s.GetAttribute("inclusive")))
+                                    lowClosedProperty.SetValue(instance, Util.FromWireFormat(s.GetAttribute("inclusive"), typeof(bool?)), null);
+                                var parseResult = Host.Parse(s, GenericArguments[0]);
+                                result.Code = parseResult.Code;
+                                result.AddResultDetail(parseResult.Details);
+                                lowProperty.SetValue(instance, parseResult.Structure, null);
+                            }
+                            else if (s.NodeType == System.Xml.XmlNodeType.Element && s.LocalName == "high") // high value
+                            {
+                                if (!String.IsNullOrEmpty(s.GetAttribute("inclusive")))
+                                    highClosedProperty.SetValue(instance, Util.FromWireFormat(s.GetAttribute("inclusive"), typeof(bool?)), null);
+                                var parseResult = Host.Parse(s, GenericArguments[0]);
+                                result.Code = parseResult.Code;
+                                result.AddResultDetail(parseResult.Details);
+                                highProperty.SetValue(instance, parseResult.Structure, null);
+                            }
+                            else if (s.LocalName == "width") // width
+                            {
+                                var parseResult = Host.Parse(s, typeof(PQ));
+                                result.Code = parseResult.Code;
+                                result.AddResultDetail(parseResult.Details);
+                                widthProperty.SetValue(instance, parseResult.Structure, null);
+                            }
+                            else if (s.NodeType == System.Xml.XmlNodeType.Element)
+                                result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null));
                         }
-                        else if (s.LocalName == "width") // Width
+                        catch (MessageValidationException e)
                         {
-                            var hostResult = serHost.Parse(s, typeof(PQ));
-                            result.Code = hostResult.Code;
-                            result.AddResultDetail(hostResult.Details);
-                            retVal.Width = hostResult.Structure as PQ;
+                            result.AddResultDetail(new MARC.Everest.Connectors.ResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, e.Message, e));
                         }
-                        else if (s.LocalName == "high") // High
+                        finally
                         {
-                            var hostResult = serHost.Parse(s, GenericArguments[0]);
-                            result.Code = hostResult.Code;
-                            result.AddResultDetail(hostResult.Details);
-                            retVal.High = hostResult.Structure;
+                            if (s.Name == oldName) s.Read();
                         }
                     }
-                    catch (MessageValidationException e)
-                    {
-                        result.AddResultDetail(new MARC.Everest.Connectors.ResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, e.Message, e));
-                    }
-                    finally
-                    {
-                        if (s.Name == oldName) s.Read();
-                    } 
                 }
             }
             #endregion
@@ -257,9 +284,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Validate the data type
             ANYFormatter validator = new ANYFormatter();
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            validator.Validate(retVal, pathName, result);
+            validator.Validate((ANY)instance, pathName, result);
 
-            return retVal;
+            return instance;
         }
 
         /// <summary>

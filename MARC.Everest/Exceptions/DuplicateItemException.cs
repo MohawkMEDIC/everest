@@ -37,7 +37,10 @@ namespace MARC.Everest.Exceptions
     /// <para>The type of condition under which this exception is thrown depends solely on the type
     /// of comparator used in the SET</para>
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class DuplicateItemException : ArgumentException
     {
         /// <summary>

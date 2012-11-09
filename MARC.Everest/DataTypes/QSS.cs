@@ -25,6 +25,7 @@ using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -40,9 +41,11 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:SXPR{T}"/>
     /// <seealso cref="T:SXCM{T}"/>
     /// <seealso cref="T:GTS"/>
-    [Serializable]
     [Structure(Name = "QSS", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QSS", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class QSS<T> : QSET<T>, ICollection<T>, IEquatable<QSS<T>>, IListContainer
         where T : IAny
     {
@@ -57,17 +60,17 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Creates a new instance of the QSET set class containing the specified <paramref name="collection"/>
         /// </summary>
-        public QSS(List<T> terms)
+        public QSS(IEnumerable<T> terms)
         {
-            this.Terms = terms;
+            this.Terms = new List<T>(terms);
         }
 
         /// <summary>
         /// Creates a new instance of the QSET set class containing the specified <paramref name="collection"/>
         /// </summary>
-        public QSS(params T[] terms)
+        public static QSS<T> CreateQSS(params T[] terms)
         {
-            this.Terms = new List<T>(terms);
+            return new QSS<T>(terms);
         }
 
         /// <summary>
@@ -96,7 +99,22 @@ namespace MARC.Everest.DataTypes
                 isValid &= qs != null && !qs.IsNull;
             return isValid;
         }
+        /// <summary>
+        /// Extended validation routine which returns a list of detected issues
+        /// </summary>
+        /// <remarks>An instance of QSET is considered valid when it contains at least one items and no property contains
+        /// a null component</remarks>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            List<IResultDetail> retVal = new List<IResultDetail>();
 
+            if (!((this.NullFlavor != null) ^ (this.Terms.Count > 0)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSS", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            foreach (var qs in Terms ?? new List<T>())
+                if (qs == null || qs.IsNull)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSI", ValidationMessages.MSG_NULL_COLLECTION_VALUE, null));
+            return retVal;
+        }
 
         #region IEnumerable<T> Members
 

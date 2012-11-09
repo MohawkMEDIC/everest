@@ -94,9 +94,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
 
             // Validate
             if (result.ValidateConformance && !instance.Validate())
-            {
-                result.AddResultDetail(new DatatypeValidationResultDetail(ResultDetailType.Error, o.GetType().Name, currentElementName));
-            }
+                foreach (var r in instance.ValidateEx())
+                {
+                    r.Location = currentElementName;
+                    result.AddResultDetail(r);
+                }
+            //{
+            //    result.AddResultDetail(new DatatypeValidationResultDetail(ResultDetailType.Error, o.GetType().Name, currentElementName));
+            //}
 
             // Disabled for test
             // Validate flavor... 
@@ -156,7 +161,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             IResultDetail[] flavor;
             // Validate
             if (resultDetails.ValidateConformance && !instance.Validate())
-                resultDetails.AddResultDetail(new DatatypeValidationResultDetail(ResultDetailType.Error, instance.GetType().Name, path));
+                foreach (var r in instance.ValidateEx())
+                {
+                    r.Location = path;
+                    resultDetails.AddResultDetail(r);
+                }
+                //resultDetails.AddResultDetail(new DatatypeValidationResultDetail(ResultDetailType.Error, instance.GetType().Name, path));
 
             // Validate flavor... 
             if (resultDetails.ValidateConformance && instance.Flavor != null && Util.ValidateFlavor(instance.Flavor.ToUpper(), instance, out flavor) == false)

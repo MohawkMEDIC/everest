@@ -9,7 +9,9 @@ namespace MARC.Everest.Formatters.XML.ITS1
     /// <summary>
     /// Represents a formatting result from an ITS 1 formatter
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class XmlIts1FormatterGraphResult : IFormatterGraphResult
     {
         // Details

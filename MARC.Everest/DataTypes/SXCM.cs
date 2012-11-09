@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -96,9 +97,12 @@ namespace MARC.Everest.DataTypes
     /// </para>
     /// </remarks>
     /// <seealso cref="T:MARC.Everest.DataTypes.SET"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SXCM"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SXCM")]
     [Structure(Name = "SXCM", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("SXCM", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public abstract class SXCM<T> : PDV<T>, IEquatable<SXCM<T>>, ISetComponent<T>
         where T : IAny
     {
@@ -158,15 +162,27 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Translate to QSET equivalent
         /// </summary>
-        internal ISetComponent<T> TranslateToQSetComponent()
+        internal ISetComponent<T> TranslateToQSETComponent()
         {
             if (this is IVL<T> || this is PIVL<T> || this is EIVL<T>)
                 return this;
             else if (this is SXPR<T>)
                 return (this as SXPR<T>).TranslateToQSET();
             else if (this is SXCM<T>) // This is a value that will appear in a QSS
-                return new QSS<T>(this.Value);
+                return QSS<T>.CreateQSS(this.Value);
             return null;
+        }
+
+        /// <summary>
+        /// Performs validation on the SXCM set
+        /// </summary>
+        /// <remarks>This function really checks that value isn't set and provides a warning if it does</remarks>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>();
+            if (this.Value != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "SXCM", String.Format(ValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "Value"), null));
+            return retVal;
         }
 
     }

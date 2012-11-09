@@ -33,8 +33,13 @@ namespace MARC.Everest.Exceptions
     /// endpoint fails due to an exceptional circumstance.
     /// </para>
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2240:ImplementISerializableCorrectly")]
+#if WINDOWS_PHONE
+    public class ConnectorException : Exception
+#else
+    [Serializable]
     public class ConnectorException : ApplicationException
+#endif
     {
         /// <summary>
         /// Reason why the exception is being thrown

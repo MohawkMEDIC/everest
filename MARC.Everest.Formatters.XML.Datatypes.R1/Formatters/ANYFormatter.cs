@@ -73,9 +73,11 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate
             if (result.ValidateConformance && !instance.Validate())
-            {
-                result.AddResultDetail(new DatatypeValidationResultDetail(ResultDetailType.Error, o.GetType().Name, currentElementName));
-            }
+                foreach (var r in instance.ValidateEx())
+                {
+                    r.Location = currentElementName;
+                    result.AddResultDetail(r);
+                }
 
             // Disabled for test
             // Validate flavor... 
@@ -115,8 +117,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 instance.Flavor = s.GetAttribute("specializationType");
 
             if (result.ValidateConformance && !instance.Validate())
-                result.AddResultDetail(new DatatypeValidationResultDetail(ResultDetailType.Error, instance.GetType().Name, s.ToString()));
-
+                foreach (var r in instance.ValidateEx())
+                {
+                    r.Location = s.ToString();
+                    result.AddResultDetail(r);
+                }
+                //result.AddResultDetail(new DatatypeValidationResultDetail(ResultDetailType.Error, instance.GetType().Name, s.ToString()));
             // Disabled for test
             // Validate flavor... 
             IResultDetail[] flavor;

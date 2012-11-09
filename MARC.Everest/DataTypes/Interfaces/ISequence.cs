@@ -25,7 +25,7 @@ using System.ComponentModel;
 namespace MARC.Everest.DataTypes.Interfaces
 {
     /// <summary>
-    /// Identifies a class as implementing the sequence
+    /// Identifies a class as implementing a sequence of items whereby the order of items has meaning
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), EditorBrowsable(EditorBrowsableState.Never)]
     public interface ISequence<T> : IColl<T>

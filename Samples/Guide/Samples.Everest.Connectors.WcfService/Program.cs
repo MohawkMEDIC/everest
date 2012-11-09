@@ -19,14 +19,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MARC.Everest.Connectors.WCF;
-using MARC.Everest.RMIM.CA.R020401.Interactions;
+using MARC.Everest.RMIM.CA.R020402.Interactions;
 using MARC.Everest.DataTypes;
-using MARC.Everest.RMIM.CA.R020401.Vocabulary;
-using MARC.Everest.RMIM.CA.R020401.MCCI_MT002200CA;
+using MARC.Everest.RMIM.CA.R020402.Vocabulary;
+using MARC.Everest.RMIM.CA.R020402.MCCI_MT002200CA;
 using MARC.Everest.Interfaces;
 using System.Reflection;
 using MARC.Everest.Connectors;
-using MARC.Everest.RMIM.CA.R020401.MCCI_MT002300CA;
+using MARC.Everest.RMIM.CA.R020402.MCCI_MT002300CA;
 using MARC.Everest.Formatters.XML.Datatypes.R1;
 
 namespace Samples.Everest.Connectors.WcfService
@@ -36,7 +36,7 @@ namespace Samples.Everest.Connectors.WcfService
         // Main function
         public static void Main(string[] args)
         {
-            Assembly.Load(new AssemblyName("MARC.Everest.RMIM.CA.R020401"));
+            Assembly.Load(new AssemblyName("MARC.Everest.RMIM.CA.R020402"));
 
             // Instantiate the connector
             WcfServerConnector connector = new WcfServerConnector();
@@ -127,17 +127,14 @@ namespace Samples.Everest.Connectors.WcfService
                 MCCI_IN000002CA.GetProfileId(),
                 ProcessingID.Production,
                 AcknowledgementCondition.Never,
-                new
-                 MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Receiver(
-                 new
-                 MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Device2(
+                new Receiver(
+                    new Device2(
                         new II()
                  )
                 ),
-                new
-                 MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Sender(
+                new Sender(
                  new
-                  MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Device1(
+                  Device1(
                         new II("1.1.1.1.1")
                  )
                 ),

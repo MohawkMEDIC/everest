@@ -21,6 +21,8 @@ using System;
 using System.Xml.Serialization;
 using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
+using System.Collections.Generic;
 
 namespace MARC.Everest.DataTypes
 {
@@ -39,9 +41,12 @@ namespace MARC.Everest.DataTypes
     /// by developers when writing structures that use the CO data type
     /// </para>
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance")]
     [Structure(Name = "CO", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("CO", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class CO : QTY<Decimal?>, IQuantity, IEquatable<CO>
     {
 
@@ -90,6 +95,22 @@ namespace MARC.Everest.DataTypes
                 ((Code != null && Code.Validate()) || Code == null);
         }
 
+        /// <summary>
+        /// Validate the data type returning the validation errors that occur
+        /// </summary>
+        public override System.Collections.Generic.IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            retVal.AddRange(this.Code.ValidateEx());
+            if (this.Code != null && !this.Code.Validate())
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CO", "Code property must be populated with a valid instance of CV", null));
+            if (this.NullFlavor != null && (this.Code != null || this.Value != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CO", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.NullFlavor == null && this.Code == null && this.Value == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CO", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            return retVal;
+        }
+
         #region IEquatable<CO> Members
 
         /// <summary>
@@ -126,7 +147,7 @@ namespace MARC.Everest.DataTypes
             if(other == null)
                 return null;
             else if (this.IsNull && other.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, other.NullFlavor) };
+                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, other.NullFlavor) };
             else if (this.IsNull ^ other.IsNull)
                 return new BL() { NullFlavor = DataTypes.NullFlavor.NotApplicable };
             else if (other is CO)

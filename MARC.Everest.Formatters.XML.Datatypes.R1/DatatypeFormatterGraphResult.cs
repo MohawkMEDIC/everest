@@ -22,6 +22,10 @@ using System.Linq;
 using System.Text;
 using MARC.Everest.Connectors;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.Formatters.XML.Datatypes.R1
 {
     /// <summary>
@@ -47,7 +51,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
     /// <summary>
     /// Formatter graph result for datatypes structures
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class DatatypeFormatterGraphResult : IFormatterGraphResult
     {
         // Details

@@ -121,6 +121,11 @@
             neither ControlActRoot and ControlActExt are populated.
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.HXIT.ValidateEx">
+            <summary>
+            Validates the structure is conformant, returning the result details that are in violation
+            </summary>
+        </member>
         <member name="P:MARC.Everest.DataTypes.HXIT.ValidTimeLow">
             <summary>
             Identifies the time that the given information has or will become valid
@@ -178,6 +183,12 @@
             Validates the instance 
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.Interfaces.IAny.ValidateEx">
+            <summary>
+            Validates the type and returns the detected issues with the data type instance.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="P:MARC.Everest.DataTypes.Interfaces.IAny.IsNull">
             <summary>
             Predicate that determines if the instance is logically null
@@ -220,6 +231,17 @@
             </summary>
             <remarks>An ANY is valid if the type is not ANY (is a subclass of ANY), or
             is an ANY, has a nullFlavor and the nullFlavor is not a child of Invalid</remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.ANY.ValidateEx">
+            <summary>
+            Validate the ANY meets validaton criteria and identifies the problems
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.ANY.ToString">
+            <summary>
+            Represent this ANY instance as a string
+            </summary>
+            <remarks>Returns the HL7 datatype name and null-flavor if present</remarks>
         </member>
         <member name="P:MARC.Everest.DataTypes.ANY.NullFlavor">
             <summary>
@@ -303,6 +325,11 @@
             validation rules from the base class are succeed.
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.PDV`1.ValidateEx">
+            <summary>
+            Validate the PDV passes conformance and return the detected issues
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.PDV`1.ToString">
             <summary>
             Return this PDV as a string
@@ -365,10 +392,16 @@
             Override of base equals
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.SXCM`1.TranslateToQSetComponent">
+        <member name="M:MARC.Everest.DataTypes.SXCM`1.TranslateToQSETComponent">
             <summary>
             Translate to QSET equivalent
             </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.SXCM`1.ValidateEx">
+            <summary>
+            Performs validation on the SXCM set
+            </summary>
+            <remarks>This function really checks that value isn't set and provides a warning if it does</remarks>
         </member>
         <member name="P:MARC.Everest.DataTypes.SXCM`1.Operator">
             <summary>
@@ -581,6 +614,11 @@
         <member name="M:MARC.Everest.DataTypes.II.Validate">
             <summary>
             Validate
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.II.ValidateEx">
+            <summary>
+            Validate the instance identifier is valid, returning the detected issues
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.II.IsValidTokenFlavor(MARC.Everest.DataTypes.II)">
@@ -900,6 +938,11 @@
         <member name="M:MARC.Everest.DataTypes.GTS.Validate">
             <summary>
             Validate this GTS
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.GTS.ValidateEx">
+            <summary>
+            Validates the GTS and returns the detected issues with the data type instance
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.GTS.ToString">
@@ -1492,7 +1535,7 @@
         </member>
         <member name="T:MARC.Everest.DataTypes.Interfaces.IRealValue">
             <summary>
-            Identifies a class as implementing the REAL concept
+            Identifies a class which contains a number with floting point precision
             </summary>
         </member>
         <member name="P:MARC.Everest.DataTypes.Interfaces.IRealValue.Precision">
@@ -1533,6 +1576,12 @@
             </list>
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.QTY`1.ValidateEx">
+            <summary>
+            Advanced validation with details
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:MARC.Everest.DataTypes.QTY`1.op_Implicit(MARC.Everest.DataTypes.QTY{`0})~`0">
             <summary>
             Casts a <see cref="T:QTY{T}"/> to a <typeparamref name="T"/>
@@ -1550,6 +1599,16 @@
             <summary>
             Override of base equals
             </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QTY`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
+            <summary>
+            Determine if this instance of QTY semantically equals <paramref name="other"/>
+            </summary>
+            <param name="other">The other datatype to compare for semantic equality</param>
+            <remarks>There are not specific restrictions on QTY and semantic equality however 
+            because QTY is described as a generic type in Everest, the semantic equality check 
+            must be performed to ensure the type of encapsulated data matches</remarks>
+            <returns></returns>
         </member>
         <member name="P:MARC.Everest.DataTypes.QTY`1.Expression">
             <summary>
@@ -1815,9 +1874,19 @@
             </list>
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.TS.ValidateEx">
+            <summary>
+            Validation with result details
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.TS.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
             <summary>
             Determines if this instance of TS is semantically equal to <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.TS.ToDouble">
+            <summary>
+            Represent the timestamp ticks as a double
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.TS.NextValue">
@@ -2100,6 +2169,13 @@
             Compares this REAL instance to another
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.REAL.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
+            <summary>
+            Determine semantic equality between this REAL and another REAL instance
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
         <member name="P:MARC.Everest.DataTypes.REAL.Precision">
             <summary>
             The number of significant digits of the decimal representation. Null and a value of 0 means nothing 
@@ -2205,6 +2281,11 @@
             </list>
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.EN.ValidateEx">
+            <summary>
+            Extended validation function which returns the details of the validation
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.EN.ToString(System.String)">
             <summary>
             Represent this entity name as a string. Parts are formatted using the standard string.format notation
@@ -2225,6 +2306,13 @@
             <summary>
             Override of base equals
             </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.EN.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
+            <summary>
+            Determine semantic equality of this type
+            </summary>
+            <remarks>Two non-null non-nullflavored instance of EN are considered semantically equal when
+            they both contain the same parts in the same order.</remarks>
         </member>
         <member name="P:MARC.Everest.DataTypes.EN.Use">
             <summary>
@@ -2248,6 +2336,11 @@
             <param name="parts">The parts of the names</param>
             <param name="use">The uses of this name</param>
         </member>
+        <member name="M:MARC.Everest.DataTypes.ON.CreateON(MARC.Everest.DataTypes.EntityNameUse,MARC.Everest.DataTypes.ENXP[])">
+            <summary>
+            Creates an organization name
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.ON.Validate">
             <summary>
             Validate the organization name
@@ -2260,6 +2353,12 @@
                 <item>The <see cref="M:MARC.Everest.DataTypes.ENXP.Type"/> property of each <see cref="!:Part"/> is not in { Given, Family }</item>
             </list>
             </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.ON.ValidateEx">
+            <summary>
+            Extended validation with reported problems
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:MARC.Everest.DataTypes.ON.Parse(MARC.Everest.DataTypes.EN)">
             <summary>
@@ -2582,6 +2681,11 @@
             </list>
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.ED.ValidateEx">
+            <summary>
+            Validatethe data type returning the validation errors that occurred
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.ED.op_Implicit(MARC.Everest.DataTypes.ED)~System.String">
             <summary>
             Convert this string into an ED
@@ -2620,9 +2724,16 @@
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.ED.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
-            <summary>
-            Semantic equals
-            </summary>
+             <summary>
+             Determine semantic equality between this instance of ED and other
+             </summary>
+             <remarks>Two non-null flavored instances of ED are semantically equal when their MediaType and raw data properties are equal. 
+            When performing semantic equality between compressed instances of ED, the equality will be performed on the uncompressed data.
+            <para>
+             Instances of ED can be semantically equal to instances of ST or SC if the mediaType of the ED it "text/plain" and 
+             the binary contents of the ED and ST/SC match.
+             </para>
+             </remarks>
         </member>
         <member name="P:MARC.Everest.DataTypes.ED.Data">
             <summary>
@@ -2855,6 +2966,19 @@
                         <item>If Alternate (not in bound domain) code is specified, a CodeSystem is specified</item>
                     </list>
                 </item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.CS`1.ValidateEx">
+            <summary>
+            Validate the CS is valid, returning the detected issues
+            </summary>
+            <remarks>
+            An instance of CS is valid when:
+            <list type="number">
+                <item><description>All validation from <see cref="T:ANY"/> succeeds</description></item>
+                <item><description>This instance of CS contains a <see cref="P:Code"/> or <see cref="P:NullFlavor"/> but not both, and</description></item>
+                <item><description>The <see cref="P:Code"/> specified is in the <typeparamref name="T"/> domain</description></item>
             </list>
             </remarks>
         </member>
@@ -3103,6 +3227,11 @@
             Create a new instance of a simple PN
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.PN.CreatePN(MARC.Everest.DataTypes.EntityNameUse,MARC.Everest.DataTypes.ENXP[])">
+            <summary>
+            Create a new instance of PN
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.PN.IsValidBasicFlavor(MARC.Everest.DataTypes.PN)">
             <summary>
             TODO: Find a proper definition for PN.Basic
@@ -3113,6 +3242,12 @@
             <summary>
             Validate this instance
             </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.PN.ValidateEx">
+            <summary>
+            Extended validation with additional data
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:MARC.Everest.DataTypes.PN.Parse(MARC.Everest.DataTypes.EN)">
             <summary>
@@ -3141,7 +3276,7 @@
         </member>
         <member name="T:MARC.Everest.DataTypes.COLL`1">
             <summary>
-            An abstract type intended to collect common attributes related to collections
+            An abstract type intended to collect common functionality related to collections
             </summary>
         </member>
         <member name="T:MARC.Everest.DataTypes.Interfaces.IColl`1">
@@ -3194,6 +3329,21 @@
             A collection is considered valid when <see cref="P:NullFlavor"/> is set xor
             the collection is not empty.
             </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.COLL`1.Find(System.Predicate{`0})">
+            <summary>
+            Find all items that match the given predicate
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.COLL`1.FindAll(System.Predicate{`0})">
+            <summary>
+            Find all occurences of <paramref name="match"/>
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.COLL`1.ValidateEx">
+            <summary>
+            Validate the data type returning the validation errors that occur
+            </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.COLL`1.IndexOf(`0)">
             <summary>
@@ -3289,7 +3439,7 @@
         </member>
         <member name="T:MARC.Everest.DataTypes.Interfaces.ISequence`1">
             <summary>
-            Identifies a class as implementing the sequence
+            Identifies a class as implementing a sequence of items whereby the order of items has meaning
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.Interfaces.ISequence`1.SubSequence(System.Int32,System.Int32)">
@@ -3338,16 +3488,6 @@
         <member name="M:MARC.Everest.DataTypes.LIST`1.CreateList(`0[])">
             <summary>
             Creates a new LIST containing the specified <paramref name="items"/>
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.LIST`1.Find(System.Predicate{`0})">
-            <summary>
-            Find all items that match the given predicate
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.LIST`1.FindAll(System.Predicate{`0})">
-            <summary>
-            Find all occurences of <paramref name="match"/>
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.LIST`1.op_Implicit(System.Collections.Generic.List{`0})~MARC.Everest.DataTypes.LIST{`0}">
@@ -3446,18 +3586,11 @@
             Get this set's enumerator
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.LIST`1.Validate">
-            <summary>
-            Validate
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:MARC.Everest.DataTypes.LIST`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
             <summary>
             Determine if the two items are semantically equal
             </summary>
-            <param name="other"></param>
-            <returns></returns>
+            <remarks>Two instances of LIST are semantically equal when they contain the same items in the same sequence</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.LIST`1.Parse(MARC.Everest.DataTypes.LIST{MARC.Everest.Interfaces.IGraphable})">
             <summary>
@@ -3502,16 +3635,6 @@
             items in this list
             </summary>
         </member>
-        <member name="P:MARC.Everest.DataTypes.LIST`1.First">
-            <summary>
-            Get the first item from the list
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.LIST`1.Last">
-            <summary>
-            Get the last item from the list
-            </summary>
-        </member>
         <member name="P:MARC.Everest.DataTypes.LIST`1.IsEmpty">
             <summary>
             Determine if the collection is empty
@@ -3536,6 +3659,16 @@
         <member name="P:MARC.Everest.DataTypes.LIST`1.Items">
             <summary>
             Items contained in this set
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.LIST`1.First">
+            <summary>
+            Get the first item from the collection
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.LIST`1.Last">
+            <summary>
+            Get the last item from the collection
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.HIST`1.#ctor">
@@ -3695,12 +3828,12 @@
         </member>
         <member name="F:MARC.Everest.DataTypes.EntityNamePartQualifier.Prefix">
             <summary>
-            Identifies a middle name
+            Identifies a prefix
             </summary>
         </member>
         <member name="F:MARC.Everest.DataTypes.EntityNamePartQualifier.Suffix">
             <summary>
-            Identifies a middle name
+            Identifies a suffix
             </summary>
         </member>
         <member name="T:MARC.Everest.DataTypes.ENXP">
@@ -3747,6 +3880,11 @@
             Validate
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.ENXP.ValidateEx">
+            <summary>
+            Extended validation function which returns the details of the validation
+            </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.ENXP.Equals(MARC.Everest.DataTypes.ENXP)">
             <summary>
@@ -3922,6 +4060,11 @@
             Validate this item
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.CR`1.ValidateEx">
+            <summary>
+            Validates this instance of the data type and returns the validations errors
+            </summary>
         </member>
         <member name="F:MARC.Everest.DataTypes.CR`1.Comparator">
             <summary>
@@ -4214,7 +4357,7 @@
         </member>
         <member name="T:MARC.Everest.Attributes.InteractionAttribute">
             <summary>
-            Summary of InteractionAttribute
+            Identifies that a particular structure represents a complete HL7v3 interaction with transport, controlAct and payload wrappers
             </summary>
         </member>
         <member name="P:MARC.Everest.Attributes.InteractionAttribute.TriggerEvent">
@@ -4414,7 +4557,8 @@
         </member>
         <member name="T:MARC.Everest.Connectors.ResultDetail">
             <summary>
-            Represents a datatype result detail
+            Represents diagnostic details about a validation, formatting or connection
+            operation.
             </summary>
         </member>
         <member name="T:MARC.Everest.Connectors.IResultDetail">
@@ -4506,26 +4650,6 @@
             Represents result details related to the validation of a message instance
             </summary>
         </member>
-        <member name="M:MARC.Everest.Connectors.ValidationResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.String,System.Exception)">
-            <summary>
-            Creates a new instance of hte datatype result detail
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.Connectors.ValidationResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.String)">
-            <summary>
-            Creates a new instance of the result detail class
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.Connectors.ValidationResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.Exception)">
-            <summary>
-            Create a new instance of the datatype result detail
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.Connectors.ValidationResultDetail.#ctor(System.String)">
-            <summary>
-            Result detail
-            </summary>
-        </member>
         <member name="T:MARC.Everest.Connectors.FormalConstraintViolationResultDetail">
             <summary>
             This class is used to group validation result details which represent formal constraint violations in the message
@@ -4551,18 +4675,39 @@
             Result detail
             </summary>
         </member>
+        <member name="M:MARC.Everest.Connectors.ValidationResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.String,System.Exception)">
+            <summary>
+            Creates a new instance of hte datatype result detail
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.Connectors.ValidationResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.String)">
+            <summary>
+            Creates a new instance of the result detail class
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.Connectors.ValidationResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.Exception)">
+            <summary>
+            Create a new instance of the datatype result detail
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.Connectors.ValidationResultDetail.#ctor(System.String)">
+            <summary>
+            Result detail
+            </summary>
+        </member>
         <member name="T:MARC.Everest.Connectors.RequiredElementMissingResultDetail">
             <summary>
             Required element is missing
             </summary>
             <remarks>
             This formal constraint violation indicates that an instance is missing a required element
-            where the minimum occurs is set to 1 (the conformance of Populated)
+            where the minimum occurs is set to 1 (the conformance of Populated). At minimum a NullFlavor
+            should be popualted
             </remarks>
         </member>
         <member name="M:MARC.Everest.Connectors.RequiredElementMissingResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.String)">
             <summary>
-            Create a new instance of the datatype result detail
+            Create a new instance of the required element missing result detail
             </summary>
         </member>
         <member name="M:MARC.Everest.Connectors.RequiredElementMissingResultDetail.#ctor(System.String)">
@@ -4594,8 +4739,8 @@
             Mandatory element is missing
             </summary>
             <remarks>
-            This formal constraint violation indicates that an instance has a property set to null (or whose null flavor is set to null) when
-            the conformance for the object is Mandatory
+            This formal constraint violation indicates that an instance has a property set to null (or whose null flavor is set ) when
+            the conformance for the property is Mandatory
             </remarks>
         </member>
         <member name="M:MARC.Everest.Connectors.MandatoryElementMissingResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.String)">
@@ -4671,6 +4816,9 @@
             <summary>
             A choice element was used that is not supported
             </summary>
+            <remarks>
+            This result detail is usually used whenever a property is populated with a valid value (from .NET perspective) however
+            the RMIM model does not support the choice. This is commonly raised for referneces to System.Object</remarks>
         </member>
         <member name="M:MARC.Everest.Connectors.NotSupportedChoiceResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.Exception)">
             <summary>
@@ -4689,12 +4837,12 @@
         </member>
         <member name="T:MARC.Everest.Connectors.FixedValueMisMatchedResultDetail">
             <summary>
-            The fixed value in the message definition does not match the value supplied. The fixed value is being used
+            The fixed value in the message definition does not match the value supplied
             </summary>
             <remarks>
             This violation occurs during the parsing of an instance whereby a value is supplied in the instance that does not
-            match the fixed value defined in the .NET type. Since fixed properties in the .NET type cannot be set, the formatter
-            will use the fixed value defined in the .NET type rather than the supplied value.
+            match the fixed value defined in the .NET type. The formatter may override the supplied value with the fixed value, 
+            or may use the fixed value
             </remarks>
         </member>
         <member name="M:MARC.Everest.Connectors.FixedValueMisMatchedResultDetail.#ctor(System.String,System.String,System.String)">
@@ -4707,6 +4855,11 @@
             Create a new instance of the datatype result detail
             </summary>
         </member>
+        <member name="P:MARC.Everest.Connectors.FixedValueMisMatchedResultDetail.Overwritten">
+            <summary>
+            When true, indicates that the supplied value was used to overwrite the fixed value
+            </summary>
+        </member>
         <member name="P:MARC.Everest.Connectors.FixedValueMisMatchedResultDetail.SuppliedValue">
             <summary>
             Gets or sets the supplied value on the wire
@@ -4717,8 +4870,8 @@
             An issue was detected with the codified concepts within the message
             </summary>
             <remarks>
-            This issue is raised whenever codified data is encountered whereby there is method to determine
-            the code set from which the value was taken.
+            This issue is raised whenever codified data is encountered whereby the supplied value 
+            cannot be used in the context, or if the value is unknown / invalid.
             </remarks>
         </member>
         <member name="M:MARC.Everest.Connectors.VocabularyIssueResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.Exception)">
@@ -4754,6 +4907,14 @@
             <param name="datatypeName">The name of the datatype that is not supported</param>
             <param name="location">The location within the instance that that is not supported</param>
         </member>
+        <member name="M:MARC.Everest.Connectors.DatatypeValidationResultDetail.#ctor(MARC.Everest.Connectors.ResultDetailType,System.String,System.String,System.String)">
+            <summary>
+            Creates a new instance of the datatype validation result detail class with the specified parameters
+            </summary>
+            <param name="type">The type of result detail</param>
+            <param name="datatypeName">The name of the datatype that is not supported</param>
+            <param name="location">The location within the instance that that is not supported</param>
+        </member>
         <member name="P:MARC.Everest.Connectors.DatatypeValidationResultDetail.DatatypeName">
             <summary>
             Gets the name of the datatype where validation failed
@@ -4761,7 +4922,7 @@
         </member>
         <member name="P:MARC.Everest.Connectors.DatatypeValidationResultDetail.Message">
             <summary>
-            Gets the message
+            Gets the error message
             </summary>
         </member>
         <member name="T:MARC.Everest.Connectors.DatatypeFlavorValidationResultDetail">
@@ -4837,8 +4998,11 @@
             <para>
             Because the Everest data type library is a combination of R1 and R2 concepts 
             (to support write once render both) some concepts cannot be rendered within 
-            either implementation.
+            either instance of a message. 
             </para>
+            <para>This result detail signals that a value populated in memory may
+            not have been rendered on the wire</para>
+            <para>This abstract class must be extended by datatype formatters</para>
             </remarks>
         </member>
         <member name="M:MARC.Everest.Connectors.UnsupportedDatatypePropertyResultDetail.#ctor">
@@ -4981,6 +5145,11 @@
             <seealso cref="T:SXPR{T}"/>
             <seealso cref="T:SXCM{T}"/>
             <seealso cref="T:GTS"/>
+        </member>
+        <member name="T:MARC.Everest.DataTypes.QSC`1">
+            <summary>
+            Represents a genericized QSET which contains a collection of terms
+            </summary>
         </member>
         <member name="T:MARC.Everest.DataTypes.QSET`1">
              <summary>
@@ -5142,10 +5311,92 @@
             <summary>
             Represents a structure that contains a set
             </summary>
+            <remarks>
+            This interface is primarily used by formatters which must be able to populate
+            a list of a known interface (IGraphable) without knowing the specific 
+            types in the constructed instance.
+            </remarks>
         </member>
         <member name="P:MARC.Everest.DataTypes.Interfaces.IListContainer.ContainedList">
             <summary>
             The contained list
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.#ctor">
+            <summary>
+            Creates a new instance of the QSET intersection class
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.Validate">
+            <summary>
+            Validate that the QSET is valid. A QSET is valid when it contains at least two sets 
+            in the <see cref="P:Terms"/> property and contains no-null terms.
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.Equals(MARC.Everest.DataTypes.QSC{`0})">
+            <summary>
+            Determine equality between two QSS instances
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.Equals(System.Object)">
+            <summary>
+            Determine equality between two items
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.Add(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0})">
+            <summary>
+            Add an expression to the term set
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.Clear">
+            <summary>
+            Clear the terms
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.Contains(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0})">
+            <summary>
+            Determine if the terms contain the item
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.CopyTo(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0}[],System.Int32)">
+            <summary>
+            Copy the terms to an array
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.Remove(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0})">
+            <summary>
+            Remove a term from the collection
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.GetEnumerator">
+            <summary>
+            Get the enumerator for the terms
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSC`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Get the enumerator for the terms
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.QSC`1.Terms">
+            <summary>
+            Gets or sets the terms that make up the union of this QSET
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.QSC`1.Count">
+            <summary>
+            Count the items in the terms
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.QSC`1.IsReadOnly">
+            <summary>
+            True if the terms are readonly
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.QSC`1.MARC#Everest#DataTypes#Interfaces#IListContainer#ContainedList">
+            <summary>
+            Contained list implementation for the IListContainer class used by 
+            formatters
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.QSU`1.#ctor">
@@ -5153,91 +5404,32 @@
             Creates a new instance of the QSET union class
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.#ctor(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0}[])">
+        <member name="M:MARC.Everest.DataTypes.QSU`1.#ctor(System.Collections.Generic.IEnumerable{MARC.Everest.DataTypes.Interfaces.ISetComponent{`0}})">
             <summary>
             Creates a new instance of the QSET union class containing the specified sets
             </summary>
             <param name="terms">The terms contained within the union</param>
         </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.Validate">
+        <member name="M:MARC.Everest.DataTypes.QSU`1.CreateQSU(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0}[])">
             <summary>
-            Validate that the QSET is valid. A QSET is valid when it contains at least two sets 
-            in the <see cref="P:Terms"/> property and contains no-null terms.
+            Creates a new instance of QSU with the specified <paramref name="terms"/>
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.Equals(MARC.Everest.DataTypes.QSU{`0})">
+        <member name="M:MARC.Everest.DataTypes.QSU`1.ValidateEx">
             <summary>
-            Determine equality between two QSS instances
+            Extended validation routine which returns a list of detected issues
             </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.Equals(System.Object)">
-            <summary>
-            Determine equality between two items
-            </summary>
+            <remarks>An instance of QSET is considered valid when it contains at least two items and no property contains
+            a null component</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.QSU`1.GetEquivalentSetOperator">
             <summary>
             Get set operator
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.Add(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0})">
-            <summary>
-            Add an expression to the term set
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.Clear">
-            <summary>
-            Clear the terms
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.Contains(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0})">
-            <summary>
-            Determine if the terms contain the item
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.CopyTo(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0}[],System.Int32)">
-            <summary>
-            Copy the terms to an array
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.Remove(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0})">
-            <summary>
-            Remove a term from the collection
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.GetEnumerator">
-            <summary>
-            Get the enumerator for the terms
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSU`1.System#Collections#IEnumerable#GetEnumerator">
-            <summary>
-            Get the enumerator for the terms
-            </summary>
-        </member>
         <member name="M:MARC.Everest.DataTypes.QSU`1.Normalize">
             <summary>
             Normalizes the QSI to include only QS* content
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.QSU`1.Terms">
-            <summary>
-            Gets or sets the terms that make up the union of this QSET
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.QSU`1.Count">
-            <summary>
-            Count the items in the terms
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.QSU`1.IsReadOnly">
-            <summary>
-            True if the terms are readonly
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.QSU`1.MARC#Everest#DataTypes#Interfaces#IListContainer#ContainedList">
-            <summary>
-            IListContainer ContainedList implementation for formatters
             </summary>
         </member>
         <member name="T:MARC.Everest.DataTypes.QSD`1">
@@ -5267,6 +5459,12 @@
             <param name="subtrahend">The set by which <paramref name="minuend"/> should be subtracted</param>
         </member>
         <member name="M:MARC.Everest.DataTypes.QSD`1.Validate">
+            <summary>
+            Validate that the QSET is valid. A QSET is valid when it contains <see cref="P:First"/> and
+            <paramref name="P:Second"/> and contains no-null terms.
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSD`1.ValidateEx">
             <summary>
             Validate that the QSET is valid. A QSET is valid when it contains <see cref="P:First"/> and
             <paramref name="P:Second"/> and contains no-null terms.
@@ -5316,11 +5514,6 @@
         <member name="T:MARC.Everest.DataTypes.Interfaces.IInterval`1">
             <summary>
             Identifies an interval
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.Interfaces.IInterval`1.OriginalText">
-            <summary>
-            Original text
             </summary>
         </member>
         <member name="P:MARC.Everest.DataTypes.Interfaces.IInterval`1.Low">
@@ -5593,6 +5786,11 @@
             <remarks>A CO is valid when either a nullflavor is specified or 
             a value and code are specified (but not both)</remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.CO.ValidateEx">
+            <summary>
+            Validate the data type returning the validation errors that occur
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.CO.Equals(MARC.Everest.DataTypes.CO)">
             <summary>
             Determine if this CO equals another CO
@@ -5760,6 +5958,20 @@
             </list>
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.TN.ValidateEx">
+            <summary>
+            Validate this TN
+            </summary>
+            <remarks>
+            A Trivial name is valid if
+            <list type="bullet">
+                <item>Null Flavor is specified XOR,</item>
+                <item>There are exactly one name parts, AND</item>
+                <item>The only name part has no part type</item>
+            </list>
+            </remarks>
+            <returns>A collection of result details explaining validation issues</returns>
+        </member>
         <member name="M:MARC.Everest.DataTypes.TN.Equals(MARC.Everest.DataTypes.TN)">
             <summary>
             Determines if the current TN matches another TN
@@ -5868,38 +6080,6 @@
         <member name="M:MARC.Everest.DataTypes.SET`1.CreateSET(`0[])">
             <summary>
             Creates a new instance of the set collection with the default comparator
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.SET`1.Find(System.Predicate{`0})">
-            <summary>
-            Find all items that match the given predicate
-            </summary>
-            <param name="match">The predicate that dictates how matching should be performed</param>
-            <example>
-            <code lang="cs" title="Finding items in a set">
-            <![CDATA[
-            // Create set 
-            SET<II> set1 = new SET<II>(new II[] 
-            { 
-            new II("1.1.1.1","1"),  
-            new II("1.1.1.1","2"), 
-            new II("1.1.1.1","3") 
-            }, II.Comparator); 
-                         
-            // .NET 3.5 and Mono 
-            II ii2 = set1.Find(ii => ii.Extension == "2" && ii.Root == "1.1.1.1"); 
-            // .NET 2.0 
-            ii2 = set1.Find(delegate(II ii) 
-            { 
-            return ii.Extension == "1" && ii.Root == "1.1.1.1"; 
-            }); 
-            ]]>
-            </code>
-            </example>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.SET`1.FindAll(System.Predicate{`0})">
-            <summary>
-            Find all occurences of <paramref name="match"/>
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.SET`1.Union(MARC.Everest.DataTypes.SET{`0})">
@@ -6026,18 +6206,13 @@
             Get this set's enumerator
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.SET`1.Validate">
-            <summary>
-            Validate set
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:MARC.Everest.DataTypes.SET`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
             <summary>
             Determine if the two items are semantically equal
             </summary>
             <param name="other"></param>
             <returns></returns>
+            <remarks>Two instances of SET are semantically equal when they contain the same elements in the same sequence</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.SET`1.op_Explicit(MARC.Everest.DataTypes.LIST{`0})~MARC.Everest.DataTypes.SET{`0}">
             <summary>
@@ -6079,6 +6254,39 @@
             Override of base equals
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.SET`1.SubSequence(System.Int32)">
+            <summary>
+            Return a portion of the set starting from the specified item
+            </summary>
+            <param name="start">The start index</param>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.SET`1.SubSequence(System.Int32,System.Int32)">
+            <summary>
+            Return a portion of the set
+            </summary>
+            <param name="Start">The first item to include</param>
+            <param name="End">The last item to include</param>
+            <example>
+            <code title="Using sub-sequence" lang="cs">
+            <![CDATA[
+            // Create list of identifiers (Person, Place, or Thing)
+            // The first Item in the list has a zero Index
+            SET<II> set1 = new SET<II>(new II[] 
+            { 
+                new II("1.1.1.1","1"), // set1[0] 
+                new II("1.1.1.1","2"), 
+                new II("1.1.1.1","3"), 
+                new II("1.1.1.1","3"), 
+                new II("1.1.1.1","4") 
+            }); 
+            SET<II> set2 = (SET<II>)set1.SubSequence(1, 2); // contains 1 items 
+            set2 = (SET<II>)set1.SubSequence(1); // set2 will hold the last four identifiers in the list       
+            ]]>
+            </code>
+            </example>
+            <exception cref="T:System.IndexOutOfRangeException">Thrown when either <paramref name="start"/> or <paramref name="end"/> are outside the bounds of the array</exception>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="start"/> is greater than <paramref name="end"/></exception>
+        </member>
         <member name="P:MARC.Everest.DataTypes.SET`1.Comparator">
             <summary>
             Get or set the predicate that will determine an object's involvement into the set
@@ -6110,6 +6318,16 @@
             Get or set the items that make up this set
             </summary>
         </member>
+        <member name="P:MARC.Everest.DataTypes.SET`1.First">
+            <summary>
+            Get the first item from the collection
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.SET`1.Last">
+            <summary>
+            Get the last item from the collection
+            </summary>
+        </member>
         <member name="T:MARC.Everest.DataTypes.QSS`1">
             <summary>
             Represents a <see cref="T:QSET{T}"/> that has been specialized as containing a set.
@@ -6129,12 +6347,12 @@
             Creates a new instance of the QSET set class
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.QSS`1.#ctor(System.Collections.Generic.List{`0})">
+        <member name="M:MARC.Everest.DataTypes.QSS`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
             <summary>
             Creates a new instance of the QSET set class containing the specified <paramref name="collection"/>
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.QSS`1.#ctor(`0[])">
+        <member name="M:MARC.Everest.DataTypes.QSS`1.CreateQSS(`0[])">
             <summary>
             Creates a new instance of the QSET set class containing the specified <paramref name="collection"/>
             </summary>
@@ -6149,6 +6367,13 @@
             Validate that the QSET is valid. A QSET is valid when it contains at least two sets 
             in the <see cref="P:Terms"/> property and contains no-null terms.
             </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSS`1.ValidateEx">
+            <summary>
+            Extended validation routine which returns a list of detected issues
+            </summary>
+            <remarks>An instance of QSET is considered valid when it contains at least one items and no property contains
+            a null component</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.QSS`1.GetEnumerator">
             <summary>
@@ -6305,6 +6530,12 @@
                 </list></item>
             </list>
             </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.CV`1.ValidateEx">
+            <summary>
+            Validate the data type and return the validation errors that have been detected in the validation
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:MARC.Everest.DataTypes.CV`1.op_Implicit(MARC.Everest.DataTypes.CV{`0})~`0">
             <summary>
@@ -6755,90 +6986,6 @@
             <param name="destinationType"></param>
             <returns></returns>
         </member>
-        <member name="T:MARC.Everest.DataTypes.Surrogates.UVP">
-            <summary>
-            Used by the formatter to parse a generic instance of UVP. 
-            </summary>
-            <remarks>
-            Should not be used by developers
-            </remarks>
-        </member>
-        <member name="T:MARC.Everest.DataTypes.UVP`1">
-            <summary>
-            A generic datatype extension used to specify a proabability(percentage, from 0 to 1) expressing the information
-            </summary>
-            <example>
-            <code title="Blood Alcohol test" lang="cs">
-            <![CDATA[
-            
-                  UVP<Decimal> DUItest = new UVP<Decimal>();
-                  // The item was(or is to be) removed
-                  DUItest.UpdateMode = UpdateMode.Remove;
-                  DUItest.Value = 0.08M; // This is what the police are testing for (legal limit)
-                   
-                  // Probability that roadside breathalizer is accurate
-                  DUItest.Probability = 0.75;
-                   
-                  // Probability that breathalizer is accurate in the police station
-                  // DUItest.Probability = 0.90;
-            ]]>
-            </code>`
-            </example>
-            <seealso cref="T:MARC.Everest.DataTypes.PDV{T}"/>
-        </member>
-        <member name="T:MARC.Everest.DataTypes.Interfaces.IProbability">
-            <summary>
-            Represents a value with the probability the value is accurate
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.Interfaces.IProbability.Probability">
-            <summary>
-            Gets or sets the probability that the value
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.UVP`1.#ctor">
-            <summary>
-            Create a new instance of UVP
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.UVP`1.#ctor(`0,System.Decimal)">
-            <summary>
-            Create a new instance of UVP
-            </summary>
-            <param name="value">The value of the UVP</param>
-            <param name="probability">The probability assigned to the value. Between 0 and 1</param>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.UVP`1.Validate">
-            <summary>
-            Validate the type
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.UVP`1.Parse(MARC.Everest.DataTypes.UVP{System.Object})">
-            <summary>
-            Convert a concrete UVP to a generic version
-            </summary>
-            <exception cref="T:System.InvalidCastException">When the <paramref name="o"/> instance cannot be parsed to a strongly typed UVP of <typeparamref name="T"/></exception>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.UVP`1.Equals(MARC.Everest.DataTypes.UVP{`0})">
-            <summary>
-            Determines if this UVP of T equals another UVP of T
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.UVP`1.Equals(System.Object)">
-            <summary>
-            Override of base equals
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.UVP`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
-            <summary>
-            Override of semantic equality between this and <paramref name="other"/>
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.UVP`1.Probability">
-            <summary>
-            The probability assigned to the value a decimal between 0 and 1
-            </summary>
-        </member>
         <member name="T:MARC.Everest.DataTypes.IVL`1">
             <summary>
             A set of consecutive values of an ordered base datatype. Any ordered type can be the basis of an IVL
@@ -6897,6 +7044,21 @@
             <summary>
             Determines semantic equality between this IVL and <paramref name="other"/>
             </summary>
+            <remarks>
+            Two instances of IVL are considered semantically equal when their <see cref="P:Low"/> and <see cref="P:High"/> bounds
+            are semantically equal with one another. The following rules apply:
+            <list type="number">
+                <item><description>If the <see cref="P:High"/> property is null or positive infinity in both instances of <see cref="T:IVL"/> or if the <see cref="P:Low"/> property
+                is null or negative infinity in both IVLs they can be semantically equal</description></item>
+                <item><description>Two <see cref="T:IVL"/> instances that are not bound (<see cref="P:Low"/>/<see cref="P:High"/> null) will never be considered equal even if their <see cref="P:Value"/> and <see cref="P:Width"/> properties are semantically equal</description></item>
+                
+            </list>
+            <para>
+            Because IVL describes a set, an instance of IVL can be semantically equal to a SET with the same members. For example a <see cref="T:SET"/> instance containing
+            the numbers {1,2,3,4,5} can be semantically equal to an <see cref="T:IVL{INT}"/> describing {1-5}. Note that when comparing an <see cref="T:IVL"/> to a <see cref="T:SET"/>
+            the <see cref="M:ToSet()"/> method is called which can be quite costly in terms of CPU resources.
+            </para>
+            </remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.IVL`1.SemanticEqualsInternal(MARC.Everest.DataTypes.SET{`0})">
             <summary>
@@ -6914,6 +7076,19 @@
             when highIncluded is set, high is set
             </remarks>
             <returns>True if the item is valid</returns>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.IVL`1.ValidateEx">
+            <summary>
+            Validates the instance of IVL and returns the detected issues
+            </summary>
+            <remarks>
+            An instance of IVL is valid if:
+            <list type="bullet">
+                <item><description>When <see cref="P:NullFlavor"/> is specified <see cref="P:Low"/>, <see cref="P:Width"/>, <see cref="P:High"/> and <see cref="P:Value"/> are null, and</description></item>
+                <item><description>When <see cref="P:LowClosed"/> is specified <see cref="P:Low"/> is specified, and </description></item>
+                <item><description>When <see cref="P:HighClosed"/> is specified <see cref="P:High"/> is specified, and </description></item>
+            </list>
+            </remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.IVL`1.Equals(MARC.Everest.DataTypes.IVL{`0})">
             <summary>
@@ -7012,6 +7187,16 @@
             <summary>
             The difference between the high and low bondary. Width is used when the size of the interval is known
             but the actual start and end points are not known. 
+            </summary>
+        </member>
+        <member name="T:MARC.Everest.DataTypes.Interfaces.IProbability">
+            <summary>
+            Represents a value with the probability the value is accurate
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.Interfaces.IProbability.Probability">
+            <summary>
+            Gets or sets the probability that the value
             </summary>
         </member>
         <member name="T:MARC.Everest.DataTypes.Interfaces.IBooleanValue">
@@ -7421,6 +7606,98 @@
             <param name="context"></param>
             <returns></returns>
         </member>
+        <member name="T:MARC.Everest.DataTypes.UVP`1">
+            <summary>
+            A generic datatype extension used to specify a proabability(percentage, from 0 to 1) expressing the information
+            </summary>
+            <example>
+            <code title="Blood Alcohol test" lang="cs">
+            <![CDATA[
+            
+                  UVP<Decimal> DUItest = new UVP<Decimal>();
+                  // The item was(or is to be) removed
+                  DUItest.UpdateMode = UpdateMode.Remove;
+                  DUItest.Value = 0.08M; // This is what the police are testing for (legal limit)
+                   
+                  // Probability that roadside breathalizer is accurate
+                  DUItest.Probability = 0.75;
+                   
+                  // Probability that breathalizer is accurate in the police station
+                  // DUItest.Probability = 0.90;
+            ]]>
+            </code>`
+            </example>
+            <seealso cref="T:MARC.Everest.DataTypes.PDV{T}"/>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.UVP`1.#ctor">
+            <summary>
+            Create a new instance of UVP
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.UVP`1.#ctor(`0,System.Decimal)">
+            <summary>
+            Create a new instance of UVP
+            </summary>
+            <param name="value">The value of the UVP</param>
+            <param name="probability">The probability assigned to the value. Between 0 and 1</param>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.UVP`1.Validate">
+            <summary>
+            Validate the type
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.UVP`1.ValidateEx">
+            <summary>
+            Validate the UVP instance returning any detected issues
+            </summary>
+            <remarks>
+            An instance of UVP is considered valid when:
+            <list type="number">
+                <item><description>When the <see cref="P:NullFlavor"/> property has a value then neither <see cref="P:Value"/> nor <see cref="P:Probability"/> carry a a value, and</description></item>
+                <item><description>When the <see cref="P:NullFlavor"/> property has no value, then the <see cref="P:Value"/> and <see cref="P:Probability"/> properties must carry a value, and </description></item>
+                <item><description>If populated, <see cref="P:Probability"/> must be carry a value between 0 and 1</description></item>
+            </list>
+            </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.UVP`1.Equals(MARC.Everest.DataTypes.UVP{`0})">
+            <summary>
+            Determines if this UVP of T equals another UVP of T
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.UVP`1.Equals(System.Object)">
+            <summary>
+            Override of base equals
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.UVP`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
+            <summary>
+            Override of semantic equality between this and <paramref name="other"/>
+            </summary>
+            <remarks>
+            Two non-null, not null-flavored instances of UVP are considered semantically equal with their <see cref="P:Probability"/>
+            and <see cref="P:Value"/> properties are equal.
+            </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.UVP`1.ToString">
+            <summary>
+            Represent this UVP as a string
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.UVP`1.Value">
+            <summary>
+            Gets or sets the value of the probability
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.UVP`1.Probability">
+            <summary>
+            The probability assigned to the value a decimal between 0 and 1
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.UVP`1.MARC#Everest#DataTypes#Interfaces#IPrimitiveDataValue#Value">
+            <summary>
+            Generic Value implementation
+            </summary>
+        </member>
         <member name="T:MARC.Everest.DataTypes.SXPR`1">
             <summary>
             A set component that is itself made up of set components that are evaluated as one value
@@ -7475,17 +7752,30 @@
             Creates a new instance of the set Expression
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.SXPR`1.#ctor(MARC.Everest.DataTypes.SXCM{`0}[])">
+        <member name="M:MARC.Everest.DataTypes.SXPR`1.#ctor(System.Collections.Generic.IEnumerable{MARC.Everest.DataTypes.SXCM{`0}})">
             <summary>
             Creates a set expression with an initial list of terms specified by <paramref name="terms"/>
             </summary>
             <param name="terms">An initial set of terms that this SXPR contains</param>
         </member>
+        <member name="M:MARC.Everest.DataTypes.SXPR`1.CreateSXPR(MARC.Everest.DataTypes.SXCM{`0}[])">
+            <summary>
+            Constructs a new instance of the SXPR data type with the specified <paramref name="terms"/>
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.SXPR`1.Validate">
             <summary>
             Validate this data structure
             </summary>
-            <returns></returns>
+            <remarks>
+            An instance of SXPR is considered valid when it carries no null flavor and contains
+            more than one term, or carries and null flavor and has no terms
+            </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.SXPR`1.ValidateEx">
+            <summary>
+            Extended validation function that returns detected issues
+            </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.SXPR`1.IndexOf(MARC.Everest.DataTypes.SXCM{`0})">
             <summary>
@@ -8478,6 +8768,11 @@
             Processing Code
             </summary>
         </member>
+        <member name="T:MARC.Everest.DataTypes.ValidationMessages">
+            <summary>
+            Validation messages for common errors that occur in the framework
+            </summary>
+        </member>
         <member name="T:MARC.Everest.DataTypes.QSP`1">
             <summary>
             Represents a <see cref="T:QSET{T}"/> that has been specialized as a periodic hull between <see cref="P:First"/> and <see cref="P:Second"/>
@@ -8505,6 +8800,12 @@
             <param name="high">The set used for the parameter of the periodic hull function</param>
         </member>
         <member name="M:MARC.Everest.DataTypes.QSP`1.Validate">
+            <summary>
+            Validate that the QSET is valid. A QSET is valid when it contains <see cref="P:First"/> and
+            <paramref name="P:Second"/> and contains no-null terms.
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.QSP`1.ValidateEx">
             <summary>
             Validate that the QSET is valid. A QSET is valid when it contains <see cref="P:First"/> and
             <paramref name="P:Second"/> and contains no-null terms.
@@ -8553,7 +8854,7 @@
         </member>
         <member name="T:MARC.Everest.DataTypes.Interfaces.IBag`1">
             <summary>
-            Identifies that a class implements a LIST function
+            Identifies that a class implements an unordered list of values
             </summary>
         </member>
         <member name="T:MARC.Everest.DataTypes.HXIT`1">
@@ -8765,6 +9066,11 @@
         <member name="M:MARC.Everest.DataTypes.EIVL`1.Validate">
             <summary>
             Validate this EIVL
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.EIVL`1.ValidateEx">
+            <summary>
+            Validate the data type and return the validation errors detected
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.EIVL`1.Equals(MARC.Everest.DataTypes.EIVL{`0})">
@@ -9039,6 +9345,11 @@
                     <item>CodeSystemVersion AND CodeSystem are Assigned OR CodeSystemVersion is not assigned</item>             
                 </list>
             </remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.ADXP.ValidateEx">
+            <summary>
+            Extended validation which returns the results of the validation
+            </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.ADXP.Equals(MARC.Everest.DataTypes.ADXP)">
             <summary>
@@ -9431,6 +9742,19 @@
             Validate that this RTO meets minimum conformance criteria
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.RTO`2.ValidateEx">
+            <summary>
+            Validate the RTO returning detected issues
+            </summary>
+            <remarks>An instance of RTO is considered valid when :
+            <list type="number">
+                <item><description>When the <see cref="P:NullFlavor"/> property is set, neither <see cref="P:Numerator"/> or <see cref="P:Denominator"/> may have a value</description></item>
+                <item><description>When the <see cref="P:Numerator"/> and <see cref="P:Denominator"/> properties are set, the <see cref="P:NullFlavor"/> property is not set</description></item>
+                <item><description>Whenever a <see cref="P:Numerator"/> is set, the <see cref="P:Denominator"/> must also be set</description></item>
+                <item><description><see cref="P:UncertainRange"/> must never be set</description></item>
+            </list>
+            </remarks>
+        </member>
         <member name="M:MARC.Everest.DataTypes.RTO`2.Equals(MARC.Everest.DataTypes.RTO{`0,`1})">
             <summary>
             Determine if RTO of S/T is the same as another RTO of S/T
@@ -9673,83 +9997,6 @@
             </code>
             </example>
         </member>
-        <member name="T:MARC.Everest.DataTypes.Surrogates.URG">
-            <summary>
-            Serialization surrogate for the URG type
-            </summary>
-        </member>
-        <member name="T:MARC.Everest.DataTypes.URG`1">
-             <summary>
-             A union of <see cref="T:MARC.Everest.DataTypes.UVP{T}"/>(Probability) and <see cref="T:MARC.Everest.DataTypes.IVL{T}"/>(Interval). It is being included for compatibility with R1 datatypes.
-             </summary>
-             <example>
-             <code title="Blood Sugar Reading" lang="cs">
-             <![CDATA[
-                    // blood reading
-                    URG<PQ> test = new URG<PQ>();
-            
-                    // blood sugar level (2 readings)
-                    test.Low = new PQ(5, "mmol/L");
-                    test.High = new PQ(5.2, "mmol/L");
-                    test.Probability = 0.95; // The glucose meter has a 95% confidence interval  
-             ]]>
-             </code>
-             </example>
-             <seealso cref="T:MARC.Everest.DataTypes.UVP{T}"/>
-             <seealso cref="T:MARC.Everest.DataTypes.IVL{T}"/>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.URG`1.Parse(MARC.Everest.DataTypes.URG{System.Object})">
-            <summary>
-            Convert a concrete URG to a generic version
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.URG`1.Validate">
-            <summary>
-            Validates this instance of URG
-            </summary>
-            <returns>True if the instance is valid</returns>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.URG`1.Equals(MARC.Everest.DataTypes.URG{`0})">
-            <summary>
-            Determines if this URG of T is equal to another URG of T
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.URG`1.Equals(System.Object)">
-            <summary>
-            Override of base equals
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.URG`1.OriginalText">
-            <summary>
-            Text indicating where this interval was derived
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.URG`1.Low">
-            <summary>
-            This is the low limit. If the low limit is not known a null flavor should be specified
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.URG`1.LowClosed">
-            <summary>
-            Specifies wheter low is included in the IVL or excluded from the IVL
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.URG`1.High">
-            <summary>
-            The high limit. If the high limit is not known, a null flavor should be specified
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.URG`1.HighClosed">
-            <summary>
-            Specifies whether high is inlcluded in the IVL or excluded in the IVL
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.URG`1.Width">
-            <summary>
-            The difference between the high and low bondary. Width is used when the size of the interval is known
-            but the actual start and end points are not known. 
-            </summary>
-        </member>
         <member name="T:MARC.Everest.DataTypes.Primitives.NamespaceDoc">
             <summary>
             The namespace in which primitive support classes are declared
@@ -9814,6 +10061,88 @@
             <param name="connectionString">The connection string to parse.</param>
             <returns>The keys and values for the keys.</returns>
         </member>
+        <member name="T:MARC.Everest.DataTypes.URG`1">
+             <summary>
+             A union of <see cref="T:MARC.Everest.DataTypes.UVP{T}"/>(Probability) and <see cref="T:MARC.Everest.DataTypes.IVL{T}"/>(Interval). 
+             </summary>
+             <example>
+             <code title="Blood Sugar Reading" lang="cs">
+             <![CDATA[
+                    // blood reading
+                    URG<PQ> test = new URG<PQ>();
+            
+                    // blood sugar level (2 readings)
+                    test.Low = new PQ(5, "mmol/L");
+                    test.High = new PQ(5.2, "mmol/L");
+                    test.Probability = 0.95; // The glucose meter has a 95% confidence interval  
+             ]]>
+             </code>
+             </example>
+             <remarks>It is being included for compatibility with R1 datatypes.</remarks>
+             <seealso cref="T:MARC.Everest.DataTypes.UVP{T}"/>
+             <seealso cref="T:MARC.Everest.DataTypes.IVL{T}"/>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.URG`1.Validate">
+            <summary>
+            Validates this instance of URG
+            </summary>
+            <returns>True if the instance is valid</returns>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.URG`1.ValidateEx">
+            <summary>
+            Validates the instance of URG and returns the detected issues
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.URG`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
+            <summary>
+            Determine semantic equality
+            </summary>
+            <remarks>Since this data-type is an adaptation of an R1 data type with no semantic equality statements, 
+            the value of this method will be that of the IVL type combined with the UVP type meaning that two 
+            URG instances are semantically equal when their <see cref="P:Low"/> and <see cref="P:High"/> bounds
+            are specified and equal and their <see cref="P:Probability"/> properties are equal</remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.URG`1.Equals(MARC.Everest.DataTypes.URG{`0})">
+            <summary>
+            Determines if this URG of T is equal to another URG of T
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.URG`1.Equals(System.Object)">
+            <summary>
+            Override of base equals
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.URG`1.OriginalText">
+            <summary>
+            Text indicating where this interval was derived
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.URG`1.Low">
+            <summary>
+            This is the low limit. If the low limit is not known a null flavor should be specified
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.URG`1.LowClosed">
+            <summary>
+            Specifies wheter low is included in the IVL or excluded from the IVL
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.URG`1.High">
+            <summary>
+            The high limit. If the high limit is not known, a null flavor should be specified
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.URG`1.HighClosed">
+            <summary>
+            Specifies whether high is inlcluded in the IVL or excluded in the IVL
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.URG`1.Width">
+            <summary>
+            The difference between the high and low bondary. Width is used when the size of the interval is known
+            but the actual start and end points are not known. 
+            </summary>
+        </member>
         <member name="T:MARC.Everest.DataTypes.TEL">
              <summary>
              A telephone number, voice, fax, email address, or other locator used for a resouce mediated by 
@@ -9870,6 +10199,28 @@
             <param name="value">The initial value of the telecommunications address, adhere to RFC2396 <a href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a></param>
             <param name="use">A set of unique values describing the use of the telecommunications address</param>
         </member>
+        <member name="M:MARC.Everest.DataTypes.TEL.#ctor(System.Uri)">
+            <summary>
+            Creates a new telecommunications address with the specified <paramref name="value"/> 
+            </summary>
+            <param name="value">The initial value of the telecommunications address</param>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.TEL.#ctor(System.Uri,MARC.Everest.DataTypes.Interfaces.TelecommunicationAddressUse)">
+            <summary>
+            Creates a new telecommunications address with the specified <paramref name="value"/> and
+            <paramref name="use"/> set.
+            </summary>
+            <param name="value">The initial value of the telecommunications address</param>
+            <param name="use">A set of unique values describing the use of the telecommunications address</param>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.TEL.#ctor(System.Uri,System.Collections.Generic.IEnumerable{MARC.Everest.DataTypes.CS{MARC.Everest.DataTypes.Interfaces.TelecommunicationAddressUse}})">
+            <summary>
+            Creates a new telecommunications address with the specified <paramref name="value"/> and
+            <paramref name="use"/> set.
+            </summary>
+            <param name="value">The initial value of the telecommunications address</param>
+            <param name="use">A set of unique values describing the use of the telecommunications address</param>
+        </member>
         <member name="M:MARC.Everest.DataTypes.TEL.IsValidUrlFlavor(MARC.Everest.DataTypes.TEL)">
             <summary>
             TEL.URL Validator
@@ -9905,6 +10256,16 @@
             </summary>
             <param name="o">TEL to convert</param>
             <returns>Converted String</returns>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.TEL.op_Explicit(MARC.Everest.DataTypes.TEL)~System.Uri">
+            <summary>
+            Converts a <see cref="T:TEL"/> to a <see cref="T:System.String"/>
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.TEL.op_Implicit(System.Uri)~MARC.Everest.DataTypes.TEL">
+            <summary>
+            Converts a <see cref="T:System.Uri"/> to a <see cref="T:TEL"/>
+            </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.TEL.op_Implicit(System.String)~MARC.Everest.DataTypes.TEL">
             <summary>
@@ -9949,6 +10310,11 @@
         <member name="P:MARC.Everest.DataTypes.TEL.UseablePeriod">
             <summary>
             Specifies the periods of time during which the telecommunication address can be used
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.TEL.MARC#Everest#DataTypes#Interfaces#ITelecommunicationAddress#UseablePeriod">
+            <summary>
+            Gets the usable period as an ISetComponent
             </summary>
         </member>
         <member name="T:MARC.Everest.Attributes.TypeMapAttribute">
@@ -9998,40 +10364,40 @@
         </member>
         <member name="M:MARC.Everest.Exceptions.VocabularyException.#ctor(System.String)">
             <summary>
-            
+            Creates a new instance of the VocabularyException
             </summary>
-            <param name="message"></param>
+            <param name="message">The textual message describing the exception</param>
         </member>
         <member name="M:MARC.Everest.Exceptions.VocabularyException.#ctor(System.String,System.Exception)">
             <summary>
-            
+            Creates a new instance of the VocabularyException
             </summary>
-            <param name="message"></param>
-            <param name="innerException"></param>
+            <param name="message">The textual message describing the exception</param>
+            <param name="innerException">The exception that caused this exception to be raised</param>
         </member>
         <member name="M:MARC.Everest.Exceptions.VocabularyException.#ctor(System.String,MARC.Everest.Interfaces.IGraphable)">
             <summary>
-            
+            Creates a new instance of the VocabularyException
             </summary>
-            <param name="message"></param>
-            <param name="offender"></param>
+            <param name="message">The textual message of the exception</param>
+            <param name="offender">The <see cref="T:MARC.Everest.Interfaces.IGraphable"/> interface which caused the exception to be thrown</param>
         </member>
-        <member name="M:MARC.Everest.Exceptions.VocabularyException.#ctor(System.String,MARC.Everest.Interfaces.IGraphable,System.Exception)">
+        <member name="M:MARC.Everest.Exceptions.VocabularyException.#ctor(System.String,System.Exception,MARC.Everest.Interfaces.IGraphable)">
             <summary>
-            
+            Creates a new instance of the VocabularyException
             </summary>
-            <param name="message"></param>
-            <param name="offender"></param>
-            <param name="innerException"></param>
+            <param name="message">The textual message of the exception</param>
+            <param name="offender">The <see cref="T:MARC.Everest.Interfaces.IGrapable"/> instance which caused the exception to be thrown</param>
+            <param name="innerException">The exception that caused this exception to be thrown</param>
         </member>
         <member name="M:MARC.Everest.Exceptions.VocabularyException.#ctor(System.String,System.String,System.String,MARC.Everest.Interfaces.IGraphable)">
             <summary>
-            
+            Creates a new instance of the VocabularyException
             </summary>
-            <param name="message"></param>
-            <param name="mnemonic"></param>
-            <param name="codeSet"></param>
-            <param name="offender"></param>
+            <param name="message">The textual message describing the exception</param>
+            <param name="mnemonic">The code mnemonic that caused the vocabulary exception to be thrown</param>
+            <param name="codeSet">The code set from which the <paramref name="mnemonic"/> was drawn</param>
+            <param name="offender">The <see cref="T:MARC.Everest.Interfaces.IGraphable"/> instance which caused the exception to be thrown</param>
         </member>
         <member name="P:MARC.Everest.Exceptions.VocabularyException.Mnemonic">
             <summary>
@@ -10375,6 +10741,9 @@
              Although not recommended, the AD data type can also be used, in some cases, to facilitate the location
              of points of interest on a map (which require additional geocoding)
              </para>
+             <para>An AD instance is considered valid when either the <see cref="P:ANY.NullFlavor"/> property is null
+             or there is at least one <see cref="P:Part"/>.
+             </para>
              </remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.AD.#cctor">
@@ -10494,6 +10863,11 @@
                 </list>
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.AD.ValidateEx">
+            <summary>
+            Extended validation method that returns the results of validation
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.AD.Equals(System.Object)">
             <summary>
             Override of base equals
@@ -10508,6 +10882,8 @@
             <summary>
             Determines if this AD is semantically equal to <paramref name="other"/>
             </summary>
+            <remarks>Two non-null, non-null flavored instances of AD are semantically equal when they contain
+            the same parts regardless of order, and the <see cref="P:IsNotOrdered"/> and <see cref="P:Use"/> properties are equal to <paramref name="other"/></remarks>
         </member>
         <member name="P:MARC.Everest.DataTypes.AD.Part">
             <summary>
@@ -11160,12 +11536,12 @@
             Returns true if <paramref name="a"/> implies <paramref name="implied"/>
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.NullFlavorUtil.CommonAncestorWith(MARC.Everest.DataTypes.NullFlavor,MARC.Everest.DataTypes.NullFlavor)">
+        <member name="M:MARC.Everest.DataTypes.NullFlavorUtil.GetCommonParent(MARC.Everest.DataTypes.NullFlavor,MARC.Everest.DataTypes.NullFlavor)">
             <summary>
             Gets a common ancestor
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.NullFlavorUtil.CommonAncestorWith(MARC.Everest.DataTypes.CS{MARC.Everest.DataTypes.NullFlavor},MARC.Everest.DataTypes.CS{MARC.Everest.DataTypes.NullFlavor})">
+        <member name="M:MARC.Everest.DataTypes.NullFlavorUtil.GetCommonParent(MARC.Everest.DataTypes.CS{MARC.Everest.DataTypes.NullFlavor},MARC.Everest.DataTypes.CS{MARC.Everest.DataTypes.NullFlavor})">
             <summary>
             Gets a common ancestor
             </summary>
@@ -11303,6 +11679,20 @@
             Validate
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.MO.ValidateEx">
+            <summary>
+            Validate returning a list of detected issues
+            </summary>
+            <remarks>
+            An instance of MO is considered valid when:
+            <list type="number">
+                <item><description>If the <see cref="P:NullFlavor"/> property has a value and the <see cref="P:Value"/> and <see cref="P:UncertainRange"/> properties are not set, and</description></item>
+                <item><description>If the <see cref="P:Value"/> property is set, the <see cref="P:NullFlavor"/> and <see cref="P:UncertainRange"/> properties have no value, and</description></item>
+                <item><description>If the <see cref="P:UncertainRange"/> property is set, the <see cref="P:NullFlavor"/> and <see cref="P:Value"/> properties are not set, and</description></item>
+                <item><description>If the <see cref="P:NullFlavor"/> property is not set then <see cref="P:Currency"/> property is set</description></item>
+            </list>
+            </remarks>
+        </member>
         <member name="M:MARC.Everest.DataTypes.MO.Equals(MARC.Everest.DataTypes.MO)">
             <summary>
             Determine if this MO is equal to another MO
@@ -11366,8 +11756,8 @@
             <summary>
             Determines if this instance of MO semantically equals <paramref name="other"/>
             </summary>
-            <param name="b"></param>
-            <returns></returns>
+            <remarks>Two non-null non-null flavored instance of MO are considered equal when their currencies and values are equal or if their uncertain range properties
+            are non-null, not null-flavored and equal.</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.MO.CompareTo(MARC.Everest.DataTypes.MO)">
             <summary>
@@ -11481,6 +11871,11 @@
             </list>
             </remarks>
             <returns></returns>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.CE`1.ValidateEx">
+            <summary>
+            Validate the data type returning the results of valiation
+            </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.CE`1.op_Implicit(MARC.Everest.DataTypes.CE{`0})~`0">
             <summary>
@@ -11665,6 +12060,10 @@
             <summary>
             Determines if the current instance of BAG is semantically equal to <paramref name="other"/>
             </summary>
+            <remarks>
+            Two non-null, non null-flavored instances of BAG are semantically equal when they are empty or
+            if they contain the same items (semantically) regardless of their order
+            </remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.BAG`1.Equals(MARC.Everest.DataTypes.BAG{`0})">
             <summary>
@@ -11856,6 +12255,11 @@
             </list>
             </remarks>
         </member>
+        <member name="M:MARC.Everest.DataTypes.ST.ValidateEx">
+            <summary>
+            Extended validation function that returns detected issues
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.ST.IsValidNtFlavor(MARC.Everest.DataTypes.ST)">
             <summary>
             ST.NT (no translations) flavor
@@ -11909,19 +12313,15 @@
             The text must always be present if a code is present.  
             Often the code specified is a local code.
             </remarks>
-            <example>An instance of an SC
-            <code lang="cs" title="An instance of an SC">
-            <![CDATA[
-                   string aThing = "A thing"; 
-                   SC sc = aThing; //implicit conversion from string to SC
-                   //Populate the properties
-                   sc.Code = "3216543576"; 
-                   sc.CodeSystem = "2.16.840.1.113883.6.96";
-                   sc.CodeSystemName = "hl7-org:v3";
-                   sc.CodeSystemVersion = "V3-2008N";
-                   sc.DisplayName = "Laceration";
-                   sc.NullFlavor = null; //sc has values set, no null flavor needed
-            ]]>
+            <example>
+            <code title="SC Code">
+               <![CDATA[
+                SC pregnancy = "Patient is 6 months pregnant";
+                pregnancy.Code = new CD<String>("Z33.1", "2.16.840.1.113883.6.90")
+                {
+                    DisplayName = "Pregnancy State, Incidental"
+                };
+               ]]>
             </code>
             </example>
         </member>
@@ -11971,6 +12371,21 @@
             </summary>
             <returns>True if valid, false otherwise.</returns>
         </member>
+        <member name="M:MARC.Everest.DataTypes.SC.ValidateEx">
+            <summary>
+            Extended validation routine which returns the detected issues with the data type
+            </summary>
+            <remarks>
+            An instance of SC is considered valid when:
+            <list type="number">
+                <item><description>All validation criteria from <see cref="T:MARC.Everest.DataTypes.ST"/> pass, and</description></item>
+                <item><description>If the <see cref="P:Code"/> property is populated then the <see cref="P:Value"/> property must be populated</description></item>
+                <item><description>If <see cref="P:NullFlavor"/> is populated, then the <see cref="P:Code"/> property must be null, and</description></item>
+                <item><description>The value within the <see cref="P:Code"/> property is to have no <see cref="P:MARC.Everest.DataTypes.CD{T}.OriginalText"/>, and</description></item>
+                <item><description>If the <see cref="P:Code"/> property is populated, it meets the validation criteria of CD</description></item>
+            </list>
+            </remarks>
+        </member>
         <member name="M:MARC.Everest.DataTypes.SC.Equals(MARC.Everest.DataTypes.SC)">
             <summary>
             Determine if this SC is equal to another SC
@@ -12018,66 +12433,27 @@
             Creates a new instance of the QSET intersection class
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.#ctor(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0}[])">
+        <member name="M:MARC.Everest.DataTypes.QSI`1.#ctor(System.Collections.Generic.IEnumerable{MARC.Everest.DataTypes.Interfaces.ISetComponent{`0}})">
             <summary>
             Creates a new instance of the QSET intersection class containing the specified sets
             </summary>
             <param name="terms">The terms contained within the union</param>
         </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.Validate">
+        <member name="M:MARC.Everest.DataTypes.QSI`1.CreateQSI(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0}[])">
             <summary>
-            Validate that the QSET is valid. A QSET is valid when it contains at least two sets 
-            in the <see cref="P:Terms"/> property and contains no-null terms.
+            Creates a new instance of the QSI class with the specified <paramref name="terms"/>
             </summary>
         </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.Equals(MARC.Everest.DataTypes.QSI{`0})">
+        <member name="M:MARC.Everest.DataTypes.QSI`1.ValidateEx">
             <summary>
-            Determine equality between two QSS instances
+            Extended validation routine which returns a list of detected issues
             </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.Equals(System.Object)">
-            <summary>
-            Determine equality between two items
-            </summary>
+            <remarks>An instance of QSET is considered valid when it contains at least two items and no property contains
+            a null component</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.QSI`1.GetEquivalentSetOperator">
             <summary>
             Get equivalent set operator
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.Add(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0})">
-            <summary>
-            Add an expression to the term set
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.Clear">
-            <summary>
-            Clear the terms
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.Contains(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0})">
-            <summary>
-            Determine if the terms contain the item
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.CopyTo(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0}[],System.Int32)">
-            <summary>
-            Copy the terms to an array
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.Remove(MARC.Everest.DataTypes.Interfaces.ISetComponent{`0})">
-            <summary>
-            Remove a term from the collection
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.GetEnumerator">
-            <summary>
-            Get the enumerator for the terms
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.DataTypes.QSI`1.System#Collections#IEnumerable#GetEnumerator">
-            <summary>
-            Get the enumerator for the terms
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.QSI`1.Parse(MARC.Everest.DataTypes.QSI{MARC.Everest.DataTypes.Interfaces.ISetComponent{MARC.Everest.DataTypes.Interfaces.IAny}})">
@@ -12088,27 +12464,6 @@
         <member name="M:MARC.Everest.DataTypes.QSI`1.Normalize">
             <summary>
             Normalizes the QSI to include only QS* content
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.QSI`1.Terms">
-            <summary>
-            Gets or sets the terms that make up the union of this QSET
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.QSI`1.Count">
-            <summary>
-            Count the items in the terms
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.QSI`1.IsReadOnly">
-            <summary>
-            True if the terms are readonly
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.DataTypes.QSI`1.MARC#Everest#DataTypes#Interfaces#IListContainer#ContainedList">
-            <summary>
-            Contained list implementation for the IListContainer class used by 
-            formatters
             </summary>
         </member>
         <member name="T:MARC.Everest.DataTypes.PQ">
@@ -12621,6 +12976,7 @@
             <typeparamref name="T"/> does not implement <see cref="T:MARC.Everest.DataTypes.Interfaces.IDistanceable{T}"/></exception>
             <exception cref="T:System.InvalidOperationException">When the <see cref="P:Phase"/> property is not populated</exception>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:MARC.Everest.DataTypes.PIVL`1.ValidateEx" -->
         <member name="M:MARC.Everest.DataTypes.PIVL`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
             <summary>
             Determine semantic equality between this and <paramref name="other"/>
@@ -12664,12 +13020,7 @@
             Indicates the maximum number of times the interval can occur. Must be a valid INT.POS
             </summary>
         </member>
-        <member name="P:MARC.Everest.DataTypes.PIVL`1.Frequency">
-            <summary>
-            Indicates the number of times that 
-            </summary>
-            <remarks>Only <see cref="P:Frequency"/> OR <see cref="P:Period"/> should be specified</remarks>
-        </member>
+        <!-- Badly formed XML comment ignored for member "P:MARC.Everest.DataTypes.PIVL`1.Frequency" -->
         <member name="P:MARC.Everest.DataTypes.PIVL`1.OriginalText">
             <summary>
             Gets or sets the reason why the specified interval was supplied
@@ -12884,6 +13235,11 @@
                 <item>All validation criteria from <see cref="T:MARC.Everest.DataTypes.CE{T}"/></item>
                 <item>If a qualifier is specified, then a code must be specified</item>
             </list></remarks>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.CD`1.ValidateEx">
+            <summary>
+            Validates the data type returning the validation errors that occur
+            </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.CD`1.DownParse(MARC.Everest.DataTypes.CD{`0})">
             <summary>

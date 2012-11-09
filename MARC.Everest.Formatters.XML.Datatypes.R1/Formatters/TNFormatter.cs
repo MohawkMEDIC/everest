@@ -20,7 +20,6 @@
 using System;
 using System.Text;
 using System.Data;
-using System.Data.Common;
 using System.Collections.Generic;
 using MARC.Everest.DataTypes;
 using MARC.Everest.Connectors;

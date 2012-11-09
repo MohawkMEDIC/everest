@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -46,8 +47,11 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [Serializable][Structure(Name = "PN", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "PN", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("PN", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class PN : EN, IEquatable<PN>
     {
         /// <summary>
@@ -73,6 +77,15 @@ namespace MARC.Everest.DataTypes
         /// Create a new instance of a simple PN
         /// </summary>
         public PN(EntityNameUse use, string value) : this(use, new ENXP[] { new ENXP(value) }) { }
+
+        /// <summary>
+        /// Create a new instance of PN
+        /// </summary>
+        public static PN CreatePN(EntityNameUse use, params ENXP[] parts)
+        {
+            return new PN(use, parts);
+        }
+
         /// <summary>
         /// TODO: Find a proper definition for PN.Basic
         /// </summary>
@@ -93,6 +106,19 @@ namespace MARC.Everest.DataTypes
             foreach (ENXP part in Part)
                 isValid &= part.Qualifier == null || part.Qualifier.Find(ob => ob.Code.Equals(EntityNamePartQualifier.LegalStatus)) == null;
             return isValid;
+        }
+
+        /// <summary>
+        /// Extended validation with additional data
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+            foreach (var part in this.Part)
+                if (part.Qualifier != null && part.Qualifier.Find(ob => ob.Code.Equals(EntityNamePartQualifier.LegalStatus)) != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PN", String.Format(ValidationMessages.MSG_INVALID_VALUE, "LegalStatus", "Qualifier"), null));
+            return retVal;
         }
 
         /// <summary>

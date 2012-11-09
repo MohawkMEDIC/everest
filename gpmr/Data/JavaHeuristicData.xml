@@ -1,36 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <heuristic xmlns="urn:marc-hi:gpmr:heuristic">
-  <interface name="ca.marc.everest.interfaces.IImplementsNullFlavor" genericParameter="T">
+  <interface name="org.marc.everest.interfaces.IImplementsNullFlavor">
     <property type="CS" name="nullFlavor"/>
   </interface>
-  <interface name="ca.marc.everest.interfaces.IControlActEvent">
-    <property type="II" name="id"/>
-    <property type="CV" name="code"/>
-    <property type="IVL" name="effectiveTime"/>
-    <property type="CE" name="languageCode"/>
-  </interface>
-  <interface name="ca.marc.everest.interfaces.IIdentifiable">
+  <interface name="org.marc.everest.interfaces.IIdentifiable">
     <property type="II" name="id"/>
   </interface>
-  <interface name="ca.marc.everest.interfaces.IImplementsAcceptAckCode" genericParameter="T">
+  <interface name="org.marc.everest.interfaces.IImplementsAcceptAckCode" genericParameter="T">
     <property type="CS" name="acceptAckCode"/>
   </interface>
-  <interface name="ca.marc.everest.interfaces.IImplementsMoodCode" genericParameter="T">
+  <interface name="org.marc.everest.interfaces.IImplementsMoodCode" genericParameter="T">
     <property type="CS" name="moodCode"/>
   </interface>
-  <interface name="ca.marc.everest.interfaces.IImplementsProcessingCode" genericParameter="T">
+  <interface name="org.marc.everest.interfaces.IImplementsProcessingCode" genericParameter="T">
     <property type="CS" name="processingCode"/>
   </interface>
-  <interface name="ca.marc.everest.interfaces.IImplementsReasonCode" genericParameter="T">
+  <interface name="org.marc.everest.interfaces.IImplementsReasonCode" genericParameter="T">
     <property type="CV" name="reasonCode"/>
   </interface>
-  <interface name="ca.marc.everest.interfaces.IImplementsResponseModeCode" genericParmaeter="T">
+  <interface name="org.marc.everest.interfaces.IImplementsResponseModeCode" genericParmaeter="T">
     <property type="CS" name="responseModeCode"/>
   </interface>
-  <interface name="ca.marc.everest.interfaces.IImplementsStatusCode" genericParameter="T">
+  <interface name="org.marc.everest.interfaces.IImplementsStatusCode" genericParameter="T">
     <property type="CS" name="statusCode"/>
   </interface>
-  <interface name="ca.marc.everest.interfaces.IInteraction">
+  <interface name="org.marc.everest.interfaces.IInteraction">
     <property type="TS" name="creationTime"/>
     <property type="CS" name="versionCode"/>
     <property type="II" name="interactionId"/>
@@ -59,7 +53,7 @@
       <parameter type="T" name="code"/>
       <parameter type="String" name="codeSystem"/>
       <value name="retVal"/>
-      <![CDATA[ CV<T> retVal = CV<T>(code, codeSystem);]]>
+      <![CDATA[ CV<T> retVal = new CV<T>(code, codeSystem);]]>
     </setterOverride>
   </datatype>
   <datatype name="CE" type="CE" defaultBind="String" genericParameter="T">
@@ -147,13 +141,15 @@
   <datatype name="ED" type="ED">
     <setterOverride>
       <parameter type="String" name="value"/>
+      <throws type="java.io.UnsupportedEncodingException"/>
       <value name="retVal"/>
       <![CDATA[ ED retVal = new ED(value);]]>
     </setterOverride>
     <setterOverride>
       <parameter type="byte[]" name="value"/>
+      <parameter type="String" name="mediaType"/>
       <value name="retVal"/>
-      <![CDATA[ ED retVal = new ED(value);]]>
+      <![CDATA[ ED retVal = new ED(value, mediaType);]]>
     </setterOverride>
   </datatype>
   <datatype name="EIVL" type="EIVL" defaultBind="TS" genericParameter="T"/>
@@ -161,7 +157,15 @@
   <datatype name="EN.PN" type="PN"/>
   <datatype name="EN.TN" type="TN"/>
   <datatype name="EN.ON" type="ON"/>
-  <datatype name="GTS" type="GTS"/>
+  <datatype name="GTS" type="GTS">
+    <map name="QSET" genericArgument="TS"/>
+    <map name="QSI" genericArgument="TS"/>
+    <map name="QSU" genericArgument="TS"/>
+    <map name="QSP" genericArgument="TS"/>
+    <map name="QSD" genericArgument="TS"/>
+    <map name="SXPR" genericArgument="TS"/>
+    <map name="SXCM" genericArgument="TS"/>
+  </datatype>
   <datatype name="HXIT" type="HXIT" genericParameter="T"/>
   <datatype name="II" type="II">
     <setterOverride>
@@ -199,7 +203,7 @@
   </datatype>
   <datatype name="MO" type="MO">
     <setterOverride>
-      <parameter type="double" name="value"/>
+      <parameter type="java.math.BigDecimal" name="value"/>
       <parameter type="String" name="currency"/>
       <value name="retVal"/>
       <![CDATA[ MO retVal = new MO(value, currency);]]>
@@ -225,7 +229,7 @@
     </setterOverride>
 
   </datatype>
-  <datatype name="RTO" type="RTO" defaultBind="PQ,PQ" genericParameter="J,K"/>
+  <datatype name="RTO" type="RTO" defaultBind="org.marc.everest.datatypes.interfaces.IQuantity,org.marc.everest.datatypes.interfaces.IQuantity" genericParameter="J,K"/>
   <datatype name="SC" type="SC"/>
   <datatype name="SET" type="SET"  genericParameter="T"/>
   <datatype name="ST" type="ST">
@@ -235,8 +239,8 @@
       <![CDATA[ST retVal = new ST(value);]]>
     </setterOverride>
   </datatype>
-  <datatype name="SXCM" type="SXCM"/>
-  <datatype name="SXPR" type="SXPR" defaultBind="IVL&lt;TS>"  genericParameter="T"/>
+  <datatype name="SXCM" type="org.marc.everest.datatypes.interfaces.ISetComponent"/>
+  <datatype name="SXPR" type="SXPR" defaultBind="TS"  genericParameter="T"/>
   <datatype name="TEL" type="TEL"/>
   <datatype name="TN" type="TN"/>
   <datatype name="TS" type="TS">
@@ -246,7 +250,7 @@
       <![CDATA[TS retVal = new TS(value);]]>
     </setterOverride>
     <setterOverride>
-      <parameter type="T" name="value"/>
+      <parameter type="java.util.Calendar" name="value"/>
       <parameter type="int" name="precision"/>
       <value name="retVal"/>
       <![CDATA[TS retVal = new TS(value, precision);]]>

@@ -30,7 +30,7 @@ namespace MARC.Everest.DataTypes
 {
 
     /// <summary>
-    /// The CE builds on the CV by adding translations for the code.
+    /// Represents a codified value with a series of equivalents.
     /// </summary>
     //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance"), Serializable]
     //[XmlType("CE", Namespace = "urn:hl7-org:v3")]
@@ -97,8 +97,11 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
     [Structure(Name = "CE", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(String))]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class CE<T> : CV<T>, ICodedEquivalents, IEquatable<CE<T>>
     {
         /// <summary>
@@ -154,6 +157,7 @@ namespace MARC.Everest.DataTypes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures"), Property(Name = "translation", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         [XmlElement("translation")]
         public SET<CD<T>> Translation { get; set; }
+
         /// <summary>
         /// Determines if the CE is valid.
         /// </summary>
@@ -178,6 +182,26 @@ namespace MARC.Everest.DataTypes
                 isValid &= translation.Validate() && translation.OriginalText == null && translation.Translation == null;
 
             return isValid;
+        }
+
+        /// <summary>
+        /// Validate the data type returning the results of valiation
+        /// </summary>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+
+            if (this.Translation != null && this.Code == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Translation", "Code"), null));
+            foreach (var t in this.Translation ?? new SET<CD<T>>())
+            {
+                retVal.AddRange(t.ValidateEx());
+                if (t.OriginalText != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "OriginalText", "Translation"), null));
+                if (t.Translation != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Translation", "Translation"), null));
+            }
+            return retVal;
         }
 
 

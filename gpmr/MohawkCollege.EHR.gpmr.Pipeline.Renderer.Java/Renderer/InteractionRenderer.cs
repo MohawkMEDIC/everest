@@ -138,30 +138,48 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                     Description = new List<string>() { interaction.BusinessName }
                 };
 
+            // Determine if this class is an interaction
+            bool isIInteraction = true;
+            string[] members = {
+                                   "creationtime",
+                                   "versioncode",
+                                   "interactionid",
+                                   "processingmodecode"
+                               };
+            foreach (var m in members)
+                isIInteraction &= interaction.MessageType.Class.Content.Exists(o => o.Name.ToLower() == m);
+
+
             sw.Write(DocumentationRenderer.Render(interaction.Documentation, 0));
             sw.WriteLine("@Structure(name = \"{0}\", structureType = StructureType.INTERACTION)", interaction.Name);
-            sw.WriteLine("@Interaction(triggerEvent = \"{0}\")", interaction.TriggerEvent);
-            sw.WriteLine("@InteractionResponses(");
+            sw.WriteLine("@Interaction(name=\"{1}\", triggerEvent = \"{0}\")", interaction.TriggerEvent, interaction.Name);
+            sw.WriteLine("@InteractionResponses( value = {");
+            List<String> resp = new List<string>();
             foreach (Interaction response in interaction.Responses)
-                sw.WriteLine("\t@InteractionResponse(name = \"{0}\", triggerEvent = \"{1}\")", response.Name, response.TriggerEvent);
-            sw.WriteLine(")");
-            sw.WriteLine("public class {0} extends {1} {{", interaction.Name, CreateInteractionDatatype(interaction.MessageType, ownerPackage));
+            {
+                if (resp.Contains(response.Name)) continue;
+                sw.WriteLine("\t@Interaction(name = \"{0}\", triggerEvent = \"{1}\"){2}", response.Name, response.TriggerEvent, response == interaction.Responses.Last() ? "" : ",");
+                resp.Add(response.Name);
+            }
+            sw.WriteLine("})");
+            sw.WriteLine("public class {0} extends {1} {2} {{", interaction.Name, CreateInteractionDatatype(interaction.MessageType, ownerPackage), 
+                isIInteraction ? "implements IInteraction" : "");
 
             #region Constants
 
             // Get the trigger event
             sw.WriteLine("\t/** Gets the default trigger event to be used for this interaction */");
-            sw.WriteLine("\tpublic static CV<String> getTriggerEvent() {{ return new CV<String>(\"{0}\", \"{1}\"); }}", interaction.TriggerEvent, triggerEventOid, apiNs);
+            sw.WriteLine("\tpublic static CV<String> defaultTriggerEvent() {{ return new CV<String>(\"{0}\", \"{1}\"); }}", interaction.TriggerEvent, triggerEventOid, apiNs);
 
             // Get the interaction id
             sw.WriteLine("\t/** Gets the interaction ID of this interaction */");
-            sw.WriteLine("\tpublic static II getInteractionId() {{ return new II(new OID(\"{1}\"), \"{0}\"); }}", interaction.Name, interactionIdOid, apiNs);
+            sw.WriteLine("\tpublic static II defaultInteractionId() {{ return new II(\"{1}\", \"{0}\"); }}", interaction.Name, interactionIdOid, apiNs);
 
             // Get the profile id
             if (!String.IsNullOrEmpty(profileId))
             {
                 sw.WriteLine("\t/** Gets the profile id of this interaction */");
-                sw.WriteLine("\tpublic static LIST<II> getProfileId() {{ LIST<II> retVal = new LIST<II>(); retVal.add(new II (\"{0}\", \"{1}\")); }}", profileIdOid, profileId, apiNs);
+                sw.WriteLine("\tpublic static LIST<II> defaultProfileId() {{ LIST<II> retVal = new LIST<II>(); retVal.add(new II (\"{0}\", \"{1}\")); return retVal; }}", profileIdOid, profileId, apiNs);
             }
 
 
@@ -230,6 +248,33 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             #endregion
 
+
+            #region Interaction members
+
+            if (isIInteraction)
+            {
+                sw.WriteLine("\t\t/** Implementation of generic IInteraction.ControlActEvent Property */");
+                // Create the control act event
+                if (interaction.MessageType.GenericSupplier != null && interaction.MessageType.GenericSupplier.Count > 0)
+                {
+                    Property cactProperty = interaction.MessageType.Class.Content.Find(o => o is Property && (o as Property).Type.Name == interaction.MessageType.Class.TypeParameters[0].ParameterName) as Property;
+                    if (cactProperty == null)
+                        ;
+
+                    string cactName = Util.Util.PascalCase(cactProperty.Name);
+                    sw.WriteLine("\t\tObject getControlAct() {");
+                    sw.WriteLine("\t\t\treturn this.get{0}();", cactName);
+                    sw.WriteLine("\t\t}");
+                }
+                else
+                {
+                    sw.WriteLine("\t\tObject getControlAct() {");
+                    sw.WriteLine("\t\t\treturn null;");
+                    sw.WriteLine("\t\t}");
+                }
+            }
+            #endregion
+
             sw.WriteLine("}");
 
             #region Usings
@@ -238,8 +283,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             tw.WriteLine("package {0}.interaction;", ownerPackage);
 
             #region Render the imports
-            string[] apiImports = { "annotations.*", "datatypes.*", "datatypes.generic.*" },
-                jImports = { "java.lang.*", "java.util.*", string.Format("{0}.vocabulary.*", ownerPackage) };
+            string[] apiImports = { "annotations.*", "datatypes.*", "datatypes.generic.*", "interfaces.IGraphable", "interfaces.IInteraction" },
+                jImports = { "java.lang.*", "java.util.*" };
             foreach (var import in apiImports)
                 tw.WriteLine("import {0}.{1};", apiNs, import);
             foreach (var import in jImports)

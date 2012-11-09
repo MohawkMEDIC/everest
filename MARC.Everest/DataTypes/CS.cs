@@ -98,9 +98,12 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2218:OverrideGetHashCodeOnOverridingEquals"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2218:OverrideGetHashCodeOnOverridingEquals"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
     [Structure(Name = "CS", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(String))]
+    #if !WINDOWS_PHONE
+    [Serializable]
     [DefaultProperty("Code")]
+    #endif
     public class CS<T> : ANY, ICodedSimple<T>, IEquatable<CS<T>>, IEquatable<T>
     {
 
@@ -178,7 +181,30 @@ namespace MARC.Everest.DataTypes
             if (this is CV<T>) // Special case for non CS
                 return base.Validate();
             else
-                return (Code != null) ^ (NullFlavor != null) && base.Validate();
+                return (Code != null && !Code.IsAlternateCodeSpecified) ^ (NullFlavor != null) && base.Validate();
+        }
+
+        /// <summary>
+        /// Validate the CS is valid, returning the detected issues
+        /// </summary>
+        /// <remarks>
+        /// An instance of CS is valid when:
+        /// <list type="number">
+        ///     <item><description>All validation from <see cref="T:ANY"/> succeeds</description></item>
+        ///     <item><description>This instance of CS contains a <see cref="P:Code"/> or <see cref="P:NullFlavor"/> but not both, and</description></item>
+        ///     <item><description>The <see cref="P:Code"/> specified is in the <typeparamref name="T"/> domain</description></item>
+        /// </list>
+        /// </remarks>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (this is CV<T>)
+                return retVal;
+            else if (!((this.Code == null) ^ (this.NullFlavor == null)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CS", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            else if (this.Code.IsAlternateCodeSpecified)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CS", string.Format("Code must be drawn from '{0}'", typeof(T).Name), null));
+            return retVal;
         }
 
         #region Operators
@@ -345,7 +371,7 @@ namespace MARC.Everest.DataTypes
             if (other == null)
                 return null;
             else if (this.IsNull && other.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, other.NullFlavor) };
+                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, other.NullFlavor) };
             else if (this.IsNull ^ other.IsNull)
                 return new BL() { NullFlavor = DataTypes.NullFlavor.NotApplicable };
             else if (!(other is ICodedSimple))

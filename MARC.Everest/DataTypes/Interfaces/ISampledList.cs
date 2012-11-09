@@ -33,7 +33,7 @@ namespace MARC.Everest.DataTypes.Interfaces
         /// <summary>
         /// Gets or sets the origin
         /// </summary>
-        object Origin { get; set; }
+        IQuantity Origin { get; set; }
 
         /// <summary>
         /// Gets or sets the scale

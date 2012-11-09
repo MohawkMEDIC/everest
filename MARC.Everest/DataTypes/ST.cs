@@ -24,6 +24,7 @@ using MARC.Everest.Attributes;
 using System.Globalization;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -43,8 +44,11 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [Serializable][Structure(Name = "ST", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "ST", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("ST", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class ST : PDV<String>, IEquatable<ST>
     {
 
@@ -93,7 +97,7 @@ namespace MARC.Everest.DataTypes
             if (other == null)
                 return null;
             else if (other.IsNull && this.IsNull)
-                return new ST() { NullFlavor = this.NullFlavor.CommonAncestorWith(other.NullFlavor) };
+                return new ST() { NullFlavor = this.NullFlavor.GetCommonParent(other.NullFlavor) };
             else if (other.IsNull)
                 return new ST() { NullFlavor = MARC.Everest.DataTypes.NullFlavor.NoInformation };
             else
@@ -113,9 +117,9 @@ namespace MARC.Everest.DataTypes
             else if (end == null || end.IsNull)
                 throw new ArgumentNullException("end", "Argument must not be null and must not contain a null flavor");
             else if (start > this.Length)
-                throw new ArgumentOutOfRangeException("start", start, "Value must be less than the size of the string");
+                throw new ArgumentOutOfRangeException("start", "Value must be less than the size of the string");
             else if (end > this.Length)
-                throw new ArgumentOutOfRangeException("end", end, "Value must be less than the size of the string");
+                throw new ArgumentOutOfRangeException("end", "Value must be less than the size of the string");
             else if (start > end)
                 throw new ArgumentOutOfRangeException("start", "Value must be less than end");
             else if(this.NullFlavor != null)
@@ -163,10 +167,15 @@ namespace MARC.Everest.DataTypes
         {
             if (o == null) return null;
 
+#if WINDOWS_PHONE
+            string value = o.Representation == MARC.Everest.DataTypes.Interfaces.EncapsulatedDataRepresentation.B64 ?
+                o.Base64Data : o.Representation == MARC.Everest.DataTypes.Interfaces.EncapsulatedDataRepresentation.XML ?
+                o.Value : o.Value;
+#else
             string value = o.Representation == MARC.Everest.DataTypes.Interfaces.EncapsulatedDataRepresentation.B64 ?
                 o.Base64Data : o.Representation == MARC.Everest.DataTypes.Interfaces.EncapsulatedDataRepresentation.XML ? 
                 o.XmlData.OuterXml : o.Value;
-
+#endif
             return new ST(value)
             {
                 ControlActExt = o.ControlActExt,
@@ -291,7 +300,7 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public override bool Equals(object obj)
         {
-            if (obj is ST)
+            if (obj is ST || obj is string)
                 return Equals(obj as ST);
             return base.Equals(obj);
         }
@@ -313,6 +322,22 @@ namespace MARC.Everest.DataTypes
             return ((this.Value != null) ^ (this.NullFlavor != null)) &&
                 (this.Translation != null && this.Translation.FindAll(o => o.Translation == null).Count == this.Translation.Count ||
                 this.Translation == null);
+        }
+
+        /// <summary>
+        /// Extended validation function that returns detected issues
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+
+            if(this.NullFlavor != null && this.Value != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ST", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            else if(this.Value == null && this.NullFlavor == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ST", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            if (this.Translation != null && this.Translation.FindAll(o => o.Translation != null).Count == this.Translation.Count)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ST", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Translation", "Translation"), null));
+            return retVal;
         }
 
         /// <summary>
@@ -367,7 +392,7 @@ namespace MARC.Everest.DataTypes
             if (other == null)
                 return null;
             else if (this.IsNull && other.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.CommonAncestorWith(this.NullFlavor, other.NullFlavor) };
+                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, other.NullFlavor) };
             else if (this.IsNull ^ other.IsNull)
                 return new BL() { NullFlavor = DataTypes.NullFlavor.NotApplicable };
 

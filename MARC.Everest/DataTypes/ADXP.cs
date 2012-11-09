@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -223,7 +224,10 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// A character string that may have a type-tag signifying its role in the address.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ADXP"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ADXP")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     [Structure(Name = "ADXP", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("ADXP", Namespace = "urn:hl7-org:v3")]
     public class ADXP : ANY, IEquatable<ADXP>
@@ -333,6 +337,22 @@ namespace MARC.Everest.DataTypes
                 ((CodeSystemVersion != null && CodeSystem != null) || CodeSystemVersion == null));
         }
 
+        /// <summary>
+        /// Extended validation which returns the results of the validation
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (this.CodeSystemVersion != null && this.CodeSystem == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemVersion", "Code"), null));
+            if (this.Code != null && this.CodeSystem == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Code", "CodeSystem"), null));
+            if (this.NullFlavor != null && this.Value == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.Value == null && this.NullFlavor == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            return retVal;
+        }
         #region IEquatable<ADXP> Members
 
         /// <summary>

@@ -25,13 +25,19 @@ using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Connectors;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
-    /// An abstract type intended to collect common attributes related to collections
+    /// An abstract type intended to collect common functionality related to collections
     /// </summary>
     [Structure(Name= "COLL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public abstract class COLL<T> : ANY, IColl<T>, IEquatable<COLL<T>>
     {
         #region IColl<T> Members
@@ -76,6 +82,37 @@ namespace MARC.Everest.DataTypes
         public override bool Validate()
         {
             return (this.NullFlavor != null) ^ (!this.IsEmpty);
+        }
+
+        /// <summary>
+        /// Find all items that match the given predicate
+        /// </summary>
+        public T Find(Predicate<T> match)
+        {
+            return this.Items.Find(match);
+        }
+
+        /// <summary>
+        /// Find all occurences of <paramref name="match"/>
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        public List<T> FindAll(Predicate<T> match)
+        {
+            return this.Items.FindAll(match);
+        }
+
+
+        /// <summary>
+        /// Validate the data type returning the validation errors that occur
+        /// </summary>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (this.NullFlavor != null && this.Items.Count > 0)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "COLL", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.NullFlavor == null && this.Items.Count == 0)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "COLL", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+            return retVal;
         }
         #endregion
 

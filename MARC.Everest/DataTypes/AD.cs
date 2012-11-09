@@ -25,6 +25,11 @@ using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Connectors;
+
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif 
 
 namespace MARC.Everest.DataTypes
 {
@@ -238,9 +243,16 @@ namespace MARC.Everest.DataTypes
     /// Although not recommended, the AD data type can also be used, in some cases, to facilitate the location
     /// of points of interest on a map (which require additional geocoding)
     /// </para>
+    /// <para>An AD instance is considered valid when either the <see cref="P:ANY.NullFlavor"/> property is null
+    /// or there is at least one <see cref="P:Part"/>.
+    /// </para>
     /// </remarks>
     [XmlType("AD",Namespace="urn:hl7-org:v3")]
-    [Serializable][Structure(Name = "AD", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "AD", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
+
     public class AD : ANY, IEquatable<AD>
     {
         private static Dictionary<String, AddressPartType> PartTypeMap;
@@ -500,6 +512,16 @@ namespace MARC.Everest.DataTypes
             return (NullFlavor != null) ^ (Part.Count > 0);
         }
 
+        /// <summary>
+        /// Extended validation method that returns the results of validation
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (!((this.NullFlavor != null) ^ (this.Part.Count > 0)))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "AD", "NullFlavor must be specified, or more than one Part must be present", null));
+            return retVal;
+        }
 
         #region IEquatable<AD> Members
 
@@ -538,6 +560,8 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Determines if this AD is semantically equal to <paramref name="other"/>
         /// </summary>
+        /// <remarks>Two non-null, non-null flavored instances of AD are semantically equal when they contain
+        /// the same parts regardless of order, and the <see cref="P:IsNotOrdered"/> and <see cref="P:Use"/> properties are equal to <paramref name="other"/></remarks>
         public override BL SemanticEquals(IAny other)
         {
             var baseSem = base.SemanticEquals(other);

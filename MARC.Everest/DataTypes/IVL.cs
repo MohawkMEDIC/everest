@@ -24,9 +24,15 @@ using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Attributes;
 using MARC.Everest.Interfaces;
 using System.ComponentModel;
+using System.Xml.Serialization;
+using MARC.Everest.Connectors;
+
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#else
 using MARC.Everest.Design;
 using System.Drawing.Design;
-using System.Xml.Serialization;
+#endif
 
 namespace MARC.Everest.DataTypes
 {
@@ -49,9 +55,13 @@ namespace MARC.Everest.DataTypes
     /// </code>
     /// </example>
     /// <seealso cref="T:MARC.Everest.DataTypes.SXCM{T}"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IVL"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IVL")]
     [Structure(Name = "IVL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("IVL", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
+
     public class IVL<T> : SXCM<T>, IInterval<T>, IEquatable<IVL<T>>, IPqTranslatable<IVL<T>>, IOriginalText
         where T : IAny
     {
@@ -78,18 +88,22 @@ namespace MARC.Everest.DataTypes
         /// Text indicating where this interval was derived
         /// </summary>
         [Description("Text indicating where this interval was derived")]
+        [Property(Name = "originalText", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [Property(Name = "originalText", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#endif
         public ED OriginalText { get; set; }
 
         /// <summary>
         /// This is the low limit. If the low limit is not known a null flavor should be specified
         /// </summary>
         [Description("This is the low limit. If the low limit is not known a null flavor should be specified")]
+        [Property(Name = "low", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [Property(Name = "low", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#endif
         public T Low { get; set; }
 
         /// <summary>
@@ -108,9 +122,11 @@ namespace MARC.Everest.DataTypes
         /// The high limit. If the hign limit is not known, a null flavour should be specified
         /// </summary>
         [Description("The high limit. If the hign limit is not known, a null flavour should be specified")]
+        [Property(Name = "high", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [Property(Name = "high", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#endif
         public T High { get; set; }
         
         /// <summary>
@@ -130,9 +146,11 @@ namespace MARC.Everest.DataTypes
         /// but the actual start and end points are not known. 
         /// </summary>
         [Description("The difference between the high and low bondary. Width is used when the size of the interval is known but the actual start and end points are not known. ")]
+        [Property(Name = "width", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [Property(Name = "width", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#endif
         public PQ Width { get; set; }
 
         /// <summary>
@@ -166,6 +184,21 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Determines semantic equality between this IVL and <paramref name="other"/>
         /// </summary>
+        /// <remarks>
+        /// Two instances of IVL are considered semantically equal when their <see cref="P:Low"/> and <see cref="P:High"/> bounds
+        /// are semantically equal with one another. The following rules apply:
+        /// <list type="number">
+        ///     <item><description>If the <see cref="P:High"/> property is null or positive infinity in both instances of <see cref="T:IVL"/> or if the <see cref="P:Low"/> property
+        ///     is null or negative infinity in both IVLs they can be semantically equal</description></item>
+        ///     <item><description>Two <see cref="T:IVL"/> instances that are not bound (<see cref="P:Low"/>/<see cref="P:High"/> null) will never be considered equal even if their <see cref="P:Value"/> and <see cref="P:Width"/> properties are semantically equal</description></item>
+        ///     
+        /// </list>
+        /// <para>
+        /// Because IVL describes a set, an instance of IVL can be semantically equal to a SET with the same members. For example a <see cref="T:SET"/> instance containing
+        /// the numbers {1,2,3,4,5} can be semantically equal to an <see cref="T:IVL{INT}"/> describing {1-5}. Note that when comparing an <see cref="T:IVL"/> to a <see cref="T:SET"/>
+        /// the <see cref="M:ToSet()"/> method is called which can be quite costly in terms of CPU resources.
+        /// </para>
+        /// </remarks>
         public override BL SemanticEquals(IAny other)
         {
 
@@ -234,6 +267,32 @@ namespace MARC.Everest.DataTypes
                 //(Low != null && High != null) || Value != null || High != null)
                 //((LowClosed != null && Low != null) || LowClosed == null) &&
                 //((HighClosed != null && High != null) || HighClosed == null));
+        }
+
+        /// <summary>
+        /// Validates the instance of IVL and returns the detected issues
+        /// </summary>
+        /// <remarks>
+        /// An instance of IVL is valid if:
+        /// <list type="bullet">
+        ///     <item><description>When <see cref="P:NullFlavor"/> is specified <see cref="P:Low"/>, <see cref="P:Width"/>, <see cref="P:High"/> and <see cref="P:Value"/> are null, and</description></item>
+        ///     <item><description>When <see cref="P:LowClosed"/> is specified <see cref="P:Low"/> is specified, and </description></item>
+        ///     <item><description>When <see cref="P:HighClosed"/> is specified <see cref="P:High"/> is specified, and </description></item>
+        /// </list>
+        /// </remarks>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+
+            // Validation
+            if (NullFlavor != null && (Low != null || High != null || Width != null || Value != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (LowClosed != null && Low == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "LowClosed", "Low"), null));
+            if (HighClosed != null && High == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "HighClosed", "High"), null));
+
+            return retVal;
         }
 
         #region IEquatable<IVL<T>> Members

@@ -78,7 +78,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java {
         ///	public String getCompany() { return &quot;$org$&quot;; }
         ///	public String getCopyright() { return &quot;Copyright (C)  $year$&quot;; }
         ///	public String getVersion() { return &quot;1.0.0.0&quot;; }
-        ///	public String getInformationalVersion() { return &quot;$mrversion$&quot;; }        /// [rest of string was truncated]&quot;;.
+        ///	public String getInformationalVersion() { return &quot;$mrversion$&quot;; }
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string AssemblyInfo {
             get {

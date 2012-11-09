@@ -123,7 +123,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
                             var parseResult = Host.Parse(s, GenericArguments[0]);
                             result.Code = parseResult.Code;
                             result.AddResultDetail(parseResult.Details);
-                            retVal.Origin = parseResult.Structure;
+                            retVal.Origin = parseResult.Structure as IQuantity;
                         }
                         else if (s.LocalName == "origin")
                             result.AddResultDetail(new NotImplementedResultDetail(ResultDetailType.Warning, "origin may only be supplied once", s.ToString()));

@@ -28,6 +28,10 @@ using MARC.Everest.Exceptions;
 using MARC.Everest.DataTypes.Interfaces;
 using System.ComponentModel;
 
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
+
 namespace MARC.Everest.Connectors
 {
 
@@ -69,7 +73,7 @@ namespace MARC.Everest.Connectors
             // Scan all types.. populate dictionaries
             foreach(Type t in typeof(II).Assembly.GetTypes())
                 if (t.IsClass && t.GetInterface("MARC.Everest.Interfaces.IGraphable", true) != null)
-                    foreach(MethodInfo mi in  t.GetMethods())
+                    foreach(MethodInfo mi in  t.GetMethods(BindingFlags.Public | BindingFlags.Static))
                     {
                         object[] fa = mi.GetCustomAttributes(typeof(FlavorAttribute), true);
                         lock (s_flavorValidation)
@@ -149,7 +153,7 @@ namespace MARC.Everest.Connectors
         {
             object retVal = null;
             if (!TryFromWireFormat(value, typeof(T), out retVal) && throwOnError)
-                throw new FormatterException(String.Format("Can't find valid cast to from '{0}' to '{1}'", value.GetType(), typeof(T)));
+                throw new FormatterException(String.Format("Can't find valid conversion to from '{0}' to '{1}'", value.GetType(), typeof(T)));
             return (T)retVal;
         }
 
@@ -215,7 +219,7 @@ namespace MARC.Everest.Connectors
         {
 
             // Null?
-            if (instanceValue == null)
+            if (instanceValue == null || instanceValue is IAny && (instanceValue as IAny).IsNull)
                 return null;
 
             // Basic formatting 
@@ -295,8 +299,7 @@ namespace MARC.Everest.Connectors
         {
             string typeName = typeNames.Dequeue();
             
-            // Find the type 
-            Type cType = Array.Find(typeof(Util).Assembly.GetTypes(), delegate(Type a)
+            Predicate<Type> findPredicate = delegate(Type a)
             {
                 var structureAtt = a.GetCustomAttributes(typeof(StructureAttribute), false);
                 if (structureAtt.Length == 0)
@@ -308,7 +311,13 @@ namespace MARC.Everest.Connectors
                 foreach (TypeMapAttribute tma in typeMapAtt)
                     result |= (tma.Name == typeName) && (String.IsNullOrEmpty(tma.ArgumentType) ^ (tma.ArgumentType == typeNames.Peek()));
                 return result || (structureAtt[0] as StructureAttribute).Name == typeName;
-            });
+            };
+#if WINDOWS_PHONE
+            Type cType = typeof(Util).Assembly.GetTypes().Find(findPredicate); 
+#else
+            // Find the type 
+            Type cType = Array.Find(typeof(Util).Assembly.GetTypes(), findPredicate);
+#endif
 
             // Determine if the type is generic in nature?
             if (cType.IsGenericTypeDefinition) // Yes
@@ -341,7 +350,11 @@ namespace MARC.Everest.Connectors
                 object[] typeMapAttribute = cType.GetCustomAttributes(typeof(TypeMapAttribute), false);
                 if (typeMapAttribute.Length > 0)
                 {
+#if WINDOWS_PHONE
+                    var tma = typeMapAttribute.Find(o => (o as TypeMapAttribute).Name == typeName) as TypeMapAttribute;
+#else
                     var tma = Array.Find(typeMapAttribute, o => (o as TypeMapAttribute).Name == typeName) as TypeMapAttribute;
+#endif
                     if (tma != null && !String.IsNullOrEmpty(tma.ArgumentType))
                     {
                         var genType = typeNames.Dequeue();
@@ -431,7 +444,7 @@ namespace MARC.Everest.Connectors
                 ;
             else if (m_destType.IsEnum && s_enumerationMaps.ContainsKey(string.Format("{0}.{1}", m_destType.FullName, value)))
             {
-                value = Enum.Parse(m_destType, s_enumerationMaps[string.Format("{0}.{1}", m_destType.FullName, value)]);
+                value = Enum.Parse(m_destType, s_enumerationMaps[string.Format("{0}.{1}", m_destType.FullName, value)], false);
                 if (!requiresExplicitCastCall)
                 {
                     result = value;
@@ -446,7 +459,7 @@ namespace MARC.Everest.Connectors
 
                 try
                 {
-                    value = Enum.Parse(m_destType, s_enumerationMaps[string.Format("{0}.{1}", m_destType.FullName, value)]);
+                    value = Enum.Parse(m_destType, s_enumerationMaps[string.Format("{0}.{1}", m_destType.FullName, value)], false);
                 }
                 catch
                 {
@@ -467,7 +480,8 @@ namespace MARC.Everest.Connectors
 
             // Is there a built in method that can convert this
             MethodInfo mi;
-            if (!s_wireMaps.TryGetValue(string.Format("{0}>{1}", value.GetType().FullName, destType.FullName), out mi))
+            string converterKey = string.Format("{0}>{1}", value.GetType().FullName, destType.FullName);
+            if (!s_wireMaps.TryGetValue(converterKey, out mi))
             {
                 // Try to find a map first...
                 // Using an operator overload
@@ -482,8 +496,8 @@ namespace MARC.Everest.Connectors
                 if (mi != null)
                 {
                     lock (s_wireMaps)
-                        if (!s_wireMaps.ContainsKey(string.Format("{0}>{1}", value.GetType().FullName, destType.FullName)))
-                            s_wireMaps.Add(string.Format("{0}>{1}", value.GetType().FullName, destType.FullName), mi);
+                        if (!s_wireMaps.ContainsKey(converterKey))
+                            s_wireMaps.Add(converterKey, mi);
                 }
                 else
                 {
@@ -520,7 +534,7 @@ namespace MARC.Everest.Connectors
                 }
             }
 
-
+            
             try
             {
                 result = mi.Invoke(null, new object[] { value }); // Invoke the conversion method

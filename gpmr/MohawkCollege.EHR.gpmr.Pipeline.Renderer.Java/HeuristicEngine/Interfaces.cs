@@ -37,7 +37,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
         // Heuristic data
         private static HeuristicData s_heuristicData;
         // API namespace
-        private static string s_apiNs = "ca.marc.everest";
+        private static string s_apiNs = "org.marc.everest";
 
         /// <summary>
         /// Initialize the interfaces
@@ -80,7 +80,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                 Enumeration supplierDomain = null;
                 foreach (var prop in iface.Properties)
                 {
-                    Property p = c.Content.Find(o => (o is Property) &&
+                    Property p = c.Content.Find(o => (o is Property) && (o as Property).Type.Name != null &&
                         (o as Property).Type.Name.ToLower() + "." + o.Name.ToLower() == prop.DataType.ToLower() + "." + prop.Name.ToLower() &&
                         (o.MaxOccurs == "1" || o.MaxOccurs != "1" && prop.Name.StartsWith("LIST"))) as Property;
                     matches &= p != null;
@@ -95,12 +95,12 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                     {
                         string rv = iface.Name;
                         if (supplierDomain != null && 
-                            EnumerationRenderer.WillRender(supplierDomain))
+                            !String.IsNullOrEmpty(EnumerationRenderer.WillRender(supplierDomain)))
                         {
                             if (retVal.Contains(rv))
                                 retVal.Remove(rv);
 
-                            rv += "<" + String.Format("{0}.vocabulary.{1}", ownerNs, supplierDomain.Name) + ">";
+                            rv += String.Format("<{1}>", ownerNs, EnumerationRenderer.WillRender(supplierDomain));
                             retVal.Add(rv);
                         }
                     }

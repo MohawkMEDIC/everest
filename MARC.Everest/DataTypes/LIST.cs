@@ -33,9 +33,11 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// A collection of items that are ordered based on their history
     /// </summary>
-    [Serializable]
     [Structure(Name = "HIST", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("HIST", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class HIST<T> : LIST<T>
     {
 
@@ -98,9 +100,12 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// A collection that contains other discrete (but not necessarily distinct) values in a defined sequence.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "LIST"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "LIST")]
     [Structure(Name = "LIST", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("LIST", Namespace = "urn:hl7-org:v3")]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class LIST<T> : COLL<T>, ISequence<T>, IEquatable<LIST<T>>
     {
         /// <summary>
@@ -127,7 +132,7 @@ namespace MARC.Everest.DataTypes
         {
             items = new List<T>();
             // Add items
-            foreach (object o in collection ?? new ArrayList())
+            foreach (object o in collection ?? new List<Object>())
                 if (o is T)
                     items.Add((T)o);
                 else
@@ -157,23 +162,6 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
-        /// Find all items that match the given predicate
-        /// </summary>
-        public T Find(Predicate<T> match)
-        {
-            return items.Find(match);
-        }
-
-        /// <summary>
-        /// Find all occurences of <paramref name="match"/>
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        public List<T> FindAll(Predicate<T> match)
-        {
-            return items.FindAll(match);
-        }
-
-        /// <summary>
         /// Cast any IEnumerable to this list
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
@@ -184,22 +172,6 @@ namespace MARC.Everest.DataTypes
 
         // Items
         private List<T> items = new List<T>();
-
-        /// <summary>
-        /// Get the first item from the list
-        /// </summary>
-        public T First
-        {
-            get { return items.Count > 0 ? items[0] : default(T); }
-        }
-
-        /// <summary>
-        /// Get the last item from the list
-        /// </summary>
-        public T Last
-        {
-            get { return items.Count > 0 ? items[items.Count - 1] : default(T); }
-        }
 
         /// <summary>
         /// Return a portion of the list
@@ -227,7 +199,7 @@ namespace MARC.Everest.DataTypes
         /// <exception cref="T:System.IndexOutOfRangeException">Thrown when either <paramref name="start"/> or <paramref name="end"/> are outside the bounds of the array</exception>
         /// <exception cref="T:System.ArgumentException">Thrown when <paramref name="start"/> is greater than <paramref name="end"/></exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Start"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "End"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "SubSequence")]
-        public LIST<T> SubSequence(int start, int end)
+        public ISequence<T> SubSequence(int start, int end)
         {
             if (start >= Count)
                 throw new System.IndexOutOfRangeException(String.Format("Start position {0} is outside bounds of the LIST", start));
@@ -439,20 +411,11 @@ namespace MARC.Everest.DataTypes
 
         #endregion
 
-        /// <summary>
-        /// Validate
-        /// </summary>
-        /// <returns></returns>
-        public override bool Validate()
-        {
-            return (items.Count > 0) ^ (NullFlavor != null);
-        }
 
         /// <summary>
         /// Determine if the two items are semantically equal
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <remarks>Two instances of LIST are semantically equal when they contain the same items in the same sequence</remarks>
         public override BL SemanticEquals(IAny other)
         {
             var baseSem = base.SemanticEquals(other);
@@ -488,6 +451,23 @@ namespace MARC.Everest.DataTypes
             retVal.ValidTimeHigh = o.ValidTimeHigh;
             retVal.ValidTimeLow = o.ValidTimeLow;
             return retVal;
+        }
+
+
+        /// <summary>
+        /// Get the first item from the collection
+        /// </summary>
+        public T First
+        {
+            get { return Items.Count > 0 ? Items[0] : default(T); }
+        }
+
+        /// <summary>
+        /// Get the last item from the collection
+        /// </summary>
+        public T Last
+        {
+            get { return Items.Count > 0 ? Items[Items.Count - 1] : default(T); }
         }
 
         #region IEquatable<LIST<T>> Members

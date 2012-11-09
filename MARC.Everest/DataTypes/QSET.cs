@@ -120,9 +120,12 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:SXPR{T}"/>
     /// <seealso cref="T:SXCM{T}"/>
     /// <seealso cref="T:GTS"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "QSET"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "QSET")]
     [Structure(Name = "QSET", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QSET", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public abstract class QSET<T> : ANY, IEquatable<QSET<T>>, ISetComponent<T>, IOriginalText, INormalizable
         where T : IAny
     {
@@ -200,7 +203,7 @@ namespace MARC.Everest.DataTypes
                     else if (current is SXCM<T>)
                     {
                         var sxcm = current.Clone() as SXCM<T>;
-                        sxcm.Operator = this.GetEquivalentSetOperator();
+                        sxcm.Operator = this.GetEquivalentSetOperator(); // This is a shallow clone, but that is ok since we only want to modify the SetOperator which is immutable
                         retVal.Add(sxcm);
                     }
                     else if (current is T)
@@ -220,8 +223,7 @@ namespace MARC.Everest.DataTypes
         }
 
         #endregion
-
-
+        
         #region INormalizable Members
 
         /// <summary>

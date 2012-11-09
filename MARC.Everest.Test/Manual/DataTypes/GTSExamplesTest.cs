@@ -95,7 +95,7 @@ namespace MARC.Everest.Test.DataTypes.Manual
 
             // Intersect to get labour day
             GTS labourDay = new GTS(
-                new QSI<TS>(
+                QSI<TS>.CreateQSI(
                     firstWeekofSept,
                     mondays
                     )
@@ -141,7 +141,7 @@ namespace MARC.Everest.Test.DataTypes.Manual
 
             // Intersect to get labour day
             GTS labourDay = new GTS(
-                new QSI<TS>(
+                QSI<TS>.CreateQSI(
                     firstWeekofSept,
                     mondays
                     )
@@ -192,7 +192,7 @@ namespace MARC.Everest.Test.DataTypes.Manual
 
             // Intersect to get labour day
             GTS labourDay = new GTS(
-                new QSI<TS>(
+                QSI<TS>.CreateQSI(
                     firstWeekofSept,
                     mondays
                     )
@@ -200,7 +200,7 @@ namespace MARC.Everest.Test.DataTypes.Manual
 
             // Intersect to get labour day
             GTS labourDay2 = new GTS(
-                new QSI<TS>(
+                QSI<TS>.CreateQSI(
                     firstWeekofSept,
                     mondays2
                     )
@@ -256,7 +256,7 @@ namespace MARC.Everest.Test.DataTypes.Manual
 
             // Intersect to get labour day
             GTS labourDay = new GTS(
-                new QSI<TS>(
+                QSI<TS>.CreateQSI(
                     firstWeekofSept,
                     mondays
                     )
@@ -312,7 +312,7 @@ namespace MARC.Everest.Test.DataTypes.Manual
 
             // Intersect to get labour day
             GTS labourDay = new GTS(
-                new QSI<TS>(
+                QSI<TS>.CreateQSI(
                     firstWeekofSept,
                     mondays
                     )

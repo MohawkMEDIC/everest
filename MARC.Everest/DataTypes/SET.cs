@@ -52,14 +52,16 @@ namespace MARC.Everest.DataTypes
     /// </para>
     /// <para>From : http://en.wikipedia.org/wiki/SPQR</para>
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     [Obsolete("",false)]
     public class SPQR : SET<PQR>
     {
     }
 
     /// <summary>
-    /// A collection that contains other distinct and discrete values in no particular order
+    /// A collection that contains other distinct and discrete values where the sequence of items has meaning
     /// </summary>
     /// <example>
     /// <code title="Creating a new SET" lang="cs">
@@ -103,11 +105,14 @@ namespace MARC.Everest.DataTypes
     /// </list>
     /// </para>
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Set"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SET"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Set"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SET")]
     [Structure(Name = "SET", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("SET", Namespace = "urn:hl7-org:v3")]
     [TypeMap(Name = "DSET")]
-    public class SET<T> : COLL<T>, ISet<T>, IColl<T> , IEquatable<SET<T>>
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
+    public class SET<T> : COLL<T>, ISet<T>, ISequence<T>, IColl<T>, IEquatable<SET<T>>
     {
 
         /// <summary>
@@ -241,45 +246,6 @@ namespace MARC.Everest.DataTypes
         public override bool IsEmpty
         {
             get { return items.Count == 0; }
-        }
-
-        /// <summary>
-        /// Find all items that match the given predicate
-        /// </summary>
-        /// <param name="match">The predicate that dictates how matching should be performed</param>
-        /// <example>
-        /// <code lang="cs" title="Finding items in a set">
-        /// <![CDATA[
-        /// // Create set 
-        /// SET<II> set1 = new SET<II>(new II[] 
-        /// { 
-        /// new II("1.1.1.1","1"),  
-        /// new II("1.1.1.1","2"), 
-        /// new II("1.1.1.1","3") 
-        /// }, II.Comparator); 
-        ///              
-        /// // .NET 3.5 and Mono 
-        /// II ii2 = set1.Find(ii => ii.Extension == "2" && ii.Root == "1.1.1.1"); 
-        /// // .NET 2.0 
-        /// ii2 = set1.Find(delegate(II ii) 
-        /// { 
-        /// return ii.Extension == "1" && ii.Root == "1.1.1.1"; 
-        /// }); 
-        /// ]]>
-        /// </code>
-        /// </example>
-        public T Find(Predicate<T> match)
-        {
-            return items.Find(match);
-        }
-
-        /// <summary>
-        /// Find all occurences of <paramref name="match"/>
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        public List<T> FindAll(Predicate<T> match)
-        {
-            return items.FindAll(match);
         }
 
         /// <summary>
@@ -554,19 +520,11 @@ namespace MARC.Everest.DataTypes
         #endregion
 
         /// <summary>
-        /// Validate set
-        /// </summary>
-        /// <returns></returns>
-        public override bool Validate()
-        {
-            return (items.Count > 0) ^ (NullFlavor != null);
-        }
-
-        /// <summary>
         /// Determine if the two items are semantically equal
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
+        /// <remarks>Two instances of SET are semantically equal when they contain the same elements in the same sequence</remarks>
         public override BL SemanticEquals(IAny other)
         {
             var baseSem = base.SemanticEquals(other);
@@ -684,5 +642,77 @@ namespace MARC.Everest.DataTypes
         }
 
         #endregion
+
+        #region ISequence<T> Members
+
+        /// <summary>
+        /// Get the first item from the collection
+        /// </summary>
+        public T First
+        {
+            get { return Items.Count > 0 ? Items[0] : default(T); }
+        }
+
+        /// <summary>
+        /// Get the last item from the collection
+        /// </summary>
+        public T Last
+        {
+            get { return Items.Count > 0 ? Items[Items.Count - 1] : default(T); }
+        }
+
+        /// <summary>
+        /// Return a portion of the set starting from the specified item
+        /// </summary>
+        /// <param name="start">The start index</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Start"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "SubSequence")]
+        public ISequence<T> SubSequence(int start)
+        {
+            return SubSequence(start, this.Count - 1);
+        }
+
+        /// <summary>
+        /// Return a portion of the set
+        /// </summary>
+        /// <param name="Start">The first item to include</param>
+        /// <param name="End">The last item to include</param>
+        /// <example>
+        /// <code title="Using sub-sequence" lang="cs">
+        /// <![CDATA[
+        /// // Create list of identifiers (Person, Place, or Thing)
+        /// // The first Item in the list has a zero Index
+        /// SET<II> set1 = new SET<II>(new II[] 
+        /// { 
+        ///     new II("1.1.1.1","1"), // set1[0] 
+        ///     new II("1.1.1.1","2"), 
+        ///     new II("1.1.1.1","3"), 
+        ///     new II("1.1.1.1","3"), 
+        ///     new II("1.1.1.1","4") 
+        /// }); 
+        /// SET<II> set2 = (SET<II>)set1.SubSequence(1, 2); // contains 1 items 
+        /// set2 = (SET<II>)set1.SubSequence(1); // set2 will hold the last four identifiers in the list       
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// <exception cref="T:System.IndexOutOfRangeException">Thrown when either <paramref name="start"/> or <paramref name="end"/> are outside the bounds of the array</exception>
+        /// <exception cref="T:System.ArgumentException">Thrown when <paramref name="start"/> is greater than <paramref name="end"/></exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Start"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "End"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "SubSequence")]
+        public ISequence<T> SubSequence(int start, int end)
+        {
+            if (start >= Count)
+                throw new System.IndexOutOfRangeException(String.Format("Start position {0} is outside bounds of the LIST", start));
+            else if (end >= Count)
+                throw new System.IndexOutOfRangeException(String.Format("End position {0} is outside the bounds of the LIST", end));
+            else if (start > end)
+                throw new ArgumentException("Start parameter must be less than the End parameter");
+
+            LIST<T> retVal = new LIST<T>();
+            for (int i = start; i <= end; i++)
+                retVal.Add(items[i]);
+            return retVal;
+        }
+
+        #endregion
+
     }
 }

@@ -37,8 +37,13 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
         // Heuristic data
         private static HeuristicData s_heuristicData;
         // API namespace
-        private static string s_apiNs = "ca.marc.everest";
-            
+        private static string s_apiNs = "org.marc.everest";
+        private static List<String> collectionTypes = new List<string>(new String[]{
+            "LIST",
+            "HIST",
+            "SET",
+            "BAG"
+                                                      });
         /// <summary>
         /// Intialize
         /// </summary>
@@ -80,6 +85,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
 
             // Create a type reference
             var type = s_heuristicData.Datatypes.Find(o => o.MifDatatype == t.Name + (t.Flavor != null ? "." + t.Flavor : ""));
+
+            if(type == null && !String.IsNullOrEmpty(t.Flavor ))
+                type = s_heuristicData.Datatypes.Find(o => o.MifDatatype == t.Name);
 
             if (t is TypeParameter)
                 return t;
@@ -154,8 +162,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                         if (bindTypeRef == null)
                             bindTypeRef = tr.GenericSupplier[i++];
                     }
-                    else if (p != null && p.SupplierDomain != null)
-                        bindTypeRef = new TypeReference() { Name = String.Format("{0}", p.SupplierDomain.Name) };
+                    else if (p != null && p.SupplierDomain != null && !String.IsNullOrEmpty(EnumerationRenderer.WillRender(p.SupplierDomain)))
+                        bindTypeRef = new TypeReference() { Name = String.Format("{0}", Util.Util.MakeFriendly(EnumerationRenderer.WillRender(p.SupplierDomain))) };
                     else
                         bindTypeRef = new TypeReference() { Name = dataType.DefaultBind };
 
@@ -178,10 +186,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                     if (!bind.TryGetValue(parameterData.DataType, out dt))
                         dt = parameterData.DataType;
                     
-                    templatedSod.Parameters.Add(new PropertyInfoData() { Name = parameterData.Name, DataType = dt });
+                    templatedSod.Parameters.Add(new PropertyInfoData() { Name = parameterData.Name, DataType = dt.Replace(string.Format("<{0}>", dataType.TemplateParameter), String.Format("<{0}>", fillParameter)) });
                 }
 
                 // Correct Body
+                templatedSod.Throws = new List<ThrowsData>(sod.Throws);
                 templatedSod.SetterText = sod.SetterText.Replace(string.Format("<{0}>", dataType.TemplateParameter), String.Format("<{0}>", fillParameter));
                 templatedSod.ValueInstance = sod.ValueInstance;
                 overrides.Add(templatedSod);
@@ -189,6 +198,18 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
 
             return overrides.ToArray();
         }
-        
+
+
+        /// <summary>
+        /// Returns true if the specified <paramref name="tr"/> is
+        /// a collection
+        /// </summary>
+        public static bool IsCollectionType(TypeReference tr)
+        {
+            string trCoreName = tr.CoreDatatypeName;
+            if (trCoreName == null)
+                return false;
+            return collectionTypes.Exists(o => trCoreName.StartsWith(o));
+        }
     }
 }

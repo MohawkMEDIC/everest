@@ -28,7 +28,9 @@ namespace MARC.Everest.Connectors.WCF
     /// <summary>
     /// The WCF Receive result is an implementation of the <see cref="IReceiveResult"/> 
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class WcfReceiveResult : IReceiveResult
     {
         #region IReceiveResult Members
@@ -54,7 +56,9 @@ namespace MARC.Everest.Connectors.WCF
         /// Gets or sets the version of the original message. This is for correlation purposes.
         /// </summary>
         internal MessageVersion MessageVersion { get { return messageVersion; } set { messageVersion = value; } }
+#if !WINDOWS_PHONE
         [NonSerialized]
+#endif
         private MessageVersion messageVersion;
         /// <summary>
         /// Gets the headers that were sent from the soliciting applciation

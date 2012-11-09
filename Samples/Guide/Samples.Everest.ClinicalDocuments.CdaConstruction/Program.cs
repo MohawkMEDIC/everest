@@ -44,8 +44,9 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
 
             // Create the CDA
             ClinicalDocument cda = new ClinicalDocument(
+                ActClassClinicalDocument.ClinicalDocument, // Document type is clinical document
                 new II("2.16.840.1.113883.19.4", "c266"), // Create an identifier for the document
-                new CE<String>("03094", "2.16.840.1.113883.6.1", "LOINC", null, "Consultation note", null), // Specify the type of document
+                new CE<String>("33049-3", "2.16.840.1.113883.6.1", "LOINC", null, "Consultation note", null), // Specify the type of document
                 DateTime.Now, // Effective time of the document (now)
                 x_BasicConfidentialityKind.Normal, // Confidentiality code of N = Normal
                 CreateRecordTarget(), // Create a record target, this is good for code reuse
@@ -108,17 +109,20 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             // Create a component 2 structure, which contains the body of the CDA, set it's type code to COMP and
             // context conduction indicator (any data with context conduction code of AP will be conducted) to true
             var retVal = new Component2(ActRelationshipHasComponent.HasComponent, true);
+            
 
 
             // Everest provides methods of creating abstract classes through a series of helper methods,
             // here we're creating an observation for asthma
             var asthma = ClinicalStatement.CreateObservation(
+                ActClass.Observation,
                 x_ActMoodDocumentObservation.Eventoccurrence,
-                new CD<String>("23433303", "2.16.840.1.113883.6.96", "SNOMED-CT", null, "Asthma", null)
+                new CD<String>("30049385", "2.16.840.1.113883.6.96", "SNOMED-CT", null, "Asthma", null)
             );
             asthma.StatusCode = ActStatus.Completed;
             asthma.EffectiveTime = new IVL<TS>(new TS(DateTime.Now, DatePrecision.Year), null); // In Everest, we can create a date with a precision of year which can be interpreted as any time that year
-
+            asthma.Reference.Add(new Reference(x_ActRelationshipExternalReference.Excerpts, ExternalActChoice.CreateExternalObservation(ActClass.Condition)));
+            
             // BodyChoice is a choice of either nonXml content or structured body, how would we know that?
             // Well, whenever a class as a property XChoice and SetXChoice the SetXChoice will contain
             // the options of what XChoice can be set to
@@ -157,6 +161,7 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             //throw new NotImplementedException();
             return new Custodian(
                 new AssignedCustodian(
+                    RoleClass.AssignedEntity
                 )
             );
         }
@@ -170,6 +175,7 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
                 ContextControl.AdditivePropagating,
                 DateTime.Now,
                 new AssignedAuthor(
+                    RoleClass.AssignedEntity,
                     new SET<II>(new II("1.2.3.4.5.6", "1234"))
                 )
             );

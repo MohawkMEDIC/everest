@@ -350,7 +350,7 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Gets or sets the origin of the slist
         /// </summary>
-        object ISampledList.Origin
+        IQuantity ISampledList.Origin
         {
             get
             {

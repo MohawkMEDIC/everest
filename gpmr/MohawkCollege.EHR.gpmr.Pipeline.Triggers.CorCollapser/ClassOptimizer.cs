@@ -206,6 +206,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser
             (cc as Property).SupplierDomain = (candidate as Property).SupplierDomain;
             (cc as Property).SupplierStrength = (candidate as Property).SupplierStrength;
             (cc as Property).Type.Container = cc;
+            (cc as Property).Type.MemberOf = cc.MemberOf;
 
             // Update documentation
             if((cc as Property).Documentation == null && 
@@ -259,7 +260,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser
                 // Can't use AddContent as that sorts the content and would mess up the outer loops
                 ClassContent newCc = cc.Clone() as ClassContent;
                 newCc.Container = p;
-
+                newCc.MemberOf = p.MemberOf;
                 newCc.Annotations.Add(new CodeCollapseAnnotation() { Name = context.Name, Order = 0, Property = context });
                 newCc.Annotations.Add(new CodeCollapseAnnotation() { Name = newCc.Name, Order = 1, Property =  newCc});
 

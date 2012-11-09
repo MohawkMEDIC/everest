@@ -25,6 +25,7 @@ using MARC.Everest.DataTypes.Interfaces;
 using System.Xml.Serialization;
 using System.ComponentModel;
 using MARC.Everest.Interfaces;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -86,7 +87,9 @@ namespace MARC.Everest.DataTypes
     /// <seealso cref="T:MARC.Everest.DataTypes.QSET{T}"/>
     /// <seealso cref="T:MARC.Everest.DataTypes.SET{T}"/>
     [Structure(Name = "SXPR", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(IVL<TS>))]
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class SXPR<T> : SXCM<T>, IListContainer, IList<SXCM<T>>, IEquatable<SXPR<T>>
         where T : IAny
     {
@@ -119,19 +122,43 @@ namespace MARC.Everest.DataTypes
         /// Creates a set expression with an initial list of terms specified by <paramref name="terms"/>
         /// </summary>
         /// <param name="terms">An initial set of terms that this SXPR contains</param>
-        public SXPR(params SXCM<T>[] terms)
+        public SXPR(IEnumerable<SXCM<T>> terms)
             : base()
         {
             Terms = new LIST<SXCM<T>>(terms);
         }
 
         /// <summary>
+        /// Constructs a new instance of the SXPR data type with the specified <paramref name="terms"/>
+        /// </summary>
+        public static SXPR<T> CreateSXPR(params SXCM<T>[] terms)
+        {
+            return new SXPR<T>(terms);
+        }
+
+        /// <summary>
         /// Validate this data structure
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// An instance of SXPR is considered valid when it carries no null flavor and contains
+        /// more than one term, or carries and null flavor and has no terms
+        /// </remarks>
         public override bool Validate()
         {
-            return (NullFlavor != null) ^ (Terms != null && Terms.Count > 1);
+            return (NullFlavor != null && (Terms == null || Terms.Count == 0)) ^ (NullFlavor == null && Terms != null && Terms.Count > 1);
+        }
+
+        /// <summary>
+        /// Extended validation function that returns detected issues
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+            if (this.NullFlavor != null && this.Terms.Count > 0)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SXPR", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.NullFlavor == null && (this.Terms == null || this.Terms.IsNull || this.Terms.Count < 2))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SXPR", ValidationMessages.MSG_INSUFFICIENT_TERMS, null));
+            return retVal;
         }
 
         #region IListContainer Members
@@ -368,14 +395,14 @@ namespace MARC.Everest.DataTypes
                         QSD<T> diffSet = null;
                         if (context == null) // Null, then the minuend is our first term
                         {
-                            diffSet = new QSD<T>(collectedTerms[0].TranslateToQSetComponent(), null);
+                            diffSet = new QSD<T>(collectedTerms[0].TranslateToQSETComponent(), null);
                             iofs = 1;
                         }
                         else // Not, then the current QSET is the minuend
                             diffSet = new QSD<T>(context, null);
                         for (int i = iofs; i < collectedTerms.Count; i++)
                         {
-                            diffSet.Subtrahend = collectedTerms[i].TranslateToQSetComponent();
+                            diffSet.Subtrahend = collectedTerms[i].TranslateToQSETComponent();
                             if (i + 1 < collectedTerms.Count) // We need to make a new QSD where this is the minuend
                                 diffSet = new QSD<T>(diffSet, null);
                         }
@@ -393,7 +420,7 @@ namespace MARC.Everest.DataTypes
                         }
                         foreach (var itm in collectedTerms)
                         {
-                            var qsuItem = itm.TranslateToQSetComponent();
+                            var qsuItem = itm.TranslateToQSETComponent();
                             isQssCandidate &= (qsuItem is QSS<T>) && (qsuItem as QSS<T>).Count() == 1;
                             unionSet.Add(qsuItem);
                         }
@@ -416,7 +443,7 @@ namespace MARC.Everest.DataTypes
                         if (context != null)
                             intersectSet.Add(context);
                         foreach (var itm in collectedTerms)
-                            intersectSet.Add(itm.TranslateToQSetComponent());
+                            intersectSet.Add(itm.TranslateToQSETComponent());
                         context = intersectSet;
                         break;
                     }
@@ -427,14 +454,14 @@ namespace MARC.Everest.DataTypes
                         QSP<T> periodSet = null;
                         if (context == null) // Null, then the minuend is our first term
                         {
-                            periodSet = new QSP<T>(collectedTerms[0].TranslateToQSetComponent(), null);
+                            periodSet = new QSP<T>(collectedTerms[0].TranslateToQSETComponent(), null);
                             iofs = 1;
                         }
                         else // Not, then the current QSET is the minuend
                             periodSet = new QSP<T>(context, null);
                         for (int i = iofs; i < collectedTerms.Count; i++)
                         {
-                            periodSet.High = collectedTerms[i].TranslateToQSetComponent();
+                            periodSet.High = collectedTerms[i].TranslateToQSETComponent();
                             if (i + 1 < collectedTerms.Count) // We need to make a new QSD where this is the minuend
                                 periodSet = new QSP<T>(periodSet, null);
                         }

@@ -25,9 +25,12 @@ using MARC.Everest.Connectors;
 namespace MARC.Everest.Connectors
 {
     /// <summary>
-    /// Represents a datatype result detail
+    /// Represents diagnostic details about a validation, formatting or connection
+    /// operation.
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class ResultDetail : IResultDetail
     {
         // location
@@ -38,7 +41,9 @@ namespace MARC.Everest.Connectors
         /// <summary>
         /// Exception
         /// </summary>
+#if !WINDOWS_PHONE
         [NonSerialized]
+#endif
         private Exception exception;
 
         /// <summary>
@@ -112,7 +117,7 @@ namespace MARC.Everest.Connectors
     /// <summary>
     /// Represents result details related to the validation of a message instance
     /// </summary>
-    public class ValidationResultDetail : ResultDetail
+    public class ValidationResultDetail : FormalConstraintViolationResultDetail
     {
         /// <summary>
         /// Creates a new instance of hte datatype result detail
@@ -181,13 +186,16 @@ namespace MARC.Everest.Connectors
     /// </summary>
     /// <remarks>
     /// This formal constraint violation indicates that an instance is missing a required element
-    /// where the minimum occurs is set to 1 (the conformance of Populated)
+    /// where the minimum occurs is set to 1 (the conformance of Populated). At minimum a NullFlavor
+    /// should be popualted
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class RequiredElementMissingResultDetail : FormalConstraintViolationResultDetail
     {
         /// <summary>
-        /// Create a new instance of the datatype result detail
+        /// Create a new instance of the required element missing result detail
         /// </summary>
         public RequiredElementMissingResultDetail(ResultDetailType type, string message, string location) :
             base(type, message, location, null) { }
@@ -205,7 +213,10 @@ namespace MARC.Everest.Connectors
     /// This formal constraint violation indicates that an instnace has not supplied sufficient
     /// repetitions to fulfill the min occurs constraint on the property.
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Repitions"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Repitions")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class InsufficientRepetionsResultDetail : FormalConstraintViolationResultDetail
     {
         /// <summary>
@@ -224,10 +235,12 @@ namespace MARC.Everest.Connectors
     /// Mandatory element is missing
     /// </summary>
     /// <remarks>
-    /// This formal constraint violation indicates that an instance has a property set to null (or whose null flavor is set to null) when
-    /// the conformance for the object is Mandatory
+    /// This formal constraint violation indicates that an instance has a property set to null (or whose null flavor is set ) when
+    /// the conformance for the property is Mandatory
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class MandatoryElementMissingResultDetail : FormalConstraintViolationResultDetail
     {
         
@@ -287,7 +300,9 @@ namespace MARC.Everest.Connectors
     /// This result details occurs during the parsing of an instance whereby the formatter encountered
     /// an element that has no "home" within the object. 
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class NotImplementedElementResultDetail : NotImplementedResultDetail
     {
 
@@ -313,8 +328,13 @@ namespace MARC.Everest.Connectors
     /// <summary>
     /// A choice element was used that is not supported
     /// </summary>
+    /// <remarks>
+    /// This result detail is usually used whenever a property is populated with a valid value (from .NET perspective) however
+    /// the RMIM model does not support the choice. This is commonly raised for referneces to System.Object</remarks>
+#if !WINDOWS_PHONE
     [Serializable]
-    public class NotSupportedChoiceResultDetail : ResultDetail
+#endif
+    public class NotSupportedChoiceResultDetail : FormalConstraintViolationResultDetail
     {
 
         /// <summary>
@@ -337,14 +357,16 @@ namespace MARC.Everest.Connectors
     }
 
     /// <summary>
-    /// The fixed value in the message definition does not match the value supplied. The fixed value is being used
+    /// The fixed value in the message definition does not match the value supplied
     /// </summary>
     /// <remarks>
     /// This violation occurs during the parsing of an instance whereby a value is supplied in the instance that does not
-    /// match the fixed value defined in the .NET type. Since fixed properties in the .NET type cannot be set, the formatter
-    /// will use the fixed value defined in the .NET type rather than the supplied value.
+    /// match the fixed value defined in the .NET type. The formatter may override the supplied value with the fixed value, 
+    /// or may use the fixed value
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class FixedValueMisMatchedResultDetail : ValidationResultDetail
     {
 
@@ -364,7 +386,13 @@ namespace MARC.Everest.Connectors
             base(isIgnored ? ResultDetailType.Error : ResultDetailType.Warning, String.Format("The supplied value of '{0}' doesn't match the fixed value of '{1}', {2}", suppliedValue, fixedValue, isIgnored ? "the supplied value will be ignored" : "the supplied value has been used in place of the fixed value"), location)
         {
             this.SuppliedValue = suppliedValue;
+            this.Overwritten = !isIgnored;
         }
+
+        /// <summary>
+        /// When true, indicates that the supplied value was used to overwrite the fixed value
+        /// </summary>
+        public bool Overwritten { get; private set; }
 
         /// <summary>
         /// Gets or sets the supplied value on the wire
@@ -377,10 +405,12 @@ namespace MARC.Everest.Connectors
     /// An issue was detected with the codified concepts within the message
     /// </summary>
     /// <remarks>
-    /// This issue is raised whenever codified data is encountered whereby there is method to determine
-    /// the code set from which the value was taken.
+    /// This issue is raised whenever codified data is encountered whereby the supplied value 
+    /// cannot be used in the context, or if the value is unknown / invalid.
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class VocabularyIssueResultDetail : ValidationResultDetail
     {
 
@@ -406,7 +436,9 @@ namespace MARC.Everest.Connectors
     /// <summary>
     /// Identifies that basic validation of a datatype instance has failed
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class DatatypeValidationResultDetail : ValidationResultDetail
     {
 
@@ -416,16 +448,18 @@ namespace MARC.Everest.Connectors
         public string DatatypeName { get; private set; }
 
         /// <summary>
-        /// Gets the message
+        /// Gets the error message
         /// </summary>
         public override string Message
         {
             get
             {
-                return string.Format("Datatype '{0}' failed basic validation. Please refer to development guide for validation rules", this.DatatypeName);
+                if (String.IsNullOrEmpty(base.Message))
+                    return string.Format("Data type '{0}' failed basic validation, please refer to the developer's guide for more detail", this.DatatypeName);
+                else
+                    return string.Format("Data type '{0}' failed basic validation, the violation was : {1}", this.DatatypeName, base.Message);
             }
         }
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -443,13 +477,26 @@ namespace MARC.Everest.Connectors
         {
             this.DatatypeName = datatypeName;
         }
+        /// <summary>
+        /// Creates a new instance of the datatype validation result detail class with the specified parameters
+        /// </summary>
+        /// <param name="type">The type of result detail</param>
+        /// <param name="datatypeName">The name of the datatype that is not supported</param>
+        /// <param name="location">The location within the instance that that is not supported</param>
+        public DatatypeValidationResultDetail(ResultDetailType type, string datatypeName, string message, string location) :
+            base(type, message, location)
+        {
+            this.DatatypeName = datatypeName;
+        }
         
     }
 
     /// <summary>
     /// Identifies that flavor validation of a datatype instance has failed
     /// </summary>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class DatatypeFlavorValidationResultDetail : DatatypeValidationResultDetail
     {
 
@@ -500,7 +547,9 @@ namespace MARC.Everest.Connectors
     /// is set on a data type that is "transparent" or not rendered (such as GTS.Hull). The result detail
     /// is used to record the original and destination and value of propagation</para>
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
+#endif
     public class PropertyValuePropagatedResultDetail : ResultDetail
     {
         /// <summary>
@@ -552,11 +601,16 @@ namespace MARC.Everest.Connectors
     /// <para>
     /// Because the Everest data type library is a combination of R1 and R2 concepts 
     /// (to support write once render both) some concepts cannot be rendered within 
-    /// either implementation.
+    /// either instance of a message. 
     /// </para>
+    /// <para>This result detail signals that a value populated in memory may
+    /// not have been rendered on the wire</para>
+    /// <para>This abstract class must be extended by datatype formatters</para>
     /// </remarks>
+#if !WINDOWS_PHONE
     [Serializable]
-    public class UnsupportedDatatypePropertyResultDetail : NotImplementedElementResultDetail
+#endif
+    public abstract class UnsupportedDatatypePropertyResultDetail : NotImplementedElementResultDetail
     {
         
         #region IResultDetail Members

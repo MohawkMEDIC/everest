@@ -26,12 +26,9 @@ namespace MARC.Everest.DataTypes.Interfaces
     /// <summary>
     /// Identifies an interval
     /// </summary>
-    public interface IInterval<T>
+    public interface IInterval<T> : IOriginalText
     {
-        /// <summary>
-        /// Original text
-        /// </summary>
-        ED OriginalText { get; set; }
+
         /// <summary>
         /// Low value in the set
         /// </summary>

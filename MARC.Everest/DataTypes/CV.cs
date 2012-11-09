@@ -14,7 +14,7 @@
  * the License.
 
  * 
- * User: Justin Fyfed
+ * User: Justin Fyfe
  * Date: 01-09-2009
  */
 using System;
@@ -24,10 +24,14 @@ using MARC.Everest.Attributes;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Connectors;
 using System.ComponentModel;
-using System.Drawing.Design;
-using MARC.Everest.Design;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Primitives;
+
+// WP7 Imports
+#if !WINDOWS_PHONE
+using System.Drawing.Design;
+using MARC.Everest.Design;
+#endif
 
 namespace MARC.Everest.DataTypes
 {
@@ -149,8 +153,11 @@ namespace MARC.Everest.DataTypes
     /// The coded value data type is an example of a flavor that has been mapped into a full class in order to remain compatible with R1 data types. In R2 the CV data type is actually the CD (Concept Descriptor) data type with a flavor of CV.
     /// CV extends the CS data type by adding display name, coding rationale, and original text.
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix"), Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
     [Structure(Name = "CV", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType=typeof(String))]
+    #if !WINDOWS_PHONE
+    [Serializable]
+    #endif
     public class CV<T> : CS<T>, ICodedValue, IEquatable<CV<T>>
     {
 
@@ -315,9 +322,11 @@ namespace MARC.Everest.DataTypes
         /// Gets or sets the text as seen and or selected by the user who entered the data
         /// </summary>
         [Property(Name = "originalText", ImposeFlavorId = "Text", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+        [XmlElement("originalText")]
+        #if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [XmlElement("originalText")]
+        #endif
         public ED OriginalText { get; set; }
 
         /// <summary>
@@ -333,9 +342,11 @@ namespace MARC.Everest.DataTypes
         /// Gets or sets the reason the code was provided
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), Property(Name = "codingRationale", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+        [XmlElement("codingRationale")]
+        #if !WINDOWS_PHONE
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
-        [XmlElement("codingRationale")]
+        #endif
         public SET<CodingRationale> CodingRationale { get; set; }
 
         /// <summary>
@@ -388,8 +399,55 @@ namespace MARC.Everest.DataTypes
             else // Null flavor is not null
                 isValid &= Code == null && DisplayName == null && CodeSystem == null && CodeSystemName == null && CodeSystemVersion == null &&
                     OriginalText == null && ValueSet == null && ValueSetVersion == null;
-
+            
             return isValid;
+            
+        }
+
+        /// <summary>
+        /// Validate the data type and return the validation errors that have been detected in the validation
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<IResultDetail> ValidateEx()
+        {
+            var retVal = new List<IResultDetail>(base.ValidateEx());
+
+            if (this.NullFlavor == null || ((DataTypes.NullFlavor)NullFlavor).IsChildConcept(DataTypes.NullFlavor.Other))
+            { 
+                if(Code != null &&NullFlavor != null )
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+                if(CodeSystemName != null && CodeSystem == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemName", "CodeSystem"), null));
+                if(CodeSystemVersion != null && CodeSystem == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemVersion", "CodeSystem"), null));
+                if(CodeSystem != null && (Code == null || NullFlavor != null && ((NullFlavor)NullFlavor).IsChildConcept(DataTypes.NullFlavor.Other)))
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystem can only be used when Code is populated or NullFlavor does implies Other", null));
+                if(DisplayName != null && Code == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "DisplayName", "CodeSystem"), null));
+                if(Code != null && Code.IsAlternateCodeSpecified && CodeSystem == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "When Code has an alternate code specified, CodeSystem must be populated", null));
+                if(ValueSetVersion != null && ValueSet == null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "ValueSetVersion", "ValueSet"), null));
+            }
+            else // NullfLavor is something other than OTHER
+            { 
+                if(Code != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "Code may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(CodeSystem != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystem may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(CodeSystemVersion != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystemVersion may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(CodeSystemName != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystemName may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(OriginalText != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "OriginalText may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(ValueSet != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "ValueSet may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if(ValueSetVersion != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "ValueSetVersion may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+
+            }
+            return retVal ;
 
         }
 

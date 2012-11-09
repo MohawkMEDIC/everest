@@ -24,6 +24,11 @@ using MARC.Everest.Attributes;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
+
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif
 
 namespace MARC.Everest.DataTypes
 {
@@ -164,8 +169,11 @@ namespace MARC.Everest.DataTypes
     [FlavorMap(FlavorId = "PN", Implementer = typeof(PN))]
     [FlavorMap(FlavorId = "TN", Implementer = typeof(TN))]
     [FlavorMap(FlavorId = "ON", Implementer = typeof(ON))]
-    [Serializable][Structure(Name = "EN", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [Structure(Name = "EN", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("EN", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class EN : ANY, IEquatable<EN>
     {
         /// <summary>
@@ -238,6 +246,24 @@ namespace MARC.Everest.DataTypes
         public override bool Validate()
         {
             return (Part.Count > 0) ^ (NullFlavor != null);
+        }
+
+        /// <summary>
+        /// Extended validation function which returns the details of the validation
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+            if (this.NullFlavor != null && this.Part.Count > 0)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EN", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            else if (this.Part.Count == 0 && this.NullFlavor == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "EN", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
+
+            // Validate parts
+            foreach (var pt in this.Part)
+                retVal.AddRange(pt.ValidateEx());
+
+            return retVal;
         }
 
         /// <summary>
@@ -325,6 +351,11 @@ namespace MARC.Everest.DataTypes
 
         #endregion
 
+        /// <summary>
+        /// Determine semantic equality of this type
+        /// </summary>
+        /// <remarks>Two non-null non-nullflavored instance of EN are considered semantically equal when
+        /// they both contain the same parts in the same order.</remarks>
         public override BL SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny other)
         {
             var baseSem = base.SemanticEquals(other);

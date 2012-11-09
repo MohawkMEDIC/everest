@@ -28,6 +28,7 @@ using System.ComponentModel;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Primitives;
 using System.Globalization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -38,24 +39,22 @@ namespace MARC.Everest.DataTypes
     /// The text must always be present if a code is present.  
     /// Often the code specified is a local code.
     /// </remarks>
-    /// <example>An instance of an SC
-    /// <code lang="cs" title="An instance of an SC">
-    /// <![CDATA[
-    ///        string aThing = "A thing"; 
-    ///        SC sc = aThing; //implicit conversion from string to SC
-    ///        //Populate the properties
-    ///        sc.Code = "3216543576"; 
-    ///        sc.CodeSystem = "2.16.840.1.113883.6.96";
-    ///        sc.CodeSystemName = "hl7-org:v3";
-    ///        sc.CodeSystemVersion = "V3-2008N";
-    ///        sc.DisplayName = "Laceration";
-    ///        sc.NullFlavor = null; //sc has values set, no null flavor needed
-    /// ]]>
+    /// <example>
+    /// <code title="SC Code">
+    ///    <![CDATA[
+    ///     SC pregnancy = "Patient is 6 months pregnant";
+    ///     pregnancy.Code = new CD<String>("Z33.1", "2.16.840.1.113883.6.90")
+    ///     {
+    ///         DisplayName = "Pregnancy State, Incidental"
+    ///     };
+    ///    ]]>
     /// </code>
     /// </example>
-    [Serializable]
     [Structure(Name = "SC", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("SC", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class SC : ST, IEquatable<SC>
     {
 
@@ -141,6 +140,7 @@ namespace MARC.Everest.DataTypes
             retVal.Language = CultureInfo.CurrentCulture.Name; 
             return retVal;
         }
+
         #endregion
 
         #region Overrides
@@ -161,6 +161,36 @@ namespace MARC.Everest.DataTypes
             isValid &= this.Code != null && this.Code.OriginalText == null || this.Code == null;
             isValid &= this.Code != null && this.Code.Validate() || this.Code == null;
             return isValid;
+        }
+
+        /// <summary>
+        /// Extended validation routine which returns the detected issues with the data type
+        /// </summary>
+        /// <remarks>
+        /// An instance of SC is considered valid when:
+        /// <list type="number">
+        ///     <item><description>All validation criteria from <see cref="T:MARC.Everest.DataTypes.ST"/> pass, and</description></item>
+        ///     <item><description>If the <see cref="P:Code"/> property is populated then the <see cref="P:Value"/> property must be populated</description></item>
+        ///     <item><description>If <see cref="P:NullFlavor"/> is populated, then the <see cref="P:Code"/> property must be null, and</description></item>
+        ///     <item><description>The value within the <see cref="P:Code"/> property is to have no <see cref="P:MARC.Everest.DataTypes.CD{T}.OriginalText"/>, and</description></item>
+        ///     <item><description>If the <see cref="P:Code"/> property is populated, it meets the validation criteria of CD</description></item>
+        /// </list>
+        /// </remarks>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+
+            if (this.Code != null && Value == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", "When Code is specified, Value must also be specified", null));
+            if (this.Code != null && this.Code.IsNull)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "NullFlavor", "Code"), null));
+            if (this.NullFlavor != null && (this.Code != null || this.Value != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (this.Code != null && this.Code.OriginalText != null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "OriginalText", "Code"), null));
+            if(this.Code != null)
+                retVal.AddRange(this.Code.ValidateEx());
+            return retVal;
         }
 
         #endregion
@@ -198,7 +228,7 @@ namespace MARC.Everest.DataTypes
         [Flavor("SC.NT")]
         public static bool IsValidNtFlavor(SC sc)
         {
-            return sc.Translation == null || sc.Translation.IsEmpty;
+            return sc.Translation == null || sc.Translation.IsEmpty || sc.Translation.IsNull;
         }
 
         /// <summary>
@@ -211,5 +241,7 @@ namespace MARC.Everest.DataTypes
         {
             return new SC(value) { Translation = null };
         }
+
+       
     }
 }

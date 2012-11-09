@@ -22,7 +22,6 @@ using System.Text;
 using MARC.Everest.DataTypes;
 using MARC.Everest.Connectors;
 using MARC.Everest.Exceptions;
-using MARC.Everest.DataTypes.Surrogates;
 using MARC.Everest.Xml;
 using System.Reflection;
 

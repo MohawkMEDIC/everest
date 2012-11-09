@@ -29,7 +29,7 @@ namespace MARC.Everest.DataTypes
 {
     
     /// <summary>
-    /// A union of <see cref="T:MARC.Everest.DataTypes.UVP{T}"/>(Probability) and <see cref="T:MARC.Everest.DataTypes.IVL{T}"/>(Interval). It is being included for compatibility with R1 datatypes.
+    /// A union of <see cref="T:MARC.Everest.DataTypes.UVP{T}"/>(Probability) and <see cref="T:MARC.Everest.DataTypes.IVL{T}"/>(Interval). 
     /// </summary>
     /// <example>
     /// <code title="Blood Sugar Reading" lang="cs">
@@ -44,12 +44,17 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
+    /// <remarks>It is being included for compatibility with R1 datatypes.</remarks>
     /// <seealso cref="T:MARC.Everest.DataTypes.UVP{T}"/>
     /// <seealso cref="T:MARC.Everest.DataTypes.IVL{T}"/>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "URG"), Serializable]
-    [Structure(Name = "URG", StructureType = StructureAttribute.StructureAttributeType.DataType)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "URG")]
+    [Structure(Name = "URG", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(IQuantity))]
     [XmlType("URG", Namespace = "urn:hl7-org:v3")]
+#if !WINDOWS_PHONE
+    [Serializable]
+#endif
     public class URG<T> : UVP<T>, IInterval<T>, IEquatable<URG<T>>
+        where T : IAny
     {
 
         #region IInterval<T> Members
@@ -98,27 +103,28 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Convert a concrete URG to a generic version
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-        public static URG<T> Parse(MARC.Everest.DataTypes.URG<Object> o)
-        {
-            URG<T> retVal = new URG<T>();
-            retVal.NullFlavor = o.NullFlavor == null ? null : o.NullFlavor.Clone() as CS<NullFlavor>;
-            retVal.ControlActExt = o.ControlActExt;
-            retVal.ControlActRoot = o.ControlActRoot;
-            retVal.Flavor = o.Flavor;
-            retVal.Probability = o.Probability;
-            retVal.UpdateMode = o.UpdateMode == null ? null : o.UpdateMode.Clone() as CS<UpdateMode>;
-            retVal.ValidTimeHigh = o.ValidTimeHigh;
-            retVal.ValidTimeLow = o.ValidTimeLow;
-            retVal.Value = (T)Util.FromWireFormat(o.Value, typeof(T));
-            retVal.OriginalText = o.OriginalText == null ? null : o.OriginalText.Clone() as ED;
-            retVal.Low = (T)Util.FromWireFormat(o.Low, typeof(T));
-            retVal.High = (T)Util.FromWireFormat(o.High, typeof(T));
-            retVal.LowClosed = o.LowClosed;
-            retVal.HighClosed = o.HighClosed;
-            retVal.Width = (PQ)Util.FromWireFormat(o.Width, typeof(PQ));
-            return retVal;
-        }
+        /// Obsoleted because of where clause
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
+        //public static URG<T> Parse(MARC.Everest.DataTypes.URG<Object> o)
+        //{
+        //    URG<T> retVal = new URG<T>();
+        //    retVal.NullFlavor = o.NullFlavor == null ? null : o.NullFlavor.Clone() as CS<NullFlavor>;
+        //    retVal.ControlActExt = o.ControlActExt;
+        //    retVal.ControlActRoot = o.ControlActRoot;
+        //    retVal.Flavor = o.Flavor;
+        //    retVal.Probability = o.Probability;
+        //    retVal.UpdateMode = o.UpdateMode == null ? null : o.UpdateMode.Clone() as CS<UpdateMode>;
+        //    retVal.ValidTimeHigh = o.ValidTimeHigh;
+        //    retVal.ValidTimeLow = o.ValidTimeLow;
+        //    retVal.Value = (T)Util.FromWireFormat(o.Value, typeof(T));
+        //    retVal.OriginalText = o.OriginalText == null ? null : o.OriginalText.Clone() as ED;
+        //    retVal.Low = (T)Util.FromWireFormat(o.Low, typeof(T));
+        //    retVal.High = (T)Util.FromWireFormat(o.High, typeof(T));
+        //    retVal.LowClosed = o.LowClosed;
+        //    retVal.HighClosed = o.HighClosed;
+        //    retVal.Width = (PQ)Util.FromWireFormat(o.Width, typeof(PQ));
+        //    return retVal;
+        //}
 
         /// <summary>
         /// Validates this instance of URG
@@ -128,11 +134,65 @@ namespace MARC.Everest.DataTypes
         {
             return (NullFlavor != null) ^ ((Low != null || Width != null || High != null || Value != null) &&
                 ((LowClosed != null && Low != null) || LowClosed == null) &&
-                ((HighClosed != null && High != null) || HighClosed == null));
+                ((HighClosed != null && High != null) || HighClosed == null)) &&
+                ((this.Probability != null) ^ this.IsNull);
             // Either IVL is null, has a width or has low and/or high. Low/High and width can't be mixed
             //return (NullFlavor != null) ^ ((Width != null) ^ (Low != null || High != null)) &&
             //    ((LowClosed != null && Low != null) || LowClosed == null) &&
             //    ((HighClosed != null && High != null) || HighClosed == null) && base.Validate();
+        }
+
+        /// <summary>
+        /// Validates the instance of URG and returns the detected issues
+        /// </summary>
+        public override IEnumerable<Connectors.IResultDetail> ValidateEx()
+        {
+            var retVal = base.ValidateEx() as List<IResultDetail>;
+
+            // Validation
+            if (NullFlavor != null && (Low != null || High != null || Width != null || Value != null))
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "URG", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
+            if (LowClosed != null && Low == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "URG", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "LowClosed", "Low"), null));
+            if (HighClosed != null && High == null)
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "URG", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "HighClosed", "High"), null));
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// Determine semantic equality
+        /// </summary>
+        /// <remarks>Since this data-type is an adaptation of an R1 data type with no semantic equality statements, 
+        /// the value of this method will be that of the IVL type combined with the UVP type meaning that two 
+        /// URG instances are semantically equal when their <see cref="P:Low"/> and <see cref="P:High"/> bounds
+        /// are specified and equal and their <see cref="P:Probability"/> properties are equal</remarks>
+        public override BL SemanticEquals(IAny other)
+        {
+
+            // Based on set, first, is the other a DSET? 
+            if (other is URG<T>)
+            {
+                URG<T> ivlOther = other as URG<T>;
+                // Parameters to semantic equality
+                bool otherHighInfinite = (ivlOther.High == null || (NullFlavor)ivlOther.High.NullFlavor == DataTypes.NullFlavor.PositiveInfinity),
+                    thisHighInfinite = (this.High == null || (NullFlavor)this.High.NullFlavor == DataTypes.NullFlavor.PositiveInfinity),
+                    otherLowInifinite = (ivlOther.Low == null || (NullFlavor)ivlOther.Low.NullFlavor == DataTypes.NullFlavor.NegativeInfinity),
+                    thisLowInfinite = (this.Low == null || (NullFlavor)this.Low.NullFlavor == DataTypes.NullFlavor.NegativeInfinity),
+                    isOtherUnbound = (ivlOther.High == null || ivlOther.High.IsNull) && !otherHighInfinite ||
+                        (ivlOther.Low == null || ivlOther.Low.IsNull) && !otherLowInifinite,
+                    isThisUnbound = (this.High == null || this.High.IsNull) && !thisHighInfinite ||
+                        (this.Low == null || this.Low.IsNull) && !thisLowInfinite;
+
+                // Case 1 : Both are bound
+                if (!isOtherUnbound && !isThisUnbound)
+                    return ((otherHighInfinite && thisHighInfinite) || (bool)this.High.SemanticEquals(ivlOther.High)) &&
+                        ((otherLowInifinite && thisLowInfinite) || (bool)this.Low.SemanticEquals(ivlOther.Low)) &&
+                        (this.Probability == null ? ivlOther.Probability == null : this.Probability.Equals(ivlOther.Probability));
+                return false; // all others are not equal
+
+            }
+            return false;
         }
 
         #region IEquatable<URG<T>> Members

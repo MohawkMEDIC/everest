@@ -49,7 +49,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser
                 if (currentLog.CombineOps.Exists(o => o.Destination == featurePair.Key))
                 {
                     optimizedClassRepository.Add(featurePair.Key, featurePair.Value); // Attempt to fix a bug where the memberOf does not get updated on child content
-                    optimizedClassRepository[featurePair.Key].MemberOf = optimizedClassRepository;
+                    SetMemberOf(optimizedClassRepository[featurePair.Key], optimizedClassRepository);
                 }
             }
             // Second pass, copy the collapsed stuff
@@ -58,7 +58,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser
                 if (!currentLog.CombineOps.Exists(o => o.Destination == featurePair.Key))
                 {
                     optimizedClassRepository.Add(featurePair.Key, featurePair.Value); // Attempt to fix a bug where the memberOf does not get updated on child content
-                    optimizedClassRepository[featurePair.Key].MemberOf = optimizedClassRepository;
+                    SetMemberOf(optimizedClassRepository[featurePair.Key], optimizedClassRepository);
                 }
             }
 
@@ -109,6 +109,23 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser
             }
 
             return optimizedClassRepository;
+        }
+
+        /// <summary>
+        /// Set the member of
+        /// </summary>
+        private void SetMemberOf(Feature feature, ClassRepository newOwner)
+        {
+            feature.MemberOf = newOwner;
+            if (feature is Class)
+                foreach (var p in (feature as Class).Content)
+                    SetMemberOf(p, newOwner);
+            if (feature is Enumeration)
+                foreach (var p in (feature as Enumeration).Literals)
+                    SetMemberOf(p, newOwner);
+            if (feature is Choice)
+                foreach (var p in (feature as Choice).Content)
+                    SetMemberOf(p, newOwner);
         }
     }
 }
