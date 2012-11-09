@@ -64,6 +64,7 @@ Source: ..\gpmr\gpmrw\bin\Release\gpmrw.exe.config; DestDir: {app}; Flags: ignor
 Source: ..\gpmr\bin\Release\MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.dll; DestDir: {app}; Flags: ignoreversion;
 Source: ..\gpmr\bin\Release\Data\*.*; DestDir: {app}\Data; Flags: ignoreversion;
 Source: ..\MARC.Everest.VisualStudio.Wizards\bin\Release\MARC.Everest.VisualStudio.Wizards.dll; StrongAssemblyName:"MARC.Everest.VisualStudio.Wizards, Version=1.0.0.0, Culture=Neutral, PublicKeyToken=b2fb2479f9679b57"; Flags:gacinstall ignoreversion; DestDir:{app}\lib;
+Source: ..\Solution Items\org.marc.everest.jar; DestDir: {app}\lib; Flags: ignoreversion;
 
 [Icons]
 Name: {group}\GPMR Command Prompt; FileName:cmd; Parameters:"/k """"{app}\gpmrvarsall.bat"" ""{app}"""""; 

@@ -137,6 +137,7 @@ Source: ..\gpmr\bin\Release\gpmr.exe.config; DestDir: {app}; Flags: ignoreversio
 Source: ..\gpmr\bin\Release\gpmr.exe.config; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\FormatterUtil\bin\Release\FormatterUtil.exe; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\MARC.Everest.Formatters.XML.ITS1\bin\Release\MARC.Everest.Formatters.XML.ITS1.dll; StrongAssemblyName: MARC.Everest.Formatters.XML.ITS1; DestDir: {app}; Flags: ignoreversion; Components: api
+Source: ..\Solution Items\org.marc.everest.jar; DestDir: {app}\lib; Flags: ignoreversion; Components: tools
 
 Source: ..\gpmr\gpmrw\bin\Release\gpmrw.exe.config; DestDir: {app}; Flags: ignoreversion; Components: tools
 
