@@ -196,7 +196,7 @@ namespace MARC.Everest.DataTypes
         /// <para>
         /// Because IVL describes a set, an instance of IVL can be semantically equal to a SET with the same members. For example a <see cref="T:SET"/> instance containing
         /// the numbers {1,2,3,4,5} can be semantically equal to an <see cref="T:IVL{INT}"/> describing {1-5}. Note that when comparing an <see cref="T:IVL"/> to a <see cref="T:SET"/>
-        /// the <see cref="M:ToSet()"/> method is called which can be quite costly in terms of CPU resources.
+        /// the <see cref="F:ToSet()"/> method is called which can be quite costly in terms of CPU resources.
         /// </para>
         /// </remarks>
         public override BL SemanticEquals(IAny other)
@@ -452,7 +452,7 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Creates a set from a bound IVL
         /// </summary>
-        /// <remarks>This function will call <see cref="M:FillInDetails"/> prior to construction of the set as it 
+        /// <remarks>This function will call <see cref="F:FillInDetails"/> prior to construction of the set as it 
         /// needs to ensure that low and high bounds are known</remarks>
         /// <exception cref="T:System.InvalidOperationException">When <typeparamref name="T"/> does not implement <see cref="T:MARC.Everest.DataTypes.Interfaces.IOrderedDataType{T}"/></exception>
         public SET<T> ToSet()

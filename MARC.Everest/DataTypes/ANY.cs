@@ -70,7 +70,7 @@ namespace MARC.Everest.DataTypes
         /// Typically, when a null flavor is specified the data value within the instance is not written on the wire. For exceptions to this
         /// rule see the reference guide.
         /// <para>
-        /// Null flavors are heirarchical and may imply one another. For example, a NullFlavor or PINF implies OTH which implies NI. <see cref="M:MARC.Everest.DataTypes.NullFlavorUtil.IsChildConcept(MARC.Everest.DataTypes.NullFlavor)"/>
+        /// Null flavors are heirarchical and may imply one another. For example, a NullFlavor or PINF implies OTH which implies NI. <see cref="F:MARC.Everest.DataTypes.NullFlavorUtil.IsChildConcept(MARC.Everest.DataTypes.NullFlavor)"/>
         /// provides a mechanism for determining the implies relationship between null flavors
         /// </para>
         /// </remarks>

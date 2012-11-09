@@ -174,8 +174,8 @@ namespace MARC.Everest.DataTypes
         /// <remarks>
         /// A QTY is considered valid when:
         /// <list type="list">
-        ///     <item><term>When <see cref="M:Expression"/> is specified, <see cref="M:ExpressionLanguage"/> is specified</term></item>
-        ///     <item><term>Either <see cref="M:Uncertainty"/> or <see cref="M:UncertainRange"/> are specified (but not both), or neither is set</term></item>
+        ///     <item><term>When <see cref="F:Expression"/> is specified, <see cref="F:ExpressionLanguage"/> is specified</term></item>
+        ///     <item><term>Either <see cref="F:Uncertainty"/> or <see cref="F:UncertainRange"/> are specified (but not both), or neither is set</term></item>
         /// </list>
         /// </remarks>
         public override bool Validate()

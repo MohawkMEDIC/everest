@@ -75,7 +75,7 @@ namespace MARC.Everest.DataTypes
         /// <list type="bullet">
         ///     <item>All validation rules from <see cref="T:MARC.Everest.DataTypes.EN"/> are satisfied</item>
         ///     <item>The <see cref="Use"/> property is not one of {Indigenous, Pseudonym, Anonymous, Artist, Religious, MaidenName }</item>
-        ///     <item>The <see cref="M:MARC.Everest.DataTypes.ENXP.Type"/> property of each <see cref="Part"/> is not in { Given, Family }</item>
+        ///     <item>The <see cref="F:MARC.Everest.DataTypes.ENXP.Type"/> property of each <see cref="Part"/> is not in { Given, Family }</item>
         /// </list>
         /// </remarks>
         public override bool Validate()

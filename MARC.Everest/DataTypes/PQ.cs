@@ -80,7 +80,7 @@ namespace MARC.Everest.DataTypes
     /// <item><term>d (Days)</term><description>0xc92a69c000 = <i>S</i> * 3,600 * 24</description></item>
     /// <item><term>wk (Weeks)</term><description>0x58028e44000 = <i>S</i> * 3,600 * 24 * 7</description></item>
     /// <item><term>mo (Months)</term><description>0x17e6ca109000 = <i>S</i> * 3,600 * 24 * 30.416 : since month duration vaires, and since given just a timespan it is impossible to calculate which months were used to get the PQ, we take 365 / 12 to be the length of a month</description></item>
-    /// <item><term>a (Annum)</term><description>0x11ed178C6C000 = <i>S</i> * 3,600 * 24 * 365</description> or 31,536,000 seconds. Note there is some drifting associated with leap years, this can be corrected with <see cref="M:TS.GetLeapDays"/></item>
+    /// <item><term>a (Annum)</term><description>0x11ed178C6C000 = <i>S</i> * 3,600 * 24 * 365</description> or 31,536,000 seconds. Note there is some drifting associated with leap years, this can be corrected with <see cref="F:TS.GetLeapDays"/></item>
     /// </list>
     /// </remarks>
     /// <seealso cref="T:MARC.Everest.DataTypes.QTY"/>
@@ -261,7 +261,7 @@ namespace MARC.Everest.DataTypes
         /// <remarks>
         /// This operation will always return a PQ with the value consisting of the number of
         /// seconds in the timespan object. You can convert this value to other units of measure
-        /// using the <see cref="M:Convert(System.String)"/> method.
+        /// using the <see cref="F:Convert(System.String)"/> method.
         /// </remarks>
         public static implicit operator PQ(TimeSpan tsp)
         {

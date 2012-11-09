@@ -19,7 +19,7 @@ namespace MARC.Everest.Connectors
     /// when the first instance is passed through the formatter.
     /// </para>
     /// <para>
-    /// This class exposes the <see cref="M:BuildCache(Type[])"/> method which is intended to force the CodeDom formatter
+    /// This class exposes the <see cref="F:BuildCache(Type[])"/> method which is intended to force the CodeDom formatter
     /// to build its code in memory and compile one or more assemblies. These assemblies can then be referenced (and saved
     /// for later use) by the developer at runtime.
     /// </para>
