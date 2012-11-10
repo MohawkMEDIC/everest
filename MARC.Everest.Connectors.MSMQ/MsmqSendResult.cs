@@ -39,7 +39,7 @@ namespace MARC.Everest.Connectors.MSMQ
         /// <summary>
         /// Details of the send
         /// </summary>
-        public IResultDetail[] Details { get; internal set; }
+        public IEnumerable<IResultDetail> Details { get; internal set; }
 
         #endregion
     }

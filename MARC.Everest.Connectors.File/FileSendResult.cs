@@ -40,7 +40,7 @@ namespace MARC.Everest.Connectors.File
         /// Gets the details of the operation. If the Code is not Accepted, this property will contain at least one 
         /// error level detail item describing the nature of the error.
         /// </summary>
-        public IResultDetail[] Details { get; internal set; }
+        public IEnumerable<IResultDetail> Details { get; internal set; }
         #endregion
     }
 }

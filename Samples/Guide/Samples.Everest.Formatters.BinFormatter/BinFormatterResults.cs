@@ -25,7 +25,7 @@ namespace Samples.Everest.Formatters.BinFormatter
         /// <summary>
         /// Details of the graph operation
         /// </summary>
-        public IResultDetail[] Details
+        public IEnumerable<IResultDetail> Details
         {
             get;
             internal set;
@@ -53,7 +53,7 @@ namespace Samples.Everest.Formatters.BinFormatter
         /// <summary>
         /// Gets the details of the parse
         /// </summary>
-        public IResultDetail[] Details
+        public IEnumerable<IResultDetail> Details
         {
             get;
             internal set;

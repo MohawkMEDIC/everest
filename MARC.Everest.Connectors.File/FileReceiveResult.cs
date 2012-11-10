@@ -38,7 +38,7 @@ namespace MARC.Everest.Connectors.File
         /// <summary>
         /// Gets the details of how the code of the result was attained.
         /// </summary>
-        public IResultDetail[] Details { get; internal set; }
+        public IEnumerable<IResultDetail> Details { get; internal set; }
         /// <summary>
         /// Gets the data for the result.
         /// </summary>

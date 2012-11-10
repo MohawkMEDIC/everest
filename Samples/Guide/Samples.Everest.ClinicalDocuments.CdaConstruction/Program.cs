@@ -44,7 +44,6 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
 
             // Create the CDA
             ClinicalDocument cda = new ClinicalDocument(
-                ActClassClinicalDocument.ClinicalDocument, // Document type is clinical document
                 new II("2.16.840.1.113883.19.4", "c266"), // Create an identifier for the document
                 new CE<String>("33049-3", "2.16.840.1.113883.6.1", "LOINC", null, "Consultation note", null), // Specify the type of document
                 DateTime.Now, // Effective time of the document (now)
@@ -68,7 +67,7 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             var result = fmtr.Graph(xsw, cda);
             xsw.Flush();
             Console.WriteLine("Took {0} ms to render", DateTime.Now.Subtract(start).TotalMilliseconds);
-
+            
             // We can serialize again to see the learning pattern of Everest
             for (int i = 2; i < 20; i++)
             {
@@ -115,13 +114,13 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             // Everest provides methods of creating abstract classes through a series of helper methods,
             // here we're creating an observation for asthma
             var asthma = ClinicalStatement.CreateObservation(
-                ActClass.Observation,
                 x_ActMoodDocumentObservation.Eventoccurrence,
                 new CD<String>("30049385", "2.16.840.1.113883.6.96", "SNOMED-CT", null, "Asthma", null)
             );
             asthma.StatusCode = ActStatus.Completed;
             asthma.EffectiveTime = new IVL<TS>(new TS(DateTime.Now, DatePrecision.Year), null); // In Everest, we can create a date with a precision of year which can be interpreted as any time that year
-            asthma.Reference.Add(new Reference(x_ActRelationshipExternalReference.Excerpts, ExternalActChoice.CreateExternalObservation(ActClass.Condition)));
+            asthma.Reference.Add(new Reference(x_ActRelationshipExternalReference.SUBJ, ExternalActChoice.CreateExternalObservation(
+                SET<II>.CreateSET(new II(Guid.NewGuid())), "CODE", "This is some text")));
             
             // BodyChoice is a choice of either nonXml content or structured body, how would we know that?
             // Well, whenever a class as a property XChoice and SetXChoice the SetXChoice will contain
@@ -161,7 +160,6 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             //throw new NotImplementedException();
             return new Custodian(
                 new AssignedCustodian(
-                    RoleClass.AssignedEntity
                 )
             );
         }
@@ -175,7 +173,6 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
                 ContextControl.AdditivePropagating,
                 DateTime.Now,
                 new AssignedAuthor(
-                    RoleClass.AssignedEntity,
                     new SET<II>(new II("1.2.3.4.5.6", "1234"))
                 )
             );

@@ -42,6 +42,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="o">The object to parse</param>
         public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
+
             ENFormatter baseFormatter = new ENFormatter();
             baseFormatter.Host = this.Host;
             baseFormatter.GenericArguments = this.GenericArguments;

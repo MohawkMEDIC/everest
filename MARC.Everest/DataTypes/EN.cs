@@ -208,6 +208,12 @@ namespace MARC.Everest.DataTypes
         /// <param name="parts">The parts of the names</param>
         /// <param name="use">The uses of this name</param>
         public EN(EntityNameUse use, IEnumerable<ENXP> parts) : this() { Part = new List<ENXP>(parts); this.Use = new SET<CS<EntityNameUse>>(use); }
+        /// <summary>
+        /// Create a new entity named instance using the specified values
+        /// </summary>
+        /// <param name="parts">The parts of the names</param>
+        /// <param name="use">The uses of this name</param>
+        public EN(SET<CS<EntityNameUse>> use, IEnumerable<ENXP> parts) : this() { Part = new List<ENXP>(parts); this.Use = use; }
 
         /// <summary>
         /// Helper method for creating EN instances

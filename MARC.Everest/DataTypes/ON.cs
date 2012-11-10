@@ -58,6 +58,15 @@ namespace MARC.Everest.DataTypes
             : base(use, parts)
         {
         }
+        /// <summary>
+        /// Create a new entity named instance using the specified values
+        /// </summary>
+        /// <param name="parts">The parts of the names</param>
+        /// <param name="use">The uses of this name</param>
+        public ON(SET<CS<EntityNameUse>> use, IEnumerable<ENXP> parts)
+            : base(use, parts)
+        {
+        }
 
         /// <summary>
         /// Creates an organization name
@@ -67,6 +76,14 @@ namespace MARC.Everest.DataTypes
             return new ON(use, parts);
         }
 
+        /// <summary>
+        /// Creates an organization name
+        /// </summary>
+        public static ON CreateON(SET<CS<EntityNameUse>> use, params ENXP[] parts)
+        {
+            return new ON(use, parts);
+
+        }
         /// <summary>
         /// Validate the organization name
         /// </summary>
@@ -160,7 +177,6 @@ namespace MARC.Everest.DataTypes
             retVal.ValidTimeLow = name.ValidTimeLow;
             return retVal;
         }
-
 
         #region IEquatable<ON> Members
 

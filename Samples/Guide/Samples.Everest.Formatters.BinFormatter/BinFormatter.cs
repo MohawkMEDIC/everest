@@ -54,7 +54,7 @@ namespace Samples.Everest.Formatters.BinFormatter
         /// <summary>
         /// Details of the operation
         /// </summary>
-        public IResultDetail[] Details
+        public IEnumerable<IResultDetail> Details
         {
             get;
             private set;

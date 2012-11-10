@@ -47,9 +47,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
         /// <summary>
         /// Gets the details of the parse
         /// </summary>
-        public IResultDetail[] Details
+        public IEnumerable<IResultDetail> Details
         {
-            get { return this.m_details.ToArray(); }
+            get { return this.m_details; }
         }
 
         /// <summary>
@@ -123,9 +123,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
         /// <summary>
         /// Gets the details of the parse
         /// </summary>
-        public IResultDetail[] Details
+        public IEnumerable<IResultDetail> Details
         {
-            get { return this.m_details.ToArray(); }
+            get { return this.m_details; }
         }
 
         /// <summary>

@@ -34,6 +34,6 @@ namespace MARC.Everest.Connectors.WCF.Core
         /// <summary>
         /// Message has been received and should be processed.
         /// </summary>
-        IGraphable MessageReceived(IGraphable received, ResultCode graphResult, IResultDetail[] graphDetails);
+        IGraphable MessageReceived(IGraphable received, ResultCode graphResult, IEnumerable<IResultDetail> graphDetails);
     }
 }

@@ -56,8 +56,8 @@ namespace MARC.Everest.Connectors
         /// <seealso cref="T:MARC.Everest.Connectors.FixedValueMisMatchedResultDetail"/>
         /// <seealso cref="T:MARC.Everest.Connectors.VocabularyIssueResultDetail"/>
         /// <seealso cref="T:MARC.Everest.Connectors.UnsupportedDatatypePropertyResultDetail"/>
+        IEnumerable<IResultDetail> Details { get; }
 
-        IResultDetail[] Details { get; }
         /// <summary>
         /// Gets the code that summarizes the operation's outcome
         /// </summary>

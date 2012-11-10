@@ -56,6 +56,7 @@ namespace MARC.Everest.DataTypes
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TEL")]
     [Structure(Name = "TEL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("TEL", Namespace = "urn:hl7-org:v3")]
+    [TypeMap(Name = "URL")]
 #if !WINDOWS_PHONE
     [Serializable]
 #endif

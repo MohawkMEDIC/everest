@@ -30,6 +30,7 @@ using System.IO;
 using MARC.Everest.Exceptions;
 using System.ServiceModel;
 using System.ComponentModel;
+using System.Linq;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -509,7 +510,7 @@ namespace MARC.Everest.Connectors.WCF
 #if WINDOWS_PHONE
                     if (ReceiveResult.Details.Find(o => o.Type == ResultDetailType.Error) != null)
 #else
-                    if (Array.Find<IResultDetail>(ReceiveResult.Details, o => o.Type == ResultDetailType.Error) != null)
+                    if (ReceiveResult.Details.FirstOrDefault(o => o.Type == ResultDetailType.Error) != null)
 #endif
                         ReceiveResult.Code = ResultCode.AcceptedNonConformant;
                     else if (ReceiveResult.Structure == null)

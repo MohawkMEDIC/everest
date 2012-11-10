@@ -44,7 +44,7 @@ namespace MARC.Everest.Connectors.WCF.Serialization
         /// <summary>
         /// Gets or sets the details of the format operation
         /// </summary>
-        public IResultDetail[] Details { get; set; }
+        public IEnumerable<IResultDetail> Details { get; set; }
 
         //DOC: Describe the formatter parameter.
         /// <summary>
