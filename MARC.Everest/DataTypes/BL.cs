@@ -65,6 +65,7 @@ namespace MARC.Everest.DataTypes
     /// </example>
     [Structure(Name = "BL", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("BL", Namespace = "urn:hl7-org:v3")]
+    [TypeMap(Name = "BN")] // BN Type from CDA Spec
 #if !WINDOWS_PHONE
     [Serializable]
 #endif

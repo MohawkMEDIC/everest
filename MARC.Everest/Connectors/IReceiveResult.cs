@@ -42,7 +42,7 @@ namespace MARC.Everest.Connectors
         /// The details of the result
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        IResultDetail[] Details { get; }
+        IEnumerable<IResultDetail> Details { get; }
         /// <summary>
         /// The result received from the connector
         /// </summary>

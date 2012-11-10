@@ -45,7 +45,7 @@ public class SendResult : ISendResult
     /// <summary>
     /// The details of the result
     /// </summary>
-    public IResultDetail[] Details { get; internal set; }
+    public IEnumerable<IResultDetail> Details { get; internal set; }
 
     #endregion
 }

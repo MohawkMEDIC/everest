@@ -88,14 +88,14 @@ namespace MARC.Everest.Connectors
         /// ]]>
         /// </code>
         /// </example>
-        /// <seealso cref="M:EndSend(IAsyncResult asyncResult)"/>
+        /// <seealso cref="F:EndSend(IAsyncResult asyncResult)"/>
         IAsyncResult BeginSend(IGraphable data, AsyncCallback callback, object state);
         /// <summary>
         /// Get the send result of an asynchronous call
         /// </summary>
         /// <param name="asyncResult">A pointer to the async result returned from the begin send method</param>
         /// <returns>Response code from the sending handler</returns>
-        /// <seealso cref="M:BeginSend(IGraphable data, AsyncCallback callback, object state)"/>
+        /// <seealso cref="F:BeginSend(IGraphable data, AsyncCallback callback, object state)"/>
         ISendResult EndSend(IAsyncResult asyncResult);
 
     }

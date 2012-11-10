@@ -32,6 +32,7 @@ using MARC.Everest.Connectors.WCF.Core;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
+using System.Linq;
 
 namespace MARC.Everest.Connectors.WCF
 {
@@ -267,7 +268,7 @@ namespace MARC.Everest.Connectors.WCF
                     result.Headers = (state as Message).Headers;
                     result.Details = surrogate.Details;
                     result.Code = ResultCode.Accepted;
-                    if (Array.Find<IResultDetail>(result.Details, o => o.Type == ResultDetailType.Error) != null)
+                    if (result.Details.FirstOrDefault(o => o.Type == ResultDetailType.Error) != null)
                         result.Code = ResultCode.AcceptedNonConformant;
                     else if (result.Structure == null)
                         result.Code = ResultCode.TypeNotAvailable;

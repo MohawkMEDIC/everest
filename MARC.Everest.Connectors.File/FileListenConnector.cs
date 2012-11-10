@@ -26,6 +26,7 @@ using MARC.Everest.Interfaces;
 using MARC.Everest.Exceptions;
 using System.Threading;
 using System.ComponentModel;
+using System.Linq;
 
 namespace MARC.Everest.Connectors.File
 { 
@@ -187,7 +188,7 @@ namespace MARC.Everest.Connectors.File
                     result.Structure = pResult.Structure;
                     result.Details = pResult.Details;
                     result.Code = ResultCode.Accepted;
-                    if (Array.Find<IResultDetail>(result.Details, o => o.Type == ResultDetailType.Error) != null)
+                    if (result.Details.FirstOrDefault(o => o.Type == ResultDetailType.Error) != null)
                         result.Code = ResultCode.AcceptedNonConformant;
                     else if (result.Structure == null)
                         result.Code = ResultCode.TypeNotAvailable;

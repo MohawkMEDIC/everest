@@ -18,7 +18,7 @@ OutputBaseFilename=everest-nightly
 InfoBeforeFile=..\gpmr\Readme-nightly.txt
 #else
 AppName=MARC-HI Everest Framework
-AppVerName=Everest 1.1
+AppVerName=Everest 1.2
 OutputBaseFilename=everest-setup
 ;InfoBeforeFile=.\installsupp\release\AUG-CTP-2010.txt
 #endif
@@ -270,6 +270,7 @@ Name: api\vs; Description: Visual Studio Integration; Types: full developer deve
 Name: api\vs\cda; Description: CDA r2 Documentation; Types: full developer developer\cda developer\necda
 Name: api\vs\ne; Description: UV Documentation (NE2010/NE2008); Types: full developer developer\ne developer\necda
 Name: api\vs\ca; Description: CA Documentation (R02.04.01-R02.04.03); Types: full developer developer\ca
+Name: phone; Description: Everest for Windows Phone; Types: full phone
 #ifdef INCLUDE_MIFS
 Name: spec; Description: Pan-Canadian Specifications; Types: full
 #endif
@@ -326,7 +327,7 @@ begin
   jan2010 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413079}_is1');
   // RC1
   rc1 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413080}_is1');
-  // 1.0 {{A21E1269-8CDE-43CD-B179-2B6674413081}
+  // 1.0
   v1 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413081}_is1');
   needsUninstall := sept2009 or nov2009 or jan2010 or rc1 or v1;
   // Check for required netfx installation

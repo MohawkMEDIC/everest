@@ -364,7 +364,7 @@
             Typically, when a null flavor is specified the data value within the instance is not written on the wire. For exceptions to this
             rule see the reference guide.
             <para>
-            Null flavors are heirarchical and may imply one another. For example, a NullFlavor or PINF implies OTH which implies NI. <see cref="M:MARC.Everest.DataTypes.NullFlavorUtil.IsChildConcept(MARC.Everest.DataTypes.NullFlavor)"/>
+            Null flavors are heirarchical and may imply one another. For example, a NullFlavor or PINF implies OTH which implies NI. <see cref="F:MARC.Everest.DataTypes.NullFlavorUtil.IsChildConcept(MARC.Everest.DataTypes.NullFlavor)"/>
             provides a mechanism for determining the implies relationship between null flavors
             </para>
             </remarks>
@@ -1994,8 +1994,8 @@
             <remarks>
             A QTY is considered valid when:
             <list type="list">
-                <item><term>When <see cref="M:Expression"/> is specified, <see cref="M:ExpressionLanguage"/> is specified</term></item>
-                <item><term>Either <see cref="M:Uncertainty"/> or <see cref="M:UncertainRange"/> are specified (but not both), or neither is set</term></item>
+                <item><term>When <see cref="F:Expression"/> is specified, <see cref="F:ExpressionLanguage"/> is specified</term></item>
+                <item><term>Either <see cref="F:Uncertainty"/> or <see cref="F:UncertainRange"/> are specified (but not both), or neither is set</term></item>
             </list>
             </remarks>
         </member>
@@ -2489,6 +2489,13 @@
             <param name="parts">The parts of the names</param>
             <param name="use">The uses of this name</param>
         </member>
+        <member name="M:MARC.Everest.DataTypes.EN.#ctor(MARC.Everest.DataTypes.SET{MARC.Everest.DataTypes.CS{MARC.Everest.DataTypes.EntityNameUse}},System.Collections.Generic.IEnumerable{MARC.Everest.DataTypes.ENXP})">
+            <summary>
+            Create a new entity named instance using the specified values
+            </summary>
+            <param name="parts">The parts of the names</param>
+            <param name="use">The uses of this name</param>
+        </member>
         <member name="M:MARC.Everest.DataTypes.EN.CreateEN(MARC.Everest.DataTypes.EntityNameUse,MARC.Everest.DataTypes.ENXP[])">
             <summary>
             Helper method for creating EN instances
@@ -2910,7 +2917,7 @@
             when the first instance is passed through the formatter.
             </para>
             <para>
-            This class exposes the <see cref="M:BuildCache(Type[])"/> method which is intended to force the CodeDom formatter
+            This class exposes the <see cref="F:BuildCache(Type[])"/> method which is intended to force the CodeDom formatter
             to build its code in memory and compile one or more assemblies. These assemblies can then be referenced (and saved
             for later use) by the developer at runtime.
             </para>
@@ -4717,7 +4724,7 @@
             <summary>
             Add a fake attribute. Fake attributes don't appear in the stream, but can be used by 
             formatters to pass attributes to graph aides. Fake attributes appear to be "real"
-            as they are returned by the <see cref="M:GetAttribute()"/> function.
+            as they are returned by the <see cref="F:GetAttribute()"/> function.
             </summary>
         </member>
         <member name="M:MARC.Everest.Xml.XmlStateReader.Close">
@@ -5278,7 +5285,7 @@
             Event arguments for message based events
             </summary>
         </member>
-        <member name="M:MARC.Everest.Connectors.MessageEventArgs.#ctor(MARC.Everest.Connectors.ResultCode,MARC.Everest.Connectors.IResultDetail[])">
+        <member name="M:MARC.Everest.Connectors.MessageEventArgs.#ctor(MARC.Everest.Connectors.ResultCode,System.Collections.Generic.IEnumerable{MARC.Everest.Connectors.IResultDetail})">
             <summary>
             Create a new instance of the MessageEventArgs class
             </summary>
@@ -7922,7 +7929,7 @@
             <summary>
             Creates a set from a bound IVL
             </summary>
-            <remarks>This function will call <see cref="M:FillInDetails"/> prior to construction of the set as it 
+            <remarks>This function will call <see cref="F:FillInDetails"/> prior to construction of the set as it 
             needs to ensure that low and high bounds are known</remarks>
             <exception cref="T:System.InvalidOperationException">When <typeparamref name="T"/> does not implement <see cref="T:MARC.Everest.DataTypes.Interfaces.IOrderedDataType{T}"/></exception>
         </member>
@@ -10177,7 +10184,7 @@
             <item><term>d (Days)</term><description>0xc92a69c000 = <i>S</i> * 3,600 * 24</description></item>
             <item><term>wk (Weeks)</term><description>0x58028e44000 = <i>S</i> * 3,600 * 24 * 7</description></item>
             <item><term>mo (Months)</term><description>0x17e6ca109000 = <i>S</i> * 3,600 * 24 * 30.416 : since month duration vaires, and since given just a timespan it is impossible to calculate which months were used to get the PQ, we take 365 / 12 to be the length of a month</description></item>
-            <item><term>a (Annum)</term><description>0x11ed178C6C000 = <i>S</i> * 3,600 * 24 * 365</description> or 31,536,000 seconds. Note there is some drifting associated with leap years, this can be corrected with <see cref="M:TS.GetLeapDays"/></item>
+            <item><term>a (Annum)</term><description>0x11ed178C6C000 = <i>S</i> * 3,600 * 24 * 365</description> or 31,536,000 seconds. Note there is some drifting associated with leap years, this can be corrected with <see cref="F:TS.GetLeapDays"/></item>
             </list>
             </remarks>
             <seealso cref="T:MARC.Everest.DataTypes.QTY"/>
@@ -10260,7 +10267,7 @@
             <remarks>
             This operation will always return a PQ with the value consisting of the number of
             seconds in the timespan object. You can convert this value to other units of measure
-            using the <see cref="M:Convert(System.String)"/> method.
+            using the <see cref="F:Convert(System.String)"/> method.
             </remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.PQ.op_Explicit(MARC.Everest.DataTypes.PQ)~System.TimeSpan">
@@ -11256,7 +11263,7 @@
              ]]>
              </code>
              </example>
-             <seealso cref="M:EndSend(IAsyncResult asyncResult)"/>
+             <seealso cref="F:EndSend(IAsyncResult asyncResult)"/>
         </member>
         <member name="M:MARC.Everest.Connectors.ISendingConnector.EndSend(System.IAsyncResult)">
             <summary>
@@ -11264,7 +11271,7 @@
             </summary>
             <param name="asyncResult">A pointer to the async result returned from the begin send method</param>
             <returns>Response code from the sending handler</returns>
-            <seealso cref="M:BeginSend(IGraphable data, AsyncCallback callback, object state)"/>
+            <seealso cref="F:BeginSend(IGraphable data, AsyncCallback callback, object state)"/>
         </member>
         <member name="M:MARC.Everest.Connectors.ISendReceiveConnector.Receive(MARC.Everest.Connectors.ISendResult)">
              <summary>
@@ -11363,7 +11370,7 @@
              ]]>
              </code>
              </example>
-             <seealso cref="M:EndReceive(IAsyncResult asyncResult)"/>
+             <seealso cref="F:EndReceive(IAsyncResult asyncResult)"/>
         </member>
         <member name="M:MARC.Everest.Connectors.ISendReceiveConnector.EndReceive(System.IAsyncResult)">
             <summary>
@@ -11371,7 +11378,7 @@
             </summary>
             <param name="asyncResult">The result of the <see cref="M:MARC.Everest.Connectors.ISendReceiveConnector.BeginReceive(MARC.Everest.Connectors.ISendResult,System.AsyncCallback,System.Object)"/> method</param>
             <returns>A receive result</returns>
-            <seealso cref="M:BeginReceive(ISendResult correlate, AsyncCallback callback, object state)"/>
+            <seealso cref="F:BeginReceive(ISendResult correlate, AsyncCallback callback, object state)"/>
         </member>
         <member name="T:MARC.Everest.Connectors.IDatatypeStructureFormatter">
             <summary>
@@ -11965,7 +11972,19 @@
             <param name="parts">The parts of the names</param>
             <param name="use">The uses of this name</param>
         </member>
+        <member name="M:MARC.Everest.DataTypes.ON.#ctor(MARC.Everest.DataTypes.SET{MARC.Everest.DataTypes.CS{MARC.Everest.DataTypes.EntityNameUse}},System.Collections.Generic.IEnumerable{MARC.Everest.DataTypes.ENXP})">
+            <summary>
+            Create a new entity named instance using the specified values
+            </summary>
+            <param name="parts">The parts of the names</param>
+            <param name="use">The uses of this name</param>
+        </member>
         <member name="M:MARC.Everest.DataTypes.ON.CreateON(MARC.Everest.DataTypes.EntityNameUse,MARC.Everest.DataTypes.ENXP[])">
+            <summary>
+            Creates an organization name
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.ON.CreateON(MARC.Everest.DataTypes.SET{MARC.Everest.DataTypes.CS{MARC.Everest.DataTypes.EntityNameUse}},MARC.Everest.DataTypes.ENXP[])">
             <summary>
             Creates an organization name
             </summary>
@@ -11979,7 +11998,7 @@
             <list type="bullet">
                 <item>All validation rules from <see cref="T:MARC.Everest.DataTypes.EN"/> are satisfied</item>
                 <item>The <see cref="!:Use"/> property is not one of {Indigenous, Pseudonym, Anonymous, Artist, Religious, MaidenName }</item>
-                <item>The <see cref="M:MARC.Everest.DataTypes.ENXP.Type"/> property of each <see cref="!:Part"/> is not in { Given, Family }</item>
+                <item>The <see cref="F:MARC.Everest.DataTypes.ENXP.Type"/> property of each <see cref="!:Part"/> is not in { Given, Family }</item>
             </list>
             </remarks>
         </member>

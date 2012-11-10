@@ -37,7 +37,7 @@ namespace MARC.Everest.Connectors
         /// The details related to the formatting
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public IResultDetail[] Details { get; private set; }
+        public IEnumerable<IResultDetail> Details { get; private set; }
         /// <summary>
         /// An alternate structure to send
         /// </summary>
@@ -45,7 +45,7 @@ namespace MARC.Everest.Connectors
         /// <summary>
         /// Create a new instance of the MessageEventArgs class
         /// </summary>
-        public MessageEventArgs(ResultCode code, IResultDetail[] details)
+        public MessageEventArgs(ResultCode code, IEnumerable<IResultDetail> details)
         {
             this.Code = code;
             this.Details = details;

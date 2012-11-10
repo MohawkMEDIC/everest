@@ -452,7 +452,7 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Creates a set from a bound IVL
         /// </summary>
-        /// <remarks>This function will call <see cref="M:FillInDetails"/> prior to construction of the set as it 
+        /// <remarks>This function will call <see cref="F:FillInDetails"/> prior to construction of the set as it 
         /// needs to ensure that low and high bounds are known</remarks>
         /// <exception cref="T:System.InvalidOperationException">When <typeparamref name="T"/> does not implement <see cref="T:MARC.Everest.DataTypes.Interfaces.IOrderedDataType{T}"/></exception>
         public SET<T> ToSet()

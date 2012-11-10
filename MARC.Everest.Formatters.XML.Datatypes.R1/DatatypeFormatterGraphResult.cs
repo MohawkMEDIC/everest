@@ -74,7 +74,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         /// </summary>
         internal void AddResultDetail(IResultDetail detail)
         {
-            this.m_details.Add(detail);
+            if (detail != null)
+                this.m_details.Add(detail);
         }
 
         /// <summary>
@@ -82,6 +83,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         /// </summary>
         internal void RemoveResultDetail(Predicate<IResultDetail> predicate)
         {
+            if (predicate == null)
+                throw new ArgumentNullException("predicate");
             this.m_details.RemoveAll(predicate);
         }
 
@@ -90,9 +93,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         /// <summary>
         /// Gets the details of the parse
         /// </summary>
-        public IResultDetail[] Details
+        public IEnumerable<IResultDetail> Details
         {
-            get { return this.m_details.ToArray(); }
+            get { return this.m_details; }
         }
 
         /// <summary>
@@ -182,7 +185,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         /// <summary>
         /// Gets the details of the parse
         /// </summary>
-        public IResultDetail[] Details
+        public IEnumerable<IResultDetail> Details
         {
             get { return this.m_details.ToArray(); }
         }

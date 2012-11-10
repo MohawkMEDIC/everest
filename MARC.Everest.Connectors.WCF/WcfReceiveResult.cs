@@ -42,7 +42,7 @@ namespace MARC.Everest.Connectors.WCF
         /// <summary>
         /// Gets or sets the details of the result. If the <see cref="ResultCode">ResultCode</see> is not Accepted, this list will contain at least one detail item that is an error.
         /// </summary>
-        public IResultDetail[] Details { get; set; }
+        public IEnumerable<IResultDetail> Details { get; set; }
         /// <summary>
         /// Gets or sets the actual result.
         /// </summary>
@@ -69,7 +69,7 @@ namespace MARC.Everest.Connectors.WCF
         /// clients
         /// </summary>
         /// <remarks>This property is intended to be used by users of the <see cref="T:MARC.HI.Everest.Connectors.WCF.WcfServerConnector"/> connector. For
-        /// sending headers via the client connector, see the <see cref="M:MARC.HI.Everest.Connectors.WCF.WcfReceiveConnector.Send(MARC.Everest.Interfaces.IGraphable, System.ServiceModel.MessageHeaders)"/> method</remarks>
+        /// sending headers via the client connector, see the <see cref="F:MARC.HI.Everest.Connectors.WCF.WcfReceiveConnector.Send(MARC.Everest.Interfaces.IGraphable, System.ServiceModel.MessageHeaders)"/> method</remarks>
         public MessageHeaders ResponseHeaders { get; set; }
         #endregion
     }

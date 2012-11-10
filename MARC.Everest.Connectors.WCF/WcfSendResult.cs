@@ -49,7 +49,7 @@ namespace MARC.Everest.Connectors.WCF
         /// <summary>
         /// Gets or sets the details of the operation. If the <see cref="ResultCode"/> is not Accepted, this list will contain at least one error item.
         /// </summary>
-        public IResultDetail[] Details { get; set; }
+        public IEnumerable<IResultDetail> Details { get; set; }
 
         /// <summary>
         /// Gets or sets the message to be sent via the WCF connector.

@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.DataTypes;
 using MARC.Everest.Connectors;
 using System.Reflection;
+using MARC.Everest.DataTypes.Interfaces;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 {
@@ -45,6 +46,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate and remove any incriminating data
             ON instance = o as ON;
+            instance = new ON(instance.Use, instance.Part);
+            instance.NullFlavor = (o as IAny).NullFlavor;
+
                 for(int i = instance.Part.Count - 1; i >= 0; i--)
                     if (instance.Part[i].Type == EntityNamePartType.Family ||
                         instance.Part[i].Type == EntityNamePartType.Given)

@@ -68,7 +68,7 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             var result = fmtr.Graph(xsw, cda);
             xsw.Flush();
             Console.WriteLine("Took {0} ms to render", DateTime.Now.Subtract(start).TotalMilliseconds);
-
+            
             // We can serialize again to see the learning pattern of Everest
             for (int i = 2; i < 20; i++)
             {
@@ -121,7 +121,8 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             );
             asthma.StatusCode = ActStatus.Completed;
             asthma.EffectiveTime = new IVL<TS>(new TS(DateTime.Now, DatePrecision.Year), null); // In Everest, we can create a date with a precision of year which can be interpreted as any time that year
-            asthma.Reference.Add(new Reference(x_ActRelationshipExternalReference.Excerpts, ExternalActChoice.CreateExternalObservation(ActClass.Condition)));
+            asthma.Reference.Add(new Reference(x_ActRelationshipExternalReference.SUBJ, ExternalActChoice.CreateExternalObservation(
+                SET<II>.CreateSET(new II(Guid.NewGuid())), "CODE", "This is some text")));
             
             // BodyChoice is a choice of either nonXml content or structured body, how would we know that?
             // Well, whenever a class as a property XChoice and SetXChoice the SetXChoice will contain

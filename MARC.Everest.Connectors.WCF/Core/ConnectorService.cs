@@ -31,6 +31,7 @@ using System.Xml.XPath;
 using MARC.Everest.Connectors.WCF.Serialization;
 using System.Xml;
 using System.Diagnostics;
+using System.Linq;
 
 namespace MARC.Everest.Connectors.WCF.Core
 {
@@ -95,12 +96,12 @@ namespace MARC.Everest.Connectors.WCF.Core
                         WebOperationContext.Current.OutgoingResponse.StatusDescription = "Internal Server Error";
                     }
 
-                    string[] details = new string[0];
+                    List<String> details = new List<string>();
                     if (processResult != null)
                     {
-                        details = new string[processResult.Details.Length];
-                        for (int i = 0; i < details.Length; i++)
-                            details[i] = processResult.Details[i].Message; // Append details
+                        details = new List<String>();
+                        foreach(var dtl in processResult.Details)
+                            details.Add(dtl.Message); // Append details
                     }
 
                     if (processResult == null)
@@ -182,7 +183,7 @@ namespace MARC.Everest.Connectors.WCF.Core
                     var serResult = settings.Formatter.Parse(ms);
                     rcv.Structure = serResult.Structure;
                     rcv.Details = serResult.Details;
-                    if (rcv.Details.Length == 0)
+                    if (rcv.Details.Count() == 0)
                         rcv.Code = ResultCode.Accepted;
                     else
                         rcv.Code = ResultCode.AcceptedNonConformant;
@@ -214,9 +215,9 @@ namespace MARC.Everest.Connectors.WCF.Core
                         WebOperationContext.Current.OutgoingResponse.StatusDescription = "Internal Server Error";
                     }
 
-                    string[] details = new string[surrogate.Details.Length];
-                    for (int i = 0; i < details.Length; i++)
-                        details[i] = surrogate.Details[i].Message; // Append details
+                    List<string> details = new List<String>();
+                    foreach(var itm in surrogate.Details)
+                        details.Add(itm.Message); // Append details
                     return Message.CreateMessage(m.Version, MessageFault.CreateFault(FaultCode.CreateReceiverFaultCode(surrogate.ResultCode.ToString(), "http://marc.mohawkcollege.ca/hi"), new FaultReason("The receiver has constructed an invalid response that cannot be returned to the sender"), details), m.Headers.Action);
                 }
                 else

@@ -81,7 +81,7 @@ namespace MARC.Everest.Xml
         /// <summary>
         /// Add a fake attribute. Fake attributes don't appear in the stream, but can be used by 
         /// formatters to pass attributes to graph aides. Fake attributes appear to be "real"
-        /// as they are returned by the <see cref="M:GetAttribute()"/> function.
+        /// as they are returned by the <see cref="F:GetAttribute()"/> function.
         /// </summary>
         public void AddFakeAttribute(string attributeName, string attributeValue)
         {

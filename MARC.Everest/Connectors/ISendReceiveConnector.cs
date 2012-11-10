@@ -126,14 +126,14 @@ namespace MARC.Everest.Connectors
         /// ]]>
         /// </code>
         /// </example>
-        /// <seealso cref="M:EndReceive(IAsyncResult asyncResult)"/>
+        /// <seealso cref="F:EndReceive(IAsyncResult asyncResult)"/>
         IAsyncResult BeginReceive(ISendResult correlate, AsyncCallback callback, object state);
         /// <summary>
         /// End the receive operation and retrieve the result
         /// </summary>
         /// <param name="asyncResult">The result of the <see cref="BeginReceive"/> method</param>
         /// <returns>A receive result</returns>
-        /// <seealso cref="M:BeginReceive(ISendResult correlate, AsyncCallback callback, object state)"/>
+        /// <seealso cref="F:BeginReceive(ISendResult correlate, AsyncCallback callback, object state)"/>
         IReceiveResult EndReceive(IAsyncResult asyncResult);
     }
 }
