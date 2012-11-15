@@ -207,6 +207,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             adxpFormatter.Host = this.Host;
                             ENXP part = (ENXP)adxpFormatter.Parse(s, result); // Parse
                             part.Type = enxpType;
+                            baseFormatter.Validate(part, s.ToString(), result);
                             retVal.Part.Add(part); // Add to EN
                         }
                         else if (s.LocalName == "validTime") 
