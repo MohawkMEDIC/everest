@@ -251,7 +251,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(XmlIts1FormatterGraphResult), "resultContext"));
 
             method.Attributes = MemberAttributes.Public;
-            method.ReturnType = new CodeTypeReference(typeof(ResultCode));
+            method.ReturnType = new CodeTypeReference(typeof(void));
 
             // Type reference to the forType
             CodeTypeReference tref = new CodeTypeReference(forType);
@@ -277,6 +277,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                 methodBodyAtt.Add(new CodeSnippetExpression(String.Format("bool isEntryPoint = s is MARC.Everest.Xml.XmlStateWriter && (s as MARC.Everest.Xml.XmlStateWriter).ElementStack.Count == 0 || s.WriteState == System.Xml.WriteState.Start; if(isEntryPoint) s.WriteStartElement(\"{0}\", \"urn:hl7-org:v3\")", structureAttribute.Name)));
                 methodBodyAtt.Add(new CodeSnippetExpression("if(isEntryPoint) s.WriteAttributeString(\"xmlns\", \"xsi\", null, MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.NS_XSI)"));
             }
+
+            // Validate
+            methodBodyAtt.Add(new CodeSnippetExpression("if(this.Host.ValidateConformance) this.Host.ValidateHelper(s, instance, this, resultContext)"));
 
             #region Build inherited properties in correct order
             var buildProperties = GetBuildProperties(forType);
@@ -348,9 +351,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                     methodBody.Add(new CodeSnippetStatement(String.Format("{2} if(instance.{0}.GetType() == typeof({1})) {{\r\n", pi.Name, pa.Type.FullName, ic > 0 ? "else" : "")));
                                 // Output
                                 if (pa.Type.GetInterface("MARC.Everest.Interfaces.IGraphable") != null) // Non Graphable
-                                    methodBody.Add(new CodeSnippetExpression(String.Format("retVal = Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pa.Type)))));
+                                    methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pa.Type)))));
                                 else if (pa.Type.GetInterface("System.Collections.IEnumerable") != null) // List
-                                    methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ retVal = Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pa.Type)))));
+                                    methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pa.Type)))));
                                 else // Not recognized
                                     methodBody.Add(new CodeSnippetExpression(String.Format("s.WriteElementString(\"{0}\", \"urn:hl7-org:v3\", instance.{1}.ToString())\r\n", pa.Name, pi.Name)));
 
@@ -368,18 +371,18 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                             if (pa != null && pi.PropertyType.GetInterface("MARC.Everest.Interfaces.IGraphable") != null) // Non Graphable
                             {
                                 retValChanged = true;
-                                methodBody.Add(new CodeSnippetExpression(String.Format("retVal = Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
+                                methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
                             }
                             else if (pa != null && pi.PropertyType.GetInterface("System.Collections.IEnumerable") != null) // List
                             {
-                                methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ retVal = Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
+                                methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
                                 retValChanged = true;
                             }
                             else if (pa != null) // Not recognized
                                 methodBody.Add(new CodeSnippetExpression(String.Format("s.WriteElementString(\"{0}\", \"urn:hl7-org:v3\", instance.{1}.ToString())", pa.Name, pi.Name)));
                         }
                         else
-                            methodBody.Add(new CodeSnippetStatement(String.Format("else {{ resultContext.AddResultDetail(new MARC.Everest.Connectors.NotSupportedChoiceResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, System.String.Format(\"Type {{0}} is not a valid choice according to available choice elements\", instance.{0}.GetType()), s.ToString(), null)); }}", pi.Name)));
+                            methodBody.Add(new CodeSnippetStatement(String.Format("else {{ resultContext.Code = MARC.Everest.Connectors.ResultCode.Error; resultContext.AddResultDetail(new MARC.Everest.Connectors.NotSupportedChoiceResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, System.String.Format(\"Type {{0}} is not a valid choice according to available choice elements\", instance.{0}.GetType()), s.ToString(), null)); }}", pi.Name)));
                         #endregion
                     }
                     else
@@ -401,7 +404,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                             if (piInterfaces.Contains(typeof(IColl)))
                                 methodBody.Add(new CodeSnippetStatement(String.Format("if(!instance.{0}.IsEmpty)", pi.Name)));
                             retValChanged = true;
-                            methodBody.Add(new CodeSnippetExpression(String.Format("retVal = Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
+                            methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
                         }
                         else if (piInterfaces.Contains(typeof(ICollection))) // List
                         {
@@ -409,7 +412,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                             Type lType = pi.PropertyType;
                             if (lType.GetGenericArguments().Length > 0)
                                 lType = lType.GetGenericArguments()[0];
-                            methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ retVal = Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(lType)))));
+                            methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(lType)))));
                             retValChanged = true;
                         }
                         else // Not recognized
@@ -420,9 +423,6 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
                         lastWasAttribute = pa.PropertyType == PropertyAttribute.AttributeAttributeType.Structural;
                     }
-
-                    if(retValChanged)
-                        methodBody.Add(new CodeSnippetExpression("if(resultContext.Code != MARC.Everest.Connectors.ResultCode.Accepted) retVal = resultContext.Code"));
 
                     //if(pi.Name != "NullFlavor")
                     //    methodBody.Add(new CodeSnippetStatement("}")); // Finish the if that encapsulates this property code
@@ -442,10 +442,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
             // Create stuff finally
             method.Statements.Add(new CodeSnippetExpression(string.Format("{0} instance = o as {0};", trefTypeReference)));
-            method.Statements.Add(new CodeSnippetExpression("MARC.Everest.Connectors.ResultCode retVal = MARC.Everest.Connectors.ResultCode.Accepted"));
             method.Statements.AddRange(methodBodyAtt);
             method.Statements.AddRange(methodBodyEle);
-            method.Statements.Add(new CodeSnippetExpression("return retVal"));
 
             return method;
         }

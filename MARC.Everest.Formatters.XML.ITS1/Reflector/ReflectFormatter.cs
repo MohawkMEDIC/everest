@@ -50,7 +50,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
         /// <summary>
         /// Graphs an object to the specified stream
         /// </summary>
-        public MARC.Everest.Connectors.ResultCode Graph(System.Xml.XmlWriter s, object o, MARC.Everest.Interfaces.IGraphable context, XmlIts1FormatterGraphResult resultContext)
+        public void Graph(System.Xml.XmlWriter s, object o, MARC.Everest.Interfaces.IGraphable context, XmlIts1FormatterGraphResult resultContext)
         {
             ResultCode rc = ResultCode.Accepted;
             Type instanceType = o.GetType();
@@ -86,6 +86,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 }
             }
                 
+            // Validate
+            this.Host.ValidateHelper(s, o as IGraphable, this, resultContext);
 
             // Reflect the properties and ensure they are in the appropriate order
             List<PropertyInfo> buildProperties = GetBuildProperties(instanceType);
@@ -142,9 +144,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                                 (this.Host.Settings & SettingsType.AllowUpdateModeImposing) == SettingsType.AllowUpdateModeImposing)
                                 pi.PropertyType.GetProperty("UpdateMode").SetValue(instance, Util.FromWireFormat(pa.DefaultUpdateMode, pi.PropertyType.GetProperty("UpdateMode").PropertyType), null);
                             if (pa.ImposeFlavorId != null &&
-                                pi.PropertyType.GetProperty("Flavor") != null &&
+                                instance is IAny &&
                                 (Host.Settings & SettingsType.AllowFlavorImposing) == SettingsType.AllowFlavorImposing)
-                                pi.PropertyType.GetProperty("Flavor").SetValue(instance, pa.ImposeFlavorId, null);
+                                (instance as IAny).Flavor = pa.ImposeFlavorId;
                             if (pa.SupplierDomain != null &&
                                 instance is ICodedValue &&
                                 (instance as ICodedSimple).CodeValue != null &&
@@ -160,13 +162,13 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                                 // TODO: Check whether this causes issues with R2
                                 if (instance is IColl && (instance as IColl).IsEmpty)
                                     continue;
-                                rc = Host.WriteElementUtil(s, pa.Name, instance as IGraphable, pi.PropertyType, context, resultContext);
+                                Host.WriteElementUtil(s, pa.Name, instance as IGraphable, pi.PropertyType, context, resultContext);
                             }
                             else if (instance is ICollection)
                             {
                                 Type genType = pi.PropertyType.GetGenericArguments()[0];
                                 foreach (object itm in (instance as ICollection))
-                                    rc = Host.WriteElementUtil(s, pa.Name, itm as IGraphable, genType, context, resultContext);
+                                    Host.WriteElementUtil(s, pa.Name, itm as IGraphable, genType, context, resultContext);
                             }
                             else
                                 s.WriteElementString(pa.Name, instance.ToString());
@@ -203,9 +205,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     if (formatAs == null)
                         resultContext.AddResultDetail(new NotSupportedChoiceResultDetail(ResultDetailType.Error, String.Format("Type {0} is not a valid choice according to available choice elements and won't be formatted", instance.GetType()), s.ToString(), null));
                     else if (instance.GetType().GetInterface("MARC.Everest.Interfaces.IGraphable", false) != null) // Non Graphable
-                        rc = Host.WriteElementUtil(s, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.GetType(), context, resultContext);
+                        Host.WriteElementUtil(s, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.GetType(), context, resultContext);
                     else if (instance.GetType().GetInterface("System.Collections.IEnumerable", false) != null) // List
-                        foreach (MARC.Everest.Interfaces.IGraphable ig in instance as IEnumerable) { rc = Host.WriteElementUtil(s, formatAs.Name, ig, instance.GetType(), context, resultContext); }
+                        foreach (MARC.Everest.Interfaces.IGraphable ig in instance as IEnumerable) { Host.WriteElementUtil(s, formatAs.Name, ig, instance.GetType(), context, resultContext); }
                     else // Not recognized
                         s.WriteElementString(formatAs.Name, "urn:hl7-org:v3", instance.ToString());
 
@@ -216,8 +218,6 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             if (isEntryPoint)
                 s.WriteEndElement();
 
-            // Return result code
-            return rc;
         }
 
         /// <summary>
@@ -481,7 +481,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             }
 
             // Scan property info for violations
-            foreach (var pi in o.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var pi in this.GetBuildProperties(o.GetType()))
             {
 
                 if (pi.GetGetMethod().GetParameters().Length != 0)
@@ -501,8 +501,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 {
                     PropertyAttribute pa = propAttributes[0] as PropertyAttribute;
                     if (pa.Conformance == PropertyAttribute.AttributeConformanceType.Mandatory &&
-                        pi.PropertyType.GetProperty("NullFlavor") != null &&
-                        (piValue == null || pi.PropertyType.GetProperty("NullFlavor").GetValue(piValue, null) != null))
+                        pi.PropertyType.GetInterface(typeof(IImplementsNullFlavor).FullName) != null &&
+                        (piValue == null || (piValue as IImplementsNullFlavor).NullFlavor != null))
                     {
                         isValid = false;
                         dtls.Add(new MandatoryElementMissingResultDetail(ResultDetailType.Error, String.Format("Property {0} in {1} is marked mandatory and is either not assigned, or is assigned a null flavor. This is not permitted.", pi.Name, o.GetType().FullName), location));
@@ -520,7 +520,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         if(piCollection != null && (piCollection.Count > maxOccurs || piCollection.Count < minOccurs))
                         { 
                             isValid = false; 
-                            dtls.Add(new InsufficientRepetionsResultDetail(ResultDetailType.Error, String.Format("Property {0} in {2} does not have enough elements in the list, need between {1} and {3} elements!", pi.Name, minOccurs, o.GetType().FullName, maxOccurs), location));
+                            dtls.Add(new InsufficientRepetitionsResultDetail(ResultDetailType.Error, String.Format("Property {0} in {2} does not have enough elements in the list, need between {1} and {3} elements!", pi.Name, minOccurs, o.GetType().FullName, maxOccurs), location));
                         }
                     }
                 }

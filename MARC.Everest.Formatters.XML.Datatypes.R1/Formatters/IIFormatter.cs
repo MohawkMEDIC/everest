@@ -29,9 +29,10 @@ using System.Reflection;
 namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 {
     /// <summary>
-    /// Formats the II datatype
+    /// Formats an II instance on the wire according to various data-types R1
+    /// and derivativ
     /// </summary>
-    public class IIFormatter : IDatatypeFormatter
+    public class IIFormatter : ANYFormatter, IDatatypeFormatter
     {
         /// <summary>
         /// Host context
@@ -56,11 +57,11 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             II instance = o as II;
 
             // Base graph
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o as ANY, result);
-            IResultDetail[] useDetails = new IResultDetail[0];
+            base.Graph(s, o as ANY, result);
 
             // Handle II graphing
+            if (instance.IsNull)
+                return;
             if(instance.Root != null) // root
                 s.WriteAttributeString("root", instance.Root);
             if (instance.Extension != null) // extension
@@ -84,7 +85,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             s.WriteAttributeString("use", "BUS");
                             break;
                         default:
-                            result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "scope", "II", s.ToString()));
+                            result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "Scope", "II", s.ToString()));
                             break;
                     }
                 else
@@ -104,11 +105,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         public object Parse(XmlReader s, DatatypeFormatterParseResult result)
         {
-            // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-
+           
             // Parse CS
-            II retVal = baseFormatter.Parse<II>(s, result);
+            II retVal = base.Parse<II>(s, result);
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("root") != null)
@@ -130,7 +129,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
 
             return retVal;

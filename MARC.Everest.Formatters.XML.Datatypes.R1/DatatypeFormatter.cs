@@ -383,7 +383,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         /// </summary>
         public IFormatterParseResult Parse(System.IO.Stream s)
         {
-            return new DatatypeFormatterParseResult(this.CompatibilityMode, ResultCode.Rejected, null, this.ValidateConformance);
+            return new DatatypeFormatterParseResult(this.CompatibilityMode, ResultCode.Rejected, new IResultDetail[] {
+                new NotImplementedResultDetail(ResultDetailType.Error, "Can't use the datatypes R1 formatter on a stream", null)
+            }, this.ValidateConformance);
         }
 
         #endregion

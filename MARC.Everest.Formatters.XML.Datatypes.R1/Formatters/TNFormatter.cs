@@ -53,7 +53,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (tn.Part.Count > 0 && tn.NullFlavor == null)
                 s.WriteString(tn.Part[0].Value);
             if (tn.Part.Count > 1)
-                result.AddResultDetail(new InsufficientRepetionsResultDetail(ResultDetailType.Warning,
+                result.AddResultDetail(new InsufficientRepetitionsResultDetail(ResultDetailType.Warning,
                     "TN is only permitted to have one part",
                     s.ToString()));
         }

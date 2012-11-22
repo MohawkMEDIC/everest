@@ -29,13 +29,13 @@ namespace MARC.Everest.Connectors
     public enum ResultCode
     {
         /// <summary>
-        /// The message was accepted however it did not pass conformance
-        /// </summary>
-        AcceptedNonConformant,
-        /// <summary>
         /// The message was accepted for delivery
         /// </summary>
         Accepted, 
+        /// <summary>
+        /// The message was accepted however it did not pass conformance
+        /// </summary>
+        AcceptedNonConformant,
         /// <summary>
         /// The message was rejected for delivery due to validation failures
         /// in the formatter

@@ -260,7 +260,7 @@ namespace MARC.Everest.Test.Manual.Formatters
                 }
                  
                 // Assert: Instance is not conformant.
-                Assert.AreEqual(result.Code, ResultCode.Rejected);
+                Assert.AreEqual(ResultCode.Rejected, result.Code);
 
                 /* STREAMWRITER CODE 
                 // Validate that the written file contains the two injected strings.

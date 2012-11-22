@@ -270,7 +270,6 @@ Name: api\vs; Description: Visual Studio Integration; Types: full developer deve
 Name: api\vs\cda; Description: CDA r2 Documentation; Types: full developer developer\cda developer\necda
 Name: api\vs\ne; Description: UV Documentation (NE2010/NE2008); Types: full developer developer\ne developer\necda
 Name: api\vs\ca; Description: CA Documentation (R02.04.01-R02.04.03); Types: full developer developer\ca
-Name: phone; Description: Everest for Windows Phone; Types: full phone
 #ifdef INCLUDE_MIFS
 Name: spec; Description: Pan-Canadian Specifications; Types: full
 #endif

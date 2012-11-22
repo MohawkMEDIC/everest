@@ -217,18 +217,18 @@ namespace MARC.Everest.Connectors
 #if !WINDOWS_PHONE
     [Serializable]
 #endif
-    public class InsufficientRepetionsResultDetail : FormalConstraintViolationResultDetail
+    public class InsufficientRepetitionsResultDetail : FormalConstraintViolationResultDetail
     {
         /// <summary>
         /// Create a new instance of the datatype result detail
         /// </summary>
-        public InsufficientRepetionsResultDetail(ResultDetailType type, string message, string location) :
+        public InsufficientRepetitionsResultDetail(ResultDetailType type, string message, string location) :
             base(type, message, location, null) { }
 
         /// <summary>
         /// Result detail
         /// </summary>
-        public InsufficientRepetionsResultDetail(string message) : base(message) { }
+        public InsufficientRepetitionsResultDetail(string message) : base(message) { }
     }
 
     /// <summary>
