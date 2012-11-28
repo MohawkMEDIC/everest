@@ -203,7 +203,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                     else if (pa.Conformance == PropertyAttribute.AttributeConformanceType.Populated)
                         sb.AppendFormat("if(instance.{0} == null) {{ isValid &= Host.CreateRequiredElements; details.Add(new MARC.Everest.Connectors.RequiredElementMissingResultDetail(isValid ? MARC.Everest.Connectors.ResultDetailType.Warning : MARC.Everest.Connectors.ResultDetailType.Error, \"Property {0} in {1} is marked 'populated' and isn't assigned (you must at minimum, assign a nullFlavor for this attribute)!\", location));  }} \r\n", pi.Name, tref.BaseType);
                     else if (pa.MinOccurs != 0)
-                        sb.AppendFormat("if(instance.{0} != null && (instance.{0}.Count > {3} ||  instance.{0}.Count < {1})) {{ isValid &= false; details.Add(new MARC.Everest.Connectors.InsufficientRepetionsResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"Property {0} in {2} does not have enough elements in the list, need between {1} and {3} elements!\", location));  }} \r\n", pi.Name, pa.MinOccurs, tref.BaseType, pa.MaxOccurs < 0 ? Int32.MaxValue : pa.MaxOccurs);
+                        sb.AppendFormat("if(instance.{0} != null && (instance.{0}.Count > {3} ||  instance.{0}.Count < {1})) {{ isValid &= false; details.Add(new MARC.Everest.Connectors.InsufficientRepetitionsResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"Property {0} in {2} does not have enough elements in the list, need between {1} and {3} elements!\", location));  }} \r\n", pi.Name, pa.MinOccurs, tref.BaseType, pa.MaxOccurs < 0 ? Int32.MaxValue : pa.MaxOccurs);
                 }
             }
 
