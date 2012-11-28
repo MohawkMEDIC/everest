@@ -317,7 +317,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     // Can we set the PI?
                     if (s.LocalName == "ITSVersion" && s.Value != "XML_1.0")
                         throw new System.InvalidOperationException(System.String.Format("This formatter can only parse XML_1.0 structures. This structure claims to be '{0}'.", s.Value));
-                    else if (s.LocalName == "xmlns" || s.LocalName == "ITSVersion")
+                    else if (s.Prefix == "xmlns" || s.LocalName == "xmlns" || s.LocalName == "ITSVersion")
                         continue;
                     else if (pi == null)
                     {
