@@ -41,7 +41,7 @@ namespace MARC.Everest.Connectors.WCF.Core
     /// </summary>
     [ServiceBehavior(ValidateMustUnderstand=true, InstanceContextMode = InstanceContextMode.Single,
         ConcurrencyMode = ConcurrencyMode.Multiple)]
-    public class ConnectorService : IConnectorContract
+    public class ConnectorService : IConnectorContract, IPolicyAccessContract
     {
 
         /// <summary>
@@ -224,6 +224,31 @@ namespace MARC.Everest.Connectors.WCF.Core
                     return result;
 
             }
+        }
+
+        #endregion
+
+        #region IPolicyAccessContract Members
+
+        /// <summary>
+        /// Get client access policy
+        /// </summary>
+        public Stream GetClientAccessPolicy()
+        {
+            WebOperationContext.Current.OutgoingResponse.ContentType = "application/xml";
+            return new MemoryStream(Encoding.UTF8.GetBytes(@"<?xml version=""1.0"" encoding=""utf-8""?>
+            <access-policy>
+            <cross-domain-access>
+             <policy>
+                <allow-from http-request-headers=""*"">
+                <domain uri=""*""/>
+            </allow-from>
+            <grant-to>
+                <resource path=""/"" include-subpaths=""true""/>
+            </grant-to>
+        </policy>
+        </cross-domain-access>
+        </access-policy>"));
         }
 
         #endregion
