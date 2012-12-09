@@ -309,6 +309,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 // Now we read the attributes and match with the properties
                 do
                 {
+
+
+
 #if WINDOWS_PHONE
                     PropertyInfo pi = properties.Find(o => o.GetCustomAttributes(true).Count(pa => pa is PropertyAttribute && (pa as PropertyAttribute).Name == s.LocalName) > 0);
 #else
@@ -319,7 +322,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         throw new System.InvalidOperationException(System.String.Format("This formatter can only parse XML_1.0 structures. This structure claims to be '{0}'.", s.Value));
                     else if (s.Prefix == "xmlns" || s.LocalName == "xmlns" || s.LocalName == "ITSVersion")
                         continue;
-                    else if (pi == null)
+                    else if (pi == null || !s.NamespaceURI.Equals("urn:hl7-org:v3"))
                     {
                         resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, String.Format("@{0}", s.LocalName), s.NamespaceURI, s.ToString(), null));
                         continue;
@@ -342,7 +345,10 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     else if (!String.IsNullOrEmpty((paList[0] as PropertyAttribute).FixedValue))
                     {
                         if (!(paList[0] as PropertyAttribute).FixedValue.Equals(s.Value))
+                        {
                             resultContext.AddResultDetail(new FixedValueMisMatchedResultDetail(s.Value, (paList[0] as PropertyAttribute).FixedValue, false, s.ToString()));
+                            pi.SetValue(instance, Util.FromWireFormat(s.Value, pi.PropertyType), null);
+                        }
                     }
                     else
                         pi.SetValue(instance, Util.FromWireFormat(s.Value, pi.PropertyType), null);
@@ -357,7 +363,6 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             // Read content
             string currentElementName = s.LocalName,
                 lastElementRead = s.LocalName;
-            int currentDepth = 0;
             while(true)
             {
 
@@ -368,7 +373,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 lastElementRead = s.LocalName;
 
                 // Element is end element and matches the starting element namd
-                if (s.NodeType == System.Xml.XmlNodeType.EndElement && s.LocalName == currentElementName && currentDepth == 0)
+                if (s.NodeType == System.Xml.XmlNodeType.EndElement && s.LocalName == currentElementName)
                     break;
                 // Element is an end element
                 //else if (s.NodeType == System.Xml.XmlNodeType.EndElement)

@@ -163,7 +163,13 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                             bindTypeRef = tr.GenericSupplier[i++];
                     }
                     else if (p != null && p.SupplierDomain != null && !String.IsNullOrEmpty(EnumerationRenderer.WillRender(p.SupplierDomain)))
-                        bindTypeRef = new TypeReference() { Name = String.Format("{0}", Util.Util.MakeFriendly(EnumerationRenderer.WillRender(p.SupplierDomain))) };
+                    {
+                        string vocabName = Util.Util.MakeFriendly(EnumerationRenderer.WillRender(p.SupplierDomain));
+                        string containerName = p.Container is Choice ? (p.Container as Choice).Container.Name : p.Container.Name;
+                        if(vocabName.Equals(containerName))
+                            vocabName = String.Format("{0}.vocabulary.{1}", ownerPackage, vocabName);
+                        bindTypeRef = new TypeReference() { Name = String.Format("{0}", vocabName) };
+                    }
                     else
                         bindTypeRef = new TypeReference() { Name = dataType.DefaultBind };
 
@@ -185,7 +191,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine
                     string dt = String.Empty;
                     if (!bind.TryGetValue(parameterData.DataType, out dt))
                         dt = parameterData.DataType;
-                    
+
+
                     templatedSod.Parameters.Add(new PropertyInfoData() { Name = parameterData.Name, DataType = dt.Replace(string.Format("<{0}>", dataType.TemplateParameter), String.Format("<{0}>", fillParameter)) });
                 }
 

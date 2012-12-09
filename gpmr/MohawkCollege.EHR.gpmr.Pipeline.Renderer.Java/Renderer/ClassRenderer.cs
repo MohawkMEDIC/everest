@@ -439,9 +439,12 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 {
                     // Output the import for vocab if it doesn't exist
                     string import = String.Format("{0}.vocabulary.{1}", ownerPackage, vocabDomain);
-                    if (!s_imports.Exists(o => o.EndsWith(vocabDomain))) // Ensure duplicate class isn't imported
+
+                    string containerName = p.Container is Choice ? (p.Container as Choice).Container.Name : p.Container.Name;
+
+                    if (!vocabDomain.Equals(containerName) && !s_imports.Exists(o => o.EndsWith(vocabDomain))) // Ensure duplicate class isn't imported
                         s_imports.Add(import);
-                    else if (!s_imports.Contains(import)) // Didn't add the import so we must reference by full name
+                    if (!s_imports.Contains(import)) // Didn't add the import so we must reference by full name
                         vocabDomain = import;
                 }
 
@@ -896,7 +899,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                                 // Update the class signature
                                 tr = new TypeReference()
                                 {
-                                    Name = String.Format("{1}", ownerPackage, Util.Util.MakeFriendly(GetSupplierDomain(tr, p, ownerPackage)))
+                                    Name = setter.Parameters[0].DataType
                                 };
 
 
@@ -953,7 +956,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         // Now the signature (Mandatory)
                         if (choice.Conformance == ClassContent.ConformanceKind.Mandatory)
                         {
-                            ctors["mandatory"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                            ctors["mandatory"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property() { Container = cc.Container }, ownerPackage), Util.Util.MakeFriendly(cc.Name));
                             ctors["mandatory"][1] += string.Format("\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                             ctors["mandatory"][2] += String.Format("\t * @param {0} ({1}) No documentation available", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
                         }
@@ -961,11 +964,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         {
 
                             // Required (default)
-                            ctors["required"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                            ctors["required"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property() { Container = cc.Container }, ownerPackage), Util.Util.MakeFriendly(cc.Name));
                             ctors["required"][1] += string.Format("\t\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                             ctors["required"][2] += String.Format("\t\t * @param {0} ({1}) No documentation available\r\n", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
                         }
-                        ctors["all"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                        ctors["all"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property() { Container = cc.Container }, ownerPackage), Util.Util.MakeFriendly(cc.Name));
                         ctors["all"][1] += string.Format("\t\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                         ctors["all"][2] += String.Format("\t\t/* @param {0} ({1}) No documentation available\r\n", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
 
