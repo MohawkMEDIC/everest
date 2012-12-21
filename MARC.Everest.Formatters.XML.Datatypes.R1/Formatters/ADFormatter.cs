@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// 
     /// </summary>
-    public class ADFormatter : IDatatypeFormatter
+    public class ADFormatter : ANYFormatter, IDatatypeFormatter
     {
         /// <summary>
         /// Host context
@@ -40,42 +40,43 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Mapping to/from the Data Types R1 "each element has its own name"
         /// </summary>
-        private static Dictionary<AddressPartType?, string> mapping = new Dictionary<AddressPartType?, string>();
+        private static Dictionary<AddressPartType?, string> mapping = new Dictionary<AddressPartType?, string>()
+        {
+            { AddressPartType.AdditionalLocator, "additionalLocator" },
+            { AddressPartType.AddressLine, "streetAddressLine" },
+           { AddressPartType.BuildingNumber, "houseNumber" },
+           { AddressPartType.Delimiter, "delimeter" },
+           { AddressPartType.Country, "country" },
+           { AddressPartType.State, "state" },
+           { AddressPartType.County, "county" },
+           { AddressPartType.City, "city" },
+           { AddressPartType.PostalCode, "postalCode" },
+           { AddressPartType.StreetAddressLine, "streetAddressLine" },
+           { AddressPartType.BuildingNumberNumeric, "houseNumberNumeric" },
+           { AddressPartType.Direction, "direction" },
+           { AddressPartType.StreetName, "streetName" },
+           { AddressPartType.StreetNameBase, "streetNameBase" },
+           { AddressPartType.StreetType, "streetNameType" },
+           { AddressPartType.UnitIdentifier, "unitID" },
+           { AddressPartType.UnitDesignator, "unitType" },
+           { AddressPartType.CareOf, "careOf" },
+           { AddressPartType.CensusTract, "censusTract" },
+           { AddressPartType.DeliveryAddressLine, "deliveryAddressLine" },
+           { AddressPartType.DeliveryInstallationType, "deliveryInstallationType" },
+           { AddressPartType.DeliveryInstallationArea, "deliveryInstallationArea" },
+           { AddressPartType.DeliveryInstallationQualifier, "deliveryInstallationQualifier" },
+           { AddressPartType.DeliveryMode, "deliveryMode" },
+           { AddressPartType.DeliveryModeIdentifier, "deliveryModeIdentifier" },
+           { AddressPartType.BuildingNumberSuffix, "buildingNumberSuffix" },
+           { AddressPartType.PostBox, "postBox" },
+           { AddressPartType.Precinct, "precinct" }
+        };
         private static Dictionary<string, AddressPartType?> reverseMapping = new Dictionary<string, AddressPartType?>();
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static ADFormatter()
         {
             #region Mappings
-
-            mapping.Add(AddressPartType.AdditionalLocator, "additionalLocator");
-            mapping.Add(AddressPartType.AddressLine, "streetAddressLine");
-            mapping.Add(AddressPartType.BuildingNumber, "houseNumber");
-            mapping.Add(AddressPartType.Delimiter, "delimeter");
-            mapping.Add(AddressPartType.Country, "country");
-            mapping.Add(AddressPartType.State, "state");
-            mapping.Add(AddressPartType.County, "county");
-            mapping.Add(AddressPartType.City, "city");
-            mapping.Add(AddressPartType.PostalCode, "postalCode");
-            mapping.Add(AddressPartType.StreetAddressLine, "streetAddressLine");
-            mapping.Add(AddressPartType.BuildingNumberNumeric, "houseNumberNumeric");
-            mapping.Add(AddressPartType.Direction, "direction");
-            mapping.Add(AddressPartType.StreetName, "streetName");
-            mapping.Add(AddressPartType.StreetNameBase, "streetNameBase");
-            mapping.Add(AddressPartType.StreetType, "streetNameType");
-            mapping.Add(AddressPartType.UnitIdentifier, "unitID");
-            mapping.Add(AddressPartType.UnitDesignator, "unitType");
-            mapping.Add(AddressPartType.CareOf, "careOf");
-            mapping.Add(AddressPartType.CensusTract, "censusTract");
-            mapping.Add(AddressPartType.DeliveryAddressLine, "deliveryAddressLine");
-            mapping.Add(AddressPartType.DeliveryInstallationType, "deliveryInstallationType");
-            mapping.Add(AddressPartType.DeliveryInstallationArea, "deliveryInstallationArea");
-            mapping.Add(AddressPartType.DeliveryInstallationQualifier, "deliveryInstallationQualifier");
-            mapping.Add(AddressPartType.DeliveryMode, "deliveryMode");
-            mapping.Add(AddressPartType.DeliveryModeIdentifier, "deliveryModeIdentifier");
-            mapping.Add(AddressPartType.BuildingNumberSuffix, "buildingNumberSuffix");
-            mapping.Add(AddressPartType.PostBox, "postBox");
-            mapping.Add(AddressPartType.Precinct, "precinct");
 
             foreach (KeyValuePair<AddressPartType?, string> kv in mapping)
                 if(!reverseMapping.ContainsKey(kv.Value))
@@ -94,14 +95,11 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToLower")]
         public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
+            base.Graph(s, o as ANY, result);
             AD instance = o as AD;
 
-            // Do a base format
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o as ANY, result);
-
             // Null flavor
-            if (instance.NullFlavor != null)
+            if (instance == null || instance.NullFlavor != null)
                 return;
 
             // use
@@ -147,10 +145,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         {
             // Parse the address parts
             // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-
             // Parse CS
-            AD retVal = baseFormatter.Parse<AD>(s, result);
+            AD retVal = base.Parse<AD>(s, result);
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("use") != null)
@@ -184,15 +180,16 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             sxcmFormatter.Host = this.Host;
                             retVal.UseablePeriod = sxcmFormatter.Parse(s, result) as GTS;
                         }
-                        
-                        if (reverseMapping.TryGetValue(s.LocalName, out adxpType)) // Reverse map exists, so this is a part
+                        else if (reverseMapping.TryGetValue(s.LocalName, out adxpType)) // Reverse map exists, so this is a part
                         {
                             ADXPFormatter adxpFormatter = new ADXPFormatter(); // ADXP Formatter
                             adxpFormatter.Host = this.Host;
                             ADXP part = (ADXP)adxpFormatter.Parse(s, result); // Parse
-                            part.Type = adxpType; 
+                            part.Type = adxpType;
                             retVal.Part.Add(part); // Add to AD
                         }
+                        else
+                            result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null));
                     }
                     catch (MessageValidationException e)
                     {
@@ -208,14 +205,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
             return retVal;
         }
 
         /// <summary>
         /// What types does this formatter handle
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "AD"; }
         }
@@ -228,14 +225,16 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(AD).GetProperty("Use"));
-            retVal.Add(typeof(AD).GetProperty("IsNotOrdered"));
-            retVal.Add(typeof(AD).GetProperty("Part"));
-            retVal.Add(typeof(AD).GetProperty("UseablePeriod"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            List<PropertyInfo> retVal = new List<PropertyInfo>()
+            {
+                typeof(AD).GetProperty("Use"),
+                typeof(AD).GetProperty("IsNotOrdered"),
+                typeof(AD).GetProperty("Part"),
+                typeof(AD).GetProperty("UseablePeriod")
+            };
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
         #endregion

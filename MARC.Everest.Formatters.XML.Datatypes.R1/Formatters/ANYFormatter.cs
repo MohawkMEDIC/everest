@@ -172,7 +172,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Handles the type
         /// </summary>
-        public string HandlesType
+        public virtual string HandlesType
         {
             get { return "ANY"; }
         }
@@ -186,7 +186,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public virtual List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(10);
             retVal.Add(typeof(ANY).GetProperty("NullFlavor"));

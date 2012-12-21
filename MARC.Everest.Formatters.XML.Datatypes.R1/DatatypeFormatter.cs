@@ -320,8 +320,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
             IDatatypeFormatter formatter = null;
             Type cType = t;
 
-            //if (formatter != null && t != typeof(GTS) && formatter.GenericArguments == null )
-            //    formatter.GenericArguments = t.GetGenericArguments();
+            // Don't check for XSI type if the type is a GTS or iterable
+            // This is because the XSI type on these classes will mislead the formatter selector
             if (t == typeof(GTS) || t.GetInterface(typeof(IEnumerable).FullName, false) != null && !t.IsAbstract)
                 formatter = GetFormatter(t);
             else

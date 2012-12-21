@@ -12,7 +12,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppID={{0D451B1A-3116-4B86-88EB-881D172AD8B1}
 AppName=MARC-HI Everest Compact Framework
-AppVerName=Everest For Windows Phone 1.1
+AppVerName=Everest Compact Framework 1.1
 OutputBaseFilename=everest-compact
 LicenseFile=.\installsupp\release\phone.license.rtf
 AppPublisher=Mohawk College of Applied Arts and Technology

@@ -25,7 +25,7 @@ using MARC.Everest.Connectors;
 namespace MARC.Everest.Exceptions
 {
     /// <summary>
-    /// Summary of ConnectorException
+    /// Excaeptions raised by a connector
     /// </summary>
     /// <remarks>
     /// <para>

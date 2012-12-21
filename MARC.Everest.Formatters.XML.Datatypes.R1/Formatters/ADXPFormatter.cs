@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Responsible for formatting ADXP members "to the wire"
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ADXP")]
-    public class ADXPFormatter : IDatatypeFormatter
+    public class ADXPFormatter : ANYFormatter, IDatatypeFormatter
     {
         /// <summary>
         /// Host context
@@ -53,10 +53,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             ADXP instance = o as ADXP;
 
             // Start with part type and code attributes
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
-            if(instance.NullFlavor != null)
+            if(instance == null || instance.NullFlavor != null)
                 return;
 
             // Now format our data
@@ -84,11 +83,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-
+            
             // Parse CS
-            ADXP retVal = baseFormatter.Parse<ADXP>(s, result);
+            ADXP retVal = base.Parse<ADXP>(s, result);
 
             // Now parse our data out... 
             if (!s.IsEmptyElement)
@@ -113,7 +110,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
 
             return retVal;
@@ -132,10 +129,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         public List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(ADXP).GetProperty("Type"));
-            retVal.Add(typeof(ADXP).GetProperty("Code"));
-            retVal.Add(typeof(ADXP).GetProperty("Value"));
+            List<PropertyInfo> retVal = new List<PropertyInfo>()
+            {
+                typeof(ADXP).GetProperty("Type"),
+                typeof(ADXP).GetProperty("Code"),
+                typeof(ADXP).GetProperty("Value")
+            };
             retVal.AddRange(new ANYFormatter().GetSupportedProperties());
             return retVal;
         }

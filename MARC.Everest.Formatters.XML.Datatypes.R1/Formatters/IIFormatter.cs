@@ -138,21 +138,21 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Returns the datatype this formatter handles
         /// </summary>
-        public string HandlesType { get { return "II"; }}
+        public override string HandlesType { get { return "II"; }}
 
 
 
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(10);
             retVal.Add(typeof(II).GetProperty("Root"));
             retVal.Add(typeof(II).GetProperty("Extension"));
             retVal.Add(typeof(II).GetProperty("Displayable"));
             retVal.Add(typeof(II).GetProperty("Use"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
         #endregion
