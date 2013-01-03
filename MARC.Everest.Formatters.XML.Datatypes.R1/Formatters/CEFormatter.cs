@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Data types R1 formatter for the CE data type
     /// </summary>
-    public class CEFormatter : IDatatypeFormatter
+    public class CEFormatter : CVFormatter, IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
@@ -40,16 +40,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Get an instance ref
             ICodedEquivalents instance_ics = (ICodedEquivalents)o;
 
             // Do a base format 
-            CVFormatter baseFormatter = new CVFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
-           
             // Format the coded simple
             if (instance_ics.Translation != null) // Original Text
             {
@@ -71,7 +69,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to parse from</param>
         /// <remarks>This need to be implemented in this manner (duplicating code) because of the way that 
         /// the XMLReader object functions</remarks>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             IResultDetail[] details = null;
             CE<String> retVal = CDFormatter.Parse<CE<String>>(s, Host, result);
@@ -81,30 +79,20 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "CE"; }
         }
 
-        /// <summary>
-        /// Get or set the formatter host that owns this object
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get or set the generic arguments to the original type
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
-
+       
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(10);
             retVal.Add(typeof(CE<>).GetProperty("Translation"));
-            retVal.AddRange(new CVFormatter().GetSupportedProperties());
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
         #endregion

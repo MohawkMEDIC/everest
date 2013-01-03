@@ -28,7 +28,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// ITS1 formatter for the COLL datatype
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "LIST")]
-    public class COLLFormatter : IDatatypeFormatter
+    public class COLLFormatter : SETFormatter, IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
@@ -38,51 +38,27 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream</param>
         /// <param name="o">The object</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
-            SETFormatter formatter = new SETFormatter();
-            formatter.Host = this.Host;
-            formatter.GenericArguments = this.GenericArguments;
-            formatter.Graph(s, o, result);
+            base.Graph(s, o, result);
         }
 
         /// <summary>
         /// Parse an object from <paramref name="s"/>
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            SETFormatter formatter = new SETFormatter();
-            formatter.Host = this.Host;
-            formatter.GenericArguments = this.GenericArguments;
-            object retval = formatter.Parse(s, result);
-            return retval;
+            return base.Parse(s, result);
         }
 
         /// <summary>
         /// Get the name of the type this handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "COLL"; }
         }
 
-        /// <summary>
-        /// Get or set the hosting formatter
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
-        /// <summary>
-        /// Get the supported properties for the rendering
-        /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
-        {
-            return new SETFormatter().GetSupportedProperties();
-        }
         #endregion
     }
 }

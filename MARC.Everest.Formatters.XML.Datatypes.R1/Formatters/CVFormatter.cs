@@ -30,18 +30,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Datatypes R1 formatter for the CV data type
     /// </summary>
-    public class CVFormatter : IDatatypeFormatter
+    public class CVFormatter : CSFormatter, IDatatypeFormatter
     {
-        /// <summary>
-        /// Host context
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get or set the generic arguments to this type (if applicable)
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
+       
         #region IDatatypeFormatter Members
 
       
@@ -50,24 +41,23 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The XmlWriter to graph to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Get an instance ref
             ICodedValue instance_ics = (ICodedValue)o;
 
             // Do a base format
-            CSFormatter baseFormatter = new CSFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
             // Format the coded simple
             if (instance_ics.CodeSystem != null) 
-                s.WriteAttributeString("codeSystem", Util.ToWireFormat(instance_ics.CodeSystem));
+                s.WriteAttributeString("codeSystem", instance_ics.CodeSystem);
             if (instance_ics.CodeSystemName != null)
-                s.WriteAttributeString("codeSystemName", Util.ToWireFormat(instance_ics.CodeSystemName));
+                s.WriteAttributeString("codeSystemName", instance_ics.CodeSystemName);
             if (instance_ics.CodeSystemVersion != null)
-                s.WriteAttributeString("codeSystemVersion", Util.ToWireFormat(instance_ics.CodeSystemVersion));
+                s.WriteAttributeString("codeSystemVersion", instance_ics.CodeSystemVersion);
             if (instance_ics.DisplayName != null)
-                s.WriteAttributeString("displayName", Util.ToWireFormat(instance_ics.DisplayName));
+                s.WriteAttributeString("displayName", instance_ics.DisplayName);
             if (instance_ics.OriginalText != null) // Original Text
             {
                 EDFormatter edFormatter = new EDFormatter();
@@ -87,7 +77,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Parse object from <paramref name="s"/>
         /// </summary>
         /// <param name="s">The XmlReader to graph from</param>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public virtual object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             IResultDetail[] details = null;
             CV<String> retVal = CDFormatter.Parse<CV<String>>(s, Host, result);
@@ -97,7 +87,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "CV"; }
         }
@@ -105,14 +95,15 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(CV<>).GetProperty("CodeSystem"));
-            retVal.Add(typeof(CV<>).GetProperty("CodeSystemName"));
-            retVal.Add(typeof(CV<>).GetProperty("CodeSystemVersion"));
-            retVal.Add(typeof(CV<>).GetProperty("DisplayName"));
-            retVal.Add(typeof(CV<>).GetProperty("OriginalText"));
+            List<PropertyInfo> retVal = new List<PropertyInfo>(){
+                typeof(CV<>).GetProperty("CodeSystem"),
+                typeof(CV<>).GetProperty("CodeSystemName"),
+                typeof(CV<>).GetProperty("CodeSystemVersion"),
+                typeof(CV<>).GetProperty("DisplayName"),
+                typeof(CV<>).GetProperty("OriginalText")
+            };
             retVal.AddRange(new CSFormatter().GetSupportedProperties());
             return retVal;
         }

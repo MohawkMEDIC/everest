@@ -694,9 +694,12 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                     if (p.Type.Class.BaseClass != null && tr != null && p.Type.Class.BaseClass.Name != tr.Name)
                         tr = null;
 
+                    // Generate getter
 
                     // Generate a SETProperty method that sets for this permutation
                     StringBuilder method_sb = new StringBuilder("\t\t");
+                    method_sb.AppendFormat("/// <summary> Get <see cref=\"P:$$pcName$$\"/> cast as an instance of <see cref=\"T:{0}\"/>, null if <see cref=\"P:$$pcName$$\"/> is not an instance of <see cref=\"T:{0}\"/></summary>\r\n", CreateDatatypeRef(p.Type, p));
+                    method_sb.AppendFormat("public {0} $$pcName$$As{1}() {{ get {{ return this.$$pcName$$ as {0}; }} }}\r\n", CreateDatatypeRef(p.Type, p), Util.Util.MakeFriendly(p.Type.Name));
                     method_sb.AppendFormat("/// <summary> Set <see cref=\"P:$$pcName$$\"/> to an instance of <see cref=\"T:{0}\"/> </summary>\r\n", CreateDatatypeRef(p.Type, p));
                     method_sb.AppendFormat("\t\t/// <param name=\"value\">The value to set $$pcName$$ to</param>\r\n");
                     method_sb.AppendFormat("\t\tpublic void Set$$pcName$$({0} value) {{ this.$$pcName$$ = value; }}\r\n", CreateDatatypeRef(p.Type, p));

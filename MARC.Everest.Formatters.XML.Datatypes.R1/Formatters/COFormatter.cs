@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Formatter for the CO Datatype
     /// </summary>
-    public class COFormatter : IDatatypeFormatter
+    public class COFormatter : CVFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -40,15 +40,11 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Graph function
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             CO instance = (o as ANY).Clone() as CO; // We'll be modifying data 
             instance.Code = (instance.Code ?? new CD<String>()).Clone() as CD<String>;
             
-            // CO is identical on the wire as a cv in dt r1
-            CVFormatter formatter = new CVFormatter();
-            formatter.Host = this.Host;
-
             // First, is the instance null?
             if (instance == null)
                 return;
@@ -68,15 +64,15 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
 
             // Graph
-            formatter.Graph(s, instance.Code, result);
+            base.Graph(s, instance.Code, result);
 
             
             // Append details
             if(instance.Value != null)
                 result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "Value", "CO", s.ToString()));
-            else if(instance.Code != null && instance.Code.Qualifier != null)
+            if(instance.Code != null && instance.Code.Qualifier != null)
                 result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "Code.Qualifier", "CO", s.ToString()));
-            else if (instance.Code != null && instance.Code.Translation != null)
+            if (instance.Code != null && instance.Code.Translation != null)
                 result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "Code.Translation", "CO", s.ToString()));
 
 
@@ -87,7 +83,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             var retVal = CDFormatter.Parse<CD<String>>(s, Host, result);
             CO instance = new CO();
@@ -103,29 +99,19 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 instance.Code.Flavor = null;
             }
 
-            ANYFormatter fmtr = new ANYFormatter();
-            fmtr.Validate(instance, s.ToString(), result);
+            base.Validate(instance, s.ToString(), result);
             return instance;
         }
 
         /// <summary>
         /// Gets the types this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "CO"; }
         }
 
-        /// <summary>
-        /// Gets or sets the host of this formatlet
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Gets or sets the generic arguments to this type
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
+       
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>

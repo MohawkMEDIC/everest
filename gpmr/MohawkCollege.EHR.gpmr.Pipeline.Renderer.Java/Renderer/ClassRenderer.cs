@@ -193,8 +193,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
                 foreach (Property p in (cc as Choice).Content)
                 {
+                    sw.WriteLine("\t/** Gets the {0} property cast to {1}. This convenience method saves the developer from casting */", Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name));
                     sw.WriteLine("\tpublic {0} get{1}As{2}() {{ return ({0})this.m_{3}; }}",
                         CreateDatatypeRef(p.Type, p, ownerPackage), Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name), Util.Util.MakeFriendly(cc.Name));
+                    sw.WriteLine("\t/** Sets the {0} property given the specified instance of {1}. */", Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name));
                     sw.WriteLine("\tpublic void {3}{1}({0} value) {{ this.m_{2} = value; }}", CreateDatatypeRef(p.Type, p, ownerPackage), Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name), setterName);
                 }
                 ; // TODO: Factory methods and etc

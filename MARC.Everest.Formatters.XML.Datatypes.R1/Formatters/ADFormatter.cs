@@ -32,10 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// </summary>
     public class ADFormatter : ANYFormatter, IDatatypeFormatter
     {
-        /// <summary>
-        /// Host context
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
+       
 
         /// <summary>
         /// Mapping to/from the Data Types R1 "each element has its own name"
@@ -93,7 +90,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToLower")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             base.Graph(s, o as ANY, result);
             AD instance = o as AD;
@@ -141,7 +138,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to parse</param>
         /// <returns>The parsed object</returns>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Parse the address parts
             // Parse base (ANY) from the stream
@@ -217,10 +214,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             get { return "AD"; }
         }
 
-        /// <summary>
-        /// Get or set the generic arguments to this type (if applicable)
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         /// <summary>
         /// Get the supported properties for the rendering

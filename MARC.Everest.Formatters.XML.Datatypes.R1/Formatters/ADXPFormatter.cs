@@ -32,22 +32,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ADXP")]
     public class ADXPFormatter : ANYFormatter, IDatatypeFormatter
     {
-        /// <summary>
-        /// Host context
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
 
-        /// <summary>
-        /// Get or set the generic arguments to this type (if applicable)
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         #region IDatatypeFormatter Members
 
         /// <summary>
         /// Grap the object to a stream
         /// </summary>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
 
             ADXP instance = o as ADXP;
@@ -81,7 +73,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Parse an ADXP from stream <paramref name="s"/>
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             
             // Parse CS
@@ -119,7 +111,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Determines which types this grapher can understand
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "ADXP"; }
         }
@@ -127,7 +119,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>()
             {

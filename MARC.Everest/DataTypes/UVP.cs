@@ -85,7 +85,7 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// The probability assigned to the value a decimal between 0 and 1
         /// </summary>
-        [Property(Name = "probability", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, 
+        [Property(Name = "probability", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, 
             Conformance = PropertyAttribute.AttributeConformanceType.Mandatory)]
         public decimal? Probability { get; set; }
 

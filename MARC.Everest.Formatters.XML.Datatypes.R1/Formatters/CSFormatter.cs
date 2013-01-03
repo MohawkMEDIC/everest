@@ -30,17 +30,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Formatter for the CS datatype
     /// </summary>
-    public class CSFormatter : IDatatypeFormatter
+    public class CSFormatter : ANYFormatter, IDatatypeFormatter
     {
-        /// <summary>
-        /// Host context
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get or set the generic arguments to this type (if applicable)
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
+      
 
         #region IDatatypeFormatter Members
 
@@ -51,14 +43,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Get an instance ref 
             ICodedSimple instance_ics = (ICodedSimple)o;
 
-            // Do a base format
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o as ANY, result);
+           base.Graph(s, o as ANY, result);
 
             // Format the coded simple
             if (instance_ics.CodeValue != null && ((ANY)o).NullFlavor == null)
@@ -79,13 +69,11 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to parse from</param>
         /// <returns>The parsed object</returns>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-
+            
             // Parse CS
-            CS<String> retVal = baseFormatter.Parse<CS<String>>(s, result);
+            CS<String> retVal = base.Parse<CS<String>>(s, result);
             
             // Now parse our data out... Attributes
             if (retVal.NullFlavor == null && s.GetAttribute("code") != null)
@@ -93,7 +81,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
 
             return retVal;
@@ -102,7 +90,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Gets the types that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "CS"; }
         }
@@ -110,7 +98,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(10);
             retVal.Add(typeof(CS<>).GetProperty("Code"));
