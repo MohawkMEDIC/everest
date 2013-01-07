@@ -106,7 +106,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Parse CV
             anyFormatter.Host = host;
-            T retVal = anyFormatter.Parse<T>(s, result);
+            T retVal =  anyFormatter.Parse<T>(s, result);
 
             // Now parse our data out... Attributes
             // Was there a null flavor processed?

@@ -31,17 +31,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Data type R1 formatter for ED
     /// </summary> 
-    public class EDFormatter : IDatatypeFormatter
+    public class EDFormatter : ANYFormatter, IDatatypeFormatter
     {
-        /// <summary>
-        /// Host context
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get or set the generic arguments to this type (if applicable)
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
+   
 
         #region IDatatypeFormatter Members
 
@@ -51,25 +43,22 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The XmlWriter to write the object to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Get an instance ref
-            ED instance_ed = (ED)o;
+            ED instance_ed = o as ED;
 
             // Do a base format
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
             
             // Null flavor
-            if (((ANY)o).NullFlavor != null)
-            {
+            if (instance_ed == null || instance_ed.IsNull != null)
                 return;
-            }
 
             // Attributes
             s.WriteAttributeString("representation", Util.ToWireFormat(instance_ed.Representation));
             if (instance_ed.MediaType != null)
-                s.WriteAttributeString("mediaType", Util.ToWireFormat(instance_ed.MediaType));
+                s.WriteAttributeString("mediaType", instance_ed.MediaType);
             if (instance_ed.Language != null)
                 s.WriteAttributeString("language", instance_ed.Language);
             if (instance_ed.Compression != null)
@@ -130,15 +119,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Parse the object
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)")]
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
 
 
             // Parse ED
-            ED retVal = baseFormatter.Parse<ED>(s, result);
+            ED retVal = base.Parse<ED>(s, result);
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("representation") != null)
@@ -230,7 +218,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     null));
 
             // Validate
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
             return retVal;
         }
@@ -238,7 +226,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "ED"; }
         }
@@ -246,19 +234,20 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(ED).GetProperty("Representation"));
-            retVal.Add(typeof(ED).GetProperty("MediaType"));
-            retVal.Add(typeof(ED).GetProperty("Compression"));
-            retVal.Add(typeof(ED).GetProperty("Language"));
-            retVal.Add(typeof(ED).GetProperty("IntegrityCheck"));
-            retVal.Add(typeof(ED).GetProperty("IntegrityCheckAlgorithm"));
-            retVal.Add(typeof(ED).GetProperty("Reference"));
-            retVal.Add(typeof(ED).GetProperty("Thumbnail"));
-            retVal.Add(typeof(ED).GetProperty("Data"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            List<PropertyInfo> retVal = new List<PropertyInfo>(10) {
+                typeof(ED).GetProperty("Representation"),
+                typeof(ED).GetProperty("MediaType"),
+                typeof(ED).GetProperty("Compression"),
+                typeof(ED).GetProperty("Language"),
+                typeof(ED).GetProperty("IntegrityCheck"),
+                typeof(ED).GetProperty("IntegrityCheckAlgorithm"),
+                typeof(ED).GetProperty("Reference"),
+                typeof(ED).GetProperty("Thumbnail"),
+                typeof(ED).GetProperty("Data")
+            };
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
         #endregion
