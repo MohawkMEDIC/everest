@@ -154,7 +154,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Elements and inner data
             #region Elements
-            string innerData = "";
+            StringBuilder innerData = new StringBuilder();
             if (!s.IsEmptyElement)
             {
                 // Exit markers
@@ -170,24 +170,24 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     {
                         if (s.LocalName == "thumbnail") // Format using ED
                         {
-                            EDFormatter edFormatter = new EDFormatter();
-                            edFormatter.Host = this.Host;
-                            retVal.Thumbnail = (ED)edFormatter.Parse(s, result); // Parse ED
+                            var hostResult = this.Host.Parse(s, typeof(ED));
+                            result.AddResultDetail(hostResult.Details);
+                            retVal.Thumbnail = (ED)hostResult.Structure; // Parse ED
                         }
                         else if (s.LocalName == "reference") // Format using TEL
                         {
-                            TELFormatter telFormatter = new TELFormatter();
-                            telFormatter.Host = this.Host;
-                            retVal.Reference = (TEL)telFormatter.Parse(s, result);
+                            var hostResult = this.Host.Parse(s, typeof(TEL));
+                            result.AddResultDetail(hostResult.Details);
+                            retVal.Reference = (TEL)hostResult.Structure;
                         }
                         else if (s.NodeType == System.Xml.XmlNodeType.Text ||
                             s.NodeType == System.Xml.XmlNodeType.CDATA)
-                            innerData += s.Value;
+                            innerData.Append(s.Value);
                         else if (!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Depth == sDepth && s.Name == sName) &&
                             (s.NodeType == System.Xml.XmlNodeType.Element || s.NodeType == System.Xml.XmlNodeType.EndElement))
                         {
                             retVal.Representation = EncapsulatedDataRepresentation.XML;
-                            innerData += s.ReadOuterXml();
+                            innerData.Append(s.ReadOuterXml());
                         }
                     }
                     catch (MessageValidationException e)
@@ -206,16 +206,17 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Parse the innerData string into something meaningful
             if(innerData.Length > 0)
                 if (retVal.Representation == EncapsulatedDataRepresentation.B64)
-                    retVal.Data = Convert.FromBase64String(innerData);
+                    retVal.Data = Convert.FromBase64String(innerData.ToString());
                 else
-                    retVal.Data = textEncoding.GetBytes(innerData);
+                    retVal.Data = textEncoding.GetBytes(innerData.ToString());
 
             // Finally, the hash, this will validate the data
             if(!retVal.ValidateIntegrityCheck())
-                result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
-                    string.Format("Encapsulated data with content starting with '{0}' failed integrity check!", retVal.ToString().PadRight(10, ' ').Substring(0, 10)), 
-                    s.ToString(),
-                    null));
+                if(retVal.Compression == null || !retVal.UnCompress().ValidateIntegrityCheck())
+                    result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
+                        string.Format("Encapsulated data with content starting with '{0}' failed integrity check!", retVal.ToString().PadRight(10, ' ').Substring(0, 10)), 
+                        s.ToString(),
+                        null));
 
             // Validate
             base.Validate(retVal, pathName, result);
