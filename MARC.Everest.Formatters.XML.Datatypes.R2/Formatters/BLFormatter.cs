@@ -29,7 +29,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A formatter that graphs and interprets the <see cref="T:MARC.Everest.DataTypes.BL"/> class
     /// </summary>
-    public class BLFormatter : IDatatypeFormatter
+    internal class BLFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
         /// <summary>

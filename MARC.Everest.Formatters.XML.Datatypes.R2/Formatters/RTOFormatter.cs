@@ -33,7 +33,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Formatter helper for the RTO type
     /// </summary>
-    public class RTOFormatter : IDatatypeFormatter
+    internal class RTOFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

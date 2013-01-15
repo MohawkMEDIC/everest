@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A formatter helper that can represent an instance of PIVL in DT R2
     /// </summary>
-    public class PIVLFormatter : IDatatypeFormatter
+    internal class PIVLFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

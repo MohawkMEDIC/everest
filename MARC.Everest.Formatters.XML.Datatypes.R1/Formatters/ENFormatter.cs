@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Entity Name Formatter
     /// </summary>
-    public class ENFormatter : IDatatypeFormatter
+    public class ENFormatter : ANYFormatter, IDatatypeFormatter
     {
 
         /// <summary>
@@ -64,13 +64,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             EN instance = o as EN;
 
             // Do a base format
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o as ANY, result);
+            base.Graph(s, o as ANY, result);
 
             // Null flavor
             if (instance.NullFlavor != null)
@@ -157,7 +156,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to parse</param>
         /// <returns>The parsed object</returns>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             return Parse<EN>(s, result);
         }
@@ -169,15 +168,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to parse from</param>
         /// <returns>The parsed object</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2119:SealMethodsThatSatisfyPrivateInterfaces"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
-        public T Parse<T>(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        protected T Parse<T>(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
             where T : EN, new()
         {
             // Parse the address parts
             // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
 
             // Parse EN
-            T retVal = baseFormatter.Parse<T>(s, result);
+            T retVal = base.Parse<T>(s, result);
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("use") != null)
@@ -249,7 +247,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
             return retVal;
         }
@@ -257,30 +255,20 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "EN"; }
         }
 
         /// <summary>
-        /// Get or set the host of this formatter
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get or set the generic type arguments for this formatter
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
-        /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(EN).GetProperty("Use"));
-            retVal.Add(typeof(EN).GetProperty("Part"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            List<PropertyInfo> retVal = new List<PropertyInfo>(){
+             typeof(EN).GetProperty("Use"),
+             typeof(EN).GetProperty("Part")};
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
         #endregion

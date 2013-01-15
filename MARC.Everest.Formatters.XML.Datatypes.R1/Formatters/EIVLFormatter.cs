@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// EIVL formatter
     /// </summary>
-    public class EIVLFormatter : IDatatypeFormatter
+    public class EIVLFormatter : ANYFormatter, IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
@@ -40,10 +40,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Graph object <paramref name="o"/> onto <paramref name="s"/>
         /// </summary>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
-            ANYFormatter anyFormatter = new ANYFormatter();
-            anyFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
             
             // Now graph the attributes
             Type eivlType = o.GetType();
@@ -78,7 +77,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Parse an object from <paramref name="s"/>
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Create the types
             Type eivlType = typeof(EIVL<>);
@@ -162,31 +161,21 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Gets the type that this instance handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "EIVL"; }
         }
         
         /// <summary>
-        /// Gets or sets the host instance for this formatter
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Gets or sets the generic arguments for the formatter
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
-        /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
         public List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(EIVL<>).GetProperty("Event"));
-            retVal.Add(typeof(EIVL<>).GetProperty("Offset"));
-            retVal.Add(typeof(EIVL<>).GetProperty("Operator"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            List<PropertyInfo> retVal = new List<PropertyInfo>(){
+            typeof(EIVL<>).GetProperty("Event"),
+            typeof(EIVL<>).GetProperty("Offset"),
+            typeof(EIVL<>).GetProperty("Operator")};
+            retVal.AddRange(new base.GetSupportedProperties());
             return retVal;
         }
         #endregion

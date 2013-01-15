@@ -29,7 +29,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Formatter helper for SXPR
     /// </summary>
-    public class SXPRFormatter : IDatatypeFormatter
+    internal class SXPRFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

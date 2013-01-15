@@ -29,7 +29,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Entity name expression part formatter
     /// </summary>
-    public class ENXPFormatter : IDatatypeFormatter
+    internal class ENXPFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

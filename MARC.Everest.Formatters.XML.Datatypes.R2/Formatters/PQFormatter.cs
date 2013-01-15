@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Formatter helper for the PQ data type
     /// </summary>
-    public class PQFormatter : IDatatypeFormatter
+    internal class PQFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

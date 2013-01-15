@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A data types formatter that can represent CV in data types R2
     /// </summary>
-    public class CVFormatter : IDatatypeFormatter
+    internal class CVFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

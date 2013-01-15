@@ -31,34 +31,25 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Formatter for ENXP
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ENXP")]
-    public class ENXPFormatter : IDatatypeFormatter
+    public class ENXPFormatter : ANYFormatter, IDatatypeFormatter
     {
-        /// <summary>
-        /// Host context
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
+      
 
       
         #region IDatatypeFormatter Members
 
-        /// <summary>
-        /// Gets or sets the generic arguments to the formatter
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
+        
 
         /// <summary>
         /// Grap the object to a stream
         /// </summary>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
 
             ENXP instance = o as ENXP;
 
             // Start with part type and code attributes
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
-
-            IResultDetail[] partTypeDetails = new IResultDetail[0];
+            base.Graph(s, o, result);
 
             if (instance.NullFlavor != null)
                 return;
@@ -69,7 +60,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (instance.Qualifier != null && !instance.Qualifier.IsEmpty)
                 s.WriteAttributeString("qualifier", Util.ToWireFormat(instance.Qualifier));
             if (instance.Code != null)
-                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "Code", "ADXP", s.ToString()));
+                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "Code", "ENXP", s.ToString()));
                 //s.WriteAttributeString("code", instance.Code);
             if (instance.Value != null)
                 s.WriteValue(instance.Value);
@@ -83,13 +74,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Parse an ENXP from stream <paramref name="s"/>
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
 
             // Parse CS
-            ENXP retVal = baseFormatter.Parse<ENXP>(s, result);
+            ENXP retVal = base.Parse<ENXP>(s, result);
 
             // Part Type is ignored by this formatter but qualifier is not
             if (s.GetAttribute("qualifier") != null)
@@ -112,7 +102,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
 
             return retVal;
@@ -121,7 +111,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Determines which types this grapher can understand
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "ENXP"; }
         }
@@ -129,12 +119,13 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(ENXP).GetProperty("Type"));
-            retVal.Add(typeof(ENXP).GetProperty("Code"));
-            retVal.Add(typeof(ENXP).GetProperty("Value"));
+            List<PropertyInfo> retVal = new List<PropertyInfo>(){
+                typeof(ENXP).GetProperty("Type"),
+                typeof(ENXP).GetProperty("Code"),
+                typeof(ENXP).GetProperty("Value")
+            };
             retVal.AddRange(new ANYFormatter().GetSupportedProperties());
             return retVal;
         }

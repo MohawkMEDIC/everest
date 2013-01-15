@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Represents a formatter that can represent CE in DT R2
     /// </summary>
-    public class CEFormatter : IDatatypeFormatter
+    internal class CEFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

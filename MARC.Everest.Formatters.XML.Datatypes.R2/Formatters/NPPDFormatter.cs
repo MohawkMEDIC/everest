@@ -28,7 +28,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// NPPD formatter helper
     /// </summary>
-    public class NPPDFormatter : IDatatypeFormatter
+    internal class NPPDFormatter : IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members

@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Datatype formatter for SLIST
     /// </summary>
-    public class SLISTFormatter : IDatatypeFormatter
+    internal class SLISTFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

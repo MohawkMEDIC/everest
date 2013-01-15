@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// UVP Formatter for R2
     /// </summary>
-    public class UVPFormatter : IDatatypeFormatter
+    internal class UVPFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

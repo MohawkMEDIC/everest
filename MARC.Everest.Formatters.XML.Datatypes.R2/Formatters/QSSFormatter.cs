@@ -33,7 +33,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Represents a formatter that can represent QSS in data types r2
     /// </summary>
-    public class QSSFormatter : IDatatypeFormatter
+    internal class QSSFormatter : IDatatypeFormatter
     {
         
         #region IDatatypeFormatter Members

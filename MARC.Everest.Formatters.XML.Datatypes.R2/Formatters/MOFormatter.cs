@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Formatter helper for the MO data type
     /// </summary>
-    public class MOFormatter : IDatatypeFormatter
+    internal class MOFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

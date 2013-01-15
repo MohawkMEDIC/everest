@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A data types R2 formatter for the AD data type
     /// </summary>
-    public class ADFormatter : IDatatypeFormatter
+    internal class ADFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
