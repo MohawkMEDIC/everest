@@ -140,6 +140,7 @@ Source: ..\MARC.Everest.Formatters.XML.ITS1\bin\Release\MARC.Everest.Formatters.
 Source: ..\Solution Items\org.marc.everest.jar; DestDir: {app}\lib; Flags: ignoreversion; Components: tools
 
 Source: ..\gpmr\gpmrw\bin\Release\gpmrw.exe.config; DestDir: {app}; Flags: ignoreversion; Components: tools
+Source: ..\FormatterUtil\bin\Release\FormatterUtil.exe; DestDir: {app}; Flags: ignoreversion; Components:tools; 
 
 Source: ..\gpmr\bin\Release\MohawkCollege.EHR.gpmr.COR.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\gpmr\bin\Release\MohawkCollege.EHR.gpmr.Pipeline.Compiler.dll; DestDir: {app}; Flags: ignoreversion; Components: tools

@@ -59,9 +59,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 s.WriteAttributeString("partType", Util.ToWireFormat(instance.Type));
             if (instance.Qualifier != null && !instance.Qualifier.IsEmpty)
                 s.WriteAttributeString("qualifier", Util.ToWireFormat(instance.Qualifier));
-            if (instance.Code != null)
+            if (instance.Code != null && result.CompatibilityMode != DatatypeFormatterCompatibilityMode.Canadian)
                 result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "Code", "ENXP", s.ToString()));
-                //s.WriteAttributeString("code", instance.Code);
+            else if(instance.Code != null)
+                s.WriteAttributeString("code", instance.Code);
             if (instance.Value != null)
                 s.WriteValue(instance.Value);
             if (instance.CodeSystem != null) // Warn if there is no way to represent this in R1
