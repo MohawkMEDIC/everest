@@ -175,7 +175,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             typeof(EIVL<>).GetProperty("Event"),
             typeof(EIVL<>).GetProperty("Offset"),
             typeof(EIVL<>).GetProperty("Operator")};
-            retVal.AddRange(new base.GetSupportedProperties());
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
         #endregion

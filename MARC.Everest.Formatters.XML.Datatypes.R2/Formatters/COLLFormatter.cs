@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Formatter helper for the COLL data type
     /// </summary>
-    internal class COLLFormatter : IDatatypeFormatter
+    public class COLLFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
