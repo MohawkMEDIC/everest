@@ -30,33 +30,24 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Responsible for formatting ADXP members "to the wire"
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ADXP")]
-    public class ADXPFormatter : IDatatypeFormatter
+    public class ADXPFormatter : ANYFormatter, IDatatypeFormatter
     {
-        /// <summary>
-        /// Host context
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
 
-        /// <summary>
-        /// Get or set the generic arguments to this type (if applicable)
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         #region IDatatypeFormatter Members
 
         /// <summary>
         /// Grap the object to a stream
         /// </summary>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
 
             ADXP instance = o as ADXP;
 
             // Start with part type and code attributes
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
-            if(instance.NullFlavor != null)
+            if(instance == null || instance.NullFlavor != null)
                 return;
 
             // Now format our data
@@ -82,13 +73,11 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Parse an ADXP from stream <paramref name="s"/>
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-
+            
             // Parse CS
-            ADXP retVal = baseFormatter.Parse<ADXP>(s, result);
+            ADXP retVal = base.Parse<ADXP>(s, result);
 
             // Now parse our data out... 
             if (!s.IsEmptyElement)
@@ -113,7 +102,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
 
             return retVal;
@@ -122,7 +111,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Determines which types this grapher can understand
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "ADXP"; }
         }
@@ -130,12 +119,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(ADXP).GetProperty("Type"));
-            retVal.Add(typeof(ADXP).GetProperty("Code"));
-            retVal.Add(typeof(ADXP).GetProperty("Value"));
+            List<PropertyInfo> retVal = new List<PropertyInfo>()
+            {
+                typeof(ADXP).GetProperty("Type"),
+                typeof(ADXP).GetProperty("Code"),
+                typeof(ADXP).GetProperty("Value")
+            };
             retVal.AddRange(new ANYFormatter().GetSupportedProperties());
             return retVal;
         }

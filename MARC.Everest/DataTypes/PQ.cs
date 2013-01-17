@@ -94,13 +94,13 @@ namespace MARC.Everest.DataTypes
     {
 
         // A constant representing the number of ticks in a second
-        private const long SECOND = TimeSpan.TicksPerSecond;
+        private const double SECOND = TimeSpan.TicksPerSecond;
 
         /// <summary>
         /// Units of measure to tick map
         /// </summary>
-        private static readonly Dictionary<string, long> s_tickMap = new Dictionary<string, long>() {
-                { "us", 0xaL },
+        private static readonly Dictionary<string, double> s_tickMap = new Dictionary<string, double>() {
+                { "us", 0xaD },
                 { "ms", 0x2710L },
                 { "s",  SECOND},
                 { "ks", 0x2540be400L },
@@ -109,9 +109,9 @@ namespace MARC.Everest.DataTypes
                 { "min", 0x23c34600L },
                 { "h", 0x861c46800L },
                 { "d", 0xc92a69c000L },
-                { "wk", 0x58028e44000L },
+                { "wk", 0x58028E44000L },
                 { "mo", 0x17e6ca109000L },
-                { "a", 0x11ed178C6C000L }
+                { "a", 0x11F03C3613000L }
             };
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace MARC.Everest.DataTypes
         /// <exception cref="T:System.InvalidOperationException">If <paramref name="unit"/> is not a valid unit of time</exception>
         public PQ(TimeSpan value, string unit)
         {
-            long ticks = 0;
+            double ticks = 0;
             if (!s_tickMap.TryGetValue(unit, out ticks))
                 throw new InvalidOperationException(String.Format("'{0}' not recognized as valid unit of time", unit));
             this.Value = (decimal)(value.Ticks / (double)ticks);
@@ -279,9 +279,9 @@ namespace MARC.Everest.DataTypes
         {
             if (pq == null || pq.IsNull || String.IsNullOrEmpty(pq.Unit) || !pq.Value.HasValue)
                 throw new InvalidCastException("Nullable type must have a value for cast");
-            long ticks = 0;
+            double ticks = 0;
             if (s_tickMap.TryGetValue(pq.Unit, out ticks))
-                return new TimeSpan((long)(pq.Value * ticks));
+                return new TimeSpan((long)((double)pq.Value * ticks));
             throw new InvalidCastException(String.Format("Unit '{0}' is not understood as a reliable unit of time. Understood units are {{'us','ms','s','ks','Ms','min','h','d','wk','a'}}", pq.Unit));
 
         }
@@ -637,14 +637,14 @@ namespace MARC.Everest.DataTypes
             decimal newValue = this.Value.Value;
             var uc = PQ.UnitConverters.Find(o => o.CanConvert(this, unit));
             // Translation map
-            long thisBase = 0,
+            double thisBase = 0,
                 scaleBase = 0;
             if(uc != null)
                 return uc.Convert(this, unit);
             else if (s_tickMap.TryGetValue(this.Unit, out thisBase) &&
                 s_tickMap.TryGetValue(unit, out scaleBase))
             {
-                thisBase *= (long)this.Value.Value;
+                thisBase *= (double)this.Value.Value;
                 newValue = (decimal)(thisBase / (double)scaleBase);
             }
             else

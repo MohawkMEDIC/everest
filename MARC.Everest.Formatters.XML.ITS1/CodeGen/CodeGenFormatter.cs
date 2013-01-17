@@ -247,7 +247,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             CompilerParameters compilerParms = new CompilerParameters();
             compilerParms.GenerateInMemory = !generateDeep;
             compilerParms.WarningLevel = 4;
-            compilerParms.TempFiles.KeepFiles = !generateDeep;
+            compilerParms.TempFiles.KeepFiles = generateDeep;
 
 
             // Compile code dom

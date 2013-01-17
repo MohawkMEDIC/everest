@@ -25,10 +25,9 @@
             </code>
             </example>
         </member>
-        <member name="T:MARC.Everest.Interfaces.IGraphable">
+        <member name="P:MARC.Everest.Interfaces.IImplementsProfileId.ProfileId">
             <summary>
-            This interface is an empty interface used to identify that an object can be "graphed" into a particular
-            ITS version.
+            Gets the profile identifier for the interaction
             </summary>
             <remarks>
             <para>
@@ -96,6 +95,8 @@
             <summary>
             Allows developers to use a designer to create new instances of this type
             </summary>
+            <param name="context"></param>
+            <returns></returns>
         </member>
         <member name="M:MARC.Everest.Design.NewInstanceTypeEditor.GetEditStyle(System.ComponentModel.ITypeDescriptorContext)">
             <summary>
@@ -109,6 +110,10 @@
             Create a listbox. Since we don't know under what conditions the API source will be loading, 
             we can't include a direct reference to System.Windows.Forms.
             </summary>
+            <param name="context"></param>
+            <param name="provider"></param>
+            <param name="value"></param>
+            <returns></returns>
         </member>
         <member name="M:MARC.Everest.Design.NewInstanceTypeEditor.EditValue(System.ComponentModel.ITypeDescriptorContext,System.IServiceProvider,System.Object)">
             <summary>
@@ -123,6 +128,8 @@
             <summary>
             Allows us to keep a reference to types in the drop down that is displayed for this editor
             </summary>
+            <param name="s"></param>
+            <param name="t"></param>
         </member>
         <member name="M:MARC.Everest.Design.NewInstanceTypeEditor.CreateTypeReference.#ctor(System.String,System.Type)">
             <summary>
@@ -146,6 +153,15 @@
             <summary>
             Identifies a class as implementing accept ack code
             </summary>
+            <seealso cref="T:QSET{T}"/>
+            <seealso cref="T:QSD{T}"/>
+            <seealso cref="T:QSI{T}"/>
+            <seealso cref="T:QSP{T}"/>
+            <seealso cref="T:QSS{T}"/>
+            <seealso cref="T:QSU{T}"/>
+            <seealso cref="T:SXPR{T}"/>
+            <seealso cref="T:SXCM{T}"/>
+            <seealso cref="T:GTS"/>
         </member>
         <member name="T:MARC.Everest.DataTypes.QSI`1">
             <summary>
@@ -1549,6 +1565,7 @@
             <summary>
             Determine if the collection is empty
             </summary>
+            <param name="index">The index of the item to retrieve</param>
         </member>
         <member name="P:MARC.Everest.DataTypes.LIST`1.Item(System.Int32)">
             <summary>
@@ -1585,6 +1602,7 @@
             <summary>
             Create a new instance of a list
             </summary>
+            <param name="capacity">The initial capacity of the LIST</param>
         </member>
         <member name="M:MARC.Everest.DataTypes.HIST`1.#ctor(System.Int32)">
             <summary>
@@ -1676,6 +1694,7 @@
             <summary>
             Increment the current instance into a new instance of <typeparamref name="T"/>
             </summary>
+            <returns></returns>
         </member>
         <member name="M:MARC.Everest.DataTypes.Interfaces.IOrderedDataType`1.PreviousValue">
             <summary>
@@ -2521,6 +2540,11 @@
             <summary>
             A value must be supplied (min occurs is 1) but a null flavor can be used
             </summary>
+            <remarks>
+            <para>These exceptions contain detailed, custom exception classes which 
+            are used by formatters and utility classes to convey exceptional information
+            to callers.</para>
+            </remarks>
         </member>
         <member name="F:MARC.Everest.Attributes.PropertyAttribute.AttributeConformanceType.Optional">
             <summary>
@@ -2599,6 +2623,8 @@
             <summary>
             Removes the item at the specified <paramref name="index"/>
             </summary>
+            <remarks>Two non-null non-nullflavored instance of EN are considered semantically equal when
+            they both contain the same parts in the same order.</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.COLL`1.Add(`0)">
             <summary>
@@ -2636,11 +2662,25 @@
             <summary>
             Gets the enumerator for the collection
             </summary>
+            <remarks>
+            This equality method differs from the <see cref="T:MARC.Everest.DataTypes.BAG{T}"/> and <see cref="T:MARC.Everest.DataTypes.LIST{T}"/>
+            in that it not only compares the contents of each set to ensure that all data is present in both sets, it uses the comparator of 
+            this set to determine if the "item" is the same (rather than the equality method)
+            </remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.COLL`1.System#Collections#IEnumerable#GetEnumerator">
             <summary>
             Get the enumerator for the collection
             </summary>
+            <remarks>
+            A Trivial name is valid if
+            <list type="bullet">
+                <item>Null Flavor is specified XOR,</item>
+                <item>There are exactly one name parts, AND</item>
+                <item>The only name part has no part type</item>
+            </list>
+            </remarks>
+            <returns>A collection of result details explaining validation issues</returns>
         </member>
         <member name="M:MARC.Everest.DataTypes.COLL`1.Equals(MARC.Everest.DataTypes.COLL{`0})">
             <summary>
@@ -2675,6 +2715,12 @@
             <summary>
             Gets the contents of the collection
             </summary>
+            <remarks>
+            <para>OIDs represent unique but predictable identifier for objects. An
+            OID is in the dotted form 1.3.6.x.x.x. This primitive class exists to
+            assist developers in the assigning of an OID to an <see cref="T:MARC.Everest.DataTypes.II"/>
+            </para>
+            </remarks>
         </member>
         <member name="P:MARC.Everest.DataTypes.COLL`1.Item(System.Int32)">
             <summary>
@@ -2696,6 +2742,8 @@
             <summary>
             The string value of the oid
             </summary>
+            <param name="oid">The OID to use</param>
+            <exception cref="T:System.FormatException">When <paramref name="oid"/> is not in the proper format</exception>
         </member>
         <member name="M:MARC.Everest.DataTypes.Primitives.OID.#ctor">
             <summary>
@@ -2738,6 +2786,11 @@
             <summary>
             Returns true if <paramref name="a"/> implies <paramref name="implied"/>
             </summary>
+            <remarks>
+            This interface permits connectors to pass contextual meta data about the send
+            operation back to callers. For example, if a call failed, it would be possible
+            for a sending connector to pass back an HTTP error code in a send result class.
+            </remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.NullFlavorUtil.GetCommonParent(MARC.Everest.DataTypes.NullFlavor,MARC.Everest.DataTypes.NullFlavor)">
             <summary>
@@ -2758,11 +2811,19 @@
             <summary>
             Indicates why a value is not present.
             </summary>
+            <remarks>
+            <para>This class is commonly used by connectors within the Everest Framework to facilitate the parsing
+            of connection strings. Connection strings are in the format:</para>
+            <code>key=value;key=value</code>
+            <para>This static class provides mechanisms for parsing such strings into a dictionary of key/value pairs</para>
+            </remarks>
         </member>
         <member name="F:MARC.Everest.DataTypes.NullFlavor.AskedUnknown">
             <summary>
             Information was sought but not found (e.g., patient was asked but didn't know).
             </summary>
+            <param name="connectionString">The connection string to parse.</param>
+            <returns>The keys and values for the keys.</returns>
         </member>
         <member name="F:MARC.Everest.DataTypes.NullFlavor.Derived">
             <summary>
@@ -2943,15 +3004,44 @@
              </code>
              </example>
         </member>
-        <member name="M:MARC.Everest.DataTypes.QTY`1.ToInt">
-            <summary>
-            Convert QTY to Int32
-            </summary>
-        </member>
         <member name="M:MARC.Everest.DataTypes.QTY`1.ToDouble">
             <summary>
             Convert QTY to double
             </summary>
+        </member>
+        <member name="T:MARC.Everest.Connectors.ICodeDomStructureFormatter">
+            <summary>
+            Identifies a structured formatter that generates assemblies "on the fly"
+            </summary>
+            <remarks>
+            <para>
+            CodeDom structure formatters are different from regular <see cref="T:MARC.Everest.Connectors.IStructureFormatter"/>
+            in that they use CodeDom (or other dynamic "discovery" mechanism to generate code in memory which is compiled
+            when the first instance is passed through the formatter.
+            </para>
+            <para>
+            This class exposes the <see cref="M:BuildCache(Type[])"/> method which is intended to force the CodeDom formatter
+            to build its code in memory and compile one or more assemblies. These assemblies can then be referenced (and saved
+            for later use) by the developer at runtime.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:MARC.Everest.Connectors.ICodeDomStructureFormatter.Parse(System.IO.Stream,System.Reflection.Assembly)">
+            <summary>
+            Parse an object from a stream using only interactions from the specified 
+            assembly.
+            </summary>
+            <param name="a">The assembly from which to qualify the root element</param>
+            <param name="s">The stream from which to parse</param>
+            <remarks>
+            <para>When using formatter, it is important to remember that the formatter
+            by default will scan all assemblies in the current app domain. This may
+            result in undesirable effects when formatting within an application that
+            has multiple RMIM assemblies loaded (the formatter will just use the first
+            </para>
+            <para>This method override of Parse allows developers to specify which
+            RMIM assembly they would like data parsed from.</para>
+            </remarks>
         </member>
         <member name="T:MARC.Everest.Connectors.ICodeDomStructureFormatter">
             <summary>
@@ -7200,16 +7290,7 @@
             <summary>
             The value of the HXIT
             </summary>
-            <remarks>
-            This exception is thrown whenever an attempt is made to add a duplicate item. This exception exists
-            to enforce a conformance rule on <see cref="T:MARC.Everest.DataTypes.SET{T}"/> and is only fired if:
-            <list type="bullet">
-                <item>The result of the comparator is 0 (ie: the data within the items are identical), or</item>
-                <item>The default comparator is 0 (ie: the object reference is the same)</item>
-            </list>
-            <para>The type of condition under which this exception is thrown depends solely on the type
-            of comparator used in the SET</para>
-            </remarks>
+            <seealso cref="T:MARC.Everest.DataTypes.PDV{T}"/>
         </member>
         <member name="T:MARC.Everest.DataTypes.DomainTimingEventType">
             <summary>
@@ -7576,6 +7657,7 @@
             <summary>
             Delimiters are printed without framing white space
             </summary>
+            <param name="xw"></param>
         </member>
         <member name="F:MARC.Everest.DataTypes.AddressPartType.PostBox">
             <summary>
@@ -7586,6 +7668,9 @@
             <summary>
             A subsection of a municipality
             </summary>
+            <param name="buffer"></param>
+            <param name="index"></param>
+            <param name="count"></param>
         </member>
         <member name="F:MARC.Everest.DataTypes.AddressPartType.State">
             <summary>
@@ -7614,12 +7699,15 @@
             <summary>
             Represents the state writer as a string (current path)
             </summary>
+            <param name="type">The address part type</param>
+            <param name="value">The value of the type</param>
         </member>
         <member name="F:MARC.Everest.DataTypes.AddressPartType.PostalCode">
             <summary>
             A postal code designating a region defined by the post service.
             </summary>
-            <param name="xw"></param>
+            <param name="value">The value of the ADXP</param>
+            <remarks>Type is set to "AddressLine"</remarks>
         </member>
         <member name="T:MARC.Everest.DataTypes.ADXP">
             <summary>
@@ -7630,9 +7718,7 @@
             <summary>
             Create a new instance of ADXP
             </summary>
-            <param name="buffer"></param>
-            <param name="index"></param>
-            <param name="count"></param>
+            <param name="text"></param>
         </member>
         <member name="M:MARC.Everest.DataTypes.ADXP.#ctor(System.String,MARC.Everest.DataTypes.AddressPartType)">
             <summary>
@@ -7667,9 +7753,6 @@
             Represent this value as a string
             </summary>
             <param name="name"></param>
-            <param name="pubid"></param>
-            <param name="sysid"></param>
-            <param name="subset"></param>
         </member>
         <member name="M:MARC.Everest.DataTypes.ADXP.Validate">
             <summary>
@@ -7693,12 +7776,15 @@
             <summary>
             Determines if this ADXP equals another
             </summary>
+            <param name="data"></param>
         </member>
         <member name="M:MARC.Everest.DataTypes.ADXP.Equals(System.Object)">
             <summary>
             Override of base equals
             </summary>
-            <param name="name"></param>
+            <param name="buffer"></param>
+            <param name="index"></param>
+            <param name="count"></param>
         </member>
         <member name="P:MARC.Everest.DataTypes.ADXP.Value">
             <summary>
@@ -7709,6 +7795,7 @@
             <summary>
             A code assigned to the part by some coding system if appropriate
             </summary>
+            <param name="standalone"></param>
         </member>
         <member name="P:MARC.Everest.DataTypes.ADXP.CodeSystem">
             <summary>
@@ -7720,9 +7807,9 @@
             <summary>
             The version of the coding system if required
             </summary>
-            <param name="buffer"></param>
-            <param name="index"></param>
-            <param name="count"></param>
+            <param name="prefix"></param>
+            <param name="localName"></param>
+            <param name="ns"></param>
         </member>
         <member name="P:MARC.Everest.DataTypes.ADXP.Type">
             <summary>
@@ -7737,12 +7824,14 @@
             <summary>
             Result codes
             </summary>
-            <param name="standalone"></param>
+            <param name="lowChar"></param>
+            <param name="highChar"></param>
         </member>
         <member name="F:MARC.Everest.Connectors.ResultCode.AcceptedNonConformant">
             <summary>
             The message was accepted however it did not pass conformance
             </summary>
+            <param name="ws"></param>
         </member>
         <member name="F:MARC.Everest.Connectors.ResultCode.Accepted">
             <summary>
@@ -7757,7 +7846,11 @@
             The message was rejected for delivery due to validation failures
             in the formatter
             </summary>
-            <param name="text"></param>
+            <remarks>
+            This interface permits connectors to pass contextual meta data about the send
+            operation back to callers. For example, if a call failed, it would be possible
+            for a sending connector to pass back an HTTP error code in a send result class.
+            </remarks>
         </member>
         <member name="F:MARC.Everest.Connectors.ResultCode.Error">
             <summary>
@@ -7776,6 +7869,7 @@
             <summary>
             The Type was not available
             </summary>
+            <param name="xr"></param>
         </member>
         <member name="T:MARC.Everest.Connectors.ISendResult">
             <summary>
@@ -7796,6 +7890,14 @@
             <summary>
             The details of how the result was attained.
             </summary>
+            <remarks>
+            This state writer is capable of writing JSON structured data to a stream
+            using similar methods as those found on the <see cref="T:System.Xml.XmlWriter"/>
+            class. 
+            <para>This state writer also keeps track of the current depth at which it is 
+            currently writing and is used by Everest formatters to report a stack 
+            trace.</para>
+            </remarks>
         </member>
         <member name="T:MARC.Everest.Attributes.PropertyCollapseAttribute">
             <summary>
@@ -7827,6 +7929,7 @@
             <summary>
             Gets or sets the resulting value what will appear in the output of the ITS when graphed.
             </summary>
+            <param name="stream"></param>
         </member>
         <member name="P:MARC.Everest.Attributes.EnumerationAttribute.SupplierDomain">
             <summary>
@@ -7855,6 +7958,7 @@
             <summary>
             The name stack
             </summary>
+            <returns></returns>
         </member>
         <member name="F:MARC.Everest.Json.JsonStateWriter.m_indent">
             <summary>
@@ -7899,6 +8003,12 @@
             <summary>
             Close the JsonStateWriter
             </summary>
+            <remarks>
+            This is mimicing the XmlWriter class, technically there are no 
+            "attributes" in JSON. For our purposes an "attribute" for JSON is
+            a key where the value can only be an atomic string (example: "key":"value")
+            </remarks>
+            <param name="localName">The name of the attribute</param>
         </member>
         <member name="M:MARC.Everest.Json.JsonStateWriter.Flush">
             <summary>
@@ -7909,6 +8019,11 @@
             <summary>
             Write end attribute
             </summary>
+            <remarks>
+            To this method, a JSON element is any complex object that is nested. 
+            Examples of elements in the JSON world would be : "key":{ ... 
+            </remarks>
+            <param name="localName">The name of the JSON element</param>
         </member>
         <member name="M:MARC.Everest.Json.JsonStateWriter.WriteEndElement">
             <summary>
@@ -8487,23 +8602,15 @@
             <summary>
             Represent this UVP as a string
             </summary>
-            <remarks>
-            <para>
-            SPQR refers to the government of the ancient Roman Republic, and 
-            used as an official emblem of the modern day comune (municipality) 
-            of Rome. It appears on coins, at the end of documents made public 
-            by inscription in stone or metal, in dedications of monuments and 
-            public works, and was emblazoned on the standards of the Roman 
-            legions. The phrase appears many hundreds of times in Roman 
-            political, legal and historical literature, including the speeches 
-            of Marcus Tullius Cicero and the history of Titus Livius. Since 
-            the meaning and the words never vary, except for the spelling and 
-            inflection of populus in literature, Latin dictionaries classify 
-            it as a formula.
-            <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Roman_SPQR_banner.svg/150px-Roman_SPQR_banner.svg.png"/>
-            </para>
-            <para>From : http://en.wikipedia.org/wiki/SPQR</para>
-            </remarks>
+            <seealso cref="T:QSET{T}"/>
+            <seealso cref="T:QSD{T}"/>
+            <seealso cref="T:QSI{T}"/>
+            <seealso cref="T:QSP{T}"/>
+            <seealso cref="T:QSS{T}"/>
+            <seealso cref="T:QSU{T}"/>
+            <seealso cref="T:SXPR{T}"/>
+            <seealso cref="T:SXCM{T}"/>
+            <seealso cref="T:GTS"/>
         </member>
         <member name="P:MARC.Everest.DataTypes.UVP`1.Value">
             <summary>
@@ -8851,6 +8958,22 @@
             Represents a <see cref="T:MARC.Everest.Connectors.IListenWait"/> connector that can send responses back to the
             solicitor
             </summary>
+            <example>
+            <code lang="cs" title="Parsing an Interaction">
+               <![CDATA[
+            IGraphable instance = formatter.ParseObject(File.OpenRead(@"C:\temp.xml"));
+            
+            // We can get the identifier
+            if(instance is IIdentifiable)
+                Console.WriteLine((instance as IIdentifiable).Id);
+            
+            // Or we can use the IInteraction interface to get interaction details
+            IInteraction interaction = instance as IInteraction;
+            if(interaction != null)
+                Console.WriteLine(interaction.InteractionId.Extension);
+               ]]>
+            </code>
+            </example>
         </member>
         <member name="T:MARC.Everest.Connectors.IListenWaitConnector">
              <summary>
@@ -9004,12 +9127,23 @@
             Fires if the response to a message did not pass conformance. This allows the user to suggest a new 
             structure to send in place of the invalid one
             </summary>
+            <param name="context"></param>
+            <returns></returns>
         </member>
         <member name="T:MARC.Everest.Connectors.IFilteredConnector">
             <summary>
             Represents a connector that retrieves filtered data from an endpoint (like a 
             database system)
             </summary>
+            <seealso cref="T:QSET{T}"/>
+            <seealso cref="T:QSD{T}"/>
+            <seealso cref="T:QSI{T}"/>
+            <seealso cref="T:QSP{T}"/>
+            <seealso cref="T:QSS{T}"/>
+            <seealso cref="T:QSU{T}"/>
+            <seealso cref="T:SXPR{T}"/>
+            <seealso cref="T:SXCM{T}"/>
+            <seealso cref="T:GTS"/>
         </member>
         <member name="P:MARC.Everest.Connectors.IFilteredConnector.Filter">
             <summary>
@@ -9024,6 +9158,8 @@
             having the operator Intersect. Likewise a QSU is an SXPR with all 
             components having operator Union
             </summary>
+            <param name="low">The set used as the basis for the periodic hull operation</param>
+            <param name="high">The set used for the parameter of the periodic hull function</param>
         </member>
         <member name="P:MARC.Everest.Attributes.TypeMapAttribute.ArgumentType">
             <summary>
@@ -9073,6 +9209,18 @@
             <summary>
             Indicates the version of the messaging standard being referenced.
             </summary>
+            <remarks>
+            <para>This interface appends the ValidateConformance property to 
+            the structure formatter. When true, this flag will enable
+            the validation of messages when using the Graph and Parse
+            methods.</para>
+            <para>
+            Most formatters will stop rendering messages when major errors
+            are encountered. It is usually good practice to set this to 
+            false when testing and debugging an application, and setting
+            it to true when production data is being processed.
+            </para>
+            </remarks>
         </member>
         <member name="P:MARC.Everest.Interfaces.IInteraction.InteractionId">
             <summary>
@@ -9403,14 +9551,19 @@
             <summary>
             Inverts the state of the input BL.
             </summary>
-            <param name="a">A BL to invert.</param>
-            <returns>The input BL in a state inverted form.</returns>
+            <remarks>
+            The text must always be present if a code is present.  
+            Often the code specified is a local code.
+            </remarks>
             <example>
-            <code title="Using the ! Operator" lang="cs">
-            <![CDATA[
-            BL isTrue = true;
-            Assert.AreEqual(isTrue.Not(), !isTrue);
-            ]]>
+            <code title="SC Code">
+               <![CDATA[
+                SC pregnancy = "Patient is 6 months pregnant";
+                pregnancy.Code = new CD<String>("Z33.1", "2.16.840.1.113883.6.90")
+                {
+                    DisplayName = "Pregnancy State, Incidental"
+                };
+               ]]>
             </code>
             </example>
         </member>
@@ -10140,6 +10293,8 @@
             <summary>
             Code system
             </summary>
+            <param name="connectionString">The connection string to parse.</param>
+            <returns>The keys and values for the keys.</returns>
         </member>
         <member name="P:MARC.Everest.Attributes.StructureAttribute.DefaultTemplateType">
             <summary>
@@ -10275,15 +10430,20 @@
             property starting at <paramref name="start"/> and 
             ending with the length of the list
             </summary>
-            <param name="start"></param>
-            <returns>A new instance of <see cref="T:LIST"/> containing the results</returns>
+            <remarks>
+            <para>
+            This exception is thrown whenever a <see cref="T:MARC.Everest.Connectors.ICodeDomFormatter"/> fails to generate
+            the necessary code to properly validate or graph/parse an instance. This exception rarely occurs, and is usually
+            seen when developing custom Code Dom based formatters.
+            </para>
+            </remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.SLIST`1.IncludesAll(MARC.Everest.DataTypes.Interfaces.IColl{MARC.Everest.DataTypes.INT})">
             <summary>
             Returns a new instance of <see cref="T:BL"/> indicating if
             this SLIST contains all the items from <paramref name="other"/>
             </summary>
-            <param name="other">The other collection to detect inclusion</param>
+            <param name="results">The result from the initial exception.</param>
         </member>
         <member name="M:MARC.Everest.DataTypes.SLIST`1.ExcludesAll(MARC.Everest.DataTypes.Interfaces.IColl{MARC.Everest.DataTypes.INT})">
             <summary>
@@ -10861,6 +11021,7 @@
             <summary>
             Allows developers to use a designer to create new instances of this type
             </summary>
+            <returns>True if the instance is valid</returns>
         </member>
         <member name="M:MARC.Everest.Design.NewInstanceTypeEditor.GetEditStyle(System.ComponentModel.ITypeDescriptorContext)">
             <summary>
@@ -10923,6 +11084,10 @@
             <summary>
             Creates a new instance of an RTO
             </summary>
+            <remarks>Since this data-type is an adaptation of an R1 data type with no semantic equality statements, 
+            the value of this method will be that of the IVL type combined with the UVP type meaning that two 
+            URG instances are semantically equal when their <see cref="P:Low"/> and <see cref="P:High"/> bounds
+            are specified and equal and their <see cref="P:Probability"/> properties are equal</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.RTO`2.#ctor(`0,`1)">
             <summary>
@@ -12485,8 +12650,13 @@
             <summary>
             The calendar cycle is aligned to months continuously.
             </summary>
-            <param name="o">The object to cast</param>
-            <returns>The cast <see cref="T:MARC.Everest.DataTypes.ST"/></returns>
+            <remarks>
+            <para>
+            This interface is attached to RMIM classes by GPMR when the class implements the 
+            concept of a reason code. This is the non-genericised version of the IImplementsReasonCode
+            interface where the code set from which reason codes are drawn is not strongy bound.
+            </para>
+            </remarks>
         </member>
         <member name="F:MARC.Everest.DataTypes.CalendarCycle.Week">
             <summary>
@@ -12497,8 +12667,8 @@
             <summary>
             The calendar cycle is aligned to each week of the year.
             </summary>
-            <param name="o">String to convert</param>
-            <returns>Converted <see cref="T:MARC.Everest.DataTypes.ST"/></returns>
+            <typeparam name="T">The code system from which the ReasonCode is drawn</typeparam>
+            <seealso cref="T:MARC.Everest.Interfaces.IImplementsReasonCode"/>
         </member>
         <member name="F:MARC.Everest.DataTypes.CalendarCycle.DayOfMonth">
             <summary>
@@ -12711,6 +12881,7 @@
             <summary>
             Indicates the value of the PIVL
             </summary>
+            <param name="p">The PN to validate</param>
         </member>
         <member name="P:MARC.Everest.DataTypes.PIVL`1.Count">
             <summary>
@@ -12722,7 +12893,7 @@
             <summary>
             Gets or sets the reason why the specified interval was supplied
             </summary>
-            <seealso cref="T:MARC.Everest.DataTypes.QTY"/>
+            <returns></returns>
         </member>
         <member name="F:MARC.Everest.DataTypes.PQ.s_tickMap">
             <summary>
@@ -12851,6 +13022,26 @@
             Key - string in the format {FROM}>{TO}
             Value - MethodInfo of the method that will perform the operation to convert
             </summary>
+            <example>
+            <code lang="cs" title="Repeat Oct 1 2009 - Nov 15 2009 every year">
+            <![CDATA[
+                //Set the interval width, the "phase".
+                IVL<TS> phase = new IVL<TS> 
+                ( 
+                DateTime.Parse("October 1, 2009"),  
+                DateTime.Parse("November 15, 2009") 
+                ); 
+                phase.Operator = SetOperator.Inclusive;      
+                //Repeat the interval every year, the "period".
+                PQ period = new PQ(1.0f, "y");
+                //Create the periodic interval using the phase and period.
+                PIVL<TS> pInterval = new PIVL<TS>(phase, period); 
+                //Align the interval with the calendar year
+                pInterval.Alignment = CalendarCycle.Year;
+            ]]>
+            </code>
+            </example>
+            <seealso cref="T:MARC.Everest.DataTypes.SXCM{T}"/>
         </member>
         <member name="M:MARC.Everest.Connectors.Util.#cctor">
             <summary>
@@ -12893,6 +13084,9 @@
             <summary>
             Soft-convert
             </summary>
+            <param name="phase">The phase of the PIVL</param>
+            <param name="frequency">The period of the PIVL</param>
+            <param name="count">The maximum number of times the PIVL can repreat</param>
         </member>
         <member name="M:MARC.Everest.Connectors.Util.FromWireFormat(System.Object,System.Type)">
             <summary>
@@ -12961,12 +13155,19 @@
             Creates an XSI type name with the specified <paramref name="subTypeCreator"/> used
             to create nested generic types
             </summary>
+            <remarks>
+            When specified, should be a reciprocal of the what the <see cref="P:Frequency"/> would have been. For example, 
+            if the frequency would have been 2/10 mo (2 per 10 months) then the period is 10 mo/2 (or 5 mo). Alternatively if
+            the frequency is 3/1 d, then the period is 1 d/3 (or 0.333... d). 
+            <para>Only <see cref="P:Frequency"/> OR <see cref="P:Period"/> should be specified</para>
+            </remarks>
         </member>
         <member name="M:MARC.Everest.Connectors.Util.TryFromWireFormat(System.Object,System.Type,System.Object@)">
             <summary>
             Attempt casting <paramref name="value"/> to <paramref name="destType"/> placing the result 
             in <paramref name="result"/>
             </summary>
+            <remarks>CalendarCycles starting with "C" are continuous.</remarks>
         </member>
         <member name="T:MARC.Everest.Connectors.UnsolicitedDataEventArgs">
             <summary>
@@ -13162,6 +13363,26 @@
             <summary>
             Create a new instance of the REAL class
             </summary>
+            <param name="instanceValue">The value of the literal</param>
+            <returns>A string representing the enumeration's literal value on the wire</returns>
+            <remarks>
+            Can be used to represent any data type as it's wire level rendering string (as it would appear if it were a structural attribute)
+            <example>
+            <code lang="cs" title="Converting a set to a string">
+            <![CDATA[
+             SET<CS<PostalAddressUse>> instance = new SET<CS<PostalAddressUse>>() { 
+                 PostalAddressUse.PhysicalVisit,
+                 PostalAddressUse.BadAddress,
+                 PostalAddressUse.Direct
+             };
+             string output = MARC.Everest.Connectors.Util.ToWireFormat(instance);
+                
+             // Results in a string containing:
+             // "PHYS BAD DIR"
+            ]]>
+            </code>
+            </example>
+            </remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.REAL.#ctor(System.Double)">
             <summary>
@@ -13255,8 +13476,8 @@
             <summary>
             Override of base equals
             </summary>
-            <param name="o">T to convert</param>
-            <returns>Converted CD`1</returns>
+            <remarks>GPMR will attach this interface to any class that has a property named
+            "Text" with a data type of ED</remarks>
         </member>
         <member name="M:MARC.Everest.DataTypes.REAL.Max(MARC.Everest.DataTypes.REAL)">
             <summary>
@@ -13364,6 +13585,11 @@
             The number of significant digits of the decimal representation. Null and a value of 0 means nothing 
             is known or stated about the precision
             </summary>
+        </member>
+        <member name="T:MARC.Everest.DataTypes.REAL">
+            <summary>
+            Represents fractional numbers.
+            </summary>
             <remarks>
             Modifying this property will affect the manner in which it is compared. Since floating point numbers will
             lose some precision after deserializing, this property has an effect on the tolerance of difference when determining
@@ -13437,16 +13663,25 @@
             <summary>
             The primary address to reach a contact after business hours
             </summary>
+            <remarks>If either value is null then no comparison is made and the result is false</remarks>
+            <param name="a">The value being compared</param>
+            <param name="b">The value against which <paramref name="a"/> is being compared</param>
         </member>
         <member name="F:MARC.Everest.DataTypes.Interfaces.TelecommunicationAddressUse.VacationHome">
             <summary>
             A vacation home to reach a person while on vacation
             </summary>
+            <remarks>If either value is null then no comparison is made and the result is false</remarks>
+            <param name="a">The value being compared</param>
+            <param name="b">The value against which <paramref name="a"/> is being compared</param>
         </member>
         <member name="F:MARC.Everest.DataTypes.Interfaces.TelecommunicationAddressUse.WorkPlace">
             <summary>
             An office address, should be used for business communications
             </summary>
+            <remarks>If either value is null then no comparison is made and the result is false</remarks>
+            <param name="a">The value being compared</param>
+            <param name="b">The value against which <paramref name="a"/> is being compared</param>
         </member>
         <member name="F:MARC.Everest.DataTypes.Interfaces.TelecommunicationAddressUse.Direct">
             <summary>
@@ -13475,13 +13710,35 @@
             <summary>
             An automatic answering machine that can be used for less urgent communications
             </summary>
-            <remarks>Usually called from the formatter</remarks>
-            <param name="o">The array of objects to add</param>
+            <remarks>
+            This function requires the <see cref="P:Precision"/> property to be set 
+            in order to be of any use. When calling with the precision it will 
+            return the appropriate Interval
+            
+            <example>
+            <code lang="cs" title="Range of 1/3">
+            REAL oneThird = 1.0f/3.0f;
+            oneThird.Precision = 3;
+            IVL&lt;REAL> ivl = oneThird.ToIVL();
+            Console.WriteLine("1/3 is between {0} and {1}", ivl.Low, ivl.High);
+            // Output is: 
+            // 1/3 is between 0.333 and 0.333999999999 
+            </code>
+            </example>
+            </remarks>
         </member>
         <member name="F:MARC.Everest.DataTypes.Interfaces.TelecommunicationAddressUse.EmergencyContact">
             <summary>
             A contact that is designated for contact in case of an emergency
             </summary>
+            <remarks>
+            The following rules are applied to this arithmetic operation:
+            <list type="bullet">
+                <item><description>If either operand is null, the result is null</description></item>
+                <item><description>If either operand is null flavored, the result is a new instance of <see cref="T:REAL"/> with the null flavor of NoInformation</description></item>
+                <item><description>If either operand does not have a value associated with it (ie: not null and not null flavored with a null value) the result is a new instance of <see cref="T:REAL"/> with a null flavor of Other</description></item>
+            </list>
+            </remarks>
         </member>
         <member name="F:MARC.Everest.DataTypes.Interfaces.TelecommunicationAddressUse.MobileContact">
             <summary>
@@ -13489,25 +13746,12 @@
             mobile device
             </summary>
             <remarks>
-            In this class, you will notice that we use the Find method for each item in this
-            BAG within the other (ie: we search for an item matching each item in this bag to appear
-            in the other). This is done because the BAG collection is unordered, so in theory
-            the following BAGs are equal:
-            <para>
-                { 0, 2, 3, 1 }
-            </para>
-            <para>
-            is equal to { 0, 1, 2, 3 }
-            </para>
-            <para>
-            However two BAGs are not considered equal of the count of items are different, for example:
-            </para>
-            <para>
-                { 0, 2, 3, 1 }
-            </para>
-            <para>
-            is not equal to { 0, 1, 2, 3, 1 }
-            </para>
+            The following rules are applied to this arithmetic operation:
+            <list type="bullet">
+                <item><description>If the operand is null, the result is null</description></item>
+                <item><description>If the operand is null flavored, the result is a new instance of <see cref="T:REAL"/> with the null flavor of the operand</description></item>
+                <item><description>If the operand does not have a value associated with it (ie: not null and not null flavored with a null value) the result is a new instance of <see cref="T:REAL"/> with a null flavor of NoInformation</description></item>
+            </list>
             </remarks>
         </member>
         <member name="F:MARC.Everest.DataTypes.Interfaces.TelecommunicationAddressUse.Pager">

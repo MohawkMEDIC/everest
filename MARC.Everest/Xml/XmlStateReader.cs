@@ -110,6 +110,25 @@ namespace MARC.Everest.Xml
         }
 
         /// <summary>
+        /// Get the current XML path 
+        /// </summary>
+        public string CurrentXPath
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                XmlQualifiedName[] xqa = nameStack.ToArray();
+                for (int i = xqa.Length - 1; i >= 0; i--)
+                    sb.AppendFormat("/*[namespace-uri() = '{0}' and local-name() = '{1}']", xqa[i].Namespace, xqa[i].Name);
+
+                // Append the current node name if the current element is empty
+                if (IsEmptyElement)
+                    sb.AppendFormat("/*[namespace-uri() = '{0}' and local-name() = '{1}']", this.NamespaceURI, this.LocalName);
+                return sb.ToString();
+            }
+        }
+
+        /// <summary>
         /// Element stack
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

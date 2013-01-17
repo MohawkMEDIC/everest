@@ -28,7 +28,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Formatter helper for the REAL data type
     /// </summary>
-    public class REALFormatter : IDatatypeFormatter
+    internal class REALFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

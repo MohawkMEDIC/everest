@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Formatter for the TEL data type
     /// </summary>
-    public class TELFormatter : IDatatypeFormatter
+    internal class TELFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

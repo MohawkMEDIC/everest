@@ -22,9 +22,9 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// </summary>
         public void AddResultDetail(IResultDetail detail)
         {
-            if (detail.Type == ResultDetailType.Warning)
+            if (detail.Type == ResultDetailType.Warning && this.Code < ResultCode.AcceptedNonConformant)
                 this.Code = ResultCode.AcceptedNonConformant;
-            else if (detail.Type == ResultDetailType.Error)
+            else if (detail.Type == ResultDetailType.Error && this.Code < ResultCode.Rejected)
                 this.Code = ResultCode.Rejected;
             this.m_details.Add(detail);
         }
@@ -56,7 +56,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         public ResultCode Code
         {
             get;
-            internal set;
+            set;
         }
 
         #endregion

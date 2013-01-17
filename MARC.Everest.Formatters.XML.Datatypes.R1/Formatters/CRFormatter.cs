@@ -24,13 +24,14 @@ using MARC.Everest.Connectors;
 using MARC.Everest.Exceptions;
 using System.Reflection;
 using MARC.Everest.DataTypes.Interfaces;
+using MARC.Everest.Interfaces;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 {
     /// <summary>
     /// Concept Role formatter for DT R1
     /// </summary>
-    public class CRFormatter : IDatatypeFormatter
+    public class CRFormatter : ANYFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -41,15 +42,16 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
 
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result); // Graph the base data
+            base.Graph(s, o, result); // Graph the base data
 
 
             // If there is no null flavor then graph the rest of the object
-            
+            if (((ANY)o).IsNull)
+                return;
+
             object invertedValue = o.GetType().GetProperty("Inverted").GetValue(o, null),
                 nameValue = o.GetType().GetProperty("Name").GetValue(o, null),
                 valueValue = o.GetType().GetProperty("Value").GetValue(o, null);
@@ -61,19 +63,15 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (nameValue != null)
             {
                 s.WriteStartElement("name");
-                CVFormatter cdFormatter = new CVFormatter();
-                cdFormatter.Host = this.Host;
-                cdFormatter.GenericArguments = this.GenericArguments;
-                cdFormatter.Graph(s, nameValue, result);
+                var hostResult = this.Host.Graph(s, nameValue as IGraphable);
+                result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement(); // end name
             }
             if (valueValue != null)
             {
                 s.WriteStartElement("value");
-                CDFormatter cdFormatter = new CDFormatter();
-                cdFormatter.Host = this.Host;
-                cdFormatter.GenericArguments = this.GenericArguments;
-                cdFormatter.Graph(s, valueValue, result);
+                var hostResult = this.Host.Graph(s, valueValue as IGraphable);
+                result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement(); // end value
             }
 
@@ -84,7 +82,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to parse the object from</param>
         /// <returns>The constructed object</returns>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
 
             Type crGenericType = typeof(CR<>).MakeGenericType(GenericArguments);
@@ -134,6 +132,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                                 cdFormatter.GenericArguments = this.GenericArguments;
                                 crGenericType.GetProperty("Value").SetValue(instance, Util.FromWireFormat(cdFormatter.Parse(s, result), crGenericType.GetProperty("Value").PropertyType), null);
                             }
+                            else
+                                result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null));
                         }
                         catch (MessageValidationException e)
                         {
@@ -147,37 +147,32 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 }
                 #endregion
             }
+
+            base.Validate((ANY)instance, s.ToString(), result);
+
             return instance;
         }
 
         /// <summary>
         /// Gets the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "CR"; }
         }
 
-        /// <summary>
-        /// Get or set the host of this formatter
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Gets or sets the generic type arguments of this formatter
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
+       
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(CR<>).GetProperty("Inverted"));
-            retVal.Add(typeof(CR<>).GetProperty("Name"));
-            retVal.Add(typeof(CR<>).GetProperty("Value"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            List<PropertyInfo> retVal = new List<PropertyInfo>(){
+                typeof(CR<>).GetProperty("Inverted"),
+                typeof(CR<>).GetProperty("Name"),
+                typeof(CR<>).GetProperty("Value")
+            };
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
         #endregion

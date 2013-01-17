@@ -33,7 +33,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A formatter that can represent the QSET Intersect class as a DT r2 instance
     /// </summary>
-    public class QSIFormatter : IDatatypeFormatter
+    internal class QSIFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

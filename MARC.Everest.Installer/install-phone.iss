@@ -11,20 +11,20 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppID={{0D451B1A-3116-4B86-88EB-881D172AD8B1}
-AppName=MARC-HI Everest Framework for Windows Phone
-AppVerName=Everest For Windows Phone 1.1
-OutputBaseFilename=everest-phone
+AppName=MARC-HI Everest Compact Framework
+AppVerName=Everest Compact Framework 1.1
+OutputBaseFilename=everest-compact
 LicenseFile=.\installsupp\release\phone.license.rtf
 AppPublisher=Mohawk College of Applied Arts and Technology
 AppPublisherURL=http://everest.marc-hi.ca
 AppSupportURL=http://everest.marc-hi.ca
 AppUpdatesURL=http://everest.marc-hi.ca
-DefaultDirName={pf}\Mohawk College\Everest For Windows Phone
-DefaultGroupName=Mohawk College\Everest For Windows Phone
+DefaultDirName={pf}\Mohawk College\Everest Compact
+DefaultGroupName=Mohawk College\Everest Compact
 AllowNoIcons=true
 OutputDir=..\dist
 ;SetupIconFile=D:\work\appicon.ico
-Compression=none
+Compression=lzma
 ;Compression=
 InfoBeforeFile=.\installsupp\release\phone.rtf
 SolidCompression=false
@@ -77,6 +77,8 @@ Source: ..\MARC.Everest.Formatters.XML.Datatypes.R1\bin\Release\MARC.Everest.Pho
 Source: ..\MARC.Everest.Formatters.XML.Datatypes.R1\bin\Release\MARC.Everest.Phone.Formatters.XML.Datatypes.R1.xml; DestDir: {app}; Flags: ignoreversion; 
 Source: ..\MARC.Everest.Connectors.WCF\bin\release\MARC.Everest.Phone.Connectors.WCF.dll; DestDir: {app}; Flags: ignoreversion; 
 Source: ..\MARC.Everest.Connectors.WCF\bin\release\MARC.Everest.Phone.Connectors.WCF.xml; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\FormatterUtil\bin\Release\FormatterUtil.exe; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\MARC.Everest.Formatters.XML.ITS1\bin\Release\MARC.Everest.Formatters.XML.ITS1.dll; StrongAssemblyName: MARC.Everest.Formatters.XML.ITS1; DestDir: {app}; Flags: ignoreversion; 
 
 
 #endif

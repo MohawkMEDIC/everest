@@ -34,7 +34,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Represents a formatter that can serialize a CD to the wire
     /// </summary>
-    public class CDFormatter : IDatatypeFormatter
+    internal class CDFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

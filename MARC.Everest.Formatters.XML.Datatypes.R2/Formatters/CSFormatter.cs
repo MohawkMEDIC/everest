@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A formatter that can represent a CS in Data types R2
     /// </summary>
-    public class CSFormatter : IDatatypeFormatter
+    internal class CSFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

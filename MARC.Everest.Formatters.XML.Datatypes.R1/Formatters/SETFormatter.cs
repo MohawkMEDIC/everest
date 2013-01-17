@@ -45,7 +45,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The XmlWriter to graph to</param>
         /// <param name="o">The object to graph</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public virtual void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
 
             // Has this formatter found the elemScopeStack yet?
@@ -98,7 +98,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Parse an object from <paramref name="s"/>
         /// </summary>
         /// <param name="s">The stream to read from</param>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public virtual object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Get the current element name
             string currentElementName = s.LocalName;
@@ -139,7 +139,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the type that this formatter supports
         /// </summary>
-        public string HandlesType
+        public virtual string HandlesType
         {
             get { return "SET"; }
         }

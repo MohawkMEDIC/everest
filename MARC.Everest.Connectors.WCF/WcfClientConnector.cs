@@ -508,7 +508,7 @@ namespace MARC.Everest.Connectors.WCF
                     ReceiveResult.Code = ResultCode.Accepted;
                     ReceiveResult.Headers = ReceiveResult.ResponseHeaders = (state as Message).Headers;
 #if WINDOWS_PHONE
-                    if (ReceiveResult.Details.Find(o => o.Type == ResultDetailType.Error) != null)
+                    if (ReceiveResult.Details.FirstOrDefault(o => o.Type == ResultDetailType.Error) != null)
 #else
                     if (ReceiveResult.Details.FirstOrDefault(o => o.Type == ResultDetailType.Error) != null)
 #endif

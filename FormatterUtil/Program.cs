@@ -25,7 +25,7 @@ namespace FormatterUtil
         static void Main(string[] args)
         {
 
-            Console.WriteLine("Phone XML ITS1 Formatter Pregenerator Utility");
+            Console.WriteLine("XML ITS1 Formatter Pregenerator Utility");
             Console.WriteLine("Copyright (C) 2012, Mohawk College of Applied Arts and Technology");
 
             ParameterParser<Parameters> parser = new ParameterParser<Parameters>();
@@ -35,6 +35,11 @@ namespace FormatterUtil
 
                 var arguments = parser.Parse(args);
 
+                if (arguments.ShowHelp)
+                {
+                    ShowHelp();
+                    return;
+                }
                 // Generate formatter utility
                 MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreator creator = new MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreator();
 
@@ -121,13 +126,17 @@ namespace FormatterUtil
 
                 // Setup compiler and referenced assemblies
                 CSharpCodeProvider csharpCodeProvider = new CSharpCodeProvider();
-             
+
 
                 using (TextWriter tw = File.CreateText(arguments.Output ?? "output.cs"))
                     csharpCodeProvider.GenerateCodeFromNamespace(ns, tw, new System.CodeDom.Compiler.CodeGeneratorOptions()
                     {
                         IndentString = "\t"
                     });
+            }
+            catch (ArgumentNullException)
+            {
+                ShowHelp();
             }
             catch (Exception e)
             {
@@ -141,6 +150,19 @@ namespace FormatterUtil
 #if DEBUG
             Console.ReadKey();
 #endif
+        }
+
+        /// <summary>
+        /// Show help
+        /// </summary>
+        private static void ShowHelp()
+        {
+            Console.WriteLine("\r\nCreates XML ITS1 formatter helper classes and saves the result to a C# file which can be imported into either an Everest or" +
+                "Everest for Windows Phone project. Performing this operation before an application is compiled will greatly increase formatter performance");
+
+            ParameterParser<Parameters> parser = new ParameterParser<Parameters>();
+            parser.WriteHelp(Console.Out);
+
         }
 
         /// <summary>

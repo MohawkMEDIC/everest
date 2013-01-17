@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A formatter that can represent an EIVL in data types R2 format
     /// </summary>
-    public class EIVLFormatter : IDatatypeFormatter
+    internal class EIVLFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

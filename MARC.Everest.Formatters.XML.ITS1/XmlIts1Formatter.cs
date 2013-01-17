@@ -38,6 +38,7 @@ using System.Collections;
 using MARC.Everest.Formatters.XML.ITS1.Reflector;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Formatters.XML.ITS1.CodeGen;
+using System.Linq;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -474,12 +475,25 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 resultContext.Code = ResultCode.AcceptedNonConformant;
             else
             {
-                resultContext.Code = GraphObject(s, o, o.GetType(), context, resultContext);
-                if (!ValidateConformance && resultContext.Code != ResultCode.Accepted)
-                    resultContext.Code = ResultCode.AcceptedNonConformant;
+                GraphObject(s, o, o.GetType(), context, resultContext);
+                resultContext.Code = CalculateResultCode(resultContext.Details);
             }
 
             return resultContext;
+        }
+
+        /// <summary>
+        /// Set an appropriate result code
+        /// </summary>
+        private ResultCode CalculateResultCode(IEnumerable<IResultDetail> details)
+        {
+            // Set the acceptance code
+            if (!ValidateConformance && details.Count() > 0)
+                return ResultCode.AcceptedNonConformant;
+            else
+                return details.Count(d => d.Type == ResultDetailType.Error) > 0 ? ResultCode.Rejected :
+                    details.Count(d => d.Type == ResultDetailType.Warning) > 0 ? ResultCode.AcceptedNonConformant :
+                    ResultCode.Accepted;
         }
 
 
@@ -556,9 +570,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 if (s_rootNameMaps.TryGetValue(r.LocalName, out mappedType)) // Try to get a root name map
                 {
                     resultContext.Structure = ParseObject(r, mappedType, mappedType, resultContext);
-
-                    if (!ValidateConformance && resultContext.Code != ResultCode.Accepted)
-                        resultContext.Code = ResultCode.AcceptedNonConformant;
+                    resultContext.Code = CalculateResultCode(resultContext.Details);
                     return resultContext;
                 }
                 else if (i == 0) // Try to build the cache for this root name
@@ -862,10 +874,8 @@ namespace MARC.Everest.Formatters.XML.ITS1
                         new ResultDetail(ResultDetailType.Error, String.Format("Could not find a type to de-serialize '{0}' into", r.Name), r.ToString(), null)
                     );
 
-            // Correct code
-            if (!ValidateConformance && resultContext.Code != ResultCode.Accepted)
-                resultContext.Code = ResultCode.AcceptedNonConformant;
-
+            // Set the acceptance code
+            resultContext.Code = CalculateResultCode(resultContext.Details);
             return resultContext;
         }
 
@@ -935,7 +945,6 @@ namespace MARC.Everest.Formatters.XML.ITS1
         {
 
             // Formatter type
-            Type formatterType = null;
             string xsiTypeRoot = xsiType;
 
             // Generic 
@@ -967,14 +976,14 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Utility function for helper formatters
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public ResultCode WriteElementUtil(XmlWriter s, string elementName, IGraphable g, Type propType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
+        public void WriteElementUtil(XmlWriter s, string elementName, IGraphable g, Type propType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
         {
             ThrowIfDisposed();
 
             
             // Graph is nothing
             if (g == null)
-                return ResultCode.Accepted;
+                return;
 
             // Normalize
             if (g is INormalizable)
@@ -997,9 +1006,8 @@ namespace MARC.Everest.Formatters.XML.ITS1
             }
 
             // Result code of the
-            ResultCode cd = GraphObject(s, g, g.GetType(), context, resultContext);
+            GraphObject(s, g, g.GetType(), context, resultContext);
             s.WriteEndElement();
-            return cd;
         }
 
         /// <summary>
@@ -1099,7 +1107,6 @@ namespace MARC.Everest.Formatters.XML.ITS1
             {
                 ixsf.Host = this;
                 var aideResult = ixsf.Parse(r, useType);
-                resultContext.Code = aideResult.Code;
                 resultContext.AddResultDetail(aideResult.Details);
                 return aideResult.Structure;
             }
@@ -1137,10 +1144,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
 
             IResultDetail[] details = null;
             if (details != null && result == null || ValidateConformance && (!formatter.Validate(result, currentPath, out details)))
-            {
-                resultContext.AddResultDetail(details.Length > 0 ? details : new IResultDetail[] { new DatatypeValidationResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, useType.ToString(), r.ToString()) });
-                resultContext.Code = ResultCode.Rejected;
-            }
+                resultContext.AddResultDetail(details.Length > 0 ? details : new IResultDetail[] { new ResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, String.Format("Couldn't parse type '{0}'", useType.ToString()), currentPath) });
 
             
             return result;
@@ -1150,7 +1154,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Graph object onto xml writer
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s")]
-        private ResultCode GraphObject(XmlWriter s, IGraphable o, Type useType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
+        private void GraphObject(XmlWriter s, IGraphable o, Type useType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
         {
 
             // Find the HL7 alias for the type and build the cache for the type
@@ -1166,7 +1170,8 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 var rv = ixsf.Graph(s, o);
 
                 resultContext.AddResultDetail(rv.Details);
-                return rv.Code;
+
+                return;
             }
 
 #if WINDOWS_PHONE
@@ -1196,15 +1201,23 @@ namespace MARC.Everest.Formatters.XML.ITS1
 
             // Validate the instance
             formatter.Host = this;
-            IResultDetail[] details = null;
-            if (ValidateConformance && (!formatter.Validate(o, s.ToString(), out details)))
-                resultContext.AddResultDetail(details.Length > 0 ? details : new IResultDetail[] { new DatatypeValidationResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, useType.ToString(), s.ToString()) });
             
-
             // Graph using helper
             formatter.Graph(s, o, context, resultContext);
 
-            return resultContext.Code;
+        }
+
+        /// <summary>
+        /// Validation helper
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Browsable(false)]
+        public void ValidateHelper(XmlWriter s, IGraphable o, ITypeFormatter formatter, XmlIts1FormatterGraphResult resultContext)
+        {
+            IResultDetail[] details = null;
+
+            if (ValidateConformance && (!formatter.Validate(o, s.ToString(), out details)))
+                resultContext.AddResultDetail(details.Length > 0 ? details : new IResultDetail[] { new DatatypeValidationResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, o.GetType().ToString(), s.ToString()) });
         }
 
         /// <summary>

@@ -31,17 +31,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Data type R1 formatter for ED
     /// </summary> 
-    public class EDFormatter : IDatatypeFormatter
+    public class EDFormatter : ANYFormatter, IDatatypeFormatter
     {
-        /// <summary>
-        /// Host context
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get or set the generic arguments to this type (if applicable)
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
+   
 
         #region IDatatypeFormatter Members
 
@@ -51,25 +43,22 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The XmlWriter to write the object to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Get an instance ref
-            ED instance_ed = (ED)o;
+            ED instance_ed = o as ED;
 
             // Do a base format
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
             
             // Null flavor
-            if (((ANY)o).NullFlavor != null)
-            {
+            if (instance_ed == null || instance_ed.IsNull != null)
                 return;
-            }
 
             // Attributes
             s.WriteAttributeString("representation", Util.ToWireFormat(instance_ed.Representation));
             if (instance_ed.MediaType != null)
-                s.WriteAttributeString("mediaType", Util.ToWireFormat(instance_ed.MediaType));
+                s.WriteAttributeString("mediaType", instance_ed.MediaType);
             if (instance_ed.Language != null)
                 s.WriteAttributeString("language", instance_ed.Language);
             if (instance_ed.Compression != null)
@@ -130,15 +119,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Parse the object
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)")]
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
 
 
             // Parse ED
-            ED retVal = baseFormatter.Parse<ED>(s, result);
+            ED retVal = base.Parse<ED>(s, result);
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("representation") != null)
@@ -166,7 +154,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Elements and inner data
             #region Elements
-            string innerData = "";
+            StringBuilder innerData = new StringBuilder();
             if (!s.IsEmptyElement)
             {
                 // Exit markers
@@ -182,24 +170,24 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     {
                         if (s.LocalName == "thumbnail") // Format using ED
                         {
-                            EDFormatter edFormatter = new EDFormatter();
-                            edFormatter.Host = this.Host;
-                            retVal.Thumbnail = (ED)edFormatter.Parse(s, result); // Parse ED
+                            var hostResult = this.Host.Parse(s, typeof(ED));
+                            result.AddResultDetail(hostResult.Details);
+                            retVal.Thumbnail = (ED)hostResult.Structure; // Parse ED
                         }
                         else if (s.LocalName == "reference") // Format using TEL
                         {
-                            TELFormatter telFormatter = new TELFormatter();
-                            telFormatter.Host = this.Host;
-                            retVal.Reference = (TEL)telFormatter.Parse(s, result);
+                            var hostResult = this.Host.Parse(s, typeof(TEL));
+                            result.AddResultDetail(hostResult.Details);
+                            retVal.Reference = (TEL)hostResult.Structure;
                         }
                         else if (s.NodeType == System.Xml.XmlNodeType.Text ||
                             s.NodeType == System.Xml.XmlNodeType.CDATA)
-                            innerData += s.Value;
+                            innerData.Append(s.Value);
                         else if (!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Depth == sDepth && s.Name == sName) &&
                             (s.NodeType == System.Xml.XmlNodeType.Element || s.NodeType == System.Xml.XmlNodeType.EndElement))
                         {
                             retVal.Representation = EncapsulatedDataRepresentation.XML;
-                            innerData += s.ReadOuterXml();
+                            innerData.Append(s.ReadOuterXml());
                         }
                     }
                     catch (MessageValidationException e)
@@ -218,19 +206,20 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Parse the innerData string into something meaningful
             if(innerData.Length > 0)
                 if (retVal.Representation == EncapsulatedDataRepresentation.B64)
-                    retVal.Data = Convert.FromBase64String(innerData);
+                    retVal.Data = Convert.FromBase64String(innerData.ToString());
                 else
-                    retVal.Data = textEncoding.GetBytes(innerData);
+                    retVal.Data = textEncoding.GetBytes(innerData.ToString());
 
             // Finally, the hash, this will validate the data
             if(!retVal.ValidateIntegrityCheck())
-                result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
-                    string.Format("Encapsulated data with content starting with '{0}' failed integrity check!", retVal.ToString().PadRight(10, ' ').Substring(0, 10)), 
-                    s.ToString(),
-                    null));
+                if(retVal.Compression == null || !retVal.UnCompress().ValidateIntegrityCheck())
+                    result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
+                        string.Format("Encapsulated data with content starting with '{0}' failed integrity check!", retVal.ToString().PadRight(10, ' ').Substring(0, 10)), 
+                        s.ToString(),
+                        null));
 
             // Validate
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
             return retVal;
         }
@@ -238,7 +227,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "ED"; }
         }
@@ -246,19 +235,20 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(ED).GetProperty("Representation"));
-            retVal.Add(typeof(ED).GetProperty("MediaType"));
-            retVal.Add(typeof(ED).GetProperty("Compression"));
-            retVal.Add(typeof(ED).GetProperty("Language"));
-            retVal.Add(typeof(ED).GetProperty("IntegrityCheck"));
-            retVal.Add(typeof(ED).GetProperty("IntegrityCheckAlgorithm"));
-            retVal.Add(typeof(ED).GetProperty("Reference"));
-            retVal.Add(typeof(ED).GetProperty("Thumbnail"));
-            retVal.Add(typeof(ED).GetProperty("Data"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            List<PropertyInfo> retVal = new List<PropertyInfo>(10) {
+                typeof(ED).GetProperty("Representation"),
+                typeof(ED).GetProperty("MediaType"),
+                typeof(ED).GetProperty("Compression"),
+                typeof(ED).GetProperty("Language"),
+                typeof(ED).GetProperty("IntegrityCheck"),
+                typeof(ED).GetProperty("IntegrityCheckAlgorithm"),
+                typeof(ED).GetProperty("Reference"),
+                typeof(ED).GetProperty("Thumbnail"),
+                typeof(ED).GetProperty("Data")
+            };
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
         #endregion

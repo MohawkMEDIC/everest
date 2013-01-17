@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Formatter that can graph and interpret the ED datatype
     /// </summary>
-    public class EDFormatter : IDatatypeFormatter
+    internal class EDFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

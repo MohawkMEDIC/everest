@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A formatter that can represent the QSP data type in R2 format
     /// </summary>
-    public class QSPFormatter : IDatatypeFormatter
+    internal class QSPFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

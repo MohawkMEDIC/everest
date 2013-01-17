@@ -28,7 +28,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// TS formatter
     /// </summary>
-    public class TSFormatter : IDatatypeFormatter
+    internal class TSFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

@@ -49,7 +49,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Graph the object
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToUpper")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public virtual void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             ANY instance = o as ANY;
             XmlStateWriter stw = s as XmlStateWriter;
@@ -67,38 +67,38 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "Flavor", "ANY", s.ToString()));
             }
 
-            string currentElementName = "";
-            if (s is MARC.Everest.Xml.XmlStateWriter)
-                currentElementName = (s as MARC.Everest.Xml.XmlStateWriter).CurrentPath;
-
             // Validate
             if (result.ValidateConformance && !instance.Validate())
+            {
                 foreach (var r in instance.ValidateEx())
                 {
-                    r.Location = currentElementName;
+                    r.Location = s.ToString();
                     result.AddResultDetail(r);
                 }
-
+                result.Code = ResultCode.Rejected;
+            }
             // Disabled for test
             // Validate flavor... 
             IResultDetail[] flavor;
             if (instance.Flavor != null && result.ValidateConformance && Util.ValidateFlavor(instance.Flavor.ToUpper(), instance, out flavor) == false)
             {
-                result.AddResultDetail(new DatatypeFlavorValidationResultDetail(ResultDetailType.Warning, instance.GetType().Name, instance.Flavor, currentElementName));
+                result.AddResultDetail(new DatatypeFlavorValidationResultDetail(ResultDetailType.Warning, instance.GetType().Name, instance.Flavor, s.ToString()));
                 result.AddResultDetail(flavor);
+                if (result.Code < ResultCode.AcceptedNonConformant)
+                    result.Code = ResultCode.AcceptedNonConformant;
             }
 
             // Warn if items can't be represented in R1
             if (instance.ControlActExt != null)
-                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "ControlActExt", "ANY", currentElementName));
+                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "ControlActExt", "ANY", s.ToString()));
             if(instance.ControlActRoot != null)
-                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "ControlActRoot", "ANY", currentElementName));
+                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "ControlActRoot", "ANY", s.ToString()));
             if (instance.ValidTimeHigh != null && !(instance is EN))
-                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "ValidTimeHigh", "ANY", currentElementName));
+                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "ValidTimeHigh", "ANY", s.ToString()));
             if (instance.ValidTimeLow != null && !(instance is EN))
-                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "ValidTimeLow", "ANY", currentElementName));
+                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "ValidTimeLow", "ANY", s.ToString()));
             if (instance.UpdateMode != null)
-                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "UpdateMode", "ANY", currentElementName));
+                result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "UpdateMode", "ANY", s.ToString()));
 
         }
 
@@ -107,14 +107,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <remarks>ANY can only be used when there is a nullFlavor associated with it</remarks>
         [Obsolete("Use: T Parse<T>(XmlReader s)")]
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public virtual object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            ANY instance = new ANY();
-            // Read the NullFlavor, and Specialization data from the wire
-            if (s.GetAttribute("nullFlavor") != null) // Stop processing if null flavor is present
-                instance.NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
-            else if (s.GetAttribute("specializationType") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
-                instance.Flavor = s.GetAttribute("specializationType");
+            ANY instance = this.Parse<ANY>(s, result);
 
             if (result.ValidateConformance && !instance.Validate())
                 foreach (var r in instance.ValidateEx())
@@ -144,7 +139,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Read the NullFlavor, and Specialization data from the wire
             if (s.GetAttribute("nullFlavor") != null) // Stop processing if null flavor is present
                 instance.NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
-            else if (s.GetAttribute("specializationType") != null)
+            else if (s.GetAttribute("specializationType") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
                 instance.Flavor = s.GetAttribute("specializationType");
 
             return instance;
@@ -156,11 +151,20 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToUpper")]
         internal void Validate(ANY instance, string path, DatatypeFormatterParseResult resultDetails)
         {
+
+            // Don't validate null
+            if (instance == null)
+                return;
+
             IResultDetail[] flavor;
 
             // Validate
             if (resultDetails.ValidateConformance && !instance.Validate())
-                resultDetails.AddResultDetail(new DatatypeValidationResultDetail(ResultDetailType.Error, instance.GetType().Name, path));
+                foreach(var dtl in instance.ValidateEx())
+                {
+                    dtl.Location = path;
+                    resultDetails.AddResultDetail(dtl);
+                }
 
             // Validate flavor... 
             if (instance.Flavor != null && resultDetails.ValidateConformance && Util.ValidateFlavor(instance.Flavor.ToUpper(), instance, out flavor) == false)
@@ -172,7 +176,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Handles the type
         /// </summary>
-        public string HandlesType
+        public virtual string HandlesType
         {
             get { return "ANY"; }
         }
@@ -186,7 +190,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public virtual List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(10);
             retVal.Add(typeof(ANY).GetProperty("NullFlavor"));

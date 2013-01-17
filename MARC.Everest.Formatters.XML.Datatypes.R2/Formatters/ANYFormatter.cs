@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Formatter for the HXIT datatype
     /// </summary>
-    public class ANYFormatter : IDatatypeFormatter
+    internal class ANYFormatter : IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members

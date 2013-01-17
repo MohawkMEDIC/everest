@@ -63,7 +63,7 @@ namespace MARC.Everest.VisualStudio.Wizards
             try
             {
                 // Installation directory
-                RegistryKey rkSoftware = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{A21E1269-8CDE-43CD-B179-2B6674413081}_is1", false);
+                RegistryKey rkSoftware = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{A0BA6EF4-24AC-47F8-AEFE-FFBA1904024C}_is1", false);
                 string installDir = String.Empty;
                 if (rkSoftware != null)
                 {
@@ -72,7 +72,7 @@ namespace MARC.Everest.VisualStudio.Wizards
                 }
                 else
                 {
-                    MessageBox.Show("Could not locate Everest Framework 1.0 on this machine, please reinstall");
+                    MessageBox.Show("Could not locate Everest Framework 1.1 on this machine, please reinstall");
                     return;
                 }
 

@@ -237,13 +237,14 @@ namespace MARC.Everest.Connectors.WCF
                 }
                 finally
                 {
+                    // Set the result
+                    this.SendResult = result;
+
+                    // Fire completed event
+                    if (Completed != null) Completed(this);
                 }
 
-                // Set the result
-                this.SendResult = result;
-
-                // Fire completed event
-                if (Completed != null) Completed(this);
+               
             }
 
             /// <summary>

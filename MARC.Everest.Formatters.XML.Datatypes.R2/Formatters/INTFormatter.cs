@@ -28,7 +28,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// Formatter for the INT type
     /// </summary>
-    public class INTFormatter : IDatatypeFormatter
+    internal class INTFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

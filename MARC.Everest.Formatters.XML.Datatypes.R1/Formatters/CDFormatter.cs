@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Formatter for the CD Datatype
     /// </summary>
-    public class CDFormatter : IDatatypeFormatter
+    public class CDFormatter : CEFormatter, IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
@@ -42,15 +42,13 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Get an instance ref
             IConceptDescriptor instance_ics = (IConceptDescriptor)o;
              
             // Do a base format
-            CEFormatter baseFormatter = new CEFormatter();
-            baseFormatter.Host = this.Host;
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
             // Format the coded simple
             if (instance_ics.Qualifier != null) // Original Text
@@ -72,7 +70,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to read from</param>
         /// <remarks>Because the way the stream operates, we need to duplicate code from the CV formatter</remarks>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             IResultDetail[] details = null;
             CD<String> retVal = CDFormatter.Parse<CD<String>>(s, Host, result);
@@ -82,20 +80,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "CD"; }
         }
 
-        /// <summary>
-        /// Host formatting
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
+      
 
         #endregion
         //DOC: Documentation Required
@@ -116,7 +106,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Parse CV
             anyFormatter.Host = host;
-            T retVal = anyFormatter.Parse<T>(s, result);
+            T retVal =  anyFormatter.Parse<T>(s, result);
 
             // Now parse our data out... Attributes
             // Was there a null flavor processed?
@@ -201,11 +191,11 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(10);
             retVal.Add(typeof(CD<>).GetProperty("Qualifier"));
-            retVal.AddRange(new CEFormatter().GetSupportedProperties());
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
     }

@@ -8,6 +8,7 @@ using MohawkCollege.EHR.gpmr.COR;
 using System.IO;
 using MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 {
@@ -178,7 +179,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             // Render the getter
             sw.WriteLine("\tpublic {0} get{1}() {{ return this.m_{2}; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name));
-            
+
             // Render setters
             // Default setter
             sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
@@ -187,8 +188,20 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             // Now to render the helper methods that can set the backing property, these are convenience methods
             if (cc is Choice && !isNativeCollection)
+            {
+                // Now, return getAsMethods
+
+                foreach (Property p in (cc as Choice).Content)
+                {
+                    sw.WriteLine("\t/** Gets the {0} property cast to {1}. This convenience method saves the developer from casting */", Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name));
+                    sw.WriteLine("\tpublic {0} get{1}As{2}() {{ return ({0})this.m_{3}; }}",
+                        CreateDatatypeRef(p.Type, p, ownerPackage), Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name), Util.Util.MakeFriendly(cc.Name));
+                    sw.WriteLine("\t/** Sets the {0} property given the specified instance of {1}. */", Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name));
+                    sw.WriteLine("\tpublic void {3}{1}({0} value) {{ this.m_{2} = value; }}", CreateDatatypeRef(p.Type, p, ownerPackage), Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name), setterName);
+                }
                 ; // TODO: Factory methods and etc
-            else if(!isNativeCollection)
+            }
+            else if (!isNativeCollection)
             {
                 foreach (var sod in MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.HeuristicEngine.Datatypes.GetOverrideSetters(backingFieldType, cc as Property, ownerPackage))
                 {
@@ -439,9 +452,12 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 {
                     // Output the import for vocab if it doesn't exist
                     string import = String.Format("{0}.vocabulary.{1}", ownerPackage, vocabDomain);
-                    if (!s_imports.Exists(o => o.EndsWith(vocabDomain))) // Ensure duplicate class isn't imported
+
+                    string containerName = p.Container is Choice ? (p.Container as Choice).Container.Name : p.Container.Name;
+
+                    if (!vocabDomain.Equals(containerName) && !s_imports.Exists(o => o.EndsWith(vocabDomain))) // Ensure duplicate class isn't imported
                         s_imports.Add(import);
-                    else if (!s_imports.Contains(import)) // Didn't add the import so we must reference by full name
+                    if (!s_imports.Contains(import)) // Didn't add the import so we must reference by full name
                         vocabDomain = import;
                 }
 
@@ -707,6 +723,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             //    //#endregion
             //}
+
+            // Render equals
+            sw.WriteLine(CreateEqualityMethod(cls));
             // End class
             sw.WriteLine("}");
 
@@ -754,6 +773,79 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         }
 
         #endregion
+
+        /// <summary>
+        /// Create the equality method
+        /// </summary>
+        private string CreateEqualityMethod(Class cls)
+        {
+
+            string genericString = "";
+            foreach (TypeParameter tp in cls.TypeParameters ?? new List<TypeParameter>())
+                genericString += tp + ",";
+            if (!String.IsNullOrEmpty(genericString))
+                genericString = genericString.Substring(0, genericString.Length - 1);
+
+            string dataReference = String.Format("{0}{1}",
+                    Util.Util.PascalCase(cls.Name),
+                    String.IsNullOrEmpty(genericString) ? "" : String.Format("<{0}>", genericString)
+                );
+
+            StringWriter swEquals = new StringWriter(),
+                swHash = new StringWriter();
+
+            // Method signatures
+            swEquals.WriteLine("\t\t/** Overload of the equality determiner */\r\n\t\tpublic boolean equals({0} other)\r\n\t\t{{\r\n\t\t\tboolean equal = true;",
+                dataReference
+            );
+            swHash.WriteLine("\t\t/** Overload of hash code */\r\n\t\t@Override\r\n\t\tpublic int hashCode()\r\n\t\t{");
+            swHash.WriteLine("\t\tint result = 31;");
+
+            swEquals.WriteLine("\t\t\tif(other != null) {");
+            foreach (var prop in cls.Content)
+            {
+                if (prop is Property)
+                {
+                    if (prop.MaxOccurs == "1" ||
+                        (prop as Property).Type.CoreDatatypeName != null && Datatypes.IsCollectionType((prop as Property).Type))
+                        swEquals.WriteLine("\t\t\t\tequal &= this.get{0}() != null ? this.get{0}().equals(other.get{0}()) : other.get{0}() == null;", Util.Util.PascalCase(prop.Name));
+                    else
+                    {
+                        swEquals.WriteLine("\t\t\t\tequal &= this.get{0}().size() == other.get{0}().size();", Util.Util.PascalCase(prop.Name));
+                        swEquals.WriteLine("\t\t\t\tfor(int i = 0; i < (equal ? this.get{0}().size() : 0); i++) equal &= this.get{0}().get(i) != null ? this.get{0}().get(i).equals(other.get{0}().get(i)) : other.get{0}().get(i) == null;", Util.Util.PascalCase(prop.Name));
+                    }
+                    swHash.WriteLine("result = 17 * result + ((this.get{0}() == null) ? 0 : this.get{0}().hashCode());", Util.Util.PascalCase(prop.Name));
+                }
+                else
+                {
+                    if ((prop as Choice).Content.Count == 0)
+                    {
+                        Trace.WriteLine("Skipping equality check for choice with 0 choice elements", "warn");
+                        continue;
+                    }
+                    swEquals.WriteLine("\t\t\t\tequal &= this.get{0}() != null ? this.get{0}().equals(other.get{0}()) : other.get{0}() == null;", Util.Util.PascalCase(prop.Name));
+                    swHash.WriteLine("result = 17 * result + ((this.get{0}() == null) ? 0 : this.get{0}().hashCode());", Util.Util.PascalCase(prop.Name));
+                }
+            }
+            swEquals.WriteLine("\t\t\t\treturn equal;");
+            swEquals.WriteLine("\t\t\t}");
+            swEquals.WriteLine("\t\t\treturn false;");
+            swEquals.WriteLine("\t\t}");
+            swEquals.WriteLine("\t\t/** Overload of the equality determiner*/\r\n\t\t@Override\r\n\t\tpublic boolean equals(Object obj)\r\n\t\t{");
+
+            // Replace Subject<Act> with Subject<?>
+            if (cls.TypeParameters != null && cls.TypeParameters.Count > 0)
+                dataReference = Util.Util.PascalCase(cls.Name);
+
+            swEquals.WriteLine("\t\t\tif(obj instanceof {0}) return this.equals(({0})obj);", dataReference);
+            swEquals.WriteLine("\t\t\treturn super.equals(obj);");
+            swEquals.WriteLine("\t\t}");
+
+
+            swHash.WriteLine("\t\t\treturn result;\r\n\t\t}");
+
+            return String.Format("{0}\r\n{1}", swEquals.ToString(), swHash.ToString());
+        }
 
         /// <summary>
         /// Create factory methods
@@ -896,7 +988,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                                 // Update the class signature
                                 tr = new TypeReference()
                                 {
-                                    Name = String.Format("{1}", ownerPackage, Util.Util.MakeFriendly(GetSupplierDomain(tr, p, ownerPackage)))
+                                    Name = setter.Parameters[0].DataType
                                 };
 
 
@@ -953,7 +1045,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         // Now the signature (Mandatory)
                         if (choice.Conformance == ClassContent.ConformanceKind.Mandatory)
                         {
-                            ctors["mandatory"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                            ctors["mandatory"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property() { Container = cc.Container }, ownerPackage), Util.Util.MakeFriendly(cc.Name));
                             ctors["mandatory"][1] += string.Format("\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                             ctors["mandatory"][2] += String.Format("\t * @param {0} ({1}) No documentation available", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
                         }
@@ -961,11 +1053,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                         {
 
                             // Required (default)
-                            ctors["required"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                            ctors["required"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property() { Container = cc.Container }, ownerPackage), Util.Util.MakeFriendly(cc.Name));
                             ctors["required"][1] += string.Format("\t\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                             ctors["required"][2] += String.Format("\t\t * @param {0} ({1}) No documentation available\r\n", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
                         }
-                        ctors["all"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property(), ownerPackage), Util.Util.MakeFriendly(cc.Name));
+                        ctors["all"][0] += string.Format("{0} {1},", tr == null ? "java.lang.Object" : CreateDatatypeRef(tr, new Property() { Container = cc.Container }, ownerPackage), Util.Util.MakeFriendly(cc.Name));
                         ctors["all"][1] += string.Format("\t\t\t{1}.set{0}({2});\r\n", Util.Util.PascalCase(choice.Name), populateVarName, Util.Util.MakeFriendly(cc.Name));
                         ctors["all"][2] += String.Format("\t\t/* @param {0} ({1}) No documentation available\r\n", Util.Util.MakeFriendly(cc.Name), cc.Conformance);
 

@@ -41,7 +41,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s")]
-        ResultCode Graph(XmlWriter s, object o, IGraphable context, XmlIts1FormatterGraphResult resultContext);
+        void Graph(XmlWriter s, object o, IGraphable context, XmlIts1FormatterGraphResult resultContext);
         /// <summary>
         /// Parse object from <paramref name="s"/>
         /// </summary>

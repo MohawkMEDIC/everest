@@ -28,7 +28,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A formatter that can represent an instance of one of the QSET classes on the wire in DT R2
     /// </summary>
-    public class QSETFormatter : IDatatypeFormatter
+    internal class QSETFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A formatter helper that formats GTS to data types r2
     /// </summary>
-    public class GTSFormatter : IDatatypeFormatter
+    internal class GTSFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

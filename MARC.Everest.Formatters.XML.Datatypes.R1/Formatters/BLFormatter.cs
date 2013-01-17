@@ -27,7 +27,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Datatype R1 formatter for the BL datatype
     /// </summary>
-    public class BLFormatter : IDatatypeFormatter
+    public class BLFormatter : ANYFormatter, IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
@@ -36,10 +36,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Graph the object
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToLower")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
             // Null ?
             BL instance = o as BL;
@@ -56,43 +55,31 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Parse the object
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.Convert.ToBoolean(System.String)")]
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-
-            // Parse TS
-            BL retVal = baseFormatter.Parse<BL>(s, result);
+            BL retVal = base.Parse<BL>(s, result);
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("value") != null)
                 retVal.Value = Convert.ToBoolean(s.GetAttribute("value"));
 
+            base.Validate(retVal, s.ToString(), result);
             return retVal;
         }
 
         /// <summary>
         /// Get the type that this handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "BL"; }
         }
 
-        /// <summary>
-        /// Host 
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
+      
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(10);
             retVal.Add(typeof(BL).GetProperty("Value"));

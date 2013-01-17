@@ -29,7 +29,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// A formatter helper that renders ADXP in data types R2
     /// </summary>
-    public class ADXPFormatter : IDatatypeFormatter
+    internal class ADXPFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

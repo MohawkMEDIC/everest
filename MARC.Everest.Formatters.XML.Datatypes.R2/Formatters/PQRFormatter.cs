@@ -29,7 +29,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// PQR formatter helper for the PQR data type
     /// </summary>
-    public class PQRFormatter : IDatatypeFormatter
+    internal class PQRFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 

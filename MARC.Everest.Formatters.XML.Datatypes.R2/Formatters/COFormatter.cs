@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
     /// <summary>
     /// CO Formatter
     /// </summary>
-    public class COFormatter : IDatatypeFormatter
+    internal class COFormatter : IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
