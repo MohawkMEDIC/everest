@@ -371,7 +371,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         /// </summary>
         private string CreateStructureAnnotation(Class cls)
         {
-            return String.Format("@Structure(name = \"{0}\", structureType = StructureType.MESSAGETYPE)", cls.Name);
+            return String.Format("@Structure(name = \"{0}\", structureType = StructureType.MESSAGETYPE, isEntryPoint = {1})", cls.Name, cls.ContainerPackage.EntryPoint.Exists(o => o.Name == cls.Name) ? "true" : "false");
         }
 
         /// <summary>

@@ -30,14 +30,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Formatter for the GTS datatype
     /// </summary>
-    public class GTSFormatter : IDatatypeFormatter
+    public class GTSFormatter : ANYFormatter, IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
         /// <summary>
         /// Graph the object <paramref name="o"/> to <paramref name="s"/>
         /// </summary>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             
             // Cast the object to GTS
@@ -61,10 +61,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
 
 
-            ANYFormatter anyFormatter = new ANYFormatter();
-
             // Graph the base
-            anyFormatter.Graph(s, o as ANY, result);
+            base.Graph(s, o as ANY, result);
 
 
             // Determine what type of hull we have
@@ -74,7 +72,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
             else if(instance.Hull == null)
             {
-                result.AddResultDetail(new ResultDetail(ResultDetailType.Error, "Cannot graph a GTS with a Null Hull", s.ToString()));
+                result.AddResultDetail(new MandatoryElementMissingResultDetail(ResultDetailType.Error, "Cannot graph a GTS with a Null Hull", s.ToString()));
                 return;
             }
 
@@ -96,11 +94,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Parse the object from <paramref name="s"/>
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Parse
-            ANYFormatter anyFormatter = new ANYFormatter();
-            GTS retVal = anyFormatter.Parse<GTS>(s, result);
+            GTS retVal = base.Parse<GTS>(s, result);
 
             // Is there any need to continue?
             if (retVal.NullFlavor != null)
@@ -147,27 +144,18 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             retVal.Hull.NullFlavor = null;
 
             // Set the details
+            
             return retVal;
         }
 
         /// <summary>
         /// Get the type that this handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "GTS"; }
         }
 
-        /// <summary>
-        /// Formatting host
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Generic arguments for the item
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-        
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
