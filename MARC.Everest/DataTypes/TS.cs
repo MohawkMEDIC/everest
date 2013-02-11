@@ -445,6 +445,8 @@ namespace MARC.Everest.DataTypes
             {
                 var retVal = new TS(a.DateValue.Add((TimeSpan)b), a.DateValuePrecision.HasValue ? a.DateValuePrecision.Value : DatePrecision.Full);
                 // How many leap days are in-between this and the new value?
+                // This is used because a PQ of 10 a has a fixed number of ticks which doesn't take into account
+                // leap years (i.e. the PQ says 10a but it is actually x ticks which doesn't represent the leap years)
                 var leapDays = TS.GetLeapDays(a, retVal);
                 if(leapDays.Value != 0)
                     retVal += leapDays;

@@ -45,6 +45,26 @@ namespace MARC.Everest.DataTypes
         {
         }
 
+
+        /// <summary>
+        /// Creates a new instance of the non-parametric probability distribution 
+        /// with the specified <paramref name="items"/>
+        /// </summary>
+        /// <param name="items">An enumerable source of items from which to construct the inital set of <see cref="P:Items"/></param>
+        public NPPD(IEnumerable<UVP<T>> items)
+            : base(items)
+        {
+        }
+
+
+        /// <summary>
+        /// Creates a new instance of the NPPD class
+        /// </summary>
+        public static NPPD<T> CreateNPPD<T>(params UVP<T>[] items) where T : IAny
+        {
+            return new NPPD<T>(items);
+        }
+
         #region IEnumerable<T> Members
 
         /// <summary>
@@ -75,33 +95,8 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public override bool Validate()
         {
+            
             return (this.NullFlavor != null) ^ (this.Items.Count > 0);
-        }
-
-        /// <summary>
-        /// Determines semantic equality between this instance of NPPD and <paramref name="other"/>
-        /// </summary>
-        public override BL SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny other)
-        {
-            if (other == null)
-                return null;
-            else if (this.IsNull && other.IsNull)
-                return new BL() { NullFlavor = NullFlavorUtil.GetCommonParent(this.NullFlavor, other.NullFlavor) };
-            else if (this.IsNull ^ other.IsNull)
-                return new BL() { NullFlavor = DataTypes.NullFlavor.NotApplicable };
-            else if (!other.GetType().IsGenericType ||
-                other.GetType().GetGenericTypeDefinition().Equals(typeof(NPPD<>)))
-                return false;
-
-            // Items must be in both sets
-            int otherNppdCount = 0;
-            bool isEqual = true;
-            foreach (object itm in (other as IEnumerable))
-            {
-                isEqual &= this.Items.Contains(itm as UVP<T>);
-                otherNppdCount++;
-            }
-            return isEqual && otherNppdCount.Equals(this.Items.Count);
         }
 
         /// <summary>
