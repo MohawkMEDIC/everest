@@ -322,7 +322,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         throw new System.InvalidOperationException(System.String.Format("This formatter can only parse XML_1.0 structures. This structure claims to be '{0}'.", s.Value));
                     else if (s.Prefix == "xmlns" || s.LocalName == "xmlns" || s.LocalName == "ITSVersion")
                         continue;
-                    else if (pi == null || !s.NamespaceURI.Equals("urn:hl7-org:v3"))
+                    else if (pi == null)
                     {
                         resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, String.Format("@{0}", s.LocalName), s.NamespaceURI, s.ToString(), null));
                         continue;

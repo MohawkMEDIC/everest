@@ -52,7 +52,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             base.Graph(s, o, result);
             
             // Null flavor
-            if (instance_ed == null || instance_ed.IsNull != null)
+            if (instance_ed == null || instance_ed.IsNull)
                 return;
 
             // Attributes
