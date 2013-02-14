@@ -704,6 +704,8 @@ namespace MARC.Everest.Formatters.XML.ITS1
             XmlWriter xwtr = XmlWriter.Create(s);
             XmlStateWriter xw = new XmlStateWriter(xwtr);
 
+            if (o == null)
+                return new XmlIts1FormatterGraphResult(ResultCode.AcceptedNonConformant, null);
 
             //TODO: Length will never be less than 0 so the logic should be > 0 instead of != 0.
             bool needsRoot = o.GetType().GetCustomAttributes(typeof(InteractionAttribute), true).Length == 0;
