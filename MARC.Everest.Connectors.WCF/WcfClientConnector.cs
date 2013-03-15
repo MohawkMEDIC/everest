@@ -444,7 +444,7 @@ namespace MARC.Everest.Connectors.WCF
 #if !WINDOWS_PHONE
                     var graphResult = this.Formatter.Graph(new MemoryStream(), data);
                     SendResult.Code = graphResult.Code;
-
+                    SendResult.Details = graphResult.Details;
                     // Did the operation fail?
                     if (graphResult.Code != ResultCode.Accepted && graphResult.Code != ResultCode.AcceptedNonConformant)
                     {
@@ -453,11 +453,16 @@ namespace MARC.Everest.Connectors.WCF
                             MessageEventArgs me = new MessageEventArgs(SendResult.Code, surrogate.Details);
                             InvalidMessage(this, me);
                             if (me.Alternate != null)
+                            {
                                 SendResult.Message = Message.CreateMessage(MessageVersion, soapAction, me.Alternate, surrogate);
+                                graphResult = this.Formatter.Graph(new MemoryStream(), data);
+                                SendResult.Code = graphResult.Code;
+                                SendResult.Details = graphResult.Details;
+                            }
                         }
                         else
                         {
-                            SendResult.Details = surrogate.Details;
+                            SendResult.Details = graphResult.Details;
                             SendResult.Message = null;
                         }
                     }
