@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Data Type R1 formatter for the INT data type
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "INT")]
-    public class INTFormatter : IDatatypeFormatter
+    public class INTFormatter : PDVFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -40,11 +40,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
-            PDVFormatter pdvFormatter = new PDVFormatter();
             var instance = o as INT;
-            pdvFormatter.Graph(s, instance, result);
+            base.Graph(s, instance, result);
 
             // Unsupported properties
             if (instance.Expression != null)
@@ -65,40 +64,21 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to parse from</param>
         /// <returns>The parsed object</returns>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            PDVFormatter pdvFormatter = new PDVFormatter();
-            INT retVal = pdvFormatter.Parse<INT>(s, result);
+            INT retVal = base.Parse<INT>(s, result);
+	    base.Validate(retVal, s.ToString(), result);
             return retVal;
         }
 
         /// <summary>
         /// Get the data type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "INT"; }
         }
 
-        /// <summary>
-        /// Get or set the host of the formatter
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// The generic type arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
-        /// <summary>
-        /// Get the supported properties for the rendering
-        /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
-        {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.AddRange(new PDVFormatter().GetSupportedProperties());
-            return retVal;
-        }
         #endregion
     }
 }

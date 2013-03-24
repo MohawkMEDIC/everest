@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Data Type R1 Formatter 
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "PQR")]
-    public class PQRFormatter : IDatatypeFormatter
+    public class PQRFormatter : CVFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -44,10 +44,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Since PQR is a CV , we can use the CD formatter to graph the basic attributes onto the stream
-            CVFormatter formatter = new CVFormatter();
             PQR instance = o as PQR;
 
             if (instance.NullFlavor != null) return; // Null, no need to format
@@ -59,7 +58,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 s.WriteAttributeString("value", instance.Value.Value.ToString());
             
 
-            formatter.Graph(s, o as PQR, result);
+            base.Graph(s, o as PQR, result);
 
            
         }
@@ -69,7 +68,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to parse from</param>
         /// <returns>The parsed object</returns>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
 
             // Read value before we lose context
@@ -88,9 +87,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             retVal.Value = (decimal?)Util.FromWireFormat(valStr, typeof(decimal?));
 
             // Validate
-            ANYFormatter fmtr = new ANYFormatter();
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            fmtr.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
             return retVal;
         }
@@ -98,29 +96,19 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Gets the type of structure that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "PQR"; }
         }
 
-        /// <summary>
-        /// Gets or sets the host of this formatter
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Gets or sets the generic arguments supplied to this formatter
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
         public List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
+            List<PropertyInfo> retVal = base.GetSupportedProperties();
             retVal.Add(typeof(PQR).GetProperty("Value"));
-            retVal.AddRange(new CVFormatter().GetSupportedProperties());
             return retVal;
         }
         #endregion

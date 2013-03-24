@@ -33,29 +33,38 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// to parse and graph PDV data
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "PDV")]
-    public class PDVFormatter
+    public class PDVFormatter : ANYFormatter
     {
-       
+
+        /// <summary>
+        /// Get the type this handles
+        /// </summary>
+        public override string HandlesType
+        {
+            get
+            {
+                return "PDV";
+            }
+        }
+
         /// <summary>
         /// Graph a PDV object onto the stream
         /// </summary>
         /// <param name="xw">The writer to graph to</param>
         /// <param name="o">The object to parse</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "xw"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o")]
-        public void Graph(XmlWriter xw, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(XmlWriter xw, object o, DatatypeFormatterGraphResult result)
         {
             // Graph this object to the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(xw, o, result); // Graph the any part of this
+            base.Graph(xw, o, result); // Graph the any part of this
 
-            if (o.GetType().GetProperty("NullFlavor").GetValue(o, null) != null)
+            IPrimitiveDataValue pv = o as IPrimitiveDataValue;
+            if (pv.NullFlavor != null)
                 return; // No further graphing
 
             // Now comes the fun part .. we'll need to graph the Value property onto the stream, 
-            object valueValue = o.GetType().GetProperty("Value").GetValue(o, null);
-
-            if (valueValue != null)
-                xw.WriteAttributeString("value", Util.ToWireFormat(valueValue));
+            if (pv.Value != null)
+                xw.WriteAttributeString("value", Util.ToWireFormat(pv.Value));
         }
       
         /// <summary>
@@ -65,13 +74,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="xr">The Xml Reader to read from</param>
         /// <returns>The parsed instance</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "xr")]
-        public T Parse<T>(XmlReader xr, DatatypeFormatterParseResult result) where T : ANY, new()
+        protected T Parse<T>(XmlReader xr, DatatypeFormatterParseResult result) where T : ANY, new() 
         {
-            ANYFormatter baseFormatter = new ANYFormatter(); // Base formatter
-            T retVal = baseFormatter.Parse<T>(xr, result);
+            T retVal = base.Parse<T>(xr, result);
 
-            // If it is null return the null flavor
-            if (retVal.NullFlavor != null) return retVal;
 
             PropertyInfo pi = typeof(T).GetProperty("Value");
 
@@ -85,17 +91,18 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             {
                 result.AddResultDetail(new ResultDetail(ResultDetailType.Error, e.Message, xr.ToString(), e));
             }
+            
             return retVal;
         }
 
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(10);
             retVal.Add(typeof(PDV<>).GetProperty("Value"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
     }

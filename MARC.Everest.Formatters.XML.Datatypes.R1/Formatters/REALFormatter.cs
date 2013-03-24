@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Data type R1 formatter for the REAL data type
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "REAL")]
-    public class REALFormatter : IDatatypeFormatter
+    public class REALFormatter : PDVFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -43,8 +43,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
+		// We don't use base.graph() here because we want to control the value property
             ANYFormatter baseFormatter = new ANYFormatter();
 
             baseFormatter.Graph(s, o, result);
@@ -80,8 +81,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <returns>The parsed object</returns>
         public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            PDVFormatter pdvFormatter = new PDVFormatter();
-            REAL retVal = pdvFormatter.Parse<REAL>(s, result);
+            REAL retVal = base.Parse<REAL>(s, result);
 
             // Precision is not supported in R1, but is still useful to have so 
             // we will report the precision of the data that was on the wire
@@ -93,9 +93,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             
             // Validate
-            ANYFormatter fmtr = new ANYFormatter();
-            string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            fmtr.Validate(retVal, pathName, result);
+            base.Validate(retVal, s.ToString(), result);
 
             return retVal;
         }

@@ -33,8 +33,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// </summary> 
     public class EDFormatter : ANYFormatter, IDatatypeFormatter
     {
-   
-
         #region IDatatypeFormatter Members
 
       

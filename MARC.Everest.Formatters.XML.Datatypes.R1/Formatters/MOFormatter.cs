@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Datatype formatter for the MO data type
     /// </summary>
-    public class MOFormatter : IDatatypeFormatter
+    public class MOFormatter : PDVFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -42,8 +42,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
+            // Want to control the output of value
             ANYFormatter baseFormatter = new ANYFormatter();
 
             baseFormatter.Graph(s, o, result);
@@ -78,10 +79,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to read from</param>
         /// <returns>The parsed object</returns>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            PDVFormatter pdvFormatter = new PDVFormatter();
-            MO retVal = pdvFormatter.Parse<MO>(s, result);
+            MO retVal = base.Parse<MO>(s, result);
 
             if (s.GetAttribute("currency") != null)
                 retVal.Currency = s.GetAttribute("currency");
@@ -106,20 +106,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the type this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "MO"; }
         }
-
-        /// <summary>
-        /// Get or set the host of this formatter
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get or set the generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
 
         /// <summary>
@@ -127,10 +117,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         public List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(MO).GetProperty("Value"));
+            List<PropertyInfo> retVal = base.GetSupportedProperties();
             retVal.Add(typeof(MO).GetProperty("Currency"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
             return retVal;
         }
         #endregion

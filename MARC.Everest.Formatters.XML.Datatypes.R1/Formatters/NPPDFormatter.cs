@@ -28,7 +28,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// ITS1 formatter for the NPPD datatype
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "LIST")]
-    public class NPPDFormatter : IDatatypeFormatter
+    public class NPPDFormatter : ANYFormatter, IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
@@ -38,7 +38,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream</param>
         /// <param name="o">The object</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             SETFormatter formatter = new SETFormatter();
             formatter.Host = this.Host;
@@ -55,7 +55,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Parse an object from <paramref name="s"/>
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             SETFormatter formatter = new SETFormatter();
             formatter.Host = this.Host;
@@ -66,26 +66,17 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             formatter.GenericArguments = new Type[] { genType };
             object retval = formatter.Parse(s, result);
+            base.Validate((ANY)retval, s.ToString(), result);
             return retval;
         }
 
         /// <summary>
         /// Get the name of the type this handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "NPPD"; }
         }
-
-        /// <summary>
-        /// Get or set the hosting formatter
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         /// <summary>
         /// Get the supported properties for the rendering
