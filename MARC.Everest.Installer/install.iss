@@ -166,6 +166,7 @@ Source: ..\MARC.Everest\bin\Release\MARC.Everest.xml; DestDir: {app}; Flags: ign
 ;Source:http://142.222.45.23/favicon.ico; DestDir:{app};
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 ;Source: .\installsupp\help\HL7v3 Application Programming Interface.pdf; DestDir: {app}\help; Components: doc\guide
+Source: .\installsupp\help\Advanced Everest Guide - Preview.pdf; DestDir: {app}\help; Components: doc
 Source: .\installsupp\Help\MARC-HI Everest Framework.chm; DestDir: {app}\help; Components: doc
 Source: .\installsupp\isxdl.dll; DestDir: {tmp}
 #ifdef INCLUDE_SRC
@@ -496,7 +497,7 @@ begin
 		if(rc1) then
 			s := s + '       Uninstall Release Candidate 1 of MARC-HI Everest' + NewLine;
 		if(v1) then
-			s := s + '       Release 1.x of MARC-HI Everest' + NewLine;
+			s := s + '       Release 1.0 of MARC-HI Everest' + NewLine;
 	end;
 	
   s := s + MemoDirInfo + NewLine;

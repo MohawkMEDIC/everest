@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Everest Framework For Windows Phone - Getting Started</title>
+    <title>Everest Compact Framework - Getting Started</title>
     <style type="text/css">
         body
         {
@@ -223,7 +223,7 @@
     <div style="height: 580px; float: left; padding: 15px 0px; background-image: url('./browser/images/logo.png');
         background-position:bottom; background-repeat: no-repeat; border-bottom: solid 1px #ddd; width: 200px;">
         <h3 style="color: black; margin: 2px; text-align: center">
-            Everest for WP 1.1</h3>
+            Everest Compact 1.2</h3>
         <div class="tabContainer">
             <ul id="tabController">
                 <li class="tab selected"><a href="#" onclick="selectTab('tpGettingStarted', this);">
@@ -243,12 +243,12 @@
             Getting Started</h1>
         <img src="./browser/images/appicon.png" style="float: right;" />
         <p float="left">
-            Thank you for downloading the MARC-HI Everest Framework 1.0. This release of Everest
-            introduces a large quantity of new functionality listed in our <a href="#" onclick="selectTab('tpReleaseNotes', document.getElementById('lnkReleaseNotes'))">
-                release notes.</a>
+            Thank you for downloading the MARC-HI Everest Framework Compact Edition 1.2. This release of Everest
+            is the first stable release of Everest for the .NET Compact Framework for Silverlight 4 and Windows Phone. Please see the <a href="#" onclick="selectTab('tpReleaseNotes', document.getElementById('lnkReleaseNotes'))">
+                release notes</a> for more information.
         </p>
         <p>
-            The following items will help you get started with the MARC-HI Everest Framework:</p>
+            The following items will help you get started with the MARC-HI Everest Framework Compact Edition:</p>
         <ul>
             <li><a href="http://te.marc-hi.ca/library/default.aspx?project=af66d54ed41e4ac18b44d0d3ca6cabf0">
                 Visit the Library</a>
@@ -293,116 +293,17 @@
     <div class="contentDiv" id="tpReleaseNotes">
         <h1>
             Release Notes</h1>
-        <p>
-                        <p>
-                The 1.0 release of Everest has been hardened and contains several changes
-                to increase the stability and reliability of several Everest components</p>
-            <h2>
-                Breaking Changes</h2>
-            <ul>
-                <li>The PQ datatype's value property has been changed from the <b>double</b> type to
-                    <b>decimal</b> in order to better store decimal numbers</li>
-                <li>The <b>IVL&lt;T></b> datatype's HighClosed and LowClosed properties have been refactored
-                    to use R2 nomenclature of HighIncluded/LowIncluded. These changes were marked as
-                    "obsolete" in the RC1/RC2 releases and have been removed</li>
-                <li>Datatypes previously marked as obsolete have been removed. Namely these are the
-                    non-generic versions of datatypes that also have a genericized version (ie: RTO,
-                    QTY, PIVL, CD, CS, CV, etc...)</li>
-                <li>Re-Implemented the CO and SC data types to better reflect their representation in
-                    DataTypes R2 definition</li>
-                <li>Group property has been removed from CV as it is no longer referenced in either
-                    DT R1 or R2 standards</li>
-                <li>Formatter methods GraphObject and ParseObject have been marked "obsolete" in favour
-                    of Graph/Parse and the IFormatter[Graph|Parse]Result pattern. GraphObject and ParseObject
-                    will still continue to function as they did before however will result in a warning.</li>
-                <li>Formatter GraphAides property no longer accepts System.Type instances and instead
-                    accepts instances of IGraphable</li>
-                <li>The MARC.Everest.Formatters.XML.R1.Formatter class is obsolete, use MARC.Everest.Formatters.XML.R1.DatatypeFormatter.
-                    <ul>
-                        <li>The formatter operates in Universal mode by default and can be placed in Canadian
-                            mode (for compatibility reasons)</li>
-                    </ul>
-                </li>
-            </ul>
-            <h2>
-                Changes / New Features</h2>
-            <ul>
-                <li>Changes to the <span style="font-weight: bold">MARC.Everest.DataTypes.TS</span>
-                    data-type now make it more accurate in the representation of dates/times within
-                    rendered components. The behavior of this has changed as follows:</li>
-                <li style="margin-left: 40px"><span style="font-style: italic">DateValuePrecision </span>
-                    if not set by the developer, is automatically set <span style="font-style: italic">Flavor</span>
-                    is set</li>
-                <li style="margin-left: 40px"><span style="font-style: italic">Value</span> now exclusively
-                    uses the <span style="font-style: italic">DateValuePrecision</span> property to
-                    format string representations of dates</li>
-                <li>Fixed several bugs found in the <span style="font-weight: bold">MARC.Everest.DataTypes
-                </span>namespace, namely changes associated with casting and validation</li>
-                <li>GPMR 1.1 now included, improvements to GPMR include:</li>
-                <li style="margin-left: 40px">Improved handling of vocabulary MIFs including differentiation
-                    between code systems, concept domains and value sets</li>
-                <li style="margin-left: 40px">Support for NE2009 and NE2010 MIFs (after "true true"
-                    bug has been fixed)</li>
-                <li style="margin-left: 40px">Added support to create Deki-Wiki page properties via
-                    the --deki-property parameter</li>
-                <li style="margin-left: 40px">Generation of Java based RMIM classes</li>
-                <li style="margin-left: 40px">Handling of UV multi-bound generic parameters (template
-                    parameters) in UV interaction MIFs</li>
-                <li style="margin-left: 40px">Quirks mode for GPMR allows ingoring of errors</li>
-                <li style="margin-left: 40px">Replay log file for recording of collapse and combine
-                    information. This allows more consistency between generating of the same standard</li>
-                <li style="margin-left: 40px">Vocabulary structures now support inheritence and better
-                    support for value sets and code systems</li>
-                <li>Data Type Enhancements:
-                    <ul>
-                        <li>Unit conversions for Time in the PQ data type</li>
-                        <li>Support for IUnitConverters in the PQ data type</li>
-                        <li>Support for Contains in PIVL and IVL types</li>
-                        <li>Support for arithmetic operations (via +,-,/,* and %) for INT, REAL, PQ, MO, TS
-                            data types</li>
-                        <li>Determination of SemanticEquality is available via the SemanticEquals method</li>
-                    </ul>
-                </li>
-                <li>More granular detection of issues in serialization and graphing via new ResultDetail
-                    types</li>
-                <li>WCF connector now support IPv6 "from" addresses more reliably</li>
-                <li>Dual mode XML ITS 1 formatter can use either reflection or CodeDom:
-                    <ul>
-                        <li>Multi Processor - Will use reflection method of formatting until CodeDom learning
-                            algorithm is complete</li>
-                        <li>Single Processor - Will only use reflection method of formatting</li>
-                        <li>Legacy Mode - Can be set with settings, will only use CodeDom method</li>
-                    </ul>
-                </li>
-                <li>Output of XSI namespace on root element of an instance rather than on child elements
-                    that use XSI values</li>
-                <li>Support for HL7v3 NE2010</li>
-                <li>Support for Data Types R2 (ISO21090) formatting via the DatatypeR2Formatter</li>
-                <li>New examples illustrating the use of the WcfClientConnector using the MARC-HI Client
-                    Registry&nbsp;&nbsp; </li>
-                <li>Added compatibility modes for the R1 data types formatters:<ul>
-                    <li>CDA Support - Supports data types in the style of CDA instances</li>
-                    <li>Canadian Support - Support Canadian data types extensions</li>
-                </ul>
-                </li>
-            </ul>
-            <h2>
-                New Features</h2>
-                <ul>
-                <li>New GPMR Wizard that allows users to graphically use GPMR</li>
-                <li>Support for the TypeMapAttribute which allows GPMR to map data types to an alternate
-                    on rendering</li>
-                <li>Support for Clinical Document Architecture R2 structures</li>
-                <li>ConnectionStringBuilder classes available for the File and Wcf connectors</li>
-                <li>New reference guide</li>
-                
-                </ul>
+        <p>This is the first release of the Everest Framework for Silverlight and Windows Phone. This release includes:</p>
+<li>Support for HL7v3 NE2008, NE2010, CDAr2 and Canadian spec R02.04.01, R02.04.02, and R02.04.03</li>
+<li>Support for the WCF Client Connector, adapted for Silverlight</li>
+<li>Support for the XML ITS 1.0 and Data Types R1</li>
+<li>The core library complete with full datatypes implementations for the Phone and Silverlight Platforms</li>
     </div>
     <div class="contentDiv" id="tpResources">
         <h1>
             HL7v3 Resources</h1>
         <p>
-            The MARC, Canada Health Infoway and HL7 International provide many resources for
+            The MARC and HL7 International provide many resources for
             learning HL7v3 standards. The following list is a very brief list of resources that
             are available for viewing standards documentation:
             <ul>
@@ -560,7 +461,7 @@
 
     </div>
     <div class="contentDiv" id="tpLicense">
-        <h1>Everest for Windows Phone Licensing</h1>
+        <h1>Everest Compact Edition</h1>
         <p>
         Please note that the following license only covers the components developed by the MARC-HI (for which there are sources in the "src" directory of the installation). 
         </p>

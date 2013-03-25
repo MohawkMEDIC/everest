@@ -223,7 +223,7 @@
     <div style="height: 580px; float: left; padding: 15px 0px; background-image: url('./browser/images/logo.png');
         background-position:bottom; background-repeat: no-repeat; border-bottom: solid 1px #ddd; width: 200px;">
         <h3 style="color: black; margin: 2px; text-align: center">
-            Everest 1.0</h3>
+            Everest 1.2</h3>
         <div class="tabContainer">
             <ul id="tabController">
                 <li class="tab selected"><a href="#" onclick="selectTab('tpGettingStarted', this);">
@@ -244,7 +244,7 @@
             Getting Started</h1>
         <img src="./browser/images/appicon.png" style="float: right;" />
         <p float="left">
-            Thank you for downloading the MARC-HI Everest Framework 1.0. This release of Everest
+            Thank you for downloading the MARC-HI Everest Framework 1.2. This release of Everest
             introduces a large quantity of new functionality listed in our <a href="#" onclick="selectTab('tpReleaseNotes', document.getElementById('lnkReleaseNotes'))">
                 release notes.</a>
         </p>
@@ -261,7 +261,7 @@
                 Check for Updates</a>
                 <p>
                     A new version of Everest is released approximately once per year. By downloading
-                    the most recent version, you'll get access to many bug fixes and new featurs.</p>
+                    the most recent version, you'll get access to many bug fixes and new features.</p>
             </li>
             <li><a href="#" onclick="run('.\\Everest Visual Studio Templates.vsi');" application="yes">
                 Install Visual Studio Templates</a>
@@ -270,6 +270,16 @@
                     can increase your productivity within your copy of Microsoft Visual Studio. If you
                     do not have a copy of Visual Studio, you can use the <a href="http://microsoft.com/express">
                         Express editions</a>.</p>
+            </li>
+            <li><a href="http://www.lulu.com/shop/justin-fyfe/advanced-everest-developers-handbook/hardcover/product-20432021.html">
+                Get the Book</a>
+                <p>
+                    "The Official Advanced Everest Developer's Handbook" provides in-depth documentation of the complete 
+                    Everest Framework. Topics include datatypes, RMIM types, GPMR and more! An 
+                    <a href="http://www.lulu.com/shop/justin-fyfe/advanced-everest-developers-handbook-ebook/ebook/product-20121454.html">
+                    e-book</a> is also available. The <a href="#" onclick="run('.\\help\\Advanced Everest Guide - Preview.pdf');" application="yes">first two chapters</a> are included in your installation to
+                    get you started. 
+                    </p>
             </li>
             <!--<li><a href="#" onclick="run('.\\help\\HL7v3 Application Programming Interface.pdf');"
                 application="yes">Read the Reference Guide</a>
@@ -296,10 +306,30 @@
             Release Notes</h1>
         <p>
                         <p>
-                The 1.0 release of Everest has been hardened and contains several changes
+                The 1.2 release of Everest has been hardened and contains several changes
                 to increase the stability and reliability of several Everest components</p>
-            <h2>
-                Breaking Changes</h2>
+                            <h3>
+                Everest Core Enhancements</h3>
+            <ul>
+                <li>Creation of EverestSerializerFormatAttribute on the WCF connector. This allows developers to simply add Everest classes to WCF service contracts and the WCF system will use Everest as the serialization engine.</li>
+<li>Better reporting of exceptions generated from ParseXSIType</li>
+<li>Allow the casting of System.Uri instances directly to a TEL</li>
+<li>Introduction of ValidateEx function which reports detailed errors with datatypes. These errors are returned in DataTypeValidationResultDetails with more detail about the errors that were found in the data type instance</li>
+<li>Support for the <host> elements in the Web.Config section of WCF services used by Everest</li>
+<li>FormatterUtil program which can be used on a generated RMIM class to create formatter helper classes, greatly increasing formatter performance</li>
+<li>Reorganization of many of the Datatype R1 formatter helpers</li>
+            </ul>
+            <h3>
+               GPMR Enhancements</h3>
+                <ul>
+<li>Support for compiling Java artifacts (class and JARs)</li>
+<li>Support for generating JavaDocs directly from GPMR</li>
+<li>Support for generating Windows Phone and Silverlight 4 assemblies from GPMR                </li>
+                </ul>
+                <h2>Everest 1.0 Release Notes</h2>           
+            <h3>
+                Breaking Changes</h3>
+
             <ul>
                 <li>The PQ datatype's value property has been changed from the <b>double</b> type to
                     <b>decimal</b> in order to better store decimal numbers</li>
@@ -325,8 +355,8 @@
                     </ul>
                 </li>
             </ul>
-            <h2>
-                Changes / New Features</h2>
+            <h3>
+                Changes / New Features</h3>
             <ul>
                 <li>Changes to the <span style="font-weight: bold">MARC.Everest.DataTypes.TS</span>
                     data-type now make it more accurate in the representation of dates/times within
@@ -387,8 +417,8 @@
                 </ul>
                 </li>
             </ul>
-            <h2>
-                New Features</h2>
+            <h3>
+                New Features</h3>
                 <ul>
                 <li>New GPMR Wizard that allows users to graphically use GPMR</li>
                 <li>Support for the TypeMapAttribute which allows GPMR to map data types to an alternate
@@ -566,7 +596,7 @@
             commercial applications royalty free.</p>
         <p>
             In order to view and compile the source code provided in this installation, you
-            will need Microsoft Visual Studio 2008 Express edition or higher.</p>
+            will need Microsoft Visual Studio 2010 Express edition or higher.</p>
         <p>
             <a href="#" onclick="run('.\\src\\everest.sln');" application="yes">View MARC-HI Everest
                 Source</a>

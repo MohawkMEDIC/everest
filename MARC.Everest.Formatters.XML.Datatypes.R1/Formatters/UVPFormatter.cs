@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// UVP Formatter
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "UVP")]
-    public class UVPFormatter : IDatatypeFormatter
+    public class UVPFormatter : ANYFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -41,11 +41,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Graph this UVP to the stream
-            ANYFormatter pdvFormatter = new ANYFormatter();
-            pdvFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
             
             // Add probability 
             if ((o as ANY).NullFlavor != null)
@@ -77,9 +76,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The reader to parse from</param>
         /// <returns>The parsed object</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)")]
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            ANYFormatter pdvFormatter = new ANYFormatter();
             
             // parse PDV portion
             Type uvpType = typeof(UVP<>).MakeGenericType(GenericArguments);
@@ -120,9 +118,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             resultAny.Flavor = null;
 
             // Validate the data type
-            ANYFormatter validator = new ANYFormatter();
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            validator.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
             return retVal;
 
         }
@@ -130,29 +127,18 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "UVP"; }
         }
-
-        /// <summary>
-        /// Get or set the host
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get or set the generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
         public List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
+            List<PropertyInfo> retVal = base.GetSupportedProperties();
             retVal.Add(typeof(UVP<>).GetProperty("Probability"));
-            retVal.AddRange(new PDVFormatter().GetSupportedProperties());
             return retVal;
         }
         #endregion

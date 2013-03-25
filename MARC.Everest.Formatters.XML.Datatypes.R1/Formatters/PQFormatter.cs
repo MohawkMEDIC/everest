@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Formatter for PQ data type
     /// </summary>
-    public class PQFormatter : IDatatypeFormatter
+    public class PQFormatter : PDVFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -44,8 +44,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to graph to</param>
         /// <param name="o"></param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
+            // Want to control output of the value attribute
+
             ANYFormatter baseFormatter = new ANYFormatter();
 
             baseFormatter.Graph(s, o, result);
@@ -91,13 +93,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Parse an object from <paramref name="s"/>
         /// </summary>
         /// <param name="s">The stream to parse</param>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            PDVFormatter pdvFormatter = new PDVFormatter();
-            PQ retVal = pdvFormatter.Parse<PQ>(s, result);
-
-            if (s.GetAttribute("unit") != null)
-                retVal.Unit = s.GetAttribute("unit");
+            PQ retVal = base.Parse<PQ>(s, result);
+            retVal.Unit = s.GetAttribute("unit");
 
             // Precision is not supported in R1, but is still useful to have so 
             // we will report the precision of the data that was on the wire
@@ -129,6 +128,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             retVal.Translation = new SET<PQR>((LIST<IGraphable>)pqrFormatter.Parse(s, result)); // Parse ED
                             //details.AddRange(pqrFormatter.Details);
                         }
+                        else
+                            result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, null));
                     }
                     catch (MessageValidationException e)
                     {
@@ -143,9 +144,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             #endregion
 
             // Validate
-            ANYFormatter fmtr = new ANYFormatter();
-            string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            fmtr.Validate(retVal, pathName, result);
+            base.Validate(retVal, s.ToString(), result);
 
             return retVal;
         }
@@ -153,32 +152,22 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Handles type
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "PQ"; }
         }
-
-        /// <summary>
-        /// Get or set the host
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get or set generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
+        
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
         public List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.Add(typeof(PQ).GetProperty("Unit"));
-            retVal.Add(typeof(PQ).GetProperty("Precision"));
-            retVal.Add(typeof(PQ).GetProperty("Value"));
-            retVal.Add(typeof(PQ).GetProperty("Translation"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            List<PropertyInfo> retVal = base.GetSupportedProperties();
+            retVal.AddRange(new PropertyInfo[] {
+                typeof(PQ).GetProperty("Unit"),
+                typeof(PQ).GetProperty("Precision"),
+                typeof(PQ).GetProperty("Translation")
+            });
             return retVal;
         }
         #endregion

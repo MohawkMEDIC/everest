@@ -25,6 +25,7 @@ using MARC.Everest.Exceptions;
 using MARC.Everest.Xml;
 using MARC.Everest.Interfaces;
 using System.Reflection;
+using System.Xml;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 {
@@ -32,7 +33,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// IVL Formatter for DT R1
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IVL")]
-    public class IVLFormatter : IDatatypeFormatter
+    public class IVLFormatter : PDVFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -44,10 +45,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="o">The object to graph</param>
         /// JF: Fixed Inclusive rendering issue with IVL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
-            PDVFormatter baseFormatter = new PDVFormatter();
-            baseFormatter.Graph(s, o, result);
+            
+            base.Graph(s, o, result);
 
             if ((o as ANY).NullFlavor != null) return; // Nullflavor so the formatter doesn't format anything
 
@@ -67,7 +68,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "OriginalText", "IVL", s.ToString()));
             if (lowClosedValue != null || highClosedValue != null)
                 result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
-                    "The properties 'LowClosed' and 'HighClosed' properties will be used as low/@inclusive and high/@inclusive attributes for R1 formatting", s.ToString(), null));
+                    "The properties 'LowClosed' and 'HighClosed' will be used as low/@inclusive and high/@inclusive attributes for R1 formatting", s.ToString(), null));
 
             // Representations of the IVL type
             if(operatorValue != null)
@@ -76,137 +77,97 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             
             if (lowValue != null && highValue != null) // low & high
             {
-                s.WriteStartElement("low", "urn:hl7-org:v3");
+                // low
                 if (lowClosedValue != null)
-                    s.WriteAttributeString("inclusive", Util.ToWireFormat(lowClosedValue));
+                    result.AddResultDetail(this.WriteValueAsElement(s, "low", (IGraphable)lowValue, this.GenericArguments[0], new KeyValuePair<String, String>("inclusive", Util.ToWireFormat(lowClosedValue))).Details);
+                else
+                    result.AddResultDetail(this.WriteValueAsElement(s, "low", (IGraphable)lowValue, this.GenericArguments[0]).Details);
 
-                // Value value xsi type
-                if (lowValue.GetType() != GenericArguments[0])
-                    s.WriteAttributeString("xsi", "type", DatatypeFormatter.NS_XSI, Util.CreateXSITypeName(lowValue.GetType()));
-
-                var hostResult = Host.Graph(s, (IGraphable)lowValue);
-                result.Code = hostResult.Code;
-                result.AddResultDetail(hostResult.Details);
-                s.WriteEndElement();
-
-                s.WriteStartElement("high", "urn:hl7-org:v3");
+                // high
                 if (highClosedValue != null)
-                    s.WriteAttributeString("inclusive", Util.ToWireFormat(highClosedValue));
+                    result.AddResultDetail(this.WriteValueAsElement(s, "high", (IGraphable)highValue, this.GenericArguments[0], new KeyValuePair<String, String>("inclusive", Util.ToWireFormat(highClosedValue))).Details);
+                else
+                    result.AddResultDetail(this.WriteValueAsElement(s, "high", (IGraphable)highValue, this.GenericArguments[0]).Details);
 
-                // Value value xsi type
-                if (highValue.GetType() != GenericArguments[0])
-                    s.WriteAttributeString("xsi", "type", DatatypeFormatter.NS_XSI, Util.CreateXSITypeName(highValue.GetType()));
-
-                hostResult = Host.Graph(s, (IGraphable)highValue);
-                result.Code = hostResult.Code;
-                result.AddResultDetail(hostResult.Details);
-                s.WriteEndElement();
 
                 #region Warnings
                 if (valueValue != null)
                     result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
-                        "low, high, value can't be represented together in an IVL data type in R1. Only formatting low and high", s.ToString(), null));
+                        "low, high, value can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
                 if (widthValue != null)
                     result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
-                        "low, high, width can't be represented together in an IVL data type in R1. Only formatting low and high", s.ToString(), null));
+                        "low, high, width can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
                 #endregion
             }
             else if (lowValue != null && widthValue != null) // Low & width
             {
-                s.WriteStartElement("low", "urn:hl7-org:v3");
+                // low
                 if (lowClosedValue != null)
-                    s.WriteAttributeString("inclusive", Util.ToWireFormat(lowClosedValue));
+                    result.AddResultDetail(this.WriteValueAsElement(s, "low", (IGraphable)lowValue, this.GenericArguments[0], new KeyValuePair<String, String>("inclusive", Util.ToWireFormat(lowClosedValue))).Details);
+                else
+                    result.AddResultDetail(this.WriteValueAsElement(s, "low", (IGraphable)lowValue, this.GenericArguments[0]).Details);
 
-                // Value value xsi type
-                if (lowValue.GetType() != GenericArguments[0])
-                    s.WriteAttributeString("xsi", "type", DatatypeFormatter.NS_XSI, Util.CreateXSITypeName(lowValue.GetType()));
-
-
-                var hostResult = Host.Graph(s, (IGraphable)lowValue);
-                result.Code = hostResult.Code;
-                result.AddResultDetail(hostResult.Details);
-                s.WriteEndElement();
-                s.WriteStartElement("width", "urn:hl7-org:v3");
-                hostResult = Host.Graph(s, (IGraphable)widthValue);
-                result.Code = hostResult.Code;
-                result.AddResultDetail(hostResult.Details);
-                s.WriteEndElement();
+                result.AddResultDetail(this.WriteValueAsElement(s, "width", (IGraphable)widthValue, typeof(PQ)).Details);
 
                 #region Warnings
                 if (valueValue != null)
                     result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
-                        "low, width, value can't be represented together in an IVL data type in R1. Only formatting low and width", s.ToString(), null));
+                        "low, width, value can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
                 if (highValue != null)
                     result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
-                        "low, width, high can't be represented together in an IVL data type in R1. Only formatting low and width", s.ToString(), null));
+                        "low, width, high can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
                 #endregion
             }            
             else if (highValue != null && widthValue != null) // high & width
             {
-                s.WriteStartElement("width", "urn:hl7-org:v3");
-                var hostResult = Host.Graph(s, (IGraphable)widthValue);
-                result.Code = hostResult.Code;
-                result.AddResultDetail(hostResult.Details);
-                s.WriteEndElement();
-                s.WriteStartElement("high", "urn:hl7-org:v3");
+                result.AddResultDetail(this.WriteValueAsElement(s, "width", (IGraphable)widthValue, typeof(PQ)).Details);
+
+                // high
                 if (highClosedValue != null)
-                    s.WriteAttributeString("inclusive", Util.ToWireFormat(highClosedValue));
+                    result.AddResultDetail(this.WriteValueAsElement(s, "high", (IGraphable)highValue, this.GenericArguments[0], new KeyValuePair<String, String>("inclusive", Util.ToWireFormat(highClosedValue))).Details);
+                else
+                    result.AddResultDetail(this.WriteValueAsElement(s, "high", (IGraphable)highValue, this.GenericArguments[0]).Details);
 
-                // Value value xsi type
-                if (highValue.GetType() != GenericArguments[0])
-                    s.WriteAttributeString("xsi", "type", DatatypeFormatter.NS_XSI, Util.CreateXSITypeName(highValue.GetType()));
-
-                hostResult = Host.Graph(s, (IGraphable)highValue);
-                result.Code = hostResult.Code;
-                result.AddResultDetail(hostResult.Details);
-                s.WriteEndElement();
 
                 #region Warnings
                 if (valueValue != null)
                     result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
-                        "high, width, value can't be represented together in an IVL data type in R1. Only formatting width and high", s.ToString(), null));
+                        "high, width, value can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
                 if (lowValue != null)
                     result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
-                        "high, width, low can't be represented together in an IVL data type in R1. Only formatting width and high", s.ToString(), null));
+                        "high, width, low can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
                 #endregion
             }
             else if (lowValue != null) // low only
             {
-                s.WriteStartElement("low", "urn:hl7-org:v3");
+                // low
                 if (lowClosedValue != null)
-                    s.WriteAttributeString("inclusive", Util.ToWireFormat(lowClosedValue));
+                    result.AddResultDetail(this.WriteValueAsElement(s, "low", (IGraphable)lowValue, this.GenericArguments[0], new KeyValuePair<String, String>("inclusive", Util.ToWireFormat(lowClosedValue))).Details);
+                else
+                    result.AddResultDetail(this.WriteValueAsElement(s, "low", (IGraphable)lowValue, this.GenericArguments[0]).Details);
 
-                // Value value xsi type
-                if (lowValue.GetType() != GenericArguments[0])
-                    s.WriteAttributeString("xsi", "type", DatatypeFormatter.NS_XSI, Util.CreateXSITypeName(lowValue.GetType()));
+                if(valueValue != null)
+                    result.AddResultDetail(new ResultDetail(ResultDetailType.Warning, "low and value can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
 
-                var hostResult = Host.Graph(s, (IGraphable)lowValue);
-                result.Code = hostResult.Code;
-                result.AddResultDetail(hostResult.Details);
-                s.WriteEndElement();
             }
             else if (highValue != null) // High only
             {
-                s.WriteStartElement("high", "urn:hl7-org:v3");
-                if (highClosedValue != null)
-                    s.WriteAttributeString("inclusive", Util.ToWireFormat(highClosedValue));
+                // high
+                if(highClosedValue != null)
+                    result.AddResultDetail(this.WriteValueAsElement(s, "high", (IGraphable)highValue, this.GenericArguments[0], new KeyValuePair<String,String>("inclusive", Util.ToWireFormat(highClosedValue))).Details);
+                else
+                    result.AddResultDetail(this.WriteValueAsElement(s, "high", (IGraphable)highValue, this.GenericArguments[0]).Details);
 
-                // Value value xsi type
-                if (highValue.GetType() != GenericArguments[0])
-                    s.WriteAttributeString("xsi", "type", DatatypeFormatter.NS_XSI, Util.CreateXSITypeName(highValue.GetType()));
-
-                var hostResult = Host.Graph(s, (IGraphable)highValue);
-                result.Code = hostResult.Code;
-                result.AddResultDetail(hostResult.Details);
-                s.WriteEndElement();
+                if (valueValue != null)
+                    result.AddResultDetail(new ResultDetail(ResultDetailType.Warning, "high and value can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
             }
-            else if(widthValue != null) // width only
+            else if (widthValue != null) // width only
             {
-                s.WriteStartElement("width", "urn:hl7-org:v3");
-                var hostResult = Host.Graph(s, (IGraphable)widthValue);
-                result.Code = hostResult.Code;
-                result.AddResultDetail(hostResult.Details);
-                s.WriteEndElement();
+                result.AddResultDetail(this.WriteValueAsElement(s, "width", (IGraphable)widthValue, typeof(PQ)).Details);
+
+                if (valueValue != null)
+                    result.AddResultDetail(new ResultDetail(ResultDetailType.Warning, "width and value can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
+
             }
             else if (valueValue != null)
             {
@@ -223,13 +184,32 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         }
 
         /// <summary>
+        /// Write a value as an element
+        /// </summary>
+        private IFormatterGraphResult WriteValueAsElement(XmlWriter s, String element, IGraphable value, Type expectedType, params KeyValuePair<String, String>[] attrs)
+        {
+            s.WriteStartElement(element, "urn:hl7-org:v3");
+
+            // Value value xsi type
+            if (expectedType != null && value.GetType() != expectedType)
+                s.WriteAttributeString("xsi", "type", DatatypeFormatter.NS_XSI, Util.CreateXSITypeName(value.GetType()));
+
+            if (attrs != null)
+                foreach (var attr in attrs)
+                    s.WriteAttributeString(attr.Key, attr.Value);
+
+            var hostResult = Host.Graph(s, value);
+            s.WriteEndElement();
+            return hostResult;
+        }
+
+        /// <summary>
         /// Parse an object from <paramref name="s"/>
         /// </summary>
         /// <param name="s">The stream to parse from</param>
         /// <returns>The parsed object</returns>
-        /// TODO: Parse low/high closed attributes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Create the types
             Type ivlType = typeof(IVL<>);
@@ -328,20 +308,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Gets the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "IVL"; }
         }
-
-        /// <summary>
-        /// Get or set the host of this formatter
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Generic arguments for the formatter
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         /// <summary>
         /// Get the supported properties for the rendering
