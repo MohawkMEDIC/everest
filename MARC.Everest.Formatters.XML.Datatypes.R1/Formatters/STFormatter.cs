@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// string Formatter
     /// </summary>
-    public class STFormatter : IDatatypeFormatter
+    public class STFormatter : ANYFormatter
     {
         #region IDatatypeFormatter Members
 
@@ -41,8 +41,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Represent the ST as an ED and serialize the ED
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
             
             ST instance = o as ST;
 
@@ -73,12 +72,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-            string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-
 
             // Parse ED
-            ST retVal = baseFormatter.Parse<ST>(s, result);
+            ST retVal = base.Parse<ST>(s, result);
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("mediaType") != null && s.GetAttribute("mediaType") != "text/plain")
@@ -124,7 +120,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             retVal.Value = innerData;
 
             // Validate
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, s.ToString(), result);
 
             return retVal;
         }
@@ -155,7 +151,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             List<PropertyInfo> retVal = new List<PropertyInfo>(2);
             retVal.Add(typeof(ST).GetProperty("Value"));
             retVal.Add(typeof(ST).GetProperty("Language"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
 
         }
