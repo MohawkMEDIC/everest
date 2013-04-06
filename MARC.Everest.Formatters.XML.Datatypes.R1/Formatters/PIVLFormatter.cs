@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Summary Documentation
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "PIVL")]
-    public class PIVLFormatter : IDatatypeFormatter
+    public class PIVLFormatter : ANYFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -44,10 +44,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
-            ANYFormatter anyFormatter = new ANYFormatter();
-            anyFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
             // Now graph the attributes
             Type pivlType = o.GetType();
@@ -126,7 +125,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to parse from</param>
         /// <returns>The parsed object</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Create the types
             Type pivlType = typeof(PIVL<>);
@@ -218,9 +217,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
 
             // Validate
-            ANYFormatter validation = new ANYFormatter();
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            validation.Validate(instance as ANY, pathName, result);
+            base.Validate(instance as ANY, pathName, result);
 
             return instance;
         }
@@ -228,20 +226,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Gets the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "PIVL"; }
         }
-
-        /// <summary>
-        /// Gets or sets the host of the formatter
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Gets or sets the generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         /// <summary>
         /// Get the supported properties for the rendering
@@ -256,7 +244,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 typeof(PIVL<>).GetProperty("Period"),
                 typeof(PIVL<>).GetProperty("InstitutionSpecified")
             });
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
         }
         #endregion

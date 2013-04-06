@@ -40,9 +40,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="o">The object</param>
         public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
+            // When graphing an NPPD, we're actually graphing a set of UVP, for example
+            // NPPD<INT> is really SET<UVP<INT>> 
+            // This is why we do the formatting in such an odd way
+
+            result.AddResultDetail(new MARC.Everest.Connectors.NotImplementedResultDetail(Connectors.ResultDetailType.Warning, "The NPPD type is not an official R1 data type, the data has been graphed but may not be interpreted by remote systems", s.ToString()));
+
             SETFormatter formatter = new SETFormatter();
             formatter.Host = this.Host;
-
             // Create new generic arguments
             var uvpType = typeof(UVP<>);
             var genType = uvpType.MakeGenericType(GenericArguments);
@@ -57,6 +62,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
+
+            result.AddResultDetail(new MARC.Everest.Connectors.NotImplementedResultDetail(Connectors.ResultDetailType.Warning, "The NPPD type is not an official R1 data type, the data has been parsed", s.ToString()));
+            
             SETFormatter formatter = new SETFormatter();
             formatter.Host = this.Host;
 

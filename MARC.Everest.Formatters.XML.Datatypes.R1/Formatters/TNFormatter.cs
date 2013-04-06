@@ -32,7 +32,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Trivial Name Formatter.
     /// </summary>
-    public class TNFormatter : IDatatypeFormatter
+    public class TNFormatter : ANYFormatter, IDatatypeFormatter
     {
 
        
@@ -44,11 +44,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The XmlWriter stream to write to.</param>
         /// <param name="o">The object to graph.</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             TN tn = (TN)o;
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
             if (tn.Part.Count > 0 && tn.NullFlavor == null)
                 s.WriteString(tn.Part[0].Value);
@@ -63,10 +62,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">XmlReader stream to parse from.</param>
         /// <returns>Parsed TN.</returns>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            ANYFormatter baseFormatter = new ANYFormatter();
-            TN tn = baseFormatter.Parse<TN>(s, result);
+            TN tn = base.Parse<TN>(s, result);
 
             // Parse the mixed content and add it to the list.
             if (!s.IsEmptyElement)
@@ -92,28 +90,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Gets the type that this formater handles.
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "TN"; }
-        }
-
-        /// <summary>
-        /// Get or set the host formatter.
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host
-        {
-            get;
-            set;
-        }
-
-
-        /// <summary>
-        /// Get or set the generic arguments to this type (if applicable).
-        /// </summary>
-        public Type[] GenericArguments
-        {
-            get;
-            set;
         }
 
         /// <summary>

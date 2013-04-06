@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// Formatter for the ON Type
     /// </summary>
-    public class ONFormatter : IDatatypeFormatter
+    public class ONFormatter : ENFormatter, IDatatypeFormatter
     {
         #region IDatatypeFormatter Members
 
@@ -39,9 +39,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Graph this object to the specified stream
         /// </summary>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
-            ENFormatter formatter = new ENFormatter() { Host = this.Host };
 
 
             // Validate and remove any incriminating data
@@ -59,19 +58,16 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             null));
                         instance.Part.RemoveAt(i);
                     }
-            formatter.Graph(s, o, result);
+            base.Graph(s, instance, result);
         }
 
         /// <summary>
         /// Parse the object from the specified stream
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
 
-            ENFormatter formatter = new ENFormatter()  { Host = this.Host };
-            var instance = formatter.Parse(s, result) as EN;
-
-            ON retVal = new ON(EntityNameUse.Alphabetic, instance.Part) { Use = instance.Use };
+            ON retVal = (ON)(base.Parse(s, result) as EN);
             
             // Remove non-allowed parts
                 for (int i = retVal.Part.Count - 1; i >= 0; i--)
@@ -87,7 +83,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             retVal.NullFlavor = instance.NullFlavor;
             retVal.Flavor = instance.Flavor;
-
+            
 
             return retVal;
         }
@@ -95,38 +91,11 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Gets the type that this formatter can handle
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "ON"; }
         }
 
-        /// <summary>
-        /// Gets or sets the host
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the generic arguments
-        /// </summary>
-        public Type[] GenericArguments
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Get the supported properties for the rendering
-        /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
-        {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.AddRange(new ENFormatter().GetSupportedProperties());
-            return retVal;
-        }
         #endregion
     }
 }

@@ -85,6 +85,17 @@ namespace MARC.Everest.DataTypes
         {
             return new PN(use, parts);
         }
+        
+        /// <summary>
+        /// Creates an EN instance from a family and given name
+        /// </summary>
+        public static PN FromFamilyGiven(EntityNameUse use, String family, params String[] given)
+        {
+            var retVal = PN.CreatePN(use, new ENXP(family, EntityNamePartType.Family));
+            foreach (var giv in given)
+                retVal.Part.Add(new ENXP(giv, EntityNamePartType.Given));
+            return retVal;
+        }
 
         /// <summary>
         /// TODO: Find a proper definition for PN.Basic
