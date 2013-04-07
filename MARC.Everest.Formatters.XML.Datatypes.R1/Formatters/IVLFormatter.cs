@@ -299,8 +299,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
 
             // Validate
-            ANYFormatter validation = new ANYFormatter();
-            validation.Validate(instance as ANY, s.LocalName, result);
+            base.Validate(instance as ANY, s.LocalName, result);
 
             return instance;
         }
