@@ -286,12 +286,10 @@ var
   downloadNeeded, needsUninstall, sept2009, nov2009, jan2010, rc1, v1: boolean;
   dotNetNeeded: boolean;
   memoDependenciesNeeded: string;
-	lblSelectMode:	TLabel;
-  rdoRuntime, rdoGpmr, rdoTypical, rdoCustom: TRadioButton;
-
   chkBox : TCheckBox;
   uninstallPageId : integer;
-  
+  lblSelectMode : TLabel;
+
 procedure isxdl_AddFile(URL, Filename: PChar);
 external 'isxdl_AddFile@files:isxdl.dll stdcall';
 function isxdl_DownloadFiles(hWnd: Integer): Integer;
@@ -338,7 +336,7 @@ begin
 
   //end;
   
-  if (not DirExists(ExpandConstant('{win}\Microsoft.NET\Framework\v3.5'))) then begin
+  if (not FileExists(ExpandConstant('{win}\Microsoft.NET\Framework\v3.5\ngen.exe'))) then begin
     dotNetNeeded := true;
     if (not IsAdminLoggedOn()) then begin
       MsgBox('GPMR needs the Microsoft .NET Framework 3.5 to be installed by an Administrator', mbInformation, MB_OK);
@@ -561,47 +559,7 @@ begin
 		Height := ScaleY(52);
 	end;
 
-	rdoTypical := TRadioButton.Create(Page);
-	rdoCustom := TRadioButton.Create(Page);
-	rdoRuntime := TRadioButton.Create(Page);
-	rdoGpmr := TRadioButton.Create(page);
-	with rdoTypical do begin
-		Parent := Page.Surface;
-		Caption := 'Complete Install (min 160 MB - Recommended)';
-		Left := ScaleX(40);
-		Top := ScaleY(46);
-		Width := ScaleX(341);
-		Height := ScaleY(21);
-		TabOrder := 0;
-		Checked := true;
-	end;
-	with rdoCustom do begin
-		Parent := Page.Surface;
-		Caption := 'Custom Install (min 1 MB)';
-		Left := ScaleX(40);
-		Top := ScaleY(112);
-		Width := ScaleX(341);
-		Height := ScaleY(21);
-		TabOrder := 3;
-	end;
-  with rdoGpmr do begin
-		Parent := Page.Surface;
-		Caption := 'GPMR & Tooling (min 3 MB)';
-		Left := ScaleX(40);
-		Top := ScaleY(68);
-		Width := ScaleX(341);
-		Height := ScaleY(21);
-		TabOrder := 1;
-	end;
-	with rdoRuntime do begin
-		Parent := Page.Surface;
-		Caption := 'Runtime Install (min 42 MB)';
-		Left := ScaleX(40);
-		Top := ScaleY(90);
-		Width := ScaleX(341);
-		Height := ScaleY(21);
-		TabOrder := 2;
-	end;
+	
 	with Page do begin
 		OnActivate := @CustomForm_Activate;
 		OnBackButtonClick := @CustomForm_BackButtonClick;

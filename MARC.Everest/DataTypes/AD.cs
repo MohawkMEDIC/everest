@@ -433,7 +433,7 @@ namespace MARC.Everest.DataTypes
         /// <param name="state">The state the address should carry</param>
         /// <param name="country">The country the address should carry</param>
         /// <param name="zip">The zip code the address should carry</param>
-        public static AD fromSimpleAddress(PostalAddressUse use, String addressLine1, String addressLine2, String city, String state, String country, String zip)
+        public static AD FromSimpleAddress(PostalAddressUse use, String addressLine1, String addressLine2, String city, String state, String country, String zip)
         {
             // Sanity check
             AD retVal = AD.CreateAD(use);

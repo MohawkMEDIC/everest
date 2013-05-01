@@ -2503,6 +2503,14 @@
             <param name="use">The use of the returned name</param>
             <param name="parts">The parts that make up the name</param>
         </member>
+        <member name="M:MARC.Everest.DataTypes.EN.FromFamilyGiven(MARC.Everest.DataTypes.EntityNameUse,System.String,System.String[])">
+            <summary>
+            Creates an EN instance from a family and given name
+            </summary>
+            <param name="family">The family name the <see cref="T:PN"/> should carry</param>
+            <param name="given">The given name(s) the <see cref="T:PN"/> should carry</param>
+            <param name="use">The intended use of the name</param>
+        </member>
         <member name="M:MARC.Everest.DataTypes.EN.Validate">
             <summary>
             Validates this EntityName to ensure that it represents a valid instance of EN
@@ -9123,6 +9131,18 @@
             </summary>
             <param name="n">The AD to validate</param>
         </member>
+        <member name="M:MARC.Everest.DataTypes.AD.FromSimpleAddress(MARC.Everest.DataTypes.PostalAddressUse,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Create an AD instance from simple address data
+            </summary>
+            <param name="use">The intended use of the address</param>
+            <param name="addressLine1">The first address line of the address</param>
+            <param name="addressLine2">The second address line of the address</param>
+            <param name="city">The city the address should carry</param>
+            <param name="state">The state the address should carry</param>
+            <param name="country">The country the address should carry</param>
+            <param name="zip">The zip code the address should carry</param>
+        </member>
         <member name="M:MARC.Everest.DataTypes.AD.ToString(System.String)">
             <summary>
             Represent this address as a string. Parts are formatted using the standard string.format notation
@@ -12545,6 +12565,11 @@
         <member name="M:MARC.Everest.DataTypes.PN.CreatePN(MARC.Everest.DataTypes.EntityNameUse,MARC.Everest.DataTypes.ENXP[])">
             <summary>
             Create a new instance of PN
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.PN.FromFamilyGiven(MARC.Everest.DataTypes.EntityNameUse,System.String,System.String[])">
+            <summary>
+            Creates an EN instance from a family and given name
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.PN.IsValidBasicFlavor(MARC.Everest.DataTypes.PN)">

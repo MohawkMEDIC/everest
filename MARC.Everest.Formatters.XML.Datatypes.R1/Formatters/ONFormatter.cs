@@ -81,10 +81,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                         retVal.Part.RemoveAt(i);
                     }
 
-            retVal.NullFlavor = instance.NullFlavor;
-            retVal.Flavor = instance.Flavor;
-            
-
             return retVal;
         }
 

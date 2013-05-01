@@ -78,7 +78,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("mediaType") != null && s.GetAttribute("mediaType") != "text/plain")
-                result.AddResultDetail(new FixedValueMisMatchedResultDetail(s.GetAttribute("mediaType"), "text/plain", String.Format("{0}/@mediaType", pathName)));
+                result.AddResultDetail(new FixedValueMisMatchedResultDetail(s.GetAttribute("mediaType"), "text/plain", String.Format("{0}/@mediaType", s.ToString())));
             if (s.GetAttribute("language") != null)
                 retVal.Language = s.GetAttribute("language");
 
