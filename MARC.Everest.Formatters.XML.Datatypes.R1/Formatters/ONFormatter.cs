@@ -47,6 +47,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             ON instance = o as ON;
             instance = new ON(instance.Use, instance.Part);
             instance.NullFlavor = (o as IAny).NullFlavor;
+            instance.Flavor = (o as IAny).Flavor;
 
                 for(int i = instance.Part.Count - 1; i >= 0; i--)
                     if (instance.Part[i].Type == EntityNamePartType.Family ||
@@ -67,7 +68,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
 
-            ON retVal = (ON)(base.Parse(s, result) as EN);
+            ON retVal = Util.Convert<ON>(base.Parse(s, result) as EN);
             
             // Remove non-allowed parts
                 for (int i = retVal.Part.Count - 1; i >= 0; i--)

@@ -24,11 +24,12 @@ using System.Text;
 
 namespace MARC.Everest.DataTypes.Interfaces
 {
+
     /// <summary>
     /// Identifies classes that can be scaled 
     /// by another PQ
     /// </summary>
-    public interface IPqScalar<T>
+    public interface IPqScalar<T> 
     {
         /// <summary>
         /// Scale the current instance by
