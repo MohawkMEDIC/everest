@@ -226,6 +226,20 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
+        /// Creates an EN instance from a family and given name
+        /// </summary>
+        /// <param name="family">The family name the <see cref="T:PN"/> should carry</param>
+        /// <param name="given">The given name(s) the <see cref="T:PN"/> should carry</param>
+        /// <param name="use">The intended use of the name</param>
+        public static EN FromFamilyGiven(EntityNameUse use, String family, params String[] given)
+        {
+            var retVal = EN.CreateEN(use, new ENXP(family, EntityNamePartType.Family));
+            foreach (var giv in given)
+                retVal.Part.Add(new ENXP(giv, EntityNamePartType.Given));
+            return retVal;
+        }
+
+        /// <summary>
         /// The uses of this name
         /// </summary>
         [Property(Name = "use", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
@@ -239,6 +253,7 @@ namespace MARC.Everest.DataTypes
         [XmlElement("part")]
         public List<ENXP> Part { get; protected set; }
 
+        
         /// <summary>
         /// Validates this EntityName to ensure that it represents a valid instance of EN
         /// </summary>

@@ -32,6 +32,7 @@ using MARC.Everest.Connectors.WCF.Serialization;
 using System.Xml;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Permissions;
 
 namespace MARC.Everest.Connectors.WCF.Core
 {

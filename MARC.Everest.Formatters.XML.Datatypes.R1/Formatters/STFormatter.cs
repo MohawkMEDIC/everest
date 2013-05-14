@@ -30,7 +30,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// string Formatter
     /// </summary>
-    public class STFormatter : IDatatypeFormatter
+    public class STFormatter : ANYFormatter
     {
         #region IDatatypeFormatter Members
 
@@ -38,11 +38,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Graph the object
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Represent the ST as an ED and serialize the ED
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
             
             ST instance = o as ST;
 
@@ -70,19 +69,16 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Parse the object
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-            string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-
 
             // Parse ED
-            ST retVal = baseFormatter.Parse<ST>(s, result);
+            ST retVal = base.Parse<ST>(s, result);
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("mediaType") != null && s.GetAttribute("mediaType") != "text/plain")
-                result.AddResultDetail(new FixedValueMisMatchedResultDetail(s.GetAttribute("mediaType"), "text/plain", String.Format("{0}/@mediaType", pathName)));
+                result.AddResultDetail(new FixedValueMisMatchedResultDetail(s.GetAttribute("mediaType"), "text/plain", String.Format("{0}/@mediaType", s.ToString())));
             if (s.GetAttribute("language") != null)
                 retVal.Language = s.GetAttribute("language");
 
@@ -124,7 +120,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             retVal.Value = innerData;
 
             // Validate
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, s.ToString(), result);
 
             return retVal;
         }
@@ -132,30 +128,22 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// What types does this formatter handle
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "ST"; }
         }
 
-        /// <summary>
-        /// Get or set the host
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
+      
 
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(2);
             retVal.Add(typeof(ST).GetProperty("Value"));
             retVal.Add(typeof(ST).GetProperty("Language"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
 
         }

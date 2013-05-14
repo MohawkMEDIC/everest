@@ -36,6 +36,7 @@ using System.Linq;
 using MARC.Everest.Phone;
 #else
 using MARC.Everest.Connectors.WCF.Configuration;
+using System.ServiceModel.Description;
 #endif
 
 namespace MARC.Everest.Connectors.WCF
@@ -746,6 +747,17 @@ namespace MARC.Everest.Connectors.WCF
                 return (ISendResult)result;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Gets the active endpoint for the client
+        /// </summary>
+        public ServiceEndpoint Endpoint
+        {
+            get
+            {
+                return this.wcfClient.Endpoint;
+            }
         }
 
         #endregion

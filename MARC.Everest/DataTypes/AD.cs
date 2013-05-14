@@ -423,8 +423,35 @@ namespace MARC.Everest.DataTypes
                 !n.Part.Exists(o => o.Type != AddressPartType.City &&
                     o.Type != AddressPartType.State);
         }
+        /// <summary>
+        /// Create an AD instance from simple address data
+        /// </summary>
+        /// <param name="use">The intended use of the address</param>
+        /// <param name="addressLine1">The first address line of the address</param>
+        /// <param name="addressLine2">The second address line of the address</param>
+        /// <param name="city">The city the address should carry</param>
+        /// <param name="state">The state the address should carry</param>
+        /// <param name="country">The country the address should carry</param>
+        /// <param name="zip">The zip code the address should carry</param>
+        public static AD FromSimpleAddress(PostalAddressUse use, String addressLine1, String addressLine2, String city, String state, String country, String zip)
+        {
+            // Sanity check
+            AD retVal = AD.CreateAD(use);
 
-
+            if (!String.IsNullOrEmpty(addressLine1))
+                retVal.Part.Add(new ADXP(addressLine1, AddressPartType.AddressLine));
+            if (!String.IsNullOrEmpty(addressLine2))
+                retVal.Part.Add(new ADXP(addressLine2, AddressPartType.AddressLine));
+            if(!String.IsNullOrEmpty(city))
+                retVal.Part.Add(new ADXP(city, AddressPartType.City));
+            if(!String.IsNullOrEmpty(state))
+                retVal.Part.Add(new ADXP(state, AddressPartType.State));
+            if(!String.IsNullOrEmpty(country))
+                retVal.Part.Add(new ADXP(country, AddressPartType.Country));
+            if(!String.IsNullOrEmpty(zip))
+                retVal.Part.Add(new ADXP(zip, AddressPartType.PostalCode));
+            return retVal;
+        }
         /// <summary>
         /// Represent this address as a string. Parts are formatted using the standard string.format notation
         /// </summary>

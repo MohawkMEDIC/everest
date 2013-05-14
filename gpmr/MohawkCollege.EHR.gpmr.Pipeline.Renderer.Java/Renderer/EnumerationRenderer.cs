@@ -159,7 +159,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 cls = (cls as ConceptDomain).ContextBinding[0];
             else if (cls is ConceptDomain)
                 throw new InvalidOperationException("Won't render unbound concept domains");
-
+            
 
             tw.WriteLine("package {0}.vocabulary;", ownerPackage);
 
@@ -188,6 +188,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 renderName = (cls.Annotations.Find(o => o is RenderAsAnnotation) as RenderAsAnnotation).RenderName;
 
             // Create class signature
+            tw.WriteLine("@Structure(name = \"{0}\", structureType = StructureType.{1})", cls.Name, cls.GetType().Name.ToUpper());
             tw.Write("public class {0} implements {1}.interfaces.IEnumeratedVocabulary", Util.Util.MakeFriendly(renderName), apiNs);
 
             tw.WriteLine("{");
