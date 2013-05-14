@@ -23,9 +23,6 @@ using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Description;
-using System.ServiceModel.Configuration;
-using System.Configuration;
-using System.ServiceModel.Channels;
 
 namespace MARC.Everest.Connectors.WCF.Core
 {
@@ -51,58 +48,7 @@ namespace MARC.Everest.Connectors.WCF.Core
         {
             this.ServiceName = serviceName;
             this.InitializeDescription(serviceType, new UriSchemeKeyedCollection(baseAddresses));
-        }
-
-        /// <summary>
-        /// Contract type
-        /// </summary>
-        private Type ContractType(string type)
-        {
-            Type t = null;
-            t = Type.GetType(type);
-            return t;
-
-        }
-
-        /// <summary>
-        /// Get binding from configuration file
-        /// </summary>
-        private Binding GetBinding(string name)
-        {
-            BindingsSection bindings = ConfigurationManager.GetSection("system.serviceModel/bindings") as BindingsSection;
-            BindingCollectionElement bc = bindings[name];
-            Binding b = Activator.CreateInstance(bc.BindingType) as Binding;
-            return b;
-        }
-
-
-        /// <summary>
-        /// Create the service configuration
-        /// </summary>
-        protected override ServiceDescription CreateDescription(out IDictionary<string, ContractDescription> implementedContracts)
-        {
-            // Create description
-            var sd = base.CreateDescription(out implementedContracts);
-
-            // Endpoints 
-            List<ServiceEndpoint> endpoints = new List<ServiceEndpoint>();
-
-            ServicesSection ss = ConfigurationManager.GetSection("system.serviceModel/services") as ServicesSection;
-
-            ServiceElement service = ss.Services[this.ServiceName];
             
-            // Add endpoints
-            foreach(ServiceEndpointElement epe in service.Endpoints)
-            {
-                ContractDescription cd = ContractDescription.GetContract(ContractType(epe.Contract));
-                Binding b = GetBinding(epe.Binding);
-                EndpointAddress ea = new EndpointAddress(epe.Address);
-                ServiceEndpoint ep = new ServiceEndpoint(cd, b, ea);
-                sd.Endpoints.Add(ep);
-            }
-
-            return sd;
-
         }
 
         //TODO: Why is this set only, and not gettable.
@@ -120,13 +66,13 @@ namespace MARC.Everest.Connectors.WCF.Core
         /// </summary>
         public WcfServerConnector ConnectorHost { get; set; }
 
-
         /// <summary>
         /// Apply configuration
         /// </summary>
         protected override void ApplyConfiguration()
         {
 
+            this.Description.ConfigurationName = this.ServiceName;
             base.ApplyConfiguration();
 
             ServiceMetadataBehavior mexBehavior = this.Description.Behaviors.Find<ServiceMetadataBehavior>();
