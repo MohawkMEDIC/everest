@@ -49,14 +49,15 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Since PQR is a CV , we can use the CD formatter to graph the basic attributes onto the stream
             PQR instance = o as PQR;
 
-            if (instance.NullFlavor != null) return; // Null, no need to format
-            
-            // Watch out for nargles
-            if (instance.Precision != null && instance.Precision != 0 && instance.Value.HasValue)
-                s.WriteAttributeString("value", instance.Value.Value.ToString(String.Format("0.{0}", new String('0', instance.Precision))));
-            else if (instance.Value.HasValue)
-                s.WriteAttributeString("value", instance.Value.Value.ToString());
-            
+            if (instance.NullFlavor == null)
+            { // Null, no need to format
+
+                // Watch out for nargles
+                if (instance.Precision != null && instance.Precision != 0 && instance.Value.HasValue)
+                    s.WriteAttributeString("value", instance.Value.Value.ToString(String.Format("0.{0}", new String('0', instance.Precision))));
+                else if (instance.Value.HasValue)
+                    s.WriteAttributeString("value", instance.Value.Value.ToString());
+            }
 
             base.Graph(s, o as PQR, result);
 
