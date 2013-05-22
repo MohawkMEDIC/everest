@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// SC Formatter.
     /// </summary>
-    public class SCFormatter : IDatatypeFormatter
+    public class SCFormatter : STFormatter
 
     {
 
@@ -43,7 +43,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The XmlWriter stream to graph to.</param>
         /// <param name="o">The object to graph.</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Serialize CS
             SC cs = (SC)o;
@@ -80,8 +80,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
 
             ST st = (ST)o;
-            STFormatter stFormatter = new STFormatter();
-            stFormatter.Graph(s, st, result);
+            base.Graph(s, st, result);
             
         }
 
@@ -90,11 +89,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The stream to parse from</param>
         /// <returns>The parsed object</returns>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // The SC to return.
-            ANYFormatter baseFormatter = new ANYFormatter();
-            SC sc = baseFormatter.Parse<SC>(s, result);
+            SC sc = base.Parse<SC>(s, result);
 
             if (sc.NullFlavor != null)
                 return sc;
@@ -116,8 +114,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 sc.Code.DisplayName = s.GetAttribute("displayName");
 
             // Read the ST parts
-            STFormatter stFormatter = new STFormatter();
-            ST st = (ST)stFormatter.Parse(s, result);
+            ST st = (ST)base.Parse(s, result);
             sc.Language = st.Language;
             sc.Value = st.Value;
 
@@ -128,36 +125,18 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Returns the type that this formater handles.
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "SC"; }
         }
 
-        /// <summary>
-        /// Gets or sets the host.
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Generic arguments.
-        /// </summary>
-        public Type[] GenericArguments
-        {
-            get;
-            set;
-        }
-
+      
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
         public List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
-            retVal.AddRange(new STFormatter().GetSupportedProperties());
+            List<PropertyInfo> retVal = base.GetSupportedProperties();
             retVal.Add(typeof(SC).GetProperty("Code"));
             return retVal;
         }
