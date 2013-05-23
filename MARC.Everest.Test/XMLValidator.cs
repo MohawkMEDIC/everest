@@ -156,9 +156,7 @@ namespace MARC.Everest.Test
             
             // TODO: verify schemas were loaded using ValidationSettings.Schemas.Count
             XmlReader rdr = null;
-
-
-
+            
             try
             {
 
@@ -176,9 +174,9 @@ namespace MARC.Everest.Test
                 settings.ValidationType = ValidationType.Schema;
                 settings.ValidationEventHandler += new ValidationEventHandler(delegate(object sender, ValidationEventArgs e)
                     {
-                        //if(e.Severity == XmlSeverityType.Error && e.Message.Contains("not declared") && !e.Message.Contains("specializationType"))
-                        if(!e.Message.Contains("incomplete")) // Usually incomplete is due to the simple type creator not creating the necessary elements
-                            errorList.Add(String.Format("{0} : Validation exception: {1}" , e.Severity, e.Message));
+                        if(e.Severity == XmlSeverityType.Error && !e.Message.Contains("specializationType") && !e.Message.Contains("incomplete") &&
+                            !e.Message.Contains("possible elements expected")) // Usually incomplete is due to the simple type creator not creating the necessary elements
+                                errorList.Add(String.Format("{0} : Validation exception: {1}" , e.Severity, e.Message));
                     });
 
                 rdr = XmlReader.Create(XmlInstance, settings);
@@ -211,6 +209,7 @@ namespace MARC.Everest.Test
             }
             //System.Diagnostics.Debug.WriteLine(DebugMessage);
 
+            
             
             return errorList;
         }

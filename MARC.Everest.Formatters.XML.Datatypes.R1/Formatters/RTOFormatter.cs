@@ -25,6 +25,7 @@ using MARC.Everest.Exceptions;
 using MARC.Everest.Xml;
 using MARC.Everest.Interfaces;
 using System.Reflection;
+using MARC.Everest.DataTypes.Interfaces;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 {
@@ -32,7 +33,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Data types R1 formatter for RTO type
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "RTO")]
-    public class RTOFormatter : IDatatypeFormatter
+    public class RTOFormatter : ANYFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -44,11 +45,13 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to graph to</param>
         /// <param name="o">The object to graph</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
 
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
+
+            if ((o as IAny).IsNull)
+                return; // no need to graph
 
             // Since this is a generic type, we'll need to get the values we're interested in
             // for the formatting operation
@@ -124,7 +127,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <param name="s">The stream to parse from</param>
         /// <returns>The parsed object</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             
             // Create the types
@@ -190,9 +193,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
 
             // Validate
-            ANYFormatter anyFormatter = new ANYFormatter();
-            string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            anyFormatter.Validate(instance as ANY, pathName, result);
+            base.Validate(instance as ANY, s.ToString(), result);
 
             return instance;
         }
@@ -200,30 +201,19 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "RTO"; }
         }
-
-        /// <summary>
-        /// Get or set the host of this formatter
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
         public List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
+            List<PropertyInfo> retVal = base.GetSupportedProperties();
             retVal.Add(typeof(RTO<,>).GetProperty("Numerator"));
             retVal.Add(typeof(RTO<,>).GetProperty("Denominator"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
             return retVal;
         }
         #endregion

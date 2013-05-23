@@ -17,30 +17,21 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// SXPR Formatter helper
     /// </summary>
-    public class SXPRFormatter : IDatatypeFormatter
+    public class SXPRFormatter : ANYFormatter
     {
         #region IDatatypeFormatter Members
 
-        /// <summary>
-        /// Details for the formatting
-        /// </summary>
-        public MARC.Everest.Connectors.IResultDetail[] Details
-        {
-            get;
-            private set;
-        }
 
         /// <summary>
         /// Graph object <paramref name="o"/> onto stream <paramref name="s"/>
         /// </summary>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
-            ANYFormatter baseFormatter = new ANYFormatter();
             Type sxprType = typeof(SXPR<>);
             Type sxprGenericType = sxprType.MakeGenericType(GenericArguments);
 
             // Format the base type
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
             // Was a nullflavor present
             if ((o as ANY).NullFlavor != null)
@@ -81,7 +72,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     {
                         var pi = compType.GetProperty("Operator");
                         if (pi.GetValue(component, null) != null)
-                            result.AddResultDetail(new ResultDetail(ResultDetailType.Warning, "Operator won't be represented in the first object in the SXCM", s.ToString(), null));
+                            result.AddResultDetail(new ResultDetail(ResultDetailType.Warning, "Operator won't be represented in the first object in the SXPR", s.ToString(), null));
                         pi.SetValue(component, null, null);
                     }
 
@@ -97,7 +88,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Parse an object from <paramref name="s"/>
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Create the types
             Type sxprType = typeof(SXPR<>);
@@ -119,7 +110,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 if (s.GetAttribute("operator") != null)
                     sxprGenericType.GetProperty("Operator").SetValue(instance, Util.FromWireFormat(s.GetAttribute("operator"), typeof(SetOperator?)), null);
                 if (s.GetAttribute("specializationType") != null)
-                    sxprGenericType.GetProperty("Flavor").SetValue(instance, s.GetAttribute("specializationType"), null);
+                {
+                    if (result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
+                        sxprGenericType.GetProperty("Flavor").SetValue(instance, s.GetAttribute("specializationType"), null);
+                    else
+                        result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "Flavor", "SXPR", s.ToString()));
+                }
                 #region Element Processing 
 
                 // List of components
@@ -190,30 +186,20 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Gets the type that this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "SXPR"; }
         }
 
         /// <summary>
-        /// Gets or sets the host
-        /// </summary>
-        public MARC.Everest.Connectors.IXmlStructureFormatter Host { set; get; }
-
-        /// <summary>
-        /// Gets or sets the generic arguments
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
-
-        /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(2);
             retVal.Add(typeof(SXPR<>).GetProperty("Operator"));
             retVal.Add(typeof(SXPR<>).GetProperty("Terms"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
+            retVal.AddRange(base.GetSupportedProperties());
             return retVal;
 
         }
