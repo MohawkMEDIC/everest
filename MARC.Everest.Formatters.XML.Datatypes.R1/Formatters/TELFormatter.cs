@@ -32,12 +32,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Data types R1 formatter for TEL
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "TEL")]
-    public class TELFormatter : IDatatypeFormatter
+    public class TELFormatter : ANYFormatter
     {
-        /// <summary>
-        /// Host context
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
 
         #region IDatatypeFormatter Members
 
@@ -46,14 +42,13 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The XmlWriter to graph object to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Get an instance ref
             TEL instance_tel = (TEL)o;
 
             // Do a base format
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
             // Null flavor
             if (((ANY)o).NullFlavor != null)
@@ -78,21 +73,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 formatterHelper.Graph(s, instance_tel.UseablePeriod, result);
                 s.WriteEndElement(); // usable period
             }
-                //foreach (SXCM<TS> up in instance_tel.UseablePeriod)
-                //{
-                //    // Start element
-                //    s.WriteStartElement("useablePeriod", "urn:hl7-org:v3");
-
-                //    // Attributes for SXCM
-                //    if(up.Operator != null)
-                //        s.WriteAttributeString("operator", Util.ToWireFormat(up.Operator));
-                    
-                //    // Timestamp portion
-                //    TSFormatter tsFormatter = new TSFormatter();
-                //    tsFormatter.Graph(s, (TS)up, result); 
-                //    s.WriteEndElement(); // end usablePeriod
-
-                //}
              
         }
 
@@ -100,13 +80,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Parse the object from stream <paramref name="s"/>
         /// </summary>
         /// <param name="s">The XmlReader to parse from</param>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-
             // Parse TS
-            TEL retVal = baseFormatter.Parse<TEL>(s, result);
+            TEL retVal = base.Parse<TEL>(s, result);
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("value") != null)
@@ -153,7 +130,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
 
             return retVal;
@@ -162,26 +139,20 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Gets the name of the structure this formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "TEL"; }
         }
-
-        /// <summary>
-        /// Get or set the generic arguments to this type (if applicable)
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
         public List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
+            List<PropertyInfo> retVal = base.GetSupportedProperties();
             retVal.Add(typeof(TEL).GetProperty("Value"));
             retVal.Add(typeof(TEL).GetProperty("Use"));
             retVal.Add(typeof(TEL).GetProperty("UseablePeriod"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
             return retVal;
         }
         #endregion
