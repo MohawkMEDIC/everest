@@ -197,7 +197,7 @@ namespace MohawkCollege.EHR.HL7v3.MIF.MIF20
             {
                 PackageRef ro = obj as PackageRef;
                 return ro.Artifact == Artifact && ro.Domain == Domain && ro.Id == Id && ro.Name == Name &&
-                    (ro.Realm ?? "UV") == Realm && ro.Root == Root && ro.Section == Section && ro.SubArtifact == SubArtifact &&
+                    (ro.Realm ?? "UV") == (Realm ?? "UV") && ro.Root == Root && ro.Section == Section && ro.SubArtifact == SubArtifact &&
                     ro.SubSection == SubSection && (!version || ro.Version == "00" || (ro.Version == Version));
             }
             return base.Equals(obj);
