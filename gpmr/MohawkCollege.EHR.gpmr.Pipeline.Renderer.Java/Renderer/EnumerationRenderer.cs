@@ -188,7 +188,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 renderName = (cls.Annotations.Find(o => o is RenderAsAnnotation) as RenderAsAnnotation).RenderName;
 
             // Create class signature
-            tw.WriteLine("@Structure(name = \"{0}\", structureType = StructureType.{1})", cls.Name, cls.GetType().Name.ToUpper());
+            //tw.WriteLine("@Structure(name = \"{0}\", structureType = StructureType.{1})", cls.Name, cls.GetType().Name.ToUpper());
             tw.Write("public class {0} implements {1}.interfaces.IEnumeratedVocabulary", Util.Util.MakeFriendly(renderName), apiNs);
 
             tw.WriteLine("{");
