@@ -121,7 +121,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
             // Create code namespace
             CodeNamespace ns = new CodeNamespace(String.Format("MARC.Everest.Formatters.XML.ITS1.d{0}", Guid.NewGuid().ToString("N")));
-            Assembly rmimAssembly = rmimTypes[0].Assembly;
+            List<Assembly> rmimAssemblies = new List<Assembly>() { rmimTypes[0].Assembly };
+            
 
             try
             {
@@ -141,10 +142,10 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                 // Iterate through types and create formatter
                 if (generateDeep)
                 {
-                    foreach (var type in Array.FindAll<Type>(rmimAssembly.GetTypes(), o => o.IsClass && !o.IsAbstract && o.GetCustomAttributes(typeof(StructureAttribute), false).Length > 0))
+                    foreach (var type in Array.FindAll<Type>(rmimAssemblies[0].GetTypes(), o => o.IsClass && !o.IsAbstract && o.GetCustomAttributes(typeof(StructureAttribute), false).Length > 0))
                     {
-                        if (type.Assembly != rmimAssembly)
-                            throw new InvalidOperationException("All types must belong to the same revision assembly");
+                        //if (!rmimAssemblies.Contains(type.Assembly))
+                        //    rmimAssemblies.Add(type.Assembly);
                         GetUniqueTypes(type, types, true);
                     }
                 }
@@ -153,8 +154,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                     // Iterate throgh the types
                     foreach (Type type in rmimTypes)
                     {
-                        if (type.Assembly != rmimAssembly)
-                            throw new InvalidOperationException("All types must belong to the same revision assembly");
+                        //if (!rmimAssemblies.Contains(type.Assembly))
+                        //    throw new InvalidOperationException("All types must belong to the same revision assembly");
                         GetUniqueTypes(type, types, false);
                     }
                 }
@@ -173,6 +174,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                             continue;
 
                         s_formatterGenerated.Add(t);
+
+                        if (!rmimAssemblies.Contains(t.Assembly))
+                            rmimAssemblies.Add(t.Assembly);
 
                         // Structure Attribute
                         StructureAttribute sta = t.GetCustomAttributes(typeof(StructureAttribute), false)[0] as StructureAttribute;
@@ -193,7 +197,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                 // Add to the code currently created
                                 if (result != null)
                                     lock (ns)
+                                    {
                                         ns.Types.Add(result);
+                                    }
                             });
 
                             // Helper result
@@ -230,7 +236,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             compileUnit.ReferencedAssemblies.Add(typeof(ITypeFormatter).Assembly.Location);
 
             // Was this assembly loaded directly from disk or from a byte array
-            compileUnit.ReferencedAssemblies.Add(rmimAssembly.Location);
+            foreach(var asm in rmimAssemblies)
+                compileUnit.ReferencedAssemblies.Add(asm.Location);
 
             compileUnit.ReferencedAssemblies.Add("System.dll");
             compileUnit.ReferencedAssemblies.Add("System.Xml.dll");

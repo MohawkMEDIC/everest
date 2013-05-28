@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MARC.Everest.DataTypes;
+using MARC.Everest.Formatters.XML.Datatypes.R1;
 
 namespace MARC.Everest.Test.DataTypes
 {
@@ -88,6 +89,24 @@ namespace MARC.Everest.Test.DataTypes
             x.CodeSystem = null;
             x.CodeSystemVersion = null;
             x.NullFlavor = null;
+            Assert.IsTrue(x.Validate());
+        }
+
+        /// <summary>
+        /// Ensure that validation succeeds (return TRUE)
+        /// When the following values are being populated:
+        ///     Value               : The value of the ENXP
+        /// And, the following variables are nullified:
+        ///     Code                : A code assigned to the name part by a coding system if applicable
+        ///     CodeSystem          : The code system from whcih the code is taken
+        ///     CodeSystemVersion   : The cersion of the coding system
+        ///     NullFlavor          
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ENXP"), TestMethod]
+        public void ENXPQualifierTest()
+        {
+            string xml = "<name use=\"L\"><given>Neville</given><given qualifier=\"IN\">H.</given><family>Nuclear</family></name>";
+            EN x = (EN)R1SerializationHelper.ParseString(xml, typeof(EN));
             Assert.IsTrue(x.Validate());
         }
 

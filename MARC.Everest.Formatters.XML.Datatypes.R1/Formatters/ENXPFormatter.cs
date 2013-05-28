@@ -82,7 +82,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Parse CS
             ENXP retVal = base.Parse<ENXP>(s, result);
 
-            // Part Type is ignored by this formatter but qualifier is not
             if (s.GetAttribute("qualifier") != null)
                 retVal.Qualifier = Util.Convert<SET<CS<EntityNamePartQualifier>>>(s.GetAttribute("qualifier"));
 
@@ -101,10 +100,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             }
 
-            // Validate
+            // Validation is handled by the EN formatter
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
             base.Validate(retVal, pathName, result);
-
 
             return retVal;
         }
