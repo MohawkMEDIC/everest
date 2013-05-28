@@ -18,7 +18,7 @@ OutputBaseFilename=everest-nightly
 InfoBeforeFile=..\gpmr\Readme-nightly.txt
 #else
 AppName=MARC-HI Everest Framework
-AppVerName=MARC-HI Everest Framework Release Candidate 1
+AppVerName=MARC-HI Everest 1.0
 OutputBaseFilename=everest-setup
 ;InfoBeforeFile=.\installsupp\release\AUG-CTP-2010.txt
 #endif
@@ -35,7 +35,7 @@ OutputDir=..\dist
 Compression=lzma
 ;Compression=none
 SolidCompression=no
-AppCopyright=Copyright (C) 2008-2012, Mohawk College of Applied Arts and Technology
+AppCopyright=Copyright (C) 2008-2013, Mohawk College of Applied Arts and Technology
 WizardImageFile=install-logo.bmp
 WizardSmallImageFile=install-logo-small.bmp
 

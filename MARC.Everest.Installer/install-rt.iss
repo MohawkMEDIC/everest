@@ -12,7 +12,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{E016A6A5-39B1-4EE5-94DB-DFC9B3ABAB34}
 AppName=MARC-HI Everest Runtime
-AppVerName=MARC-HI Everest Release Candidate 1 Runtime 
+AppVerName=MARC-HI Everest 1.0 Runtime 
 OutputBaseFilename=everest-rt
 ;InfoBeforeFile=.\installsupp\release\AUG-CTP-2010.txt
 LicenseFile=..\License.rtf
