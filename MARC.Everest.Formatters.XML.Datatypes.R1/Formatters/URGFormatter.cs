@@ -71,6 +71,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (highClosedValue != null)
                 result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "HighClosed", "URG", s.ToString()));
             
+            // Why is this duplicated from IVL you ask?
+            // Wouldn't it be easier to create a method that graphs IInterval you ask?
+            // The reason is simple, URG has some slightly different rules, for example each component is not written as 
+            // an IVXB<T> (i.e. no low/high closed)
             if (lowValue != null && highValue != null) // low & high
             {
                 s.WriteStartElement("low", "urn:hl7-org:v3");

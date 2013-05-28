@@ -30,17 +30,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// <summary>
     /// TimeStamp formatter
     /// </summary>
-    public class TSFormatter : IDatatypeFormatter
+    public class TSFormatter : ANYFormatter
     {
-        /// <summary>
-        /// Host context
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
-
-        /// <summary>
-        /// Get or set the generic arguments to this type (if applicable)
-        /// </summary>
-        public Type[] GenericArguments { get; set; }
 
         #region IDatatypeFormatter Members
 
@@ -49,14 +40,13 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         /// <param name="s">The xmlwriter to write to</param>
         /// <param name="o">The object to graph</param>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Get an instance ref
             TS instance_ts = (TS)o;
 
             // Do a base format
-            ANYFormatter baseFormatter = new ANYFormatter();
-            baseFormatter.Graph(s, o, result);
+            base.Graph(s, o, result);
 
             // Null flavor
             if (((ANY)o).NullFlavor != null)
@@ -72,13 +62,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// Parse an object from <paramref name="s"/>
         /// </summary>
         /// <param name="s">The XmlReader to parse from</param>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            // Parse base (ANY) from the stream
-            ANYFormatter baseFormatter = new ANYFormatter();
-
             // Parse TS
-            TS retVal = baseFormatter.Parse<TS>(s, result);
+            TS retVal = base.Parse<TS>(s, result);
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("value") != null)
@@ -86,7 +73,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validate
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            baseFormatter.Validate(retVal, pathName, result);
+            base.Validate(retVal, pathName, result);
 
 
             return retVal;
@@ -95,7 +82,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Gets the type that this datatype formatter handles
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "TS"; }
         }
@@ -103,11 +90,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
-            List<PropertyInfo> retVal = new List<PropertyInfo>(10);
+            List<PropertyInfo> retVal = base.GetSupportedProperties();
             retVal.Add(typeof(TS).GetProperty("DateValue"));
-            retVal.AddRange(new ANYFormatter().GetSupportedProperties());
             return retVal;
         }
         #endregion
