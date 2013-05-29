@@ -76,8 +76,6 @@ namespace MARC.Everest.VisualStudio.Wizards
                     return;
                 }
 
-
-
                 // Wizard Creation
                 var wzrd = new frmWizard();
                 ValueDataParameter wp = new ValueDataParameter();

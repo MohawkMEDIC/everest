@@ -84,5 +84,10 @@ namespace MARC.Everest.Attributes
         /// Default template type
         /// </summary>
         public Type DefaultTemplateType { get; set; }
+
+        /// <summary>
+        /// The name of the model that contained the file
+        /// </summary>
+        public String Model { get; set; }
     }
 }

@@ -112,7 +112,7 @@ namespace MARC.Everest.Test.Manual.Formatters
             string neededResource = findResource("MCCI_IN000000UV01.xml");
 
             // Load the assembly into the current AppDomain
-            Assembly.Load(new AssemblyName("MARC.Everest.RMIM.UV.NE2008, Version=1.0.4366.42027, Culture=neutral"));
+            var asm = Assembly.Load(new AssemblyName("MARC.Everest.RMIM.UV.NE2008, Version=1.0.4366.42027, Culture=neutral"));
 
             // Initialize stream that will read the needed resource file.
             Stream s = null;
@@ -126,7 +126,7 @@ namespace MARC.Everest.Test.Manual.Formatters
                     Console.WriteLine("Invalid input stream.");
                 
                 // Setup the formatter
-                IStructureFormatter structureFormatter = new XmlIts1Formatter()
+                var structureFormatter = new XmlIts1Formatter()
                 {
                     ValidateConformance = false
                 };
@@ -135,7 +135,7 @@ namespace MARC.Everest.Test.Manual.Formatters
                 structureFormatter.GraphAides.Add(new DatatypeFormatter());
 
                 // Parse Resource Stream
-                var result = structureFormatter.Parse(s);
+                var result = structureFormatter.Parse(s, asm);
 
                 // Output the type of instance that was parsed
                 Console.WriteLine("This file contains a '{0}' instance.", result.Structure.GetType().Name);

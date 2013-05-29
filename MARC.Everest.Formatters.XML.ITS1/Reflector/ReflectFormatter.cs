@@ -195,7 +195,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     if (formatAs == null)
                         resultContext.AddResultDetail(new NotSupportedChoiceResultDetail(ResultDetailType.Error, String.Format("Type {0} is not a valid choice according to available choice elements and won't be formatted", instance.GetType()), s.ToString(), null));
                     else if (instance.GetType().GetInterface("MARC.Everest.Interfaces.IGraphable") != null) // Non Graphable
-                        rc = Host.WriteElementUtil(s, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.GetType(), context, resultContext);
+                        rc = Host.WriteElementUtil(s, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.Type, context, resultContext);
                     else if (instance.GetType().GetInterface("System.Collections.IEnumerable") != null) // List
                         foreach (MARC.Everest.Interfaces.IGraphable ig in instance as IEnumerable) { rc = Host.WriteElementUtil(s, formatAs.Name, ig, instance.GetType(), context, resultContext); }
                     else // Not recognized
