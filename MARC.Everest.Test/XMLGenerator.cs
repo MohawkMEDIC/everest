@@ -44,6 +44,8 @@ namespace MARC.Everest.Test
             dlist.AddRange(formatter.Details);
             details = dlist.ToArray();
 
+            System.GC.Collect();
+
             return gresult;
         }
 
