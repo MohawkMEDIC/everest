@@ -135,6 +135,8 @@ namespace Samples.Everest.Connectors.WcfClient.ClientRegistry
                     )
                 ));
 
+            instance.controlActEvent.EffectiveTime = new IVL<TS>(DateTime.Now);
+
             // Set the author
             instance.controlActEvent.Author.SetAuthorPerson(
               SET<II>.CreateSET(new II("1.3.6.1.4.1.21367.2010.3.2.202", "0008")),
