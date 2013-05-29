@@ -747,6 +747,7 @@ namespace MARC.Everest.Connectors.WCF
         /// <summary>
         /// Gets the active endpoint for the client
         /// </summary>
+#if !WINDOWS_PHONE
         public ServiceEndpoint Endpoint
         {
             get
@@ -754,7 +755,7 @@ namespace MARC.Everest.Connectors.WCF
                 return this.wcfClient.Endpoint;
             }
         }
-
+#endif 
         #endregion
 
         #region IConnector Members

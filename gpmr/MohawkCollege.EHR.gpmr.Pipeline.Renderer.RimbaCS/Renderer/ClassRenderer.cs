@@ -82,8 +82,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
         private string CreateStructureAttribute(Class cls)
         {
             StringBuilder sb = new StringBuilder("[Structure(");
-            sb.AppendFormat("Name = \"{0}\", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = {1})]", cls.Name, 
-                cls.ContainerPackage.EntryPoint.Exists(o=>o.Name == cls.Name) ? "true" : "false");
+            sb.AppendFormat("Name = \"{0}\", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = {1}, Model=\"{2}\" )]", cls.Name, 
+                cls.ContainerPackage.EntryPoint.Exists(o=>o.Name == cls.Name) ? "true" : "false", cls.ContainerName);
             return sb.ToString();
         }
 

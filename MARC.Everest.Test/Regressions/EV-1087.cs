@@ -25,6 +25,7 @@ namespace MARC.Everest.Test.Regressions
     using System.IO;
     using System.Xml;
     using MARC.Everest.Formatters.XML.Datatypes.R1;
+    using MARC.Everest.RMIM.UV.NE2010.Interactions;
 
     [Serializable, GeneratedCode("", ""), Structure(Name = "RelatedPerson", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = false), Description("RelatedPerson")]
     public class RelatedPerson : MARC.Everest.RMIM.UV.NE2010.COCT_MT910000UV.RelatedPerson, IGraphable, IEquatable<RelatedPerson>, ICloneable
@@ -97,6 +98,55 @@ namespace MARC.Everest.Test.Regressions
     [TestClass]
     public class EV_1087
     {
+        [TestMethod]
+        public void EV_1087XsiTypeTest()
+        {
+            REPC_IN002120UV01 testInstance = new REPC_IN002120UV01();
+            testInstance.controlActProcess = new RMIM.UV.NE2010.MCAI_MT700201UV01.ControlActProcess<RMIM.UV.NE2010.REPC_MT002000UV01.CareProvisionRequest>();
+            testInstance.controlActProcess.Subject.Add(new RMIM.UV.NE2010.MCAI_MT700201UV01.Subject2<RMIM.UV.NE2010.REPC_MT002000UV01.CareProvisionRequest>());
+            testInstance.controlActProcess.Subject[0].act = new RMIM.UV.NE2010.REPC_MT002000UV01.CareProvisionRequest();
+            testInstance.controlActProcess.Subject[0].act.PertinentInformation3.Add(new RMIM.UV.NE2010.REPC_MT002000UV01.PertinentInformation5());
+
+            var careStatement = new RMIM.UV.NE2010.REPC_MT000100UV01.Procedure()
+            {
+                Subject = new List<RMIM.UV.NE2010.REPC_MT000100UV01.Subject4>() {
+                    new RMIM.UV.NE2010.REPC_MT000100UV01.Subject4()
+                }
+            };
+            RelatedPerson person = new RelatedPerson(
+                SET<PN>.CreateSET(new PN(EntityNameUse.Legal, "John Smith")),
+                SET<TEL>.CreateSET((TEL)"mailto:john@smith.com"),
+                "F",
+                DateTime.Now,
+                DateTime.Today,
+                SET<AD>.CreateSET(AD.CreateAD(PostalAddressUse.Direct, new ADXP("123 Main Street West, Hamilton, ON"))),
+                null);
+            person.DeceasedInd = true;
+
+            careStatement.Subject[0].SetSubjectChoice(new PersonalRelationship()
+            {
+                RelationshipHolder = person
+            });
+            testInstance.controlActProcess.Subject[0].act.PertinentInformation3[0].SetCareStatement(careStatement);
+
+
+            // This fails
+            XmlIts1Formatter fmtr = new XmlIts1Formatter();
+            fmtr.Settings = SettingsType.DefaultLegacy;
+            fmtr.GraphAides.Add(new DatatypeFormatter());
+            StringWriter sw = new StringWriter();
+            using (XmlStateWriter writer = new XmlStateWriter(XmlWriter.Create(sw)))
+                fmtr.Graph(writer, testInstance);
+
+            StringReader rdr = new StringReader(sw.ToString());
+            using (XmlStateReader reader = new XmlStateReader(XmlReader.Create(rdr)))
+            {
+                var result = fmtr.Parse(reader, typeof(REPC_IN002120UV01).Assembly);
+                //Assert.AreEqual(testInstance, result.Structure);
+                Assert.AreEqual(person.GetType(), (((result.Structure as REPC_IN002120UV01).controlActProcess.Subject[0].act.PertinentInformation3[0].CareStatement as RMIM.UV.NE2010.REPC_MT000100UV01.Procedure).Subject[0].SubjectChoice as PersonalRelationship).RelationshipHolder.GetType());
+            }
+        }
+
         [TestMethod]
         public void EV_1087Test()
         {

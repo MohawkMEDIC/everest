@@ -205,7 +205,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     if (formatAs == null)
                         resultContext.AddResultDetail(new NotSupportedChoiceResultDetail(ResultDetailType.Error, String.Format("Type {0} is not a valid choice according to available choice elements and won't be formatted", instance.GetType()), s.ToString(), null));
                     else if (instance.GetType().GetInterface("MARC.Everest.Interfaces.IGraphable", false) != null) // Non Graphable
-                        Host.WriteElementUtil(s, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.GetType(), context, resultContext);
+                        Host.WriteElementUtil(s, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.Type, context, resultContext);
                     else if (instance.GetType().GetInterface("System.Collections.IEnumerable", false) != null) // List
                         foreach (MARC.Everest.Interfaces.IGraphable ig in instance as IEnumerable) { Host.WriteElementUtil(s, formatAs.Name, ig, instance.GetType(), context, resultContext); }
                     else // Not recognized
@@ -506,7 +506,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 {
                     PropertyAttribute pa = propAttributes[0] as PropertyAttribute;
                     if (pa.Conformance == PropertyAttribute.AttributeConformanceType.Mandatory &&
-                        pi.PropertyType.GetInterface(typeof(IImplementsNullFlavor).FullName) != null &&
+                        pi.PropertyType.GetInterface(typeof(IImplementsNullFlavor).FullName, false) != null &&
                         (piValue == null || (piValue as IImplementsNullFlavor).NullFlavor != null))
                     {
                         isValid = false;
