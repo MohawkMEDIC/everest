@@ -653,7 +653,7 @@ namespace MARC.Everest.Test.Manual.Formatters
                 });
 
                 // Parse and print result type.
-                var graphResult = formatter.Parse(s);
+                var graphResult = formatter.Parse(s, typeof(MCCI_IN000000UV01).Assembly);
                 Console.WriteLine("Instance type: {0}", graphResult.Structure.GetType().Name);
 
                 // Get the results.
