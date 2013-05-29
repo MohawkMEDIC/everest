@@ -83,9 +83,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
             current.Add(rmimType);
 
-            // Base type?
-            if (rmimType.BaseType != typeof(System.Object) && rmimType.BaseType != null)
-                this.GetUniqueTypes(rmimType.BaseType, current, generateDeep);
+            //// Base type?
+            //if (rmimType.BaseType != typeof(System.Object) && rmimType.BaseType != null)
+            //    this.GetUniqueTypes(rmimType.BaseType, current, generateDeep);
 
             // Scan types
             foreach (PropertyInfo pi in rmimType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
