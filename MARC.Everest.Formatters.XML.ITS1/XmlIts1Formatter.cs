@@ -1204,16 +1204,22 @@ namespace MARC.Everest.Formatters.XML.ITS1
             IXmlStructureFormatter ixsf = null;
             
             // xsi type - We want to adjust the type based on this value
-            if (r.GetAttribute("type", NS_XSI) != null)
+            try
             {
-                if (typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
-                    ixsf = this.GetAdjustedFormatter(r.GetAttribute("type", NS_XSI)); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                if (r.GetAttribute("type", NS_XSI) != null)
+                {
+                    if (typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
+                        ixsf = this.GetAdjustedFormatter(r.GetAttribute("type", NS_XSI)); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                    else
+                        useType = this.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                }
                 else
-                    useType = this.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                    ixsf = (IXmlStructureFormatter)this.GraphAides.Find(t => t.HandleStructure.Contains(typeName));
             }
-            else
-                ixsf = (IXmlStructureFormatter)this.GraphAides.Find(t => t.HandleStructure.Contains(typeName));
-
+            catch (Exception e)
+            {
+                resultContext.AddResultDetail(new ResultDetail(ResultDetailType.Error, e.Message, r.ToString(), e));
+            }
 
             string currentPath = r is XmlStateReader ? (r as XmlStateReader).CurrentPath : r.Name;
             // Does a helper have it?
@@ -1286,7 +1292,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 // TODO: This happens for generics
                 throw new NotImplementedException();
             }
-            else
+            else if (tokens.Length == 2)
             {
                 // Find the type that has the specified name and model
                 String modelName = tokens[0], structureName = tokens[1];
@@ -1301,13 +1307,17 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 };
 
                 // Search for a type that matches
-                Assembly candidateAssembly = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), a => Array.Exists(a.GetTypes(), typeComparator));
+                Assembly candidateAssembly = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), a => { try { return Array.Exists(a.GetTypes(), typeComparator); } catch { return false; } });
+                if (candidateAssembly == null)
+                    throw new InvalidOperationException(String.Format("Cannot locate type described by {0}", xsiTypeName));
                 retVal = Array.Find(candidateAssembly.GetTypes(), typeComparator);
 
-                lock(this.m_syncRoot)
-                    if(!this.s_typeNameMaps.ContainsKey(xsiTypeName))
+                lock (this.m_syncRoot)
+                    if (!this.s_typeNameMaps.ContainsKey(xsiTypeName))
                         this.RegisterXSITypeName(xsiTypeName, retVal);
             }
+            else
+                throw new ArgumentException("xsi:type cannot be auto-parsed. Please register it using RegisterXSITypeName");
             return retVal;
         }
 
