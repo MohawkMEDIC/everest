@@ -1096,7 +1096,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 //       assigned.
                 if (typeof(ANY).IsAssignableFrom(g.GetType()))
                     s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, Util.CreateXSITypeName(g.GetType()));
-                else if(g.GetType().Assembly.FullName != propType.Assembly.FullName)
+                else if(propType != null && g.GetType().Assembly.FullName != propType.Assembly.FullName)
                 {
                     string typeName = this.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null);
                     s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, typeName);
