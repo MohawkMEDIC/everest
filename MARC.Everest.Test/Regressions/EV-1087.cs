@@ -27,7 +27,7 @@ namespace MARC.Everest.Test.Regressions
     using MARC.Everest.Formatters.XML.Datatypes.R1;
     using MARC.Everest.RMIM.UV.NE2010.Interactions;
 
-    [Serializable, GeneratedCode("", ""), Structure(Name = "RelatedPerson", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = false), Description("RelatedPerson")]
+    [Serializable, GeneratedCode("", ""), Structure(Name = "RelatedPerson", Model="COCT_MT910000UVTest", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = false), Description("RelatedPerson")]
     public class RelatedPerson : MARC.Everest.RMIM.UV.NE2010.COCT_MT910000UV.RelatedPerson, IGraphable, IEquatable<RelatedPerson>, ICloneable
     {
         public RelatedPerson()
@@ -132,12 +132,13 @@ namespace MARC.Everest.Test.Regressions
 
             // This fails
             XmlIts1Formatter fmtr = new XmlIts1Formatter();
-            fmtr.Settings = SettingsType.DefaultLegacy;
             fmtr.GraphAides.Add(new DatatypeFormatter());
             StringWriter sw = new StringWriter();
             using (XmlStateWriter writer = new XmlStateWriter(XmlWriter.Create(sw)))
                 fmtr.Graph(writer, testInstance);
 
+            fmtr = new XmlIts1Formatter();
+            fmtr.GraphAides.Add(new DatatypeFormatter());
             StringReader rdr = new StringReader(sw.ToString());
             using (XmlStateReader reader = new XmlStateReader(XmlReader.Create(rdr)))
             {
