@@ -44,7 +44,6 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
 
             // Create the CDA
             ClinicalDocument cda = new ClinicalDocument(
-                ActClassClinicalDocument.ClinicalDocument, // Document type is clinical document
                 new II("2.16.840.1.113883.19.4", "c266"), // Create an identifier for the document
                 new CE<String>("33049-3", "2.16.840.1.113883.6.1", "LOINC", null, "Consultation note", null), // Specify the type of document
                 DateTime.Now, // Effective time of the document (now)
@@ -115,7 +114,6 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             // Everest provides methods of creating abstract classes through a series of helper methods,
             // here we're creating an observation for asthma
             var asthma = ClinicalStatement.CreateObservation(
-                ActClass.Observation,
                 x_ActMoodDocumentObservation.Eventoccurrence,
                 new CD<String>("30049385", "2.16.840.1.113883.6.96", "SNOMED-CT", null, "Asthma", null)
             );
@@ -162,7 +160,6 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
             //throw new NotImplementedException();
             return new Custodian(
                 new AssignedCustodian(
-                    RoleClass.AssignedEntity
                 )
             );
         }
@@ -176,7 +173,6 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
                 ContextControl.AdditivePropagating,
                 DateTime.Now,
                 new AssignedAuthor(
-                    RoleClass.AssignedEntity,
                     new SET<II>(new II("1.2.3.4.5.6", "1234"))
                 )
             );

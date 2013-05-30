@@ -52,10 +52,10 @@ namespace HelloWorld
                            new MARC.Everest.DataTypes.LIST<II>() { new MARC.Everest.DataTypes.II("2.16.840.1.113883.2.20.2", "R02.04.00") }, // profileID
                            new CS<ProcessingID>(ProcessingID.Debugging), // processing ID code
                            new CS<AcknowledgementCondition>(AcknowledgementCondition.Never), // ack type
-                           new MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Receiver(
-                               new MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Device2(new II("2.16.840.1.113883.19.3.297.15.37.0.47", "DIS01"))),
-                           new MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Sender(
-                               new MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Device1(new II("2.16.840.1.113883.19.3.207.15.1.0.3", "DIS01"))));
+                           new MARC.Everest.RMIM.CA.R020401.MCCI_MT002300CA.Receiver(
+                               new MARC.Everest.RMIM.CA.R020401.MCCI_MT002300CA.Device2(new II("2.16.840.1.113883.19.3.297.15.37.0.47", "DIS01"))),
+                           new MARC.Everest.RMIM.CA.R020401.MCCI_MT002300CA.Sender(
+                               new MARC.Everest.RMIM.CA.R020401.MCCI_MT002300CA.Device1(new II("2.16.840.1.113883.19.3.207.15.1.0.3", "DIS01"))));
 
 
             // prepare a coded value representing the trigger event - this will be attached to the control act event
@@ -67,8 +67,8 @@ namespace HelloWorld
             FindCandidatesStructure.controlActEvent = PRPA_IN101103CA.CreateControlActEvent(
                 new II("2.16.840.1.113883.19.3.207.15.1.1", "0245285594892"),
                 triggerevent,
-                new MARC.Everest.RMIM.CA.R020401.MFMI_MT700751CA.Author(new TS(DateTime.Parse("2009-03-14 19:58:55.218"))),                
-                new MARC.Everest.RMIM.CA.R020401.MFMI_MT700751CA.QueryByParameter<MARC.Everest.RMIM.CA.R020401.PRPA_MT101103CA.ParameterList>(
+                new MARC.Everest.RMIM.CA.R020401.MFMI_MT700751CA.Author(new TS(DateTime.Parse("2009-03-14 19:58:55.218"))),
+                new MARC.Everest.RMIM.CA.R020401.MFMI_MT700746CA.QueryByParameter<MARC.Everest.RMIM.CA.R020401.PRPA_MT101103CA.ParameterList>(
                     II.CreateToken(Guid.NewGuid()),
                     new MARC.Everest.RMIM.CA.R020401.PRPA_MT101103CA.ParameterList()
                 ));

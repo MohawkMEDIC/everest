@@ -89,7 +89,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             PropertyInfo probabilityProperty = uvpType.GetProperty("Probability"),
                 valueProperty = uvpType.GetProperty("Value");
 
-            // Clean the 
+            // Clean the type
             if (s.GetAttribute("type", DatatypeFormatter.NS_XSI) != null && s is XmlStateReader)
             {
                 (s as XmlStateReader).AddFakeAttribute("type", Util.CreateXSITypeName(GenericArguments[0]));

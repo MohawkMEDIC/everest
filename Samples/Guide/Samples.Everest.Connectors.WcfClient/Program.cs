@@ -65,20 +65,20 @@ namespace Samples.Everest.Connectors.WcfClient
                 // Training means the message shouldn't actually update data on the receiver
                 AcknowledgementCondition.Always, // Identifies when the message should be acknowledged. 
                 // We always want an acknowledgement in this case
-                new MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Receiver(), // The sender/receiver are used 
+                new MARC.Everest.RMIM.CA.R020401.MCCI_MT002300CA.Receiver(), // The sender/receiver are used 
                 // by the receiver to validate 
                 // that the sender is permitted 
                 // to communicate with the host
-                new MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Sender() // and that the message is being 
+                new MARC.Everest.RMIM.CA.R020401.MCCI_MT002300CA.Sender() // and that the message is being 
                 // processed by the intended 
                 // recipient (just like email)
             );
 
             // Set the receiver and sender structures in detail
-            instance.Receiver.Device = new MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Device2(
+            instance.Receiver.Device = new MARC.Everest.RMIM.CA.R020401.MCCI_MT002300CA.Device2(
                     new II("1.2.3.4", "RecipientDeviceExtension")
                 );
-            instance.Sender.Device = new MARC.Everest.RMIM.CA.R020401.MCCI_MT102001CA.Device1(
+            instance.Sender.Device = new MARC.Everest.RMIM.CA.R020401.MCCI_MT002300CA.Device1(
                     new II("1.2.3.4", "SenderExtension")
                     );
             instance.Sender.Device.Name = "WcfClient Sample Application"; // Additional data can be set about the sender
@@ -95,10 +95,10 @@ namespace Samples.Everest.Connectors.WcfClient
                 // many cases, the trigger event for an interaction is 
                 // fixed, and can be accessed using the .TRIGGER_EVENT
                 // constant
-                new MARC.Everest.RMIM.CA.R020401.MCAI_MT700221CA.RecordTarget(), // The record target identifies
+                new MARC.Everest.RMIM.CA.R020401.MCAI_MT700211CA.RecordTarget(), // The record target identifies
                 // the target of the event. In this case, it is the patient
                 // that we are recording the discharge for
-                new MARC.Everest.RMIM.CA.R020401.MCAI_MT700221CA.Author(), // The author identifies the person
+                new MARC.Everest.RMIM.CA.R020401.MCAI_MT700212CA.Author(), // The author identifies the person
                 // that is responsible for the act
                 new MARC.Everest.RMIM.CA.R020401.MCAI_MT700210CA.Subject2<MARC.Everest.RMIM.CA.R020401.REPC_MT220001CA.Document>()
                 // The subject is the actual data that is being created,
@@ -107,7 +107,7 @@ namespace Samples.Everest.Connectors.WcfClient
 
             // Create the record target
             instance.controlActEvent.RecordTarget.SetPatient1(new SET<II>(new II("1.1.1.1.1", "1234"), II.Comparator),
-                new MARC.Everest.RMIM.CA.R020401.COCT_MT050202CA.Person(
+                new MARC.Everest.RMIM.CA.R020401.COCT_MT050207CA.Person(
                     new PN(
                         EntityNameUse.Legal, 
                         new ENXP[] { 

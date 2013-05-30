@@ -35,7 +35,7 @@ OutputDir=..\dist
 Compression=lzma/ultra
 ;Compression=
 SolidCompression=false
-AppCopyright=Copyright (C) 2008-2012, Mohawk College of Applied Arts and Technology
+AppCopyright=Copyright (C) 2008-2013, Mohawk College of Applied Arts and Technology
 WizardImageFile=install-logo.bmp
 WizardSmallImageFile=install-logo-small.bmp
 
