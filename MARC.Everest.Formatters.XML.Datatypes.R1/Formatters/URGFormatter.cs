@@ -209,12 +209,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                         ((IProbability)instance).Probability = prob;
                 }
                 // This doesn't make sense as "value" is inline with the type
-                //if (s.GetAttribute("value") != null)
-                //{
-                //    urgGenericType.GetProperty("Value").SetValue(instance, Util.FromWireFormat(s.GetAttribute("value"), GenericArguments[0]), null);
-                //    result.AddResultDetail(new NotSupportedChoiceResultDetail(
-                //            ResultDetailType.Warning, "Though XML ITS supports it, use of the URG 'value' attribute should be avoided. The data has been parsed anyways.", s.ToString(), null));
-                //}
+                if (s.GetAttribute("value") != null)
+                {
+                    urgGenericType.GetProperty("Value").SetValue(instance, Util.FromWireFormat(s.GetAttribute("value"), GenericArguments[0]), null);
+                    result.AddResultDetail(new NotSupportedChoiceResultDetail(
+                            ResultDetailType.Warning, "Though XML ITS supports it, use of the URG 'value' attribute should be avoided. The data has been parsed anyways.", s.ToString(), null));
+                }
                 if (s.GetAttribute("specializationType") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
                     ((ANY)instance).Flavor = s.GetAttribute("specializationType");
 

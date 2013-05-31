@@ -999,7 +999,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Utility function for helper formatters
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void WriteElementUtil(XmlWriter s, string elementName, IGraphable g, Type propType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
+        public virtual void WriteElementUtil(XmlWriter s, string elementName, IGraphable g, Type propType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
         {
             ThrowIfDisposed();
 
@@ -1047,7 +1047,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Write the nullflavor
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void WriteNullFlavorUtil(XmlWriter s, IGraphable nullFlavor)
+        public virtual void WriteNullFlavorUtil(XmlWriter s, IGraphable nullFlavor)
         {
             ThrowIfDisposed();
 
@@ -1119,7 +1119,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <param name="interactionContext">The current interaction being parsed</param>
         /// <returns>The parsed object</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "r"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
-        public IGraphable ParseObject(XmlReader r, Type useType, Type interactionContext, XmlIts1FormatterParseResult resultContext)
+        public virtual IGraphable ParseObject(XmlReader r, Type useType, Type interactionContext, XmlIts1FormatterParseResult resultContext)
         {
             ThrowIfDisposed();
 
@@ -1304,7 +1304,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Graph object onto xml writer
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s")]
-        private void GraphObject(XmlWriter s, IGraphable o, Type useType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
+        private virtual void GraphObject(XmlWriter s, IGraphable o, Type useType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
         {
 
             // Find the HL7 alias for the type and build the cache for the type
