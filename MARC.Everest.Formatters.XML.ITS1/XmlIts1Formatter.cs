@@ -1304,7 +1304,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Graph object onto xml writer
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s")]
-        private virtual void GraphObject(XmlWriter s, IGraphable o, Type useType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
+        protected virtual void GraphObject(XmlWriter s, IGraphable o, Type useType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
         {
 
             // Find the HL7 alias for the type and build the cache for the type

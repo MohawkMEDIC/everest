@@ -23,6 +23,7 @@ using System.Text;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.DataTypes
 {
@@ -159,8 +160,8 @@ namespace MARC.Everest.DataTypes
                 return new REAL() { NullFlavor = DataTypes.NullFlavor.NoInformation };
 
             int precision = 0;
-            if (o.Contains("."))
-                precision = o.Length - o.IndexOf(".") - 1;
+            if (o.Contains(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator))
+                precision = o.Length - o.IndexOf(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator) - 1;
 
             return new REAL(d)
             {

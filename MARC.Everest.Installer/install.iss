@@ -171,6 +171,7 @@ Source: .\installsupp\Help\MARC-HI Everest Framework.chm; DestDir: {app}\help; C
 Source: .\installsupp\isxdl.dll; DestDir: {tmp}
 #ifdef INCLUDE_SRC
 Source: ..\*; DestDir: {app}\src; Flags: ignoreversion recursesubdirs; Excludes: *.vssscc, *.dump, *.xap, ApiExplorer, Samples,*.vspscc, MARC.Everest.Test*, MARC.Everest.Installer*, MARC.Everest.Connectors.MSMQ, MARC.Everest.VisualStudio.*,TFS Build - Nightly.txt,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, TeamBuildTypes, TestResults, api.sln, *.xsd, *.*mif, Solution Items; Components: src
+Source: ..\Solution Items\MohawkCollege.EHR.Util.SimpleXSD.dll; DestDir: {app}\src\Solution Items; Components:src
 #endif
 #ifdef INCLUDE_SAMPLES
 Source: ..\Samples\*; DestDir: {app}\samples; Flags: ignoreversion recursesubdirs; Excludes: Phone, *.vspscc, *.vssscc, *.dump,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, *.suo; Components: doc\samples

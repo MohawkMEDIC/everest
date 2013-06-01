@@ -61,7 +61,6 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public ANY() { }
 
-        
         /// <summary>
         /// Gets or sets an exceptional <see cref="T:MARC.Everest.DataTypes.NullFlavor"/> value that identifies why the 
         /// contents of a datatype are not being processed.
@@ -245,9 +244,9 @@ namespace MARC.Everest.DataTypes
         public override string ToString()
         {
             StringBuilder retVal = new StringBuilder("{");
-            retVal.AppendFormat("{0}", this.DataType.Name);
+            retVal.AppendFormat(EverestFrameworkContext.CurrentCulture, "{0}", this.DataType.Name);
             if (this.IsNull)
-                retVal.AppendFormat(":NULL({0})", Util.ToWireFormat(this.NullFlavor));
+                retVal.AppendFormat(EverestFrameworkContext.CurrentCulture, ":NULL({0})", Util.ToWireFormat(this.NullFlavor));
             retVal.Append("}");
             return retVal.ToString();
         }

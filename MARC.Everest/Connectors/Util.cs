@@ -27,6 +27,7 @@ using MARC.Everest.Connectors;
 using MARC.Everest.Exceptions;
 using MARC.Everest.DataTypes.Interfaces;
 using System.ComponentModel;
+using System.Globalization;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -62,6 +63,7 @@ namespace MARC.Everest.Connectors
         /// Value - MethodInfo of the method that will perform the operation to convert
         /// </summary>
         private static Dictionary<string, MethodInfo> s_wireMaps = new Dictionary<string, MethodInfo>();
+
 
         /// <summary>
         /// Static constructor
@@ -182,13 +184,20 @@ namespace MARC.Everest.Connectors
         /// <returns></returns>
         internal static MethodInfo FindConverter(Type scanType, Type sourceType, Type destType)
         {
-            lock(scanType)
+            MethodInfo retVal = null;
+            lock (scanType)
                 foreach (MethodInfo mi in scanType.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
-                    if (mi.GetParameters().Length == 1 && 
+                    if (mi.GetParameters().Length == 2 &&
                         (mi.ReturnType.IsSubclassOf(destType) || destType == mi.ReturnType) &&
-                        mi.GetParameters()[0].ParameterType.FullName == sourceType.FullName)
-                        return mi;
-            return null;
+                        mi.GetParameters()[0].ParameterType.FullName == sourceType.FullName &&
+                        mi.GetParameters()[1].ParameterType.FullName == typeof(IFormatProvider).FullName)
+                        retVal = mi;
+                    else if (mi.GetParameters().Length == 1 &&
+                        (mi.ReturnType.IsSubclassOf(destType) || destType == mi.ReturnType) &&
+                        mi.GetParameters()[0].ParameterType.FullName == sourceType.FullName && retVal == null)
+                        retVal = mi;
+            return retVal;
+            
         }
 
         /// <summary>
@@ -248,7 +257,7 @@ namespace MARC.Everest.Connectors
             if (s_enumerationMaps.ContainsKey(kFormat)) // Return enumeration map
                 return s_enumerationMaps[kFormat];
 
-            return String.Format("{0}", instanceValue);
+            return String.Format(EverestFrameworkContext.CurrentCulture, "{0}", instanceValue);
         }
 
         /// <summary>
@@ -537,7 +546,10 @@ namespace MARC.Everest.Connectors
             
             try
             {
-                result = mi.Invoke(null, new object[] { value }); // Invoke the conversion method
+                if (mi.GetParameters().Length == 2)
+                    result = mi.Invoke(null, new object[] { value, EverestFrameworkContext.CurrentCulture }); // Invoke the conversion method;
+                else
+                    result = mi.Invoke(null, new object[] { value }); // Invoke the conversion method
                 return result != null;
             }
             catch { result = null; return false; }
