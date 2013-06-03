@@ -82,8 +82,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
         private string CreateStructureAttribute(Class cls)
         {
             StringBuilder sb = new StringBuilder("[Structure(");
-            sb.AppendFormat("Name = \"{0}\", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = {1})]", cls.Name, 
-                cls.ContainerPackage.EntryPoint.Exists(o=>o.Name == cls.Name) ? "true" : "false");
+            sb.AppendFormat("Name = \"{0}\", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = {1}, Model=\"{2}\" )]", cls.Name, 
+                cls.ContainerPackage.EntryPoint.Exists(o=>o.Name == cls.Name) ? "true" : "false", cls.ContainerName);
             return sb.ToString();
         }
 
@@ -191,13 +191,22 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.IO.StringWriter.#ctor"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         private string CreateValidateFunction(Class cls)
         {
-            StringWriter sw = new StringWriter();
+            StringWriter sw = new StringWriter(),
+                swEx = new StringWriter();
+
             sw.WriteLine("\t\t/// <summary> Validates that the current instance meets conformance rules specified in the model </summary>");
             sw.WriteLine("\t\t/// <returns>True if this instance is valid, false otherwise</returns>");
             sw.WriteLine("\t\t/// <remarks>Provides only basic validation functionality</remarks>");
             sw.WriteLine("\t\tpublic {0} bool Validate() {{\r\n\t\t\tbool isValid = {1};\r\n\t\t\tif(!isValid) return false;",
                 "RIM." + Util.Util.PascalCase(cls.Name) == RimbaCsRenderer.RootClass ? "virtual" : "override", "RIM." + Util.Util.PascalCase(cls.Name) == RimbaCsRenderer.RootClass ? "true" : "base.Validate()");
+
             
+            swEx.WriteLine("\t\t/// <summary> Validates that the current instance meets conformance rules specified in the model returning the detected errors</summary>");
+            swEx.WriteLine("\t\t/// <returns>A list of detected errors</returns>");
+            swEx.WriteLine("\t\t/// <remarks>Provides only basic validation functionality</remarks>");
+            swEx.WriteLine("\t\tpublic {0} IEnumerable<MARC.Everest.Connectors.IResultDetail> ValidateEx() {{\r\n\t\t\tList<MARC.Everest.Connectors.IResultDetail> retVal = {1};",
+                "RIM." + Util.Util.PascalCase(cls.Name) == RimbaCsRenderer.RootClass ? "virtual" : "override", "RIM." + Util.Util.PascalCase(cls.Name) == RimbaCsRenderer.RootClass ? "new List<MARC.Everest.Connectors.IResultDetail>()" : "base.ValidateEx() as List<MARC.Everest.Connectors.IResultDetail>");
+
             // Write the validation function
             foreach (ClassContent cc in cls.Content)
             {
@@ -225,7 +234,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                 if (cc.Conformance == ClassContent.ConformanceKind.Mandatory || cc.Conformance == ClassContent.ConformanceKind.Populated)
                 {
                     if (cc.MaxOccurs != "1")
+                    {
                         sw.WriteLine("\t\t\tisValid &= this.{0} != null && this.{0}.Count <= {1} && this.{0}.Count >= {2};", pCasedName, cc.MaxOccurs == "*" ? "int.MaxValue" : cc.MaxOccurs, cc.MinOccurs);
+                        swEx.WriteLine("\t\t\tif(!(this.{0} != null && this.{0}.Count <= {1} && this.{0}.Count >= {2}))  retVal.Add(new MARC.Everest.Connectors.InsufficientRepetitionsResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"{0} must have between {2} and {1} elements\", \"{0}\")); ", pCasedName, cc.MaxOccurs == "*" ? "int.MaxValue" : cc.MaxOccurs, cc.MinOccurs);
+                    }
                     else
                     {
                         sw.WriteLine("\t\t\t#region Validate {0}", pCasedName);
@@ -235,12 +247,22 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                         sw.WriteLine("\t\t\t\tisValid &= (mi != null) ? ((bool)mi.Invoke(this.{0}, null)) : true;", pCasedName);
                         sw.WriteLine("\t\t\t}");
                         sw.WriteLine("\t\t\t#endregion");
+
+                        swEx.WriteLine("\t\t\t#region Validate {0}", pCasedName); 
+                        swEx.WriteLine("\t\t\tif(this.{0} == null) retVal.Add(new MARC.Everest.Connectors.MandatoryElementMissingResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"{0} does not meet criteria for {1} element\", \"{0}\"));", pCasedName, cc.Conformance);
+                        swEx.WriteLine("\t\t\telse {");
+                        swEx.WriteLine("\t\t\t\tSystem.Reflection.MethodInfo mi = this.{0}.GetType().GetMethod(\"ValidateEx\");", pCasedName);
+                        swEx.WriteLine("\t\t\t\tif(mi != null) {{ foreach(var res in (IEnumerable<MARC.Everest.Connectors.IResultDetail>)mi.Invoke(this.{0}, null)) {{ \r\n\t\t\t\t if(res.Location != null) res.Location = \"{0}.\" + res.Location; \r\n\t\t\t\t else res.Location = \"{0}\"; \r\n\t\t\t\t retVal.Add(res); \r\n\t\t\t }} \r\n\t\t\t }} ", pCasedName);
+                        swEx.WriteLine("\t\t\t}");
+                        swEx.WriteLine("\t\t\t#endregion");
+
                     }
                 }
             }
 
             sw.WriteLine("\t\t\treturn isValid;\r\n\t\t}");
-
+            swEx.WriteLine("\t\t\treturn retVal;\r\n\t\t}");
+            sw.WriteLine("\r\n\r\n{0}", swEx);
             return sw.ToString();
         }
 

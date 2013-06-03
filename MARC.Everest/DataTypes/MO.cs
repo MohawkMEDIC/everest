@@ -109,7 +109,10 @@ namespace MARC.Everest.DataTypes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object,System.Object)")]
         public override string ToString()
         {
-            return String.Format("{0}{1}{2}", Value, Value != null && !String.IsNullOrEmpty(Currency) ? " " : "", Currency);
+            if (this.Precision != 0)
+                return String.Format(EverestFrameworkContext.CurrentCulture, String.Format("{{0:0.{0}}}{{1}}{{2}}", new String('0',this.m_precision)), Value, Value != null && !String.IsNullOrEmpty(Currency) ? " " : "", Currency);
+            else
+                return String.Format(EverestFrameworkContext.CurrentCulture, "{0}{1}{2}", Value, Value != null && !String.IsNullOrEmpty(Currency) ? " " : "", Currency);
         }
 
         /// <summary>

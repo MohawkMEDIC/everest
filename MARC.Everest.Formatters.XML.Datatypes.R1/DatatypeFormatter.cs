@@ -29,6 +29,7 @@ using MARC.Everest.Attributes;
 using System.ComponentModel;
 using System.Collections;
 using MARC.Everest.Xml;
+using System.Globalization;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -112,6 +113,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         /// extensions to data types R1 or the 
         /// </remarks>
         public DatatypeFormatterCompatibilityMode CompatibilityMode { get; set; }
+
 
         /// <summary>
         /// Scan this assembly for datatype formatters

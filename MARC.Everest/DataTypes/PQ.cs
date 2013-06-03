@@ -24,6 +24,7 @@ using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using MARC.Everest.Connectors;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -248,8 +249,8 @@ namespace MARC.Everest.DataTypes
                 PQ retVal = new PQ(System.Convert.ToDecimal(valPart), unitPart);
 
                 // Precision? 
-                if (valPart.Contains("."))
-                    retVal.Precision = valPart.Length - valPart.IndexOf(".") - 1;
+                if (valPart.Contains(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator))
+                    retVal.Precision = valPart.Length - valPart.IndexOf(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator) - 1;
 
                 return retVal;
             }
@@ -338,11 +339,11 @@ namespace MARC.Everest.DataTypes
         {
             if (this.Value.HasValue)
             {
-                String strValue = this.Value.ToString();
-                if (strValue.Contains(".") && this.Precision != 0)
-                    strValue = this.Value.Value.ToString(String.Format("0.{0}", new String('0', this.Precision)));
+                String strValue = this.Value.Value.ToString(EverestFrameworkContext.CurrentCulture);
+                if (strValue.Contains(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator) && this.Precision != 0)
+                    strValue = this.Value.Value.ToString(String.Format("0.{0}", new String('0', this.Precision)), EverestFrameworkContext.CurrentCulture);
 
-                return String.Format("{0}{1}{2}", strValue, this.Value != null && !String.IsNullOrEmpty(this.Unit) ? " " : "", this.Unit);
+                return String.Format(EverestFrameworkContext.CurrentCulture, "{0}{1}{2}", strValue, this.Value != null && !String.IsNullOrEmpty(this.Unit) ? " " : "", this.Unit);
             }
             else
                 return "";

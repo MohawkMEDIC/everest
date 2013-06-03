@@ -76,8 +76,6 @@ namespace MARC.Everest.VisualStudio.Wizards
                     return;
                 }
 
-
-
                 // Wizard Creation
                 var wzrd = new frmWizard();
                 ValueDataParameter wp = new ValueDataParameter();
@@ -98,9 +96,13 @@ namespace MARC.Everest.VisualStudio.Wizards
                 replacementsDictionary.Add("$featureusings$", "");
                 foreach (var ns in wStg.Features)
                 {
-                    Assembly asm = Assembly.ReflectionOnlyLoadFrom(ns.Value);
-                    replacementsDictionary["$featureinclude$"] += String.Format("<Reference Include=\"{0}\"><SpecificVersion>False</SpecificVersion><HintPath>{1}</HintPath></Reference>", asm.FullName, ns.Value);
-                    replacementsDictionary["$featureusings$"] += String.Format("using {0};\r\n", Path.GetFileNameWithoutExtension(ns.Value));
+                    try
+                    {
+                        Assembly asm = Assembly.ReflectionOnlyLoadFrom(ns.Value);
+                        replacementsDictionary["$featureinclude$"] += String.Format("<Reference Include=\"{0}\"><SpecificVersion>False</SpecificVersion><HintPath>{1}</HintPath></Reference>", asm.FullName, ns.Value);
+                        replacementsDictionary["$featureusings$"] += String.Format("using {0};\r\n", Path.GetFileNameWithoutExtension(ns.Value));
+                    }
+                    catch { }
                 }
             }
             catch (Exception e)

@@ -125,7 +125,7 @@ namespace Samples.Everest.Connectors.WcfClient.ClientRegistry
                   new ControlActEvent<MARC.Everest.RMIM.CA.R020402.PRPA_MT101103CA.ParameterList>(
                     Guid.NewGuid(),
                     PRPA_IN101103CA.GetTriggerEvent(),
-                    new MARC.Everest.RMIM.CA.R020402.MFMI_MT700711CA.Author(DateTime.Now),
+                    new Author(DateTime.Now),
                     new MARC.Everest.RMIM.CA.R020402.QUQI_MT120008CA.QueryByParameter<MARC.Everest.RMIM.CA.R020402.PRPA_MT101103CA.ParameterList>(
                         Guid.NewGuid(),
                         ResponseModality.RealTime,
@@ -135,10 +135,12 @@ namespace Samples.Everest.Connectors.WcfClient.ClientRegistry
                     )
                 ));
 
+            instance.controlActEvent.EffectiveTime = new IVL<TS>(DateTime.Now);
+
             // Set the author
             instance.controlActEvent.Author.SetAuthorPerson(
               SET<II>.CreateSET(new II("1.3.6.1.4.1.21367.2010.3.2.202", "0008")),
-              new MARC.Everest.RMIM.CA.R020402.COCT_MT090108CA.Person(
+              new MARC.Everest.RMIM.CA.R020402.COCT_MT090102CA.Person(
                 new PN(EntityNameUse.License,
                   new ENXP[] {
                         new ENXP("Birth", EntityNamePartType.Family),

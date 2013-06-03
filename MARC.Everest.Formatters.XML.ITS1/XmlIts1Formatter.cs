@@ -240,6 +240,9 @@ namespace MARC.Everest.Formatters.XML.ITS1
         // A dictionary of root name maps that are used by the default Parse method
         private static Dictionary<string, Type> s_rootNameMaps = new Dictionary<string, Type>();
 
+        // Type name maps
+        private Dictionary<string, Type> s_typeNameMaps = new Dictionary<string, Type>();
+
 #if !WINDOWS_PHONE
         // A shared wait thread pool for creating datatypes
         private static WaitThreadPool s_threadPool = new WaitThreadPool(1); //WaitThreadPool.Current;
@@ -735,6 +738,24 @@ namespace MARC.Everest.Formatters.XML.ITS1
 
 
         /// <summary>
+        /// Removes an XSI type from the registry
+        /// </summary>
+        public void RemoveXSITypeName(string xsiTypeName)
+        {
+            this.s_typeNameMaps.Remove(xsiTypeName);
+        }
+
+        /// <summary>
+        /// Registers a specific xsi:type name for the specified type
+        /// </summary>
+        public void RegisterXSITypeName(string xsiTypeName, Type type)
+        {
+            if (this.s_typeNameMaps.ContainsKey(xsiTypeName))
+                throw new DuplicateItemException(String.Format("'{0}' is already registered to another type", xsiTypeName));
+            this.s_typeNameMaps.Add(xsiTypeName, type);
+        }
+
+        /// <summary>
         /// Parse an object from <paramref name="s"/>
         /// </summary>
         /// <param name="s">The stream from which to parse an object</param>
@@ -979,7 +1000,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Utility function for helper formatters
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void WriteElementUtil(XmlWriter s, string elementName, IGraphable g, Type propType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
+        public virtual void WriteElementUtil(XmlWriter s, string elementName, IGraphable g, Type propType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
         {
             ThrowIfDisposed();
 
@@ -996,12 +1017,22 @@ namespace MARC.Everest.Formatters.XML.ITS1
             s.WriteStartElement(elementName, "urn:hl7-org:v3");
             
             // JF: Output XSI:Type
-            if (!g.GetType().Equals(propType) && typeof(ANY).IsAssignableFrom(g.GetType()) )
+            if (!g.GetType().Equals(propType) )
             {
                 // TODO: This may cause issue when assigning a QSET to an R1 or
                 //       SXPR to R2 instance as the XSI:TYPE will be inappropriately
                 //       assigned.
-                s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, Util.CreateXSITypeName(g.GetType()));
+                if (typeof(ANY).IsAssignableFrom(g.GetType()))
+                    s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, Util.CreateXSITypeName(g.GetType()));
+                else if(propType != null && g.GetType().Assembly.FullName != propType.Assembly.FullName)
+                {
+                    string typeName = this.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null);
+                    s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, typeName);
+
+                    lock(this.m_syncRoot)
+                        if (!this.s_typeNameMaps.ContainsKey(typeName))
+                            this.RegisterXSITypeName(typeName, g.GetType());
+                }
                 //string xsdTypeName = String.Empty;
                 //object[] sa = g.GetType().GetCustomAttributes(typeof(StructureAttribute), false);
                 //if (sa.Length > 0 && (sa[0] as StructureAttribute).StructureType == StructureAttribute.StructureAttributeType.DataType)
@@ -1017,7 +1048,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Write the nullflavor
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void WriteNullFlavorUtil(XmlWriter s, IGraphable nullFlavor)
+        public virtual void WriteNullFlavorUtil(XmlWriter s, IGraphable nullFlavor)
         {
             ThrowIfDisposed();
 
@@ -1089,20 +1120,33 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <param name="interactionContext">The current interaction being parsed</param>
         /// <returns>The parsed object</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "r"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
-        public IGraphable ParseObject(XmlReader r, Type useType, Type interactionContext, XmlIts1FormatterParseResult resultContext)
+        public virtual IGraphable ParseObject(XmlReader r, Type useType, Type interactionContext, XmlIts1FormatterParseResult resultContext)
         {
             ThrowIfDisposed();
+
 
             // Find a helper
             string typeName = GetStructureName(useType);
 
             IXmlStructureFormatter ixsf = null;
-
-            // xsi type
-            if (r.GetAttribute("type", NS_XSI) != null)
-                ixsf = this.GetAdjustedFormatter(r.GetAttribute("type", NS_XSI));
-            else
-                ixsf = (IXmlStructureFormatter)this.GraphAides.Find(t => t.HandleStructure.Contains(typeName)); 
+            
+            // xsi type - We want to adjust the type based on this value
+            try
+            {
+                if (r.GetAttribute("type", NS_XSI) != null)
+                {
+                    if (typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
+                        ixsf = this.GetAdjustedFormatter(r.GetAttribute("type", NS_XSI)); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                    else
+                        useType = this.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                }
+                else
+                    ixsf = (IXmlStructureFormatter)this.GraphAides.Find(t => t.HandleStructure.Contains(typeName));
+            }
+            catch (Exception e)
+            {
+                resultContext.AddResultDetail(new ResultDetail(ResultDetailType.Error, e.Message, r.ToString(), e));
+            }
 
             string currentPath = r is XmlStateReader ? (r as XmlStateReader).CurrentPath : r.Name;
             // Does a helper have it?
@@ -1154,10 +1198,114 @@ namespace MARC.Everest.Formatters.XML.ITS1
         }
 
         /// <summary>
+        /// Parse XSI type name
+        /// </summary>
+        public Type ParseXSITypeName(string xsiTypeName)
+        {
+
+            // Is there an XSITypeName map that already exists for this type?
+            Type retVal = null;
+
+            if (this.s_typeNameMaps.TryGetValue(xsiTypeName, out retVal))
+                return retVal;
+
+            // Try to get a type from the assembly
+
+            // Step one, tokenize the parts based on . separator
+            String[] tokens = xsiTypeName.Split('.');
+
+            // Is the first part an interaction?
+            if (tokens.Length == 3)
+            {
+                // TODO: Predicate will find the mapped type for us
+                // TODO: This happens for generics
+                throw new NotImplementedException();
+            }
+            else if (tokens.Length == 2)
+            {
+                // Find the type that has the specified name and model
+                String modelName = tokens[0], structureName = tokens[1];
+
+                Predicate<Type> typeComparator = delegate(Type t)
+                {
+                    object[] structureAttribute = t.GetCustomAttributes(typeof(StructureAttribute), true);
+                    if (structureAttribute.Length > 0 && ((StructureAttribute)structureAttribute[0]).Name == structureName &&
+                        (((StructureAttribute)structureAttribute[0]).Model ?? t.Namespace.Substring(t.Namespace.LastIndexOf(".") + 1)) == modelName)
+                        return true;
+                    return false;
+                };
+
+                // Search for a type that matches
+#if WINDOWS_PHONE
+                Assembly candidateAssembly = AppDomain.CurrentDomain.GetAssemblies().Find(a => { try { return a.GetTypes().Exists(typeComparator); } catch { return false; } });
+                retVal = candidateAssembly.GetTypes().Find(typeComparator);
+#else
+                Assembly candidateAssembly = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), a => { try { return Array.Exists(a.GetTypes(), typeComparator); } catch { return false; } });
+                retVal = Array.Find(candidateAssembly.GetTypes(), typeComparator);
+#endif
+                lock (this.m_syncRoot)
+                    if (!this.s_typeNameMaps.ContainsKey(xsiTypeName))
+                        this.RegisterXSITypeName(xsiTypeName, retVal);
+            }
+            else
+                throw new ArgumentException("xsi:type cannot be auto-parsed. Please register it using RegisterXSITypeName");
+            return retVal;
+        }
+
+        /// <summary>
+        /// Creates an XSI:TYPE attribute that is friendly for RMIM structures
+        /// </summary>
+        public string CreateXSITypeName(Type type)
+        {
+            return this.CreateXSITypeName(type, null);
+        }
+
+        /// <summary>
+        /// Creates an XSI:TYPE attribute that is friendly for RMIM structures
+        /// </summary>
+        private string CreateXSITypeName(Type type, Type interactionContextType)
+        {
+
+            StringBuilder xsiType = new StringBuilder();
+
+            // Scan the registered xsi:types first before creating a type
+            lock(this.m_syncRoot)
+                foreach (var itm in this.s_typeNameMaps)
+                    if (itm.Value == type)
+                        return itm.Key;
+
+            // First, does the type acutally have a model name?
+            Object[] saList = type.GetCustomAttributes(typeof(StructureAttribute), true);
+            if (saList.Length == 0)
+                xsiType.Append(type.FullName);
+            else
+            {
+                StructureAttribute sa = saList[0] as StructureAttribute;
+                // Is the type generic?
+                if (type.IsGenericType) // yes, then first we output the interaction 
+                {
+                    if (interactionContextType == null)
+                        throw new FormatterException("Cannot emit xsi:type when no interaction context is provided!");
+                    Object[] inSaList = interactionContextType.GetCustomAttributes(typeof(StructureAttribute), true);
+                    if (inSaList.Length == 0)
+                        throw new FormatterException("Invalid interaction context. Interaction context type must carry a StructureAttribute");
+                    xsiType.AppendFormat("{0}.", (inSaList[0] as StructureAttribute).Name);
+                }
+
+                // Output the model and class name
+                xsiType.AppendFormat("{0}.{1}", sa.Model ?? type.Namespace.Substring(type.Namespace.LastIndexOf(".") + 1), sa.Name);
+
+            }
+
+            return xsiType.ToString();
+        }
+
+
+        /// <summary>
         /// Graph object onto xml writer
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s")]
-        private void GraphObject(XmlWriter s, IGraphable o, Type useType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
+        protected virtual void GraphObject(XmlWriter s, IGraphable o, Type useType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
         {
 
             // Find the HL7 alias for the type and build the cache for the type
@@ -1266,8 +1414,12 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// </summary>
         public void Dispose()
         {
+            
             if (!this.m_isDisposed)
             {
+                this.s_typeNameMaps.Clear();
+                this.s_typeNameMaps = null;
+
                 this.m_isDisposed = true;
                 
             }

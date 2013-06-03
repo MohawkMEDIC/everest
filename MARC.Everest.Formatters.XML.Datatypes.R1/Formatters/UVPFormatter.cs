@@ -54,6 +54,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 valueValue = o.GetType().GetProperty("Value").GetValue(o, null);
 
             // Output XSI:TYPE
+            // TODO: Safety check this method in the future
             s.WriteAttributeString("xsi","type", DatatypeFormatter.NS_XSI, Util.CreateXSITypeName(o.GetType()));
 
             if (probValue != null)
@@ -88,7 +89,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             PropertyInfo probabilityProperty = uvpType.GetProperty("Probability"),
                 valueProperty = uvpType.GetProperty("Value");
 
-            // Clean the 
+            // Clean the type
             if (s.GetAttribute("type", DatatypeFormatter.NS_XSI) != null && s is XmlStateReader)
             {
                 (s as XmlStateReader).AddFakeAttribute("type", Util.CreateXSITypeName(GenericArguments[0]));
@@ -135,7 +136,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = base.GetSupportedProperties();
             retVal.Add(typeof(UVP<>).GetProperty("Probability"));

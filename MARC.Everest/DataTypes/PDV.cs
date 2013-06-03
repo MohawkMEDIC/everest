@@ -92,7 +92,7 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public override string ToString()
         {
-            return NullFlavor != null ? base.ToString() : Value == null ? "" : Value.ToString();
+            return NullFlavor != null ? base.ToString() : Value == null ? "" : String.Format(EverestFrameworkContext.CurrentCulture, "{0}", this.Value);
         }
 
         /// <summary>

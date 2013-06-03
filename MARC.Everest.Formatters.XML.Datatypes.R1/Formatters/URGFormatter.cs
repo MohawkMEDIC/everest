@@ -71,6 +71,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (highClosedValue != null)
                 result.AddResultDetail(new UnsupportedDatatypeR1PropertyResultDetail(ResultDetailType.Warning, "HighClosed", "URG", s.ToString()));
             
+            // Why is this duplicated from IVL you ask?
+            // Wouldn't it be easier to create a method that graphs IInterval you ask?
+            // The reason is simple, URG has some slightly different rules, for example each component is not written as 
+            // an IVXB<T> (i.e. no low/high closed)
             if (lowValue != null && highValue != null) // low & high
             {
                 s.WriteStartElement("low", "urn:hl7-org:v3");
@@ -184,7 +188,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)")]
         public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
-            // Parse the base PDV first
+            // TODO: Determine how to parse a URG when the complex type is used. For example, URG<PQ> that is not a range, rather just a PQ
             //PDVFormatter pdvFormatter = new PDVFormatter();
             Type urgType = typeof(URG<>);
             Type urgGenericType = urgType.MakeGenericType(GenericArguments);
@@ -204,11 +208,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     else // Success, so assign
                         ((IProbability)instance).Probability = prob;
                 }
+                // This doesn't make sense as "value" is inline with the type
                 if (s.GetAttribute("value") != null)
                 {
                     urgGenericType.GetProperty("Value").SetValue(instance, Util.FromWireFormat(s.GetAttribute("value"), GenericArguments[0]), null);
                     result.AddResultDetail(new NotSupportedChoiceResultDetail(
-                            ResultDetailType.Warning, "Though XML ITS supports it, use of the IVL 'value' attribute should be avoided. The data has been parsed anyways.", s.ToString(), null));
+                            ResultDetailType.Warning, "Though XML ITS supports it, use of the URG 'value' attribute should be avoided. The data has been parsed anyways.", s.ToString(), null));
                 }
                 if (s.GetAttribute("specializationType") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
                     ((ANY)instance).Flavor = s.GetAttribute("specializationType");

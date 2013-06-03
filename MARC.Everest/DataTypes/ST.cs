@@ -249,8 +249,8 @@ namespace MARC.Everest.DataTypes
                 return new REAL() { NullFlavor = DataTypes.NullFlavor.NoInformation };
 
             int precision = 0;
-            if (o.Value.Contains("."))
-                precision = o.Value.Length - o.Value.IndexOf(".") - 1;
+            if (o.Value.Contains(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator))
+                precision = o.Value.Length - o.Value.IndexOf(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator) - 1;
 
             return new REAL(d)
             {
