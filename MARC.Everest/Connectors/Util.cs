@@ -63,7 +63,7 @@ namespace MARC.Everest.Connectors
         /// Value - MethodInfo of the method that will perform the operation to convert
         /// </summary>
         private static Dictionary<string, MethodInfo> s_wireMaps = new Dictionary<string, MethodInfo>();
-
+        
 
         /// <summary>
         /// Static constructor
@@ -257,7 +257,7 @@ namespace MARC.Everest.Connectors
             if (s_enumerationMaps.ContainsKey(kFormat)) // Return enumeration map
                 return s_enumerationMaps[kFormat];
 
-            return String.Format(EverestFrameworkContext.CurrentCulture, "{0}", instanceValue);
+            return String.Format(CultureInfo.InvariantCulture, "{0}", instanceValue);
         }
 
         /// <summary>
@@ -547,7 +547,7 @@ namespace MARC.Everest.Connectors
             try
             {
                 if (mi.GetParameters().Length == 2)
-                    result = mi.Invoke(null, new object[] { value, EverestFrameworkContext.CurrentCulture }); // Invoke the conversion method;
+                    result = mi.Invoke(null, new object[] { value, CultureInfo.InvariantCulture }); // Invoke the conversion method;
                 else
                     result = mi.Invoke(null, new object[] { value }); // Invoke the conversion method
                 return result != null;

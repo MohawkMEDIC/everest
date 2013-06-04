@@ -68,9 +68,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Precision
             if (instance.Precision != null && instance.Precision != 0 && instance.Value.HasValue)
-                s.WriteAttributeString("value", instance.Value.Value.ToString(String.Format("0.{0}", new String('0', instance.Precision), EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator), EverestFrameworkContext.CurrentCulture));
+                s.WriteAttributeString("value", instance.Value.Value.ToString(String.Format("0.{0}", new String('0', instance.Precision), DatatypeFormatter.FormatterCulture.NumberFormat.NumberDecimalSeparator), DatatypeFormatter.FormatterCulture));
             else if (instance.Value.HasValue)
-                s.WriteAttributeString("value", instance.Value.Value.ToString(EverestFrameworkContext.CurrentCulture));
+                s.WriteAttributeString("value", instance.Value.Value.ToString(DatatypeFormatter.FormatterCulture));
 
             
         }
@@ -91,8 +91,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // we will report the precision of the data that was on the wire
             string valStr = s.GetAttribute("value");
             
-            if (valStr != null && valStr.Contains(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator))
-                retVal.Precision = valStr.Length - valStr.IndexOf(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator) - 1;
+            if (valStr != null && valStr.Contains(DatatypeFormatter.FormatterCulture.NumberFormat.NumberDecimalSeparator))
+                retVal.Precision = valStr.Length - valStr.IndexOf(DatatypeFormatter.FormatterCulture.NumberFormat.NumberDecimalSeparator) - 1;
             else
                 retVal.Precision = 0;
 

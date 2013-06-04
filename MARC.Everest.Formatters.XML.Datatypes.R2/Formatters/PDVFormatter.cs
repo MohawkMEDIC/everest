@@ -54,7 +54,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
                 if(rv == null || rv.Precision == 0)
                     s.WriteAttributeString("value", Util.ToWireFormat(pdv.Value));
                 else if (rv != null)
-                    s.WriteAttributeString("value", String.Format(EverestFrameworkContext.CurrentCulture, String.Format("{{0:0.{0}}}", new String('0', rv.Precision), EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator), rv.Value));
+                    s.WriteAttributeString("value", String.Format(DatatypeR2Formatter.FormatterCulture, String.Format("{{0:0.{0}}}", new String('0', rv.Precision), DatatypeR2Formatter.FormatterCulture.NumberFormat.NumberDecimalSeparator), rv.Value));
             }
 
             // Format the base
@@ -110,8 +110,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
                 try
                 {
                     retVal.Value = Util.FromWireFormat(val, retVal.GetType().GetProperty("Value").PropertyType);
-                    if (rvRetVal != null && val.Contains(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator))
-                        rvRetVal.Precision = val.Length - val.IndexOf(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator) - 1;
+                    if (rvRetVal != null && val.Contains(DatatypeR2Formatter.FormatterCulture.NumberFormat.NumberDecimalSeparator))
+                        rvRetVal.Precision = val.Length - val.IndexOf(DatatypeR2Formatter.FormatterCulture.NumberFormat.NumberDecimalSeparator) - 1;
                 }
                 catch (Exception e)
                 {
