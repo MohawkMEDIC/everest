@@ -93,12 +93,21 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
     public class DatatypeFormatter : IXmlStructureFormatter, IDatatypeStructureFormatter, IValidatingStructureFormatter
     {
 
+        // Cache of the formatters
         private static Dictionary<string,Type> formatters = new Dictionary<string,Type>(20);
+        // Cache of the type names that formatters use
         private static List<string> formatterNames = new List<string>(20);
+        // Unsupported types
         private static Type[] s_unsupportedNames = new Type[] {
             typeof(COLL<>),
             typeof(QSET<>)
         };
+
+
+        /// <summary>
+        /// The formatter culture
+        /// </summary>
+        internal static CultureInfo FormatterCulture { get; private set; }
 
         /// <summary>
         /// XSI
@@ -120,6 +129,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
         /// </summary>
         public DatatypeFormatter()
         {
+            DatatypeFormatter.FormatterCulture = CultureInfo.InvariantCulture;
             this.CompatibilityMode = DatatypeFormatterCompatibilityMode.Universal;
             this.ValidateConformance = true;
             if (formatters.Count == 0)

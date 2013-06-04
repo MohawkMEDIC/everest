@@ -27,6 +27,7 @@ using MARC.Everest.Interfaces;
 using System.Xml;
 using MARC.Everest.DataTypes;
 using System.Collections;
+using System.Globalization;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R2
 {
@@ -48,6 +49,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
         private static object m_syncRoot = new object();
         // XSI Namespace
         internal const string NS_XSI = "http://www.w3.org/2001/XMLSchema-instance";
+        /// <summary>
+        /// Formatter culture
+        /// </summary>
+        internal static CultureInfo FormatterCulture { get; private set; }
 
         /// <summary>
         /// Creates a new instance of the data type r2 formatter
@@ -62,6 +67,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
         /// </summary>
         static DatatypeR2Formatter()
         {
+            DatatypeR2Formatter.FormatterCulture = CultureInfo.InvariantCulture;
             lock (m_syncRoot)
             {
                 if (m_formatters.Count > 0) return; // check again once we have a lock

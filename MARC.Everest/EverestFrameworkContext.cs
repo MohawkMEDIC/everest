@@ -13,8 +13,11 @@ namespace MARC.Everest
     public static class EverestFrameworkContext
     {
         /// <summary>
-        /// Gets or sets the culture that everest uses 
+        /// Gets or sets the culture that Everest uses for formatting
         /// </summary>
+        /// <remarks>
+        /// This method controls the current culture used for the display of data-types in the ToString method
+        /// </remarks>
         public static CultureInfo CurrentCulture { get; set; }
 
         /// <summary>

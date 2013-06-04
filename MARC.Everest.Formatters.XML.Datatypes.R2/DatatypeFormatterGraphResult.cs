@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using MARC.Everest.Connectors;
 using MARC.Everest.DataTypes;
+using System.Globalization;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R2
 {
@@ -31,6 +32,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2
     [Serializable]
     public class DatatypeR2FormatterGraphResult : IFormatterGraphResult
     {
+
+
+
         // Details
         private List<IResultDetail> m_details = new List<IResultDetail>(10);
 
