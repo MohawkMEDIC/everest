@@ -81,9 +81,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Parse CS
             ENXP retVal = base.Parse<ENXP>(s, result);
+            EntityNamePartType? enp = null;
 
             if (s.GetAttribute("qualifier") != null)
                 retVal.Qualifier = Util.Convert<SET<CS<EntityNamePartQualifier>>>(s.GetAttribute("qualifier"));
+            if (s.GetAttribute("type") != null)
+                retVal.Type = Util.Convert<EntityNamePartType>(s.GetAttribute("type"));
+            else if (ENFormatter.reverseMapping.TryGetValue(s.LocalName, out enp)) // try mapping
+                retVal.Type = enp;
 
             // Now parse our data out... 
             if (!s.IsEmptyElement)
@@ -102,7 +107,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Validation is handled by the EN formatter
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;
-            base.Validate(retVal, pathName, result);
+            //base.Validate(retVal, pathName, result);
 
             return retVal;
         }

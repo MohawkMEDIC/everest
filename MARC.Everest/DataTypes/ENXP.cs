@@ -343,8 +343,12 @@ namespace MARC.Everest.DataTypes
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystem", "Code"), null));
             foreach (var q in this.Qualifier ?? new SET<CS<EntityNamePartQualifier>>())
                 if (!q.Code.IsAlternateCodeSpecified && !validation[q].Contains(this.Type))
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format("Qualifier must be one of '{0}' when type is populated with '{1}'", Util.ToWireFormat(validation[q]), this.Type), null));
-
+                {
+                    StringBuilder allowed = new StringBuilder();
+                    foreach (var a in validation[q])
+                        allowed.AppendFormat("{0} ", a.Value);
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format("Qualifier must be one of '{0}' when type is populated with '{1}'", allowed, this.Type), null));
+                }
             return retVal;                
         }
 
