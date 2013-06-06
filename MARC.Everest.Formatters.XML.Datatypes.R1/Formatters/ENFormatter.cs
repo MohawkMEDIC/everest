@@ -37,8 +37,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Mapping to/from the Data Types R1 "each element has its own name"
         /// </summary>
-        private static Dictionary<EntityNamePartType?, string> mapping = new Dictionary<EntityNamePartType?, string>();
-        private static Dictionary<string, EntityNamePartType?> reverseMapping = new Dictionary<string, EntityNamePartType?>();
+        internal static Dictionary<EntityNamePartType?, string> mapping = new Dictionary<EntityNamePartType?, string>();
+        internal static Dictionary<string, EntityNamePartType?> reverseMapping = new Dictionary<string, EntityNamePartType?>();
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
         static ENFormatter()
@@ -204,7 +204,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             ENXPFormatter adxpFormatter = new ENXPFormatter(); // ENXP Formatter
                             adxpFormatter.Host = this.Host;
                             ENXP part = (ENXP)adxpFormatter.Parse(s, result); // Parse
-                            part.Type = enxpType;
+                            if(!part.Type.HasValue)
+                                part.Type = enxpType;
                             base.Validate(part, s.ToString(), result);
                             retVal.Part.Add(part); // Add to EN
                         }

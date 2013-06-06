@@ -238,7 +238,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         public const string NS_XSI = "http://www.w3.org/2001/XMLSchema-instance";
 
         // A dictionary of root name maps that are used by the default Parse method
-        private static Dictionary<string, Type> s_rootNameMaps = new Dictionary<string, Type>();
+        private Dictionary<string, Type> s_rootNameMaps = new Dictionary<string, Type>();
 
         // Type name maps
         private Dictionary<string, Type> s_typeNameMaps = new Dictionary<string, Type>();
