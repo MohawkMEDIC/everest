@@ -42,7 +42,7 @@ namespace MARC.Everest.Test.Manual.Formatters
             return asm.GetManifestResourceStream(scriptname);
         }
 
-        public static string findResource(string neededResource)
+        public static string FindResource(string neededResource)
         {
             foreach (string name in ParseFromStreamTest.GetResourceList())
             {
@@ -109,7 +109,7 @@ namespace MARC.Everest.Test.Manual.Formatters
         public void StreamParseTest01()
         {
             // Find the resource to be parsed.
-            string neededResource = findResource("MCCI_IN000000UV01.xml");
+            string neededResource = FindResource("MCCI_IN000000UV01.xml");
 
             // Load the assembly into the current AppDomain
             var asm = Assembly.Load(new AssemblyName("MARC.Everest.RMIM.UV.NE2008, Version=1.0.4366.42027, Culture=neutral"));
@@ -166,7 +166,7 @@ namespace MARC.Everest.Test.Manual.Formatters
         public void StreamParseTest02()
         {
             // Find the resource to be parsed.
-            string neededResource = findResource("PRPA_IN101103CA.xml");
+            string neededResource = FindResource("PRPA_IN101103CA.xml");
 
             // Load the assembly into the current AppDomain
             Assembly.Load(new AssemblyName("MARC.Everest.RMIM.UV.NE2008, Version=1.0.4366.42027, Culture=neutral"));

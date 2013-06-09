@@ -159,8 +159,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                             if (instance is IGraphable)
                             {
                                 // Ensure the data is not empty
-                                // TODO: Check whether this causes issues with R2
-                                if (instance is IColl && (instance as IColl).IsEmpty)
+                                if (instance is IColl && (instance as IColl).IsEmpty && (instance as IImplementsNullFlavor).NullFlavor == null)
                                     continue;
                                 Host.WriteElementUtil(s, pa.Name, instance as IGraphable, pi.PropertyType, context, resultContext);
                             }

@@ -26,7 +26,7 @@ namespace MARC.Everest.Test.Regressions
     using System.Xml;
     using MARC.Everest.Formatters.XML.Datatypes.R1;
 
-    [Serializable, GeneratedCode("", ""), Structure(Name = "RelatedPerson", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = false), Description("RelatedPerson")]
+    [Serializable, GeneratedCode("", ""), Structure(Name = "RelatedPerson", Model = "COCT_MT910000NL", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = false), Description("RelatedPerson")]
     public class RelatedPerson : MARC.Everest.RMIM.UV.NE2010.COCT_MT910000UV.RelatedPerson, IGraphable, IEquatable<RelatedPerson>, ICloneable
     {
         public RelatedPerson()
