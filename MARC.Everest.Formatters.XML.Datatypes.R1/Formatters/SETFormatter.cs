@@ -61,9 +61,17 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 return;
             }
 
+            // Graph base
+            ANYFormatter baseFormatter = new ANYFormatter();
+            baseFormatter.Host = this.Host;
+            baseFormatter.Graph(s, o, result);
+            if (((ANY)o).IsNull) return;
+
+
             // Write the array
             IEnumerable instance = (IEnumerable)o;
 
+            
             int count = 0;
 
             // Get each element in the instance

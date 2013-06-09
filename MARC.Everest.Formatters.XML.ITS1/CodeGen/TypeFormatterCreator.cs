@@ -402,7 +402,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                         else if (piInterfaces.Contains(typeof(IGraphable))) // Non Graphable
                         {
                             if (piInterfaces.Contains(typeof(IColl)))
-                                methodBody.Add(new CodeSnippetStatement(String.Format("if(!instance.{0}.IsEmpty)", pi.Name)));
+                                methodBody.Add(new CodeSnippetStatement(String.Format("if(!instance.{0}.IsEmpty || instance.{0}.NullFlavor != null)", pi.Name)));
                             retValChanged = true;
                             methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
                         }
