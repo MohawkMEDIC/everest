@@ -289,10 +289,6 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
         public object Parse(System.Xml.XmlReader s, Type useType, Type currentInteractionType, XmlIts1FormatterParseResult resultContext)
         {
 
-            String nil = s.GetAttribute("nil", XmlIts1Formatter.NS_XSI);
-            if (!String.IsNullOrEmpty(nil) && Convert.ToBoolean(nil))
-                return null;
-
             ConstructorInfo ci = useType.GetConstructor(Type.EmptyTypes);
             if(ci == null)
                 throw new InvalidOperationException(String.Format("Cannot create an instance of type '{0}' as it defines no default constructor", useType.FullName));
@@ -319,7 +315,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     // Can we set the PI?
                     if (s.LocalName == "ITSVersion" && s.Value != "XML_1.0")
                         throw new System.InvalidOperationException(System.String.Format("This formatter can only parse XML_1.0 structures. This structure claims to be '{0}'.", s.Value));
-                    else if (s.Prefix == "xmlns" || s.LocalName == "xmlns" || s.LocalName == "ITSVersion")
+                    else if (s.Prefix == "xmlns" || s.LocalName == "xmlns" || s.LocalName == "ITSVersion" || s.NamespaceURI == XmlIts1Formatter.NS_XSI)
                         continue;
                     else if (pi == null)
                     {
@@ -355,6 +351,13 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 while (s.MoveToNextAttribute());
                 s.MoveToElement();
             }
+
+            // Nil? 
+            // BUG: Fixed, xsi:nil may also have a null-flavor
+            String nil = s.GetAttribute("nil", XmlIts1Formatter.NS_XSI);
+            if (!String.IsNullOrEmpty(nil) && Convert.ToBoolean(nil))
+                return instance;
+
 
             // Is reader at an empty element
             if (s.IsEmptyElement) return instance;
