@@ -42,7 +42,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 new string[] {"--rimbapi-jdk", "Specifies the path to the JDK\r\n\t\t\twith which to compile the project"},
                 new string[] {"--rimbapi-partials", "When true, specifies that GPMR should\r\n\t\t\tenumerate partial vocabularies" },
                 new string[] {"--rimbapi-suppress-doc", "Supresses documentation generation" },
-                new string[] {"--rimbapi-jopt", "Pass the specified parameter to the java tools" }
+                new string[] {"--rimbapi-jopt", "Pass the specified parameter to the java tools" },
+                new string[] {"--rimbapi-maven", "Generate a maven directory structure" }
 
             };
 
@@ -125,6 +126,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
             if (hostContext.Mode == Pipeline.OperationModeType.Quirks)
                 System.Diagnostics.Trace.WriteLine("--- WARNING ---\r\n Host context is operating in Quirks mode, GPMR cannot guarantee output will be accurate\r\n--- WARNING ---");
 
+            bool generateMaven = false;
+
             #region Validate all parameters
             // Validate parameters
             if (!parameters.ContainsKey("rimbapi-api-ns"))
@@ -159,6 +162,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 m_javaccpath = parameters["rimbapi-jdk"][0];
             if (parameters.ContainsKey("rimbapi-partials"))
                 RenderPartials = Boolean.Parse(parameters["rimbapi-partials"][0]);
+            if (parameters.ContainsKey("rimbapi-maven"))
+                generateMaven = Boolean.Parse(parameters["rimbapi-maven"][0]);
 
             if (string.IsNullOrEmpty(m_javaccpath))
                 throw new ArgumentException("Cannot find JDK, specify location in JAVA_HOME or with --rimbapi-jdk", "rimbapi-jdk");
@@ -209,32 +214,63 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
 
             #region Create Project Structure
 
-            // Core directories
-            Directory.CreateDirectory(Path.Combine(hostContext.Output, "src"));
-            Directory.CreateDirectory(Path.Combine(hostContext.Output, "bin"));
-            Directory.CreateDirectory(Path.Combine(hostContext.Output, "lib"));
-            Directory.CreateDirectory(Path.Combine(hostContext.Output, "doc"));
-            Directory.CreateDirectory(Path.Combine(hostContext.Output, ".settings"));
-            string[] subPackages = { projectName, 
-                                       String.Format("{0}.{1}", projectName, "interaction"), 
-                                       String.Format("{0}.{1}", projectName, "vocabulary"),
-                                       String.Format("{0}.{1}", projectName, "rim")
-                                   };
-            foreach(var subPkg in subPackages)
-                Directory.CreateDirectory(Path.Combine(Path.Combine(hostContext.Output, "src"), JabaUtils.PackageNameToDirectory(subPkg)));
+            string sourcePath = Path.Combine(hostContext.Output, "src");
 
             // Copy JAR to output directory
             string jarFile = Path.Combine(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "lib"), "org.marc.everest.jar");
             if (!File.Exists(jarFile))
                 throw new FileNotFoundException("Cannot find the Everest JAR file");
-            File.Copy(jarFile, Path.Combine(Path.Combine(hostContext.Output, "lib"), Path.GetFileName(jarFile)), true);
             jarFile = Path.Combine(Path.Combine(hostContext.Output, "lib"), Path.GetFileName(jarFile));
+
+            // Core directories
+            if (generateMaven)
+            {
+                sourcePath = Path.Combine(Path.Combine(Path.Combine(hostContext.Output, "src"), "main"), "java");
+                Directory.CreateDirectory(Path.Combine(hostContext.Output, "src"));
+                Directory.CreateDirectory(Path.Combine(Path.Combine(hostContext.Output, "src"), "main"));
+                Directory.CreateDirectory(sourcePath);
+                Directory.CreateDirectory(Path.Combine(hostContext.Output, "target"));
+                Directory.CreateDirectory(Path.Combine(hostContext.Output, ".settings"));
+            }
+            else
+            {
+                Directory.CreateDirectory(sourcePath);
+                Directory.CreateDirectory(Path.Combine(hostContext.Output, "bin"));
+                Directory.CreateDirectory(Path.Combine(hostContext.Output, "lib"));
+                Directory.CreateDirectory(Path.Combine(hostContext.Output, "doc"));
+                Directory.CreateDirectory(Path.Combine(hostContext.Output, ".settings"));
+
+                // Copy jar file to output directory
+                File.Copy(jarFile, Path.Combine(Path.Combine(hostContext.Output, "lib"), Path.GetFileName(jarFile)), true);
+                
+            }
+
+            // Create directory structure
+            string[] subPackages = { projectName, 
+                                       String.Format("{0}.{1}", projectName, "interaction"), 
+                                       String.Format("{0}.{1}", projectName, "vocabulary"),
+                                       String.Format("{0}.{1}", projectName, "rim")
+                                   };
+            foreach (var subPkg in subPackages)
+                Directory.CreateDirectory(Path.Combine(sourcePath, JabaUtils.PackageNameToDirectory(subPkg)));
+
             #endregion
             // Core files
             #region Assembly Info
-            GenerateFile(Path.Combine(Path.Combine(Path.Combine(hostContext.Output, "src"), JabaUtils.PackageNameToDirectory(projectName)), "JarInfo.java"), Template.AssemblyInfo, parameters);
-            GenerateFile(Path.Combine(hostContext.Output, ".project"), Template.ProjectFile, parameters);
-            GenerateFile(Path.Combine(hostContext.Output, ".classpath"), Template.ClassPath, parameters);
+            GenerateFile(Path.Combine(Path.Combine(sourcePath, JabaUtils.PackageNameToDirectory(projectName)), "JarInfo.java"), Template.AssemblyInfo, parameters);
+
+            if (generateMaven)
+            {
+                GenerateFile(Path.Combine(hostContext.Output, ".project"), Template.ProjectFileMaven, parameters);
+                GenerateFile(Path.Combine(hostContext.Output, ".classpath"), Template.ClassPathMaven, parameters);
+                GenerateFile(Path.Combine(hostContext.Output, "pom.xml"), Template.Pom, parameters);
+            }
+            else
+            {
+                GenerateFile(Path.Combine(hostContext.Output, ".project"), Template.ProjectFile, parameters);
+                GenerateFile(Path.Combine(hostContext.Output, ".classpath"), Template.ClassPath, parameters);
+            }
+            
             GenerateFile(Path.Combine(Path.Combine(hostContext.Output, ".settings"), "org.eclipse.jdt.core.prefs"), Template.Preferences, parameters);
             #endregion
 
@@ -274,10 +310,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
             {
                 jFileList = File.CreateText(Path.Combine(hostContext.Output, "sources.index"));
 
-                jFileList.WriteLine(Path.Combine(Path.Combine(Path.Combine(hostContext.Output, "src"), JabaUtils.PackageNameToDirectory(projectName)), "JarInfo.java"), Template.AssemblyInfo, parameters);
+                jFileList.WriteLine(Path.Combine(Path.Combine(sourcePath, JabaUtils.PackageNameToDirectory(projectName)), "JarInfo.java"), Template.AssemblyInfo, parameters);
 
                 // Render initial feature list
-                RenderFeatureList(features, templateFields, renderers, jFileList, parameters, projectName);
+                RenderFeatureList(features, templateFields, renderers, jFileList, parameters, projectName, sourcePath);
 
                 // Any added features?
                 // HACK: This should be fixed soon, but meh... I'll get around to it
@@ -285,7 +321,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 foreach (KeyValuePair<String, Feature> kv in classRep)
                     if (!features.Contains(kv.Value))
                         addlFeatures.Add(kv.Value);
-                RenderFeatureList(addlFeatures, templateFields, renderers, jFileList, parameters, projectName);
+                RenderFeatureList(addlFeatures, templateFields, renderers, jFileList, parameters, projectName, sourcePath);
 
             }
             finally
@@ -301,6 +337,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
             // Does the user want to compile?
             if (parameters.ContainsKey("rimbapi-compile") && Convert.ToBoolean(parameters["rimbapi-compile"][0]))
             {
+                if (generateMaven)
+                {
+                    Trace.WriteLine("ERROR: Cannot compile when --rimbapi-maven is specified", "error");
+                    return;
+                }
                 Trace.WriteLine(String.Format("Output will be logged to: {0}", hostContext.Output), "information");
 
                 // Generate compile arguments
@@ -506,7 +547,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
         /// <summary>
         /// Render feature list
         /// </summary>
-        private void RenderFeatureList(List<Feature> features, string[][] templateFields, List<KeyValuePair<FeatureRendererAttribute, IFeatureRenderer>> renderers, TextWriter jFileList, Dictionary<String, StringCollection> parameters, string projectName)
+        private void RenderFeatureList(List<Feature> features, string[][] templateFields, List<KeyValuePair<FeatureRendererAttribute, IFeatureRenderer>> renderers, TextWriter jFileList, Dictionary<String, StringCollection> parameters, string projectName, string sourcePath)
         {
 
             // Scan the class repo and start processing
@@ -522,8 +563,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 if (fr.Key == null)
                     System.Diagnostics.Trace.WriteLine(String.Format("can't find renderer for {0}", f.GetType().Name), "warn");
                 else
-                    if (GenerateFeature(fr, f, templateFields, projectName, jFileList, parameters) && factoryRenderer.Key != null)
-                        GenerateFeature(factoryRenderer, f, templateFields, projectName, jFileList, parameters);
+                    if (GenerateFeature(fr, f, templateFields, projectName, jFileList, parameters, sourcePath) && factoryRenderer.Key != null)
+                        GenerateFeature(factoryRenderer, f, templateFields, projectName, jFileList, parameters, sourcePath);
             }
 
         }
@@ -531,13 +572,13 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
         /// <summary>
         /// Generate feature
         /// </summary>
-        private bool GenerateFeature(KeyValuePair<FeatureRendererAttribute, IFeatureRenderer> fr, Feature f, string[][] templateFields, string projectName, TextWriter jFileList, Dictionary<String, StringCollection> parameters)
+        private bool GenerateFeature(KeyValuePair<FeatureRendererAttribute, IFeatureRenderer> fr, Feature f, string[][] templateFields, string projectName, TextWriter jFileList, Dictionary<String, StringCollection> parameters, string sourcePath)
         {
             string file = String.Empty;
             try // To write the file
             {
                 // Start the rendering
-                file = fr.Value.CreateFile(f, Path.Combine(Path.Combine(hostContext.Output, "src"), JabaUtils.PackageNameToDirectory(projectName)));
+                file = fr.Value.CreateFile(f, Path.Combine(sourcePath, JabaUtils.PackageNameToDirectory(projectName)));
 
                 // Is the renderer for a file
                 if (fr.Key.IsFile)

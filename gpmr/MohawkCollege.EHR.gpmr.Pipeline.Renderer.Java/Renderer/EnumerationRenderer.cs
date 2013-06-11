@@ -211,7 +211,22 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             tw.WriteLine("\tprivate final String m_codeSystem;");
             tw.WriteLine("\tpublic String getCodeSystem() { return this.m_codeSystem; }");
             tw.WriteLine("\tpublic String getCode() { return this.m_code; }");
-	
+            tw.WriteLine("\t@Override");
+            tw.WriteLine("\tpublic String toString() { return this.m_code; }");
+            tw.WriteLine("\t@Override");
+            tw.WriteLine("\tpublic boolean equals(Object obj) {");
+            tw.WriteLine("\t\tif (this == obj)");
+            tw.WriteLine("\t\t\treturn true;");
+            tw.WriteLine("\t\tif (!super.equals(obj))");
+            tw.WriteLine("\t\t\treturn false;");
+            tw.WriteLine("\t\tif (getClass() != obj.getClass())");
+            tw.WriteLine("\t\t\treturn false;");
+            tw.WriteLine("\t\t\tif(obj instanceof String && this.m_code.equals(obj))");
+            tw.WriteLine("\t\t\treturn true;");
+            tw.WriteLine("\t\t\tif(obj instanceof org.marc.everest.interfaces.IEnumeratedVocabulary && this.m_code.equals(((org.marc.everest.interfaces.IEnumeratedVocabulary)obj).getCode()))");
+            tw.WriteLine("\t\t\treturn true;");
+            tw.WriteLine("\t\treturn false;");
+            tw.WriteLine("\t}");
             #endregion
             // End enumeration
             tw.WriteLine("}");
