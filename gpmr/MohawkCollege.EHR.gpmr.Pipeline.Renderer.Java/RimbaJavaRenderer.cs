@@ -220,7 +220,6 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
             string jarFile = Path.Combine(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "lib"), "org.marc.everest.jar");
             if (!File.Exists(jarFile))
                 throw new FileNotFoundException("Cannot find the Everest JAR file");
-            jarFile = Path.Combine(Path.Combine(hostContext.Output, "lib"), Path.GetFileName(jarFile));
 
             // Core directories
             if (generateMaven)
@@ -244,6 +243,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java
                 File.Copy(jarFile, Path.Combine(Path.Combine(hostContext.Output, "lib"), Path.GetFileName(jarFile)), true);
                 
             }
+            jarFile = Path.Combine(Path.Combine(hostContext.Output, "lib"), Path.GetFileName(jarFile));
 
             // Create directory structure
             string[] subPackages = { projectName, 
