@@ -150,12 +150,12 @@ namespace MARC.Everest.DataTypes
 
             //object obj = disallowedQualifiers.Find(o => Use.Find(u => u.Code.Equals(o)) != null);
             if (Use != null && disallowedUses.Exists(o => Use.Find(u => u.Code.Equals(o)) != null))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ON", String.Format(ValidationMessages.MSG_INVALID_VALUE, this.Use, "Use")));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ON", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_INVALID_VALUE, this.Use, "Use")));
 
             // Validate parts
             foreach (var part in Part)
                 if(disallowedPartTypes.Contains(part.Type.HasValue ? part.Type.Value : EntityNamePartType.Title))
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ON", String.Format(ValidationMessages.MSG_INVALID_VALUE, part.Type, "Part.Type")));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ON", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_INVALID_VALUE, part.Type, "Part.Type")));
 
             return retVal;
         }

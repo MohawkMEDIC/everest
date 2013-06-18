@@ -153,9 +153,9 @@ namespace MARC.Everest.DataTypes
             if (NullFlavor != null && (Low != null || High != null || Width != null || Value != null))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "URG", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             if (LowClosed != null && Low == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "URG", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "LowClosed", "Low"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "URG", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "LowClosed", "Low"), null));
             if (HighClosed != null && High == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "URG", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "HighClosed", "High"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "URG", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "HighClosed", "High"), null));
 
             return retVal;
         }

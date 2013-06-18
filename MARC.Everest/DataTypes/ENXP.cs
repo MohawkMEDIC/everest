@@ -340,14 +340,14 @@ namespace MARC.Everest.DataTypes
             if (NullFlavor != null && Value != null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             if (CodeSystem != null && Code == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystem", "Code"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystem", "Code"), null));
             foreach (var q in this.Qualifier ?? new SET<CS<EntityNamePartQualifier>>())
                 if (!q.Code.IsAlternateCodeSpecified && !validation[q].Contains(this.Type))
                 {
                     StringBuilder allowed = new StringBuilder();
                     foreach (var a in validation[q])
                         allowed.AppendFormat("{0} ", a.Value);
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format("Qualifier must be one of '{0}' when type is populated with '{1}'", allowed, this.Type), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ENXP", String.Format(EverestFrameworkContext.CurrentCulture, "Qualifier must be one of '{0}' when type is populated with '{1}'", allowed, this.Type), null));
                 }
             return retVal;                
         }

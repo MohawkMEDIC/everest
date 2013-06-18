@@ -25,6 +25,7 @@ using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Connectors;
+using System.Globalization;
 
 namespace MARC.Everest.DataTypes
 {
@@ -99,9 +100,9 @@ namespace MARC.Everest.DataTypes
             if(!((this.NullFlavor != null) ^ (this.Low != null && !this.Low.IsNull && this.High != null && !this.High.IsNull)))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSP", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             if (this.Low == null || this.Low.IsNull)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Low", String.Format("ISetComponent<{0}>", typeof(T).Name)), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSP", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Low", String.Format(CultureInfo.InvariantCulture, "ISetComponent<{0}>", typeof(T).Name)), null));
             if (this.High == null || this.High.IsNull)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "High", String.Format("ISetComponent<{0}>", typeof(T).Name)), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSP", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "High", String.Format(CultureInfo.InvariantCulture, "ISetComponent<{0}>", typeof(T).Name)), null));
             return retVal;
         }
 

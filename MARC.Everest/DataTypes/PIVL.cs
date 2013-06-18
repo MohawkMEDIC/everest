@@ -433,7 +433,7 @@ namespace MARC.Everest.DataTypes
             else if(this.NullFlavor == null && this.Period == null && this.Period == null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             if((this.Frequency != null) ^ (this.Period != null))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", String.Format(ValidationMessages.MSG_INDEPENDENT_VALUE, "Frequency", "Period"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_INDEPENDENT_VALUE, "Frequency", "Period"), null));
             if(this.Phase != null && (this.Phase.Width == null || this.Phase.Width.IsNull || this.Phase.Width > this.Period))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PIVL", "Width property of Phase must be less than the Period property", null));
             return retVal;

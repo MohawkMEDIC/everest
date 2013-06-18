@@ -136,9 +136,9 @@ namespace MARC.Everest.DataTypes
                 if (Part.Count != 1)
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TN", ValidationMessages.MSG_INSUFFICIENT_TERMS, null));
                 if (this.Part[0].Type != null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TN" , String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Type", "Part"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TN", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Type", "Part"), null));
                 if(this.Part[0].Qualifier != null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TN" , String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Qualifier", "Part"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TN", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Qualifier", "Part"), null));
             }
             return retVal;
         }

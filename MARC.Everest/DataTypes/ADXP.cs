@@ -344,9 +344,9 @@ namespace MARC.Everest.DataTypes
         {
             var retVal = new List<IResultDetail>(base.ValidateEx());
             if (this.CodeSystemVersion != null && this.CodeSystem == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemVersion", "Code"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemVersion", "Code"), null));
             if (this.Code != null && this.CodeSystem == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Code", "CodeSystem"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Code", "CodeSystem"), null));
             if (this.NullFlavor != null && this.Value == null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ADXP", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             if (this.Value == null && this.NullFlavor == null)

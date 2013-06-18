@@ -340,7 +340,7 @@ namespace MARC.Everest.DataTypes
         {
             var retVal = new List<IResultDetail>(base.ValidateEx());
             if (this.Qualifier != null && this.Code == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CD", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Qualifier", "Code"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CD", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Qualifier", "Code"), null));
             return retVal;
         }
 

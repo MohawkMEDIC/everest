@@ -71,7 +71,7 @@ namespace MARC.Everest.Connectors
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1304:SpecifyCultureInfo", MessageId = "System.String.ToUpper")]
         static Util()
         {
-
+#if !WINDOWS_PHONE
             // Scan all types.. populate dictionaries
             foreach(Type t in typeof(II).Assembly.GetTypes())
                 if (t.IsClass && t.GetInterface("MARC.Everest.Interfaces.IGraphable", true) != null)
@@ -80,8 +80,22 @@ namespace MARC.Everest.Connectors
                         object[] fa = mi.GetCustomAttributes(typeof(FlavorAttribute), true);
                         lock (s_flavorValidation)
                             foreach(var validator in fa)
-                                s_flavorValidation.Add(string.Format("{0}.{1}", t.FullName, (validator as FlavorAttribute).Name.ToUpper()), mi);
+                                s_flavorValidation.Add(string.Format(CultureInfo.InvariantCulture, "{0}.{1}", t.FullName, (validator as FlavorAttribute).Name.ToUpper()), mi);
                     }
+#else
+            // Scan all types.. populate dictionaries
+            foreach(Type t in typeof(II).Assembly.GetTypes())
+                if (t.IsClass && t.GetInterfaces().Exists(o=>o.FullName == "MARC.Everest.Interfaces.IGraphable") != null)
+                    foreach(MethodInfo mi in  t.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                    {
+                        object[] fa = mi.GetCustomAttributes(typeof(FlavorAttribute), true);
+                        lock (s_flavorValidation)
+                            foreach(var validator in fa)
+                                s_flavorValidation.Add(string.Format(CultureInfo.InvariantCulture, "{0}.{1}", t.FullName, (validator as FlavorAttribute).Name.ToUpper()), mi);
+                    }
+
+#endif
+
         }
 
         /// <summary>
@@ -95,7 +109,7 @@ namespace MARC.Everest.Connectors
             foreach (FieldInfo fi in t.GetFields()) // Foreach 
             {
                 // Skip processing
-                string kName = string.Format("{0}.{1}", t.FullName, fi.Name);
+                string kName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", t.FullName, fi.Name);
                     if (s_enumerationMaps.ContainsKey(kName))
                         continue;
 
@@ -106,14 +120,14 @@ namespace MARC.Everest.Connectors
                         {
                             if (!s_enumerationMaps.ContainsKey(kName))
                                 s_enumerationMaps.Add(kName, (ea[0] as EnumerationAttribute).Value);
-                            if (!s_enumerationMaps.ContainsKey(string.Format("{0}.{1}", t.FullName, (ea[0] as EnumerationAttribute).Value)))
-                                s_enumerationMaps.Add(string.Format("{0}.{1}", t.FullName, (ea[0] as EnumerationAttribute).Value), fi.Name.ToString());
+                            if (!s_enumerationMaps.ContainsKey(string.Format(CultureInfo.InvariantCulture, "{0}.{1}", t.FullName, (ea[0] as EnumerationAttribute).Value)))
+                                s_enumerationMaps.Add(string.Format(CultureInfo.InvariantCulture, "{0}.{1}", t.FullName, (ea[0] as EnumerationAttribute).Value), fi.Name.ToString());
                         }
                     }
                     else
                         lock (s_enumerationMaps)
                             if (!s_enumerationMaps.ContainsKey(kName))
-                                s_enumerationMaps.Add(string.Format("{0}.{1}", t.FullName, fi.Name.ToString()), fi.Name.ToString());
+                                s_enumerationMaps.Add(string.Format(CultureInfo.InvariantCulture, "{0}.{1}", t.FullName, fi.Name.ToString()), fi.Name.ToString());
                 }
         }
 
@@ -149,13 +163,15 @@ namespace MARC.Everest.Connectors
         /// <summary>
         /// Soft-convert
         /// </summary>
+#if !WINDOWS_PHONE
         [Browsable(false)]
+#endif
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static T Convert<T>(object value, bool throwOnError)
         {
             object retVal = null;
             if (!TryFromWireFormat(value, typeof(T), out retVal) && throwOnError)
-                throw new FormatterException(String.Format("Can't find valid conversion to from '{0}' to '{1}'", value.GetType(), typeof(T)));
+                throw new FormatterException(String.Format(EverestFrameworkContext.CurrentCulture, "Can't find valid conversion to from '{0}' to '{1}'", value.GetType(), typeof(T)));
             return (T)retVal;
         }
 
@@ -170,7 +186,7 @@ namespace MARC.Everest.Connectors
 
             object retVal = null;
             if(!TryFromWireFormat(value, destType, out retVal))
-                throw new FormatterException(String.Format("Can't find valid cast to from '{0}' to '{1}'", value.GetType(), destType));
+                throw new FormatterException(String.Format(EverestFrameworkContext.CurrentCulture, "Can't find valid cast to from '{0}' to '{1}'", value.GetType(), destType));
             return retVal;
 
         }
@@ -249,7 +265,7 @@ namespace MARC.Everest.Connectors
             if(instanceValue.GetType().GetProperty("Code") != null)
                 instanceValue = instanceValue.GetType().GetProperty("Code").GetValue(instanceValue, null);
 
-            string kFormat = string.Format("{0}.{1}", enumName, instanceValue);
+            string kFormat = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", enumName, instanceValue);
 
             if (!s_enumerationMaps.ContainsKey(kFormat))
                 ParseMaps(realType);
@@ -267,7 +283,7 @@ namespace MARC.Everest.Connectors
         public static bool? ValidateFlavor(string flavor, ANY instance, out IResultDetail[] details)
         {
             // Does this flavor exist?
-            string kFormat = string.Format("{0}.{1}", instance.GetType().FullName, flavor.ToUpper());
+            string kFormat = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", instance.GetType().FullName, flavor.ToUpper());
             
             // JF - Makes this much faster
             MethodInfo validatorMi = null;
@@ -281,7 +297,7 @@ namespace MARC.Everest.Connectors
 
             // Add warning
             if(flavor != instance.GetType().Name)
-                details = new IResultDetail[] { new ResultDetail(ResultDetailType.Warning, string.Format("Can't find flavor '{0}'", flavor), null, null) };
+                details = new IResultDetail[] { new ResultDetail(ResultDetailType.Warning, string.Format(EverestFrameworkContext.CurrentCulture, "Can't find flavor '{0}'", flavor), null, null) };
 
             return null;
         }
@@ -297,7 +313,7 @@ namespace MARC.Everest.Connectors
             Queue<String> typeNames = new Queue<string>(xsiType.Split('_'));
             var t = ParseXSITypeNameInternal(typeNames);
             if (typeNames.Count > 0)
-                throw new InvalidOperationException(String.Format("Generic parameter supplied to a non-generic type '{0}' used to construct '{1}'", xsiType, t.FullName));
+                throw new InvalidOperationException(String.Format(EverestFrameworkContext.CurrentCulture, "Generic parameter supplied to a non-generic type '{0}' used to construct '{1}'", xsiType, t.FullName));
             return t;
         }
 
@@ -368,7 +384,7 @@ namespace MARC.Everest.Connectors
                     {
                         var genType = typeNames.Dequeue();
                         if (genType != tma.ArgumentType)
-                            throw new InvalidOperationException(String.Format("Argument type to type map is incorrect, should not be here. Expected '{0}' found '{1}'", genType, tma.ArgumentType));
+                            throw new InvalidOperationException(String.Format(EverestFrameworkContext.CurrentCulture, "Argument type to type map is incorrect, should not be here. Expected '{0}' found '{1}'", genType, tma.ArgumentType));
                     }
                 }
 
@@ -451,9 +467,9 @@ namespace MARC.Everest.Connectors
             }
             else if (value is ICodedSimple || value is IConceptQualifier) // hack: For parsing values that are not in an known domain
                 ;
-            else if (m_destType.IsEnum && s_enumerationMaps.ContainsKey(string.Format("{0}.{1}", m_destType.FullName, value)))
+            else if (m_destType.IsEnum && s_enumerationMaps.ContainsKey(string.Format(CultureInfo.InvariantCulture, "{0}.{1}", m_destType.FullName, value)))
             {
-                value = Enum.Parse(m_destType, s_enumerationMaps[string.Format("{0}.{1}", m_destType.FullName, value)], false);
+                value = Enum.Parse(m_destType, s_enumerationMaps[string.Format(CultureInfo.InvariantCulture, "{0}.{1}", m_destType.FullName, value)], false);
                 if (!requiresExplicitCastCall)
                 {
                     result = value;
@@ -463,17 +479,17 @@ namespace MARC.Everest.Connectors
             else if (m_destType.IsEnum) // No map exists yet
             {
                 ParseMaps(m_destType);
-                if (!s_enumerationMaps.ContainsKey(string.Format("{0}.{1}", m_destType.FullName, value)) && !requiresExplicitCastCall)
-                    throw new VocabularyException(string.Format("Can't find value '{0}' in domain '{1}'.", value, m_destType.Name), value.ToString(), m_destType.Name, null);
+                if (!s_enumerationMaps.ContainsKey(string.Format(CultureInfo.InvariantCulture, "{0}.{1}", m_destType.FullName, value)) && !requiresExplicitCastCall)
+                    throw new VocabularyException(string.Format(EverestFrameworkContext.CurrentCulture, "Can't find value '{0}' in domain '{1}'.", value, m_destType.Name), value.ToString(), m_destType.Name, null);
 
                 try
                 {
-                    value = Enum.Parse(m_destType, s_enumerationMaps[string.Format("{0}.{1}", m_destType.FullName, value)], false);
+                    value = Enum.Parse(m_destType, s_enumerationMaps[string.Format(CultureInfo.InvariantCulture, "{0}.{1}", m_destType.FullName, value)], false);
                 }
                 catch
                 {
                     if (!requiresExplicitCastCall)
-                        throw new VocabularyException(string.Format("Can't find value '{0}' in domain '{1}'.", value, m_destType.Name), value.ToString(), m_destType.Name, null);
+                        throw new VocabularyException(string.Format(EverestFrameworkContext.CurrentCulture, "Can't find value '{0}' in domain '{1}'.", value, m_destType.Name), value.ToString(), m_destType.Name, null);
                 }
 
                 // Can we just return as is, or is a function needed?
@@ -489,7 +505,7 @@ namespace MARC.Everest.Connectors
 
             // Is there a built in method that can convert this
             MethodInfo mi;
-            string converterKey = string.Format("{0}>{1}", value.GetType().FullName, destType.FullName);
+            string converterKey = string.Format(CultureInfo.InvariantCulture, "{0}>{1}", value.GetType().FullName, destType.FullName);
             if (!s_wireMaps.TryGetValue(converterKey, out mi))
             {
                 // Try to find a map first...

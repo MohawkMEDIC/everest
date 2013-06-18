@@ -192,14 +192,14 @@ namespace MARC.Everest.DataTypes
             var retVal = new List<IResultDetail>(base.ValidateEx());
 
             if (this.Translation != null && this.Code == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Translation", "Code"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Translation", "Code"), null));
             foreach (var t in this.Translation ?? new SET<CD<T>>())
             {
                 retVal.AddRange(t.ValidateEx());
                 if (t.OriginalText != null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "OriginalText", "Translation"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "OriginalText", "Translation"), null));
                 if (t.Translation != null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Translation", "Translation"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CE", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Translation", "Translation"), null));
             }
             return retVal;
         }

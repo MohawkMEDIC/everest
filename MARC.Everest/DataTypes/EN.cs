@@ -25,6 +25,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
 using MARC.Everest.Connectors;
+using System.Globalization;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -304,7 +305,7 @@ namespace MARC.Everest.DataTypes
 
                 string partString = "";
                 foreach (ENXP enxp in Part.FindAll(o => o.Type == adpt))
-                    partString += String.Format("{0} ", enxp.Value);
+                    partString += String.Format(CultureInfo.InvariantCulture, "{0} ", enxp.Value);
 
                 format = format.Replace("{" + tag + "}", partString);
                 

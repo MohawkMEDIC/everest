@@ -336,7 +336,7 @@ namespace MARC.Everest.DataTypes
             else if(this.Value == null && this.NullFlavor == null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ST", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             if (this.Translation != null && this.Translation.FindAll(o => o.Translation != null).Count == this.Translation.Count)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ST", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Translation", "Translation"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ST", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Translation", "Translation"), null));
             return retVal;
         }
 

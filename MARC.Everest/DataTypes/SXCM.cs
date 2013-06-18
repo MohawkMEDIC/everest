@@ -181,7 +181,7 @@ namespace MARC.Everest.DataTypes
         {
             var retVal = new List<IResultDetail>();
             if (this.Value != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "SXCM", String.Format(ValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "Value"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "SXCM", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "Value"), null));
             return retVal;
         }
 
