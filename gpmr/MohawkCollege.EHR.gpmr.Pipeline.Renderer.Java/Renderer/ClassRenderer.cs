@@ -193,8 +193,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
                 foreach (Property p in (cc as Choice).Content)
                 {
-                    sw.WriteLine("\t/** Gets the {0} property cast to {1}. This convenience method saves the developer from casting */", Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name));
-                    sw.WriteLine("\tpublic {0} get{1}As{2}() {{ return ({0})this.m_{3}; }}",
+                    sw.WriteLine("\t/** Gets the {0} property cast to {1} or null if {0} is not an instance of {1}. This convenience method saves the developer from casting */", Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name));
+                    sw.WriteLine("\tpublic {0} get{1}As{2}() {{ if(this.m_{3} instanceof {0}) return ({0})this.m_{3}; else return null; }}",
                         CreateDatatypeRef(p.Type, p, ownerPackage), Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name), Util.Util.MakeFriendly(cc.Name));
                     sw.WriteLine("\t/** Sets the {0} property given the specified instance of {1}. */", Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name));
                     sw.WriteLine("\tpublic void {3}{1}({0} value) {{ this.m_{2} = value; }}", CreateDatatypeRef(p.Type, p, ownerPackage), Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name), setterName);
@@ -434,12 +434,16 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             if (tr.Class != null)
             {
+               
                 string import = String.Format("{0}.{1}.{2}", ownerPackage, tr.Class.ContainerName.ToLower(), Util.Util.PascalCase(tr.Class.Name));
                 if (!s_imports.Exists(o => o.EndsWith(retVal))) // Ensure duplicate class isn't imported
                     s_imports.Add(import);
                 else if (!s_imports.Contains(import)) // Ensure duplicate import isn't imported
                     retVal = String.Format("{0}.{1}.{2}", ownerPackage, tr.Class.ContainerName.ToLower(), retVal);
 
+                 if (p != null && p.Container is Class && Util.Util.PascalCase(((Class)p.Container).Name) == retVal) // Property has the same name as the container class
+                    retVal = import;
+                
                 // Correct the import
             }
 
@@ -615,9 +619,17 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             // Move to a factory
             // Is this an emtpy class that facilitates a choice?
-            //if (cls.SpecializedBy != null && cls.SpecializedBy.Count > 0 &&
-            //    cls.IsAbstract)
-            //{
+            if (cls.SpecializedBy != null && cls.SpecializedBy.Count > 0 &&
+                cls.IsAbstract)
+            {
+                foreach (TypeReference tr in CascadeSpecializers(cls.SpecializedBy))
+                {
+                    // Is method
+                    sw.WriteLine("\t\t/** Returns true if this abstract class instance is an instance of {0}.{1} */\r\n\t\tpublic boolean is{2}() {{ ", ownerPackage, tr.Name, tr.Name.Replace(".", ""));
+                    sw.WriteLine("\t\t\treturn this instanceof {0}.{1};", ownerPackage, tr.Name);
+                    sw.WriteLine("\t\t}");
+                }
+            }
             //    // NB: This isn't possible in Java (at least I don't have time to work around Java's weirdness) so
             //    //      I'm going to disable it. This causes problems when
             //    //

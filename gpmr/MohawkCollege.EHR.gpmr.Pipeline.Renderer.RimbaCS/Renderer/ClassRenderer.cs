@@ -1184,6 +1184,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
                     Class child = tr.Class;
 
+                    // Is method
+                    sw.WriteLine("\t\t///<summary>Returns true if this abstract class instance is an instance of <see cref=\"T:{0}.{1}\"/></summary>\r\n\t\tpublic bool Is{2}() {{ ", OwnerNs, tr.Name, tr.Name.Replace(".",""));
+                    sw.WriteLine("\t\t\treturn this is {0}.{1};", OwnerNs, tr.Name);
+                    sw.WriteLine("\t\t}");
+
                     // Create factory for the child
                     Dictionary<String, String[]> ctors = CreateFactoryMethod(tr, "retVal");
                     // Write factory
@@ -1214,6 +1219,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                             sw.WriteLine("\t\t\t{0}", kv.Value[1]);
                             sw.WriteLine("\t\t\treturn retVal;");
                             sw.WriteLine("\t\t}");
+
+                            
 
                             if (!factoryMethods.ContainsKey(tr.Name))
                                 factoryMethods.Add(tr.Name, new List<FactoryMethodInfo>());
