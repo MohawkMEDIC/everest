@@ -26,6 +26,7 @@ using MARC.Everest.Interfaces;
 using System.Reflection;
 using MARC.Everest.Exceptions;
 using MARC.Everest.DataTypes.Interfaces;
+using System.Xml;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
 {
@@ -201,9 +202,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
 
                 // Attributes
                 if(s.GetAttribute("lowClosed") != null)
-                    lowClosedProperty.SetValue(instance, Convert.ToBoolean(s.GetAttribute("lowClosed")), null);
+                    lowClosedProperty.SetValue(instance, XmlConvert.ToBoolean(s.GetAttribute("lowClosed")), null);
                 if(s.GetAttribute("highClosed") != null)
-                    highClosedProperty.SetValue(instance, Convert.ToBoolean(s.GetAttribute("highClosed")), null);
+                    highClosedProperty.SetValue(instance, XmlConvert.ToBoolean(s.GetAttribute("highClosed")), null);
 
                 // Now process the elements
                 #region Elements

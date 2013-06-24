@@ -26,6 +26,7 @@ using MARC.Everest.Interfaces;
 using MARC.Everest.DataTypes;
 using System.Reflection;
 using MARC.Everest.Exceptions;
+using System.Xml;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
 {
@@ -151,7 +152,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
 
                 // Attributes
                 if(s.GetAttribute("isFlexible") != null)
-                    institutionSpecifiedProperty.SetValue(instance, Convert.ToBoolean(s.GetAttribute("isFlexible")), null);
+                    institutionSpecifiedProperty.SetValue(instance, XmlConvert.ToBoolean(s.GetAttribute("isFlexible")), null);
                 if(s.GetAttribute("alignment") != null)
                     alignmentProperty.SetValue(instance, Util.FromWireFormat(s.GetAttribute("alignment"), alignmentProperty.PropertyType), null);
                 if(s.GetAttribute("count") != null)

@@ -515,6 +515,8 @@ namespace MARC.Everest.Connectors
                     mi = FindConverter(value.GetType(), value.GetType(), destType);
                 if (mi == null && m_destType != destType) // Using container type
                     mi = FindConverter(destType, value.GetType(), destType);
+                if (mi == null) // Using System.Xml.XmlConvert 
+                    mi = FindConverter(typeof(System.Xml.XmlConvert), value.GetType(), destType);
                 if (mi == null) // Using System.Convert as a last resort
                     mi = FindConverter(typeof(System.Convert), value.GetType(), destType);
 

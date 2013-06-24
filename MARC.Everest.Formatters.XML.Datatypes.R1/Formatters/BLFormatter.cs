@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 using MARC.Everest.DataTypes;
 using System.Reflection;
+using System.Xml;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 {
@@ -61,7 +62,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Now parse our data out... Attributes
             if (s.GetAttribute("value") != null)
-                retVal.Value = Convert.ToBoolean(s.GetAttribute("value"));
+                retVal.Value = XmlConvert.ToBoolean(s.GetAttribute("value"));
 
             base.Validate(retVal, s.ToString(), result);
             return retVal;
