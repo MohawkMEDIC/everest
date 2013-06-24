@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace MARC.Everest.Xml
 {
@@ -165,14 +166,15 @@ namespace MARC.Everest.Xml
             get { return innerReader.BaseURI; }
         }
 
-        //DOC: Documentation Required
+#if !WINDOWS_PHONE
         /// <summary>
-        /// 
+        /// Closes this stream and the underlying stream
         /// </summary>
         public override void Close()
         {
             innerReader.Close();
         }
+#endif
 
         //DOC: Documentation Required
         /// <summary>
@@ -372,7 +374,7 @@ namespace MARC.Everest.Xml
                         XmlQualifiedName openName = this.nameStack.Pop(),
                             thisName = new XmlQualifiedName(innerReader.LocalName, innerReader.NamespaceURI);
                         if(thisName.Name != openName.Name)
-                            throw new MARC.Everest.Exceptions.MessageValidationException(String.Format("XML Processing Error : Start element {0} does not match expected end element {1}", openName.Name, thisName.Name));
+                            throw new MARC.Everest.Exceptions.MessageValidationException(String.Format(CultureInfo.InvariantCulture, "XML Processing Error : Start element {0} does not match expected end element {1}", openName.Name, thisName.Name));
 
                         break;
                 }

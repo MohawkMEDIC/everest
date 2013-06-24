@@ -115,7 +115,8 @@ namespace MARC.Everest.Xml
         /// 
         /// </summary>
         public XmlQualifiedName CurrentElement { get { return m_NameStack.Peek(); } }
-        //DOC: Documentation Required
+
+#if !WINDOWS_PHONE
         /// <summary>
         /// 
         /// </summary>
@@ -124,6 +125,8 @@ namespace MARC.Everest.Xml
             m_InnerWriter.Close();
             m_NameStack.Clear();
         }
+#endif 
+
         //DOC: Documentation Required
         /// <summary>
         /// 

@@ -258,10 +258,12 @@ namespace MARC.Everest.DataTypes
         {
             if (value == null || !typeof(T).IsEnum) return null;
 
+#if !WINDOWS_PHONE
             object[] ea = typeof(T).GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
 
             if (ea.Length != 0 && !string.IsNullOrEmpty((ea[0] as DescriptionAttribute).Description))
                 return (ea[0] as DescriptionAttribute).Description;
+#endif
             return null;
         }
 
@@ -417,17 +419,17 @@ namespace MARC.Everest.DataTypes
                 if(Code != null &&NullFlavor != null )
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
                 if(CodeSystemName != null && CodeSystem == null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemName", "CodeSystem"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemName", "CodeSystem"), null));
                 if(CodeSystemVersion != null && CodeSystem == null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemVersion", "CodeSystem"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemVersion", "CodeSystem"), null));
                 if(CodeSystem != null && (Code == null || NullFlavor != null && ((NullFlavor)NullFlavor).IsChildConcept(DataTypes.NullFlavor.Other)))
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystem can only be used when Code is populated or NullFlavor does implies Other", null));
                 if(DisplayName != null && Code == null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "DisplayName", "CodeSystem"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "DisplayName", "CodeSystem"), null));
                 if(Code != null && Code.IsAlternateCodeSpecified && CodeSystem == null)
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "When Code has an alternate code specified, CodeSystem must be populated", null));
                 if(ValueSetVersion != null && ValueSet == null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "ValueSetVersion", "ValueSet"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "ValueSetVersion", "ValueSet"), null));
             }
             else // NullfLavor is something other than OTHER
             { 

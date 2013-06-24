@@ -116,9 +116,9 @@ namespace MARC.Everest.DataTypes
             else if (this.NullFlavor == null)
             {
                 if (this.Value == null && !(this is URG<T>))
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "UVP", String.Format(ValidationMessages.MSG_PROPERTY_NOT_POPULATED, "Value", typeof(T).Name), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "UVP", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_POPULATED, "Value", typeof(T).Name), null));
                 if (this.Probability == null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "UVP", String.Format(ValidationMessages.MSG_PROPERTY_NOT_POPULATED, "Probability", "Decimal"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "UVP", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_POPULATED, "Probability", "Decimal"), null));
                 else if (this.Probability < 0 || this.Probability > 1)
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "UVP", "Probabiliy must carry a value between 0 and 1", null));
             }
@@ -213,7 +213,7 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public override string ToString()
         {
-            return this.Value == null || this.Probability == null ? base.ToString() : String.Format("~{0} ({1:#.00})", this.Value, this.Probability); 
+            return this.Value == null || this.Probability == null ? base.ToString() : String.Format(EverestFrameworkContext.CurrentCulture, "~{0} ({1:#.00})", this.Value, this.Probability); 
         }
 
         #region IPrimitiveDataValue Members

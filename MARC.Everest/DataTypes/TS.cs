@@ -240,7 +240,7 @@ namespace MARC.Everest.DataTypes
                 }
                 catch (Exception e)
                 {
-                    throw new FormatException(string.Format("The date string '{0}' is not in the proper format", value), e);
+                    throw new FormatException(string.Format(EverestFrameworkContext.CurrentCulture, "The date string '{0}' is not in the proper format", value), e);
                 }
                 
             }

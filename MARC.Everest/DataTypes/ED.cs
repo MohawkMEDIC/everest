@@ -320,6 +320,7 @@ namespace MARC.Everest.DataTypes
         [Property(Name = "mediaType", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.Structural)]
         public string MediaType { get; set; }
 
+#if !WINDOWS_PHONE
         /// <summary>
         /// Compute hash for the data in this object and set the hash and integrity check algorithm used
         /// </summary>
@@ -366,6 +367,7 @@ namespace MARC.Everest.DataTypes
             }
             return null;
         }
+#endif
 
         private byte[] integrityCheck;
         /// <summary>
@@ -388,14 +390,18 @@ namespace MARC.Everest.DataTypes
         /// </code>
         /// </example>
         [Property(Name = "integrityCheck", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.Structural)]
+#if !WINDOWS_PHONE
         [ReadOnly(true)]
+#endif
         public byte[] IntegrityCheck
         {
             get
             {
+#if !WINDOWS_PHONE
                 if (integrityCheck == null && IntegrityCheckAlgorithm != null &&
                     Data != null)
                     integrityCheck = ComputeIntegrityCheck();
+#endif
                 return integrityCheck;
             }
             set
@@ -486,7 +492,7 @@ namespace MARC.Everest.DataTypes
             return buffer; // Return output
 
         }
-#endif
+
 
         /// <summary>
         /// Validate the hash that the data within this ED is valid according to the set
@@ -504,7 +510,7 @@ namespace MARC.Everest.DataTypes
             // Compare the hash
             return ByteEquality(valueHash, dataHash);
         }
-
+#endif
         /// <summary>
         /// Specifies the algorithm used to compute the checksum
         /// </summary>
@@ -590,7 +596,9 @@ namespace MARC.Everest.DataTypes
         /// <remarks>By setting this property, the Representation property is updated to TXT</remarks>
         /// <seealso cref="P:Representation"/>
         [EditorBrowsable(EditorBrowsableState.Never)]
+#if !WINDOWS_PHONE
         [Browsable(false)]
+#endif
         [Property(Name = "value", PropertyType = PropertyAttribute.AttributeAttributeType.Structural)]
         public string Value
         {
@@ -621,7 +629,9 @@ namespace MARC.Everest.DataTypes
         /// <remarks>By setting this property, the Representation property is updated to B64</remarks>
         /// <seealso cref="P:Representation"/>
         [EditorBrowsable(EditorBrowsableState.Never)]
+#if !WINDOWS_PHONE
         [Browsable(false)]
+#endif
         [Property(Name = "data", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural)]
         public string Base64Data
         {
@@ -743,13 +753,13 @@ namespace MARC.Everest.DataTypes
             else if (this.NullFlavor == null && this.Data == null && this.Reference == null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", ValidationMessages.MSG_NULLFLAVOR_MISSING));
             if (this.Translation != null && this.Translation.FindAll(o => o.Translation != null).Count > 0)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Translation", "Translation"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Translation", "Translation"), null));
             if (this.Reference != null && !TEL.IsValidUrlFlavor(this.Reference))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", "When populated, Reference must be a valid instance of TEL.URL", null));
             if (this.Thumbnail != null && this.Thumbnail.Thumbnail != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Thumbnail", "Thumbnail"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Thumbnail", "Thumbnail"), null));
             if (this.Thumbnail != null && this.Thumbnail.Reference != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Thumbnail", "Reference"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "Thumbnail", "Reference"), null));
             
             return retVal;
         }

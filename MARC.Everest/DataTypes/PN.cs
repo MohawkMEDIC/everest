@@ -128,7 +128,7 @@ namespace MARC.Everest.DataTypes
             var retVal = base.ValidateEx() as List<IResultDetail>;
             foreach (var part in this.Part)
                 if (part.Qualifier != null && part.Qualifier.Find(ob => ob.Code.Equals(EntityNamePartQualifier.LegalStatus)) != null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PN", String.Format(ValidationMessages.MSG_INVALID_VALUE, "LegalStatus", "Qualifier"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "PN", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_INVALID_VALUE, "LegalStatus", "Qualifier"), null));
             return retVal;
         }
 

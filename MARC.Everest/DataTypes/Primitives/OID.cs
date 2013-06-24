@@ -41,7 +41,7 @@ namespace MARC.Everest.DataTypes.Primitives
         {
             Regex oidRegex = new Regex("^(\\d+?\\.){1,}\\d+$");
             if (!oidRegex.IsMatch(oid))
-                throw new FormatException(String.Format("The string '{0}' is not a valid OID", oid));
+                throw new FormatException(String.Format(EverestFrameworkContext.CurrentCulture, "The string '{0}' is not a valid OID", oid));
             this.oid = oid;
         }
 

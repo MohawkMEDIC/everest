@@ -24,6 +24,7 @@ using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using MARC.Everest.Connectors;
+using System.Globalization;
 
 namespace MARC.Everest.DataTypes
 {
@@ -110,7 +111,7 @@ namespace MARC.Everest.DataTypes
         public override string ToString()
         {
             if (this.Precision != 0)
-                return String.Format(EverestFrameworkContext.CurrentCulture, String.Format("{{0:0.{0}}}{{1}}{{2}}", new String('0',this.m_precision)), Value, Value != null && !String.IsNullOrEmpty(Currency) ? " " : "", Currency);
+                return String.Format(EverestFrameworkContext.CurrentCulture, String.Format(CultureInfo.InvariantCulture, "{{0:0.{0}}}{{1}}{{2}}", new String('0',this.m_precision)), Value, Value != null && !String.IsNullOrEmpty(Currency) ? " " : "", Currency);
             else
                 return String.Format(EverestFrameworkContext.CurrentCulture, "{0}{1}{2}", Value, Value != null && !String.IsNullOrEmpty(Currency) ? " " : "", Currency);
         }
@@ -145,9 +146,9 @@ namespace MARC.Everest.DataTypes
             if (this.Value == null && this.NullFlavor == null && this.UncertainRange == null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "MO", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             if (!((this.Value != null) ^ (this.UncertainRange != null)))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "MO", String.Format(ValidationMessages.MSG_INDEPENDENT_VALUE, "UncertainRange", "Value")));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "MO", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_INDEPENDENT_VALUE, "UncertainRange", "Value")));
             if (this.NullFlavor == null && String.IsNullOrEmpty(this.Currency))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "MO", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Value or UncertainRange", "Currency"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "MO", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Value or UncertainRange", "Currency"), null));
             return retVal;
         }
         #region IEquatable<MO> Members

@@ -236,7 +236,7 @@ namespace MARC.Everest.DataTypes
         public override string ToString()
         {
             if (Numerator != null && Denominator != null)
-                return String.Format("{0}/{1}", Numerator.ToString(), Denominator.ToString());
+                return String.Format(EverestFrameworkContext.CurrentCulture, "{0}/{1}", Numerator, Denominator);
             return String.Empty;
         }
 
@@ -271,13 +271,13 @@ namespace MARC.Everest.DataTypes
             else if (this.NullFlavor == null && this.Numerator == null && this.Denominator == null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "RTO", ValidationMessages.MSG_NULLFLAVOR_MISSING, null));
             if (this.Numerator != null && this.Denominator == null || this.Denominator != null && this.Numerator == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "RTO", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Numerator", "Denominator"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "RTO", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Numerator", "Denominator"), null));
             if (this.UncertainRange != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "RTO", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "UncertainRange"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "RTO", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED, "UncertainRange"), null));
             if (this.Uncertainty != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "RTO", String.Format(ValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "Uncertainty"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "RTO", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "Uncertainty"), null));
             if (this.UncertaintyType != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "RTO", String.Format(ValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "UncertaintyType"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "RTO", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_SCHEMA_ONLY, "UncertaintyType"), null));
             return retVal;
         }
         // <summary>

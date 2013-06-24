@@ -25,6 +25,7 @@ using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using System.ComponentModel;
 using MARC.Everest.Connectors;
+using System.Globalization;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -161,7 +162,7 @@ namespace MARC.Everest.DataTypes
         {
             double ticks = 0;
             if (!s_tickMap.TryGetValue(unit, out ticks))
-                throw new InvalidOperationException(String.Format("'{0}' not recognized as valid unit of time", unit));
+                throw new InvalidOperationException(String.Format(EverestFrameworkContext.CurrentCulture, "'{0}' not recognized as valid unit of time", unit));
             this.Value = (decimal)(value.Ticks / (double)ticks);
             this.Unit = unit;
         }
@@ -283,7 +284,7 @@ namespace MARC.Everest.DataTypes
             double ticks = 0;
             if (s_tickMap.TryGetValue(pq.Unit, out ticks))
                 return new TimeSpan((long)((double)pq.Value * ticks));
-            throw new InvalidCastException(String.Format("Unit '{0}' is not understood as a reliable unit of time. Understood units are {{'us','ms','s','ks','Ms','min','h','d','wk','a'}}", pq.Unit));
+            throw new InvalidCastException(String.Format(EverestFrameworkContext.CurrentCulture, "Unit '{0}' is not understood as a reliable unit of time. Understood units are {{'us','ms','s','ks','Ms','min','h','d','wk','a'}}", pq.Unit));
 
         }
 
@@ -341,7 +342,7 @@ namespace MARC.Everest.DataTypes
             {
                 String strValue = this.Value.Value.ToString(EverestFrameworkContext.CurrentCulture);
                 if (strValue.Contains(EverestFrameworkContext.CurrentCulture.NumberFormat.NumberDecimalSeparator) && this.Precision != 0)
-                    strValue = this.Value.Value.ToString(String.Format("0.{0}", new String('0', this.Precision)), EverestFrameworkContext.CurrentCulture);
+                    strValue = this.Value.Value.ToString(String.Format(CultureInfo.InvariantCulture, "0.{0}", new String('0', this.Precision)), EverestFrameworkContext.CurrentCulture);
 
                 return String.Format(EverestFrameworkContext.CurrentCulture, "{0}{1}{2}", strValue, this.Value != null && !String.IsNullOrEmpty(this.Unit) ? " " : "", this.Unit);
             }
@@ -631,7 +632,7 @@ namespace MARC.Everest.DataTypes
             else if (unit.Equals(this.Unit))
                 return (PQ)this.Clone();
             else if (!this.IsUnitComparable(unit))
-                throw new ArgumentException(String.Format("Cannot convert '{0}' to '{1}' as no map exists", this.Unit, unit));
+                throw new ArgumentException(String.Format(EverestFrameworkContext.CurrentCulture, "Cannot convert '{0}' to '{1}' as no map exists", this.Unit, unit));
             else if (!this.Value.HasValue)
                 throw new InvalidOperationException("Cannot translate a null value");
 

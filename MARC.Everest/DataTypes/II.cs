@@ -233,7 +233,7 @@ namespace MARC.Everest.DataTypes
                     case IdentifierScope.VersionIdentifier:
                         return IdentifierUse.Version;
                     default:
-                        throw new InvalidOperationException(String.Format("Cannot determine map from value '{0}'", this.Scope.Value));
+                        throw new InvalidOperationException(String.Format(EverestFrameworkContext.CurrentCulture, "Cannot determine map from value '{0}'", this.Scope.Value));
                 }
             }
             set
@@ -303,7 +303,7 @@ namespace MARC.Everest.DataTypes
             if (!((Root != null) ^ (NullFlavor != null)))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             else if (!(IsRootOid(this) ^ IsRootGuid(this)))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", String.Format(ValidationMessages.MSG_INVALID_VALUE, "Root", this.Root), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "II", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_INVALID_VALUE, "Root", this.Root), null));
             return retVal;
         }
 

@@ -202,9 +202,9 @@ namespace MARC.Everest.DataTypes
         public ISequence<T> SubSequence(int start, int end)
         {
             if (start >= Count)
-                throw new System.IndexOutOfRangeException(String.Format("Start position {0} is outside bounds of the LIST", start));
+                throw new System.IndexOutOfRangeException(String.Format(EverestFrameworkContext.CurrentCulture, "Start position {0} is outside bounds of the LIST", start));
             else if (end >= Count)
-                throw new System.IndexOutOfRangeException(String.Format("End position {0} is outside the bounds of the LIST", end));
+                throw new System.IndexOutOfRangeException(String.Format(EverestFrameworkContext.CurrentCulture, "End position {0} is outside the bounds of the LIST", end));
             else if (start > end)
                 throw new ArgumentException("Start parameter must be less than the End parameter");
 

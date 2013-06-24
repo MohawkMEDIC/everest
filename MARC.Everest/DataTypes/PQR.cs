@@ -94,7 +94,7 @@ namespace MARC.Everest.DataTypes
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object,System.Object)")]
         public override string ToString()
         {
-            return string.Format("{0} {1}", this.Value, this.Code);
+            return string.Format(EverestFrameworkContext.CurrentCulture, "{0} {1}", this.Value, this.Code);
         }
 
         /// <summary>

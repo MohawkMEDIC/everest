@@ -209,13 +209,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     retVal.Data = textEncoding.GetBytes(innerData.ToString());
 
             // Finally, the hash, this will validate the data
+#if !WINDOWS_PHONE
             if(!retVal.ValidateIntegrityCheck())
                 if(retVal.Compression == null || !retVal.UnCompress().ValidateIntegrityCheck())
                     result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
                         string.Format("Encapsulated data with content starting with '{0}' failed integrity check!", retVal.ToString().PadRight(10, ' ').Substring(0, 10)), 
                         s.ToString(),
                         null));
-
+#endif
             // Validate
             base.Validate(retVal, pathName, result);
 

@@ -183,11 +183,11 @@ namespace MARC.Everest.DataTypes
             if (this.Code != null && Value == null)
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", "When Code is specified, Value must also be specified", null));
             if (this.Code != null && this.Code.IsNull)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "NullFlavor", "Code"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "NullFlavor", "Code"), null));
             if (this.NullFlavor != null && (this.Code != null || this.Value != null))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             if (this.Code != null && this.Code.OriginalText != null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", String.Format(ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "OriginalText", "Code"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SC", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_PROPERTY_NOT_PERMITTED_ON_PROPERTY, "OriginalText", "Code"), null));
             if(this.Code != null)
                 retVal.AddRange(this.Code.ValidateEx());
             return retVal;

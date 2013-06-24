@@ -203,7 +203,7 @@ namespace MARC.Everest.DataTypes
             else if (!((this.Code == null) ^ (this.NullFlavor == null)))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CS", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             else if (this.Code.IsAlternateCodeSpecified)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CS", string.Format("Code must be drawn from '{0}'", typeof(T).Name), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CS", string.Format(EverestFrameworkContext.CurrentCulture, "Code must be drawn from '{0}'", typeof(T).Name), null));
             return retVal;
         }
 
@@ -260,7 +260,7 @@ namespace MARC.Everest.DataTypes
             if ((o == null || o.Code == null) && typeof(T).IsValueType)
                 throw new InvalidCastException("Nullable type must have a value to be cast");
             else if (o.Code.IsAlternateCodeSpecified)
-                throw new InvalidOperationException(String.Format("Cannot cast to '{0}' because the assigned value '{1}' lies outside the domain specified",
+                throw new InvalidOperationException(String.Format(EverestFrameworkContext.CurrentCulture, "Cannot cast to '{0}' because the assigned value '{1}' lies outside the domain specified",
                     typeof(T).FullName, o.Code));
             return o.Code;
         }
@@ -298,7 +298,9 @@ namespace MARC.Everest.DataTypes
         /// <remarks>
         /// Used primarily for formatters
         /// </remarks>
+#if !WINDOWS_PHONE
         [Browsable(false)]
+#endif
         [EditorBrowsable(EditorBrowsableState.Never)]
         public object CodeValue
         {

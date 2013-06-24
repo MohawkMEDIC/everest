@@ -25,6 +25,7 @@ using MARC.Everest.Attributes;
 using System.Xml.Serialization;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Connectors;
+using System.Globalization;
 
 namespace MARC.Everest.DataTypes
 {
@@ -99,9 +100,9 @@ namespace MARC.Everest.DataTypes
             if (!((this.NullFlavor != null) ^ (this.Minuend != null && !this.Minuend.IsNull && this.Subtrahend != null && !this.Subtrahend.IsNull)))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             if (this.Minuend == null || this.Minuend.IsNull)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Minuend", String.Format("ISetComponent<{0}>", typeof(T).Name)), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Minuend", String.Format(CultureInfo.InvariantCulture, "ISetComponent<{0}>", typeof(T).Name)), null));
             if (this.Subtrahend == null || this.Subtrahend.IsNull)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Subtrahend", String.Format("ISetComponent<{0}>", typeof(T).Name)), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "QSD", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "Subtrahend", String.Format(CultureInfo.InvariantCulture, "ISetComponent<{0}>", typeof(T).Name)), null));
             return retVal;
         }
         /// <summary>

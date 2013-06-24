@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MARC.Everest.Connectors;
 using MARC.Everest.Exceptions;
+using System.Globalization;
 
 namespace MARC.Everest.DataTypes.Primitives
 {
@@ -132,7 +133,7 @@ namespace MARC.Everest.DataTypes.Primitives
         /// </summary>
         public override string ToString()
         {
-            return Util.ToWireFormat(alternateCode ?? String.Format("{0}", valueSetValue));
+            return Util.ToWireFormat(alternateCode ?? String.Format(CultureInfo.InvariantCulture, "{0}", valueSetValue));
         }
 
         #region IEquatable<CodeValue<T>> Members

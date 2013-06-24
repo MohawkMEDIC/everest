@@ -87,9 +87,9 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Text indicating where this interval was derived
         /// </summary>
-        [Description("Text indicating where this interval was derived")]
         [Property(Name = "originalText", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
 #if !WINDOWS_PHONE
+        [Description("Text indicating where this interval was derived")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
 #endif
@@ -98,9 +98,9 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// This is the low limit. If the low limit is not known a null flavor should be specified
         /// </summary>
-        [Description("This is the low limit. If the low limit is not known a null flavor should be specified")]
         [Property(Name = "low", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
 #if !WINDOWS_PHONE
+        [Description("This is the low limit. If the low limit is not known a null flavor should be specified")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
 #endif
@@ -114,16 +114,18 @@ namespace MARC.Everest.DataTypes
         /// the <see cref="P:Low"/> and <see cref="P:High"/> properties are of type IVXB, however in R2
         /// IVXB is never defined. This property will be used in place of the IVXB "inclusive" attribute.
         /// </remarks>
+#if !WINDOWS_PHONE
         [Description("Specifies wheter low is included in the IVL or excluded from the IVL")]
+#endif
         [Property(Name = "lowClosed", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         public bool? LowClosed { get; set; }
 
         /// <summary>
         /// The high limit. If the hign limit is not known, a null flavour should be specified
         /// </summary>
-        [Description("The high limit. If the hign limit is not known, a null flavour should be specified")]
         [Property(Name = "high", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
 #if !WINDOWS_PHONE
+        [Description("The high limit. If the hign limit is not known, a null flavour should be specified")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
 #endif
@@ -137,7 +139,9 @@ namespace MARC.Everest.DataTypes
         /// the <see cref="P:Low"/> and <see cref="P:High"/> properties are of type IVXB, however in R2
         /// IVXB is never defined. This property will be used in place of the IVXB "inclusive" attribute.
         /// </remarks>
+#if !WINDOWS_PHONE        
         [Description("Specifies whether high is inlcluded in the IVL or excluded in the IVL")]
+#endif
         [Property(Name = "highClosed", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         public bool? HighClosed { get; set; }
 
@@ -145,9 +149,9 @@ namespace MARC.Everest.DataTypes
         /// The difference between the high and low bondary. Width is used when the size of the interval is known
         /// but the actual start and end points are not known. 
         /// </summary>
-        [Description("The difference between the high and low bondary. Width is used when the size of the interval is known but the actual start and end points are not known. ")]
         [Property(Name = "width", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
 #if !WINDOWS_PHONE
+        [Description("The difference between the high and low bondary. Width is used when the size of the interval is known but the actual start and end points are not known. ")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
 #endif
@@ -288,9 +292,9 @@ namespace MARC.Everest.DataTypes
             if (NullFlavor != null && (Low != null || High != null || Width != null || Value != null))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
             if (LowClosed != null && Low == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "LowClosed", "Low"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "LowClosed", "Low"), null));
             if (HighClosed != null && High == null)
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", String.Format(ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "HighClosed", "High"), null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "IVL", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "HighClosed", "High"), null));
 
             return retVal;
         }
@@ -471,7 +475,7 @@ namespace MARC.Everest.DataTypes
                 return retVal;
             }
             else
-                throw new InvalidOperationException(String.Format("Cannot enumerate '{0}' to construct the resultant set", typeof(T).FullName));
+                throw new InvalidOperationException(String.Format(EverestFrameworkContext.CurrentCulture, "Cannot enumerate '{0}' to construct the resultant set", typeof(T).FullName));
         }
 
         /// <summary>
@@ -480,13 +484,13 @@ namespace MARC.Everest.DataTypes
         public override string ToString()
         {
             if (this.Value != null)
-                return String.Format("{0}", this.Value);
+                return String.Format(EverestFrameworkContext.CurrentCulture, "{0}", this.Value);
             else if (this.Low != null && this.High != null)
-                return String.Format("{{{0} .. {1}}}", this.Low, this.High);
+                return String.Format(EverestFrameworkContext.CurrentCulture, "{{{0} .. {1}}}", this.Low, this.High);
             else if (this.Low != null)
-                return string.Format("{{{0} ..}}", this.Low);
+                return string.Format(EverestFrameworkContext.CurrentCulture, "{{{0} ..}}", this.Low);
             else if (this.High != null)
-                return string.Format("{{.. {0}}}", this.High);
+                return string.Format(EverestFrameworkContext.CurrentCulture, "{{.. {0}}}", this.High);
             else return base.ToString();
         }
 

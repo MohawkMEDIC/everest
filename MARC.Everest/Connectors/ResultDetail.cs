@@ -316,7 +316,7 @@ namespace MARC.Everest.Connectors
         /// Create a new instance of the not implemented element result detail
         /// </summary>
         public NotImplementedElementResultDetail(ResultDetailType type, string elementName, string elementNamespace, string location, Exception exception) :
-            base(type, String.Format("Element '{0}#{1}' is not supported and was not interpreted", elementName, elementNamespace), location, exception) { }
+            base(type, String.Format(EverestFrameworkContext.CurrentCulture, "Element '{0}#{1}' is not supported and was not interpreted", elementName, elementNamespace), location, exception) { }
 
         /// <summary>
         /// Result detail
@@ -374,7 +374,7 @@ namespace MARC.Everest.Connectors
         /// Create a new instance of the datatype result detail
         /// </summary>
         public FixedValueMisMatchedResultDetail(string suppliedValue, string fixedValue, string location) :
-            base(ResultDetailType.Error, String.Format("The supplied value of '{0}' doesn't match the fixed value of '{1}'", suppliedValue, fixedValue), location) 
+            base(ResultDetailType.Error, String.Format(EverestFrameworkContext.CurrentCulture, "The supplied value of '{0}' doesn't match the fixed value of '{1}'", suppliedValue, fixedValue), location) 
         {
             this.SuppliedValue = suppliedValue;
         }
@@ -383,7 +383,7 @@ namespace MARC.Everest.Connectors
         /// Create a new instance of the datatype result detail
         /// </summary>
         public FixedValueMisMatchedResultDetail(string suppliedValue, string fixedValue, bool isIgnored, string location) :
-            base(isIgnored ? ResultDetailType.Error : ResultDetailType.Warning, String.Format("The supplied value of '{0}' doesn't match the fixed value of '{1}', {2}", suppliedValue, fixedValue, isIgnored ? "the supplied value will be ignored" : "the supplied value has been used in place of the fixed value"), location)
+            base(isIgnored ? ResultDetailType.Error : ResultDetailType.Warning, String.Format(EverestFrameworkContext.CurrentCulture, "The supplied value of '{0}' doesn't match the fixed value of '{1}', {2}", suppliedValue, fixedValue, isIgnored ? "the supplied value will be ignored" : "the supplied value has been used in place of the fixed value"), location)
         {
             this.SuppliedValue = suppliedValue;
             this.Overwritten = !isIgnored;
@@ -455,9 +455,9 @@ namespace MARC.Everest.Connectors
             get
             {
                 if (String.IsNullOrEmpty(base.Message))
-                    return string.Format("Data type '{0}' failed basic validation, please refer to the developer's guide for more detail", this.DatatypeName);
+                    return string.Format(EverestFrameworkContext.CurrentCulture, "Data type '{0}' failed basic validation, please refer to the developer's guide for more detail", this.DatatypeName);
                 else
-                    return string.Format("Data type '{0}' failed basic validation, the violation was : {1}", this.DatatypeName, base.Message);
+                    return string.Format(EverestFrameworkContext.CurrentCulture, "Data type '{0}' failed basic validation, the violation was : {1}", this.DatatypeName, base.Message);
             }
         }
         /// <summary>
@@ -512,7 +512,7 @@ namespace MARC.Everest.Connectors
         {
             get
             {
-                return string.Format("Datatype '{0}' failed validation criteria for flavor '{1}'. Please refer to development guide for validation rules", this.DatatypeName, this.FlavorName);
+                return string.Format(EverestFrameworkContext.CurrentCulture, "Datatype '{0}' failed validation criteria for flavor '{1}'. Please refer to development guide for validation rules", this.DatatypeName, this.FlavorName);
             }
         }
 
@@ -574,7 +574,7 @@ namespace MARC.Everest.Connectors
         {
             get
             {
-                return String.Format("Value '{0}' set on '{1}' has been propagated to '{2}'",
+                return String.Format(EverestFrameworkContext.CurrentCulture, "Value '{0}' set on '{1}' has been propagated to '{2}'",
                     Util.ToWireFormat(this.ValuePropagated), OriginalPath, DestinationPath);
             }
         }
@@ -620,7 +620,7 @@ namespace MARC.Everest.Connectors
         /// </summary>
         public override string Message
         {
-            get { return String.Format("Property '{0}' in '{1}' is not supported by this datatype formatter", PropertyName, DatatypeName); }
+            get { return String.Format(EverestFrameworkContext.CurrentCulture, "Property '{0}' in '{1}' is not supported by this datatype formatter", PropertyName, DatatypeName); }
         }
 
         #endregion
