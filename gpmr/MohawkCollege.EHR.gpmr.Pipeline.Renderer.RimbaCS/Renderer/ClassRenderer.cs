@@ -585,6 +585,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
                 // Property attribute
                 sw.Write(CreatePropertyAttribute(cc as Property, ownerNs, 2, propertySort));
+
+                sw.WriteLine("#if !WINDOWS_PHONE");
                 // Set browsing off for fixed values
                 if (property.FixedValue != null && property.PropertyType != Property.PropertyTypes.TraversableAssociation)
                 {
@@ -596,11 +598,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                 // Designer category, etc
                 sw.WriteLine("\t\t[System.ComponentModel.Category(\"{0}\")]", property.Conformance);
                 sw.WriteLine("\t\t[System.ComponentModel.Description(\"{0}\")]", Util.Util.StringEscape(property.BusinessName != null ? property.BusinessName.Replace("\n","").Replace("\r","") : property.Name));
-
                 // Which type converter?
                 TypeReference tr = Datatypes.MapDatatype((cc as Property).Type);
 
-                sw.WriteLine("#if !WINDOWS_PHONE");
                 if (property.SupplierDomain != null)
                     sw.WriteLine("\t\t[System.ComponentModel.TypeConverter(typeof(MARC.Everest.Design.DataTypeConverter))]");
                 else
