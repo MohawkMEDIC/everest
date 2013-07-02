@@ -78,6 +78,7 @@ Source: ..\MARC.Everest.Formatters.XML.Datatypes.R1\bin\Release\MARC.Everest.Pho
 Source: ..\MARC.Everest.Connectors.WCF\bin\release\MARC.Everest.Phone.Connectors.WCF.dll; DestDir: {app}; Flags: ignoreversion; 
 Source: ..\MARC.Everest.Connectors.WCF\bin\release\MARC.Everest.Phone.Connectors.WCF.xml; DestDir: {app}; Flags: ignoreversion; 
 Source: ..\FormatterUtil\bin\Release\FormatterUtil.exe; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\Solution Items\MohawkCollege.Util.Console.Parameters.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\MARC.Everest.Formatters.XML.ITS1\bin\Release\MARC.Everest.Formatters.XML.ITS1.dll; StrongAssemblyName: MARC.Everest.Formatters.XML.ITS1; DestDir: {app}; Flags: ignoreversion; 
 
 
