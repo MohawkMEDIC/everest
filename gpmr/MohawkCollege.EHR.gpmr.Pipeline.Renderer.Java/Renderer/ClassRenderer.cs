@@ -625,8 +625,13 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 foreach (TypeReference tr in CascadeSpecializers(cls.SpecializedBy))
                 {
                     // Is method
-                    sw.WriteLine("\t\t/** Returns true if this abstract class instance is an instance of {0}.{1} */\r\n\t\tpublic boolean is{2}() {{ ", ownerPackage, tr.Name, tr.Name.Replace(".", ""));
-                    sw.WriteLine("\t\t\treturn this instanceof {0}.{1};", ownerPackage, tr.Name);
+                    if (tr.Class == null || tr.Class.ContainerName == "RIM" && !RimbaJavaRenderer.GenerateRim ||
+                        tr.Class.IsAbstract)
+                        continue;
+
+
+                    sw.WriteLine("\t\t/** Returns true if this abstract class instance is an instance of {0}.{1}.{2} */\r\n\t\tpublic boolean is{1}{2}() {{ ", ownerPackage, tr.Class.ContainerName, Util.Util.PascalCase(tr.Class.Name));
+                    sw.WriteLine("\t\t\treturn this.getClass().getName().equals(\"{0}.{1}.{2}\");", ownerPackage, tr.Class.ContainerName.ToLower(), Util.Util.PascalCase(tr.Class.Name));
                     sw.WriteLine("\t\t}");
                 }
             }
