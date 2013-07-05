@@ -90,7 +90,7 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// Indicates why a value is not present.
     /// </summary>
-    [Structure(Name = "NullFlavor", CodeSystem = "2.16.840.1.113883.5.1008", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    [Structure(Name = "NullFlavor", CodeSystem = "2.16.840.1.113883.5.1008", StructureType = StructureAttribute.StructureAttributeType.ValueSet, Publisher = "Health Level 7 International")]
     [XmlType("NullFlavor", Namespace = "urn:hl7-org:v3")]
 #if !WINDOWS_PHONE
     [Serializable]

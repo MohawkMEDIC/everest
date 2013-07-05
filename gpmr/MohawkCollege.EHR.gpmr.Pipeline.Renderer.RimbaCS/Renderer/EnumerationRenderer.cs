@@ -209,7 +209,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
 
             // Generate the structure attribute
-            sw.WriteLine("\t[Structure(Name = \"{0}\", CodeSystem = \"{1}\", StructureType = StructureAttribute.StructureAttributeType.{2})]", enu.Name, enu.ContentOid, enu.GetType().Name);
+            sw.WriteLine("\t[Structure(Name = \"{0}\", CodeSystem = \"{1}\", StructureType = StructureAttribute.StructureAttributeType.{2}, Publisher = {3})]", enu.Name, enu.ContentOid, enu.GetType().Name, enu.Documentation != null ? "\"" + enu.Documentation.Copyright + "\"" : "null");
             sw.WriteLine("#if !WINDOWS_PHONE");
             sw.WriteLine("\t[Serializable]");
             sw.WriteLine("#endif");
@@ -224,7 +224,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
             List<String> rendered = new List<string>(),
                 mnemonics = new List<string>();
             RenderLiterals(sw, enu, rendered, mnemonics,  enu.Literals);
-
+            
             String tStr = sw.ToString();
             tStr = tStr.Remove(tStr.LastIndexOf(","));
             tStr += ("\r\n\t}");

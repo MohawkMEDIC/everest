@@ -44,7 +44,7 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [Structure(Name = "UpdateMode", CodeSystem = "2.16.840.1.113883.5.57", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    [Structure(Name = "UpdateMode", CodeSystem = "2.16.840.1.113883.5.57", StructureType = StructureAttribute.StructureAttributeType.ValueSet, Publisher = "Health Level 7 International")]
     [XmlType("UpdateMode", Namespace = "urn:hl7-org:v3")]
 #if !WINDOWS_PHONE
     [Serializable]

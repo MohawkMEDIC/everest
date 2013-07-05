@@ -41,7 +41,7 @@ namespace MARC.Everest.DataTypes
     ///     <item><b>ON</b> - State</item>
     /// </list>
     /// </example>
-    [Structure(Name = "AddressPartType", CodeSystem = "2.16.840.1.113883.5.16", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    [Structure(Name = "AddressPartType", CodeSystem = "2.16.840.1.113883.5.16", StructureType = StructureAttribute.StructureAttributeType.ValueSet, Publisher = "Health Level 7 International")]
     [XmlType("AddressPartType", Namespace = "urn:hl7-org:v3")]
     public enum AddressPartType
     {

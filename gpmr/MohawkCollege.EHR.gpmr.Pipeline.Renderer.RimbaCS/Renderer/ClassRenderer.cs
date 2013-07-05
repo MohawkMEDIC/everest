@@ -82,8 +82,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
         private string CreateStructureAttribute(Class cls)
         {
             StringBuilder sb = new StringBuilder("[Structure(");
-            sb.AppendFormat("Name = \"{0}\", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = {1}, Model=\"{2}\" )]", cls.Name, 
-                cls.ContainerPackage.EntryPoint.Exists(o=>o.Name == cls.Name) ? "true" : "false", cls.ContainerName);
+            sb.AppendFormat("Name = \"{0}\", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = {1}, Model=\"{2}\", Publisher={3} )]", cls.Name,
+                cls.ContainerPackage.EntryPoint.Exists(o => o.Name == cls.Name) ? "true" : "false", cls.ContainerName, cls.Documentation != null ? "\"" + cls.Documentation.Copyright + "\"" : "null");
             return sb.ToString();
         }
 
@@ -709,9 +709,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                 // Get the type reference
                 tr = (choice.Content[0] as Property).Type.Class.BaseClass;
                 List<String> methods = new List<string>();
+                StringBuilder getTraversalFor = new StringBuilder();
 
                 foreach (Property p in choice.Content)
                 {
+                    if (p.Type.Class != null && p.Type.Class.IsAbstract) continue; // don't output abstract classes
+
+                    getTraversalFor.AppendFormat("\t\tif(this.$$pcName$$ is {0}) return \"{1}\";\r\n", CreateDatatypeRef(p.Type, p), p.Name);
+
                     // Set the property
                     if (p.Type.Class.BaseClass != null && tr != null && p.Type.Class.BaseClass.Name != tr.Name)
                         tr = null;
@@ -720,8 +725,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
                     // Generate a SETProperty method that sets for this permutation
                     StringBuilder method_sb = new StringBuilder("\t\t");
-                    method_sb.AppendFormat("/// <summary> Get <see cref=\"P:$$pcName$$\"/> cast as an instance of <see cref=\"T:{0}\"/>. Null if <see cref=\"P:$$pcName$$\"/> is not an instance of <see cref=\"T:{0}\"/></summary>\r\n", CreateDatatypeRef(p.Type, p));
-                    method_sb.AppendFormat("public {0} Get$$pcName$$As{1}() {{ return this.$$pcName$$ as {0}; }}\r\n", CreateDatatypeRef(p.Type, p), Util.Util.MakeFriendly(p.Type.Name));
+                    method_sb.AppendFormat("/// <summary> Get <see cref=\"P:$$pcName$$\"/> cast as an instance of <see cref=\"T:{0}\"/>. This occurs when $$pcName$$ is represented as {1}. Null if <see cref=\"P:$$pcName$$\"/> is not an instance of <see cref=\"T:{0}\"/></summary>\r\n", CreateDatatypeRef(p.Type, p), p.Name);
+                    method_sb.AppendFormat("public {0} Get$$pcName$$If{2}() {{ return this.$$pcName$$ as {0}; }}\r\n", CreateDatatypeRef(p.Type, p), Util.Util.MakeFriendly(p.Type.Name), Util.Util.PascalCase(p.Name));
                     method_sb.AppendFormat("/// <summary> Set <see cref=\"P:$$pcName$$\"/> to an instance of <see cref=\"T:{0}\"/> </summary>\r\n", CreateDatatypeRef(p.Type, p));
                     method_sb.AppendFormat("\t\t/// <param name=\"value\">The value to set $$pcName$$ to</param>\r\n");
                     method_sb.AppendFormat("\t\tpublic void Set$$pcName$$({0} value) {{ this.$$pcName$$ = value; }}\r\n", CreateDatatypeRef(p.Type, p));
@@ -769,6 +774,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                     }
                 }
 
+
                 // If no type reference is agreed to, then the type reference is Object!
                 string dt = tr == null ? "System.Object" : CreateDatatypeRef(tr, choice.Content[0] as Property);
 
@@ -786,8 +792,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                 // IF the property name is equal to the containing class name, we use the name of the datatype it references as the property name
                 string pName = CreatePascalCasedName(choice);
 
-                sw.Write(" {0} {{ get; set; }}", pName);
+                sw.WriteLine(" {0} {{ get; set; }}", pName);
 
+                // Get traversal name
+                sw.WriteLine("\t/// <summary>Gets the actual traversal name used for the choice property <see cref=\"P:{0}\"/>, null if traversal was not provided </summary>", Util.Util.PascalCase(cc.Name));
+                sw.WriteLine("\tpublic String Get{0}TraversalName() {{", Util.Util.PascalCase(cc.Name));
+                sw.WriteLine(getTraversalFor.Replace("$$pcName$$", pName));
+                sw.WriteLine("\t\treturn null;");
+                sw.WriteLine("\t}");
 
                 // Write the setters
                 foreach (string s in methods)
