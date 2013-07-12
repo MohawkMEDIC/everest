@@ -77,7 +77,7 @@ namespace MARC.Everest.DataTypes
     /// ]]>
     /// </code>
     /// </example>
-    [Structure(Name = "PostalAddressUse", CodeSystem = "2.16.840.1.113883.5.1012", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    [Structure(Name = "PostalAddressUse", CodeSystem = "2.16.840.1.113883.5.1012", StructureType = StructureAttribute.StructureAttributeType.ValueSet, Publisher = "Health Level 7 International")]
     [XmlType("PostalAddressUse", Namespace = "urn:hl7-org:v3")]
     public enum PostalAddressUse
     {

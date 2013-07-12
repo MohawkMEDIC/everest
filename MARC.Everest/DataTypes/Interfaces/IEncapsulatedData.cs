@@ -89,7 +89,7 @@ namespace MARC.Everest.DataTypes.Interfaces
         /// Data is xml encoded
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "XML")]
-        [Enumeration(Value = "TXT")]
+        [Enumeration(Value = null)]
         XML
 #endif
     }

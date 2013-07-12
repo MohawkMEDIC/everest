@@ -33,7 +33,7 @@ namespace MARC.Everest.DataTypes
     /// <summary>
     /// Domain timing event type
     /// </summary>
-    [Structure(Name = "DomainTimingEvent", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain, CodeSystem = "2.16.840.1.113883.5.139")]
+    [Structure(Name = "DomainTimingEvent", StructureType = StructureAttribute.StructureAttributeType.ValueSet, Publisher = "Health Level 7 International", CodeSystem = "2.16.840.1.113883.5.139")]
     public enum DomainTimingEventType
     {
         /// <summary>

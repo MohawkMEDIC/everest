@@ -89,5 +89,10 @@ namespace MARC.Everest.Attributes
         /// The name of the model that contained the file
         /// </summary>
         public String Model { get; set; }
+
+        /// <summary>
+        /// Gets the name of the publishing group/organization
+        /// </summary>
+        public String Publisher { get; set; }
     }
 }

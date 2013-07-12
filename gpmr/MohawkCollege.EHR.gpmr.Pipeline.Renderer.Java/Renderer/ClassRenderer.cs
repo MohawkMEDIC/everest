@@ -191,14 +191,24 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             {
                 // Now, return getAsMethods
 
+                StringBuilder getTraversalFor = new StringBuilder();
+
                 foreach (Property p in (cc as Choice).Content)
                 {
-                    sw.WriteLine("\t/** Gets the {0} property cast to {1} or null if {0} is not an instance of {1}. This convenience method saves the developer from casting */", Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name));
-                    sw.WriteLine("\tpublic {0} get{1}As{2}() {{ if(this.m_{3} instanceof {0}) return ({0})this.m_{3}; else return null; }}",
-                        CreateDatatypeRef(p.Type, p, ownerPackage), Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name), Util.Util.MakeFriendly(cc.Name));
+                    if (p.Type.Class != null && p.Type.Class.IsAbstract) continue; // don't output abstract classes
+                    getTraversalFor.AppendFormat("\t\tif(this.m_{0} instanceof {1}) return \"{2}\";\r\n", Util.Util.MakeFriendly(cc.Name), CreateDatatypeRef(p.Type, p, ownerPackage, false), p.Name);
+                    sw.WriteLine("\t/** Gets the {0} property cast to {1} or null if {0} is not an instance of {1}. This happens when the traversal name is {2}. This convenience method saves the developer from casting */", Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name), p.Name);
+                    sw.WriteLine("\tpublic {0} get{1}If{4}() {{ if(this.m_{3} instanceof {0}) return ({0})this.m_{3}; else return null; }}",
+                        CreateDatatypeRef(p.Type, p, ownerPackage), Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name), Util.Util.MakeFriendly(cc.Name), Util.Util.PascalCase(p.Name));
                     sw.WriteLine("\t/** Sets the {0} property given the specified instance of {1}. */", Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(p.Type.Name));
                     sw.WriteLine("\tpublic void {3}{1}({0} value) {{ this.m_{2} = value; }}", CreateDatatypeRef(p.Type, p, ownerPackage), Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name), setterName);
                 }
+
+                sw.WriteLine("\t/** Gets the actual traversal name used for the choice element {0}, null if traversal was not provided **/", Util.Util.PascalCase(cc.Name));
+                sw.WriteLine("\tpublic String get{0}TraversalName() {{", Util.Util.PascalCase(cc.Name));
+                sw.WriteLine(getTraversalFor);
+                sw.WriteLine("\t\treturn null;");
+                sw.WriteLine("\t}");
                 ; // TODO: Factory methods and etc
             }
             else if (!isNativeCollection)
@@ -625,8 +635,13 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
                 foreach (TypeReference tr in CascadeSpecializers(cls.SpecializedBy))
                 {
                     // Is method
-                    sw.WriteLine("\t\t/** Returns true if this abstract class instance is an instance of {0}.{1} */\r\n\t\tpublic boolean is{2}() {{ ", ownerPackage, tr.Name, tr.Name.Replace(".", ""));
-                    sw.WriteLine("\t\t\treturn this instanceof {0}.{1};", ownerPackage, tr.Name);
+                    if (tr.Class == null || tr.Class.ContainerName == "RIM" && !RimbaJavaRenderer.GenerateRim ||
+                        tr.Class.IsAbstract)
+                        continue;
+
+
+                    sw.WriteLine("\t\t/** Returns true if this abstract class instance is an instance of {0}.{1}.{2} */\r\n\t\tpublic boolean is{1}{2}() {{ ", ownerPackage, tr.Class.ContainerName, Util.Util.PascalCase(tr.Class.Name));
+                    sw.WriteLine("\t\t\treturn this.getClass().getName().equals(\"{0}.{1}.{2}\");", ownerPackage, tr.Class.ContainerName.ToLower(), Util.Util.PascalCase(tr.Class.Name));
                     sw.WriteLine("\t\t}");
                 }
             }

@@ -30,7 +30,7 @@ namespace MARC.Everest.DataTypes.Interfaces
     /// <summary>
     /// Identifies mechanisms that are supported by a telecommunications address
     /// </summary>
-    [Structure(Name = "TelecommunicationCabability", CodeSystem = "2.16.840.1.113883.5.1118", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    [Structure(Name = "TelecommunicationCabability", CodeSystem = "2.16.840.1.113883.5.1118", StructureType = StructureAttribute.StructureAttributeType.ValueSet, Publisher = "Health Level 7 International")]
 
     public enum TelecommunicationCabability
     {
@@ -64,7 +64,7 @@ namespace MARC.Everest.DataTypes.Interfaces
     /// <summary>
     /// Identifies ways in which a telecommunications address can be used
     /// </summary>
-    [Structure(Name ="TelecommunicationsAddressUse", CodeSystem = "2.16.840.1.113883.5.1011", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    [Structure(Name = "TelecommunicationsAddressUse", CodeSystem = "2.16.840.1.113883.5.1011", StructureType = StructureAttribute.StructureAttributeType.ValueSet, Publisher = "Health Level 7 International")]
     public enum TelecommunicationAddressUse
     {
         /// <summary>

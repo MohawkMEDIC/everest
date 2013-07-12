@@ -53,7 +53,7 @@ namespace MARC.Everest.DataTypes
     /// </code>
     /// </example>
     [XmlType("EntityNamePartType", Namespace = "urn:hl7-org:v3")]
-    [Structure(Name = "EntityNamePartType", CodeSystem = "2.16.840.1.113883.5.1121", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    [Structure(Name = "EntityNamePartType", CodeSystem = "2.16.840.1.113883.5.1121", StructureType = StructureAttribute.StructureAttributeType.ValueSet, Publisher = "Health Level 7 International")]
     public enum EntityNamePartType
     {
         /// <summary>
@@ -99,7 +99,7 @@ namespace MARC.Everest.DataTypes
     /// An enumeration of part qualifiers.
     /// </summary>
     [XmlType("EntityNamePartQualifier", Namespace = "urn:hl7-org:v3")]
-    [Structure(Name = "EntityNamePartQualifier", CodeSystem= "2.16.840.1.113883.5.1122", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    [Structure(Name = "EntityNamePartQualifier", CodeSystem = "2.16.840.1.113883.5.1122", StructureType = StructureAttribute.StructureAttributeType.ValueSet, Publisher = "Health Level 7 International")]
     public enum EntityNamePartQualifier 
     {
         /// <summary>

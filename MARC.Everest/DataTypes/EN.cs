@@ -37,7 +37,7 @@ namespace MARC.Everest.DataTypes
     /// Enumeration of entity name uses.
     /// </summary>
     [XmlType("EntityNameUse", Namespace = "urn:hl7-org:v3")]
-    [Structure(Name = "EntityNameUse", CodeSystem = "2.16.840.1.113883.5.1120", StructureType = StructureAttribute.StructureAttributeType.ConceptDomain)]
+    [Structure(Name = "EntityNameUse", CodeSystem = "2.16.840.1.113883.5.1120", StructureType = StructureAttribute.StructureAttributeType.ValueSet, Publisher = "Health Level 7 International")]
     public enum EntityNameUse
     {
         /// <summary>
