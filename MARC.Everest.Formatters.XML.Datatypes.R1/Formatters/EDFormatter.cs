@@ -54,7 +54,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 return;
 
             // Attributes
-            s.WriteAttributeString("representation", Util.ToWireFormat(instance_ed.Representation));
+            string rep = Util.ToWireFormat(instance_ed.Representation);
+            if(!String.IsNullOrEmpty(rep))
+                s.WriteAttributeString("representation", rep);
             if (instance_ed.MediaType != null)
                 s.WriteAttributeString("mediaType", instance_ed.MediaType);
             if (instance_ed.Language != null)
