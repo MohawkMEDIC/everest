@@ -1052,7 +1052,8 @@ namespace MARC.Everest.Formatters.XML.ITS1
         {
             ThrowIfDisposed();
 
-            s.WriteAttributeString("xsi", "nil", XmlIts1Formatter.NS_XSI, "true");
+            if((this.Settings & SettingsType.NoXsiNil) == 0)
+                s.WriteAttributeString("xsi", "nil", XmlIts1Formatter.NS_XSI, "true");
             s.WriteAttributeString("nullFlavor", Util.ToWireFormat(nullFlavor));
         }
 
@@ -1403,7 +1404,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <summary>
         /// Throw an exception if the object is disposed
         /// </summary>
-        private void ThrowIfDisposed()
+        protected void ThrowIfDisposed()
         {
             if (m_isDisposed)
                 throw new ObjectDisposedException(this.GetType().FullName);

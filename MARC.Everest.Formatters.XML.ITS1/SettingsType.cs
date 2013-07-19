@@ -40,9 +40,14 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <summary>
         /// Permits RMIM based classes to impose a default UpdateMode on rendered datatypes
         /// </summary>
-        AllowUpdateModeImposing = 4
-#if !WINDOWS_PHONE 
-        ,
+        AllowUpdateModeImposing = 4,
+        /// <summary>
+        /// When set prevents the formatter from emitting xsi:nil
+        /// </summary>
+        NoXsiNil = 64
+
+#if !WINDOWS_PHONE
+,
         /// <summary>
         /// Signals that the formatter should use the reflection method of formatting
         /// rather than code-dom
