@@ -1052,7 +1052,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         {
             ThrowIfDisposed();
 
-            if((this.Settings & SettingsType.NoXsiNil) == 0)
+            if((this.Settings & SettingsType.SuppressXsiNil) == 0)
                 s.WriteAttributeString("xsi", "nil", XmlIts1Formatter.NS_XSI, "true");
             s.WriteAttributeString("nullFlavor", Util.ToWireFormat(nullFlavor));
         }

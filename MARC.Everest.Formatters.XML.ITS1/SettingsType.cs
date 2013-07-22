@@ -44,7 +44,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <summary>
         /// When set prevents the formatter from emitting xsi:nil
         /// </summary>
-        NoXsiNil = 64
+        SuppressXsiNil = 64
 
 #if !WINDOWS_PHONE
 ,
