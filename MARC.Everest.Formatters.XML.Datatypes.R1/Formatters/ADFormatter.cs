@@ -185,7 +185,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             part.Type = adxpType;
                             retVal.Part.Add(part); // Add to AD
                         }
-                        else
+                        else if(s.NodeType == System.Xml.XmlNodeType.Element)
                             result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null));
                     }
                     catch (MessageValidationException e)

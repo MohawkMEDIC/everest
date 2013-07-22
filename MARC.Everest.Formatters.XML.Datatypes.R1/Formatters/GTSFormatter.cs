@@ -81,8 +81,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (instanceHull.GetType().Name.StartsWith("QS"))
                 instanceHull = instanceHull.GetType().GetMethod("TranslateToSXPR").Invoke(instanceHull, null);
             
-            string xsiTypeName = Util.CreateXSITypeName(instanceHull.GetType());
-            s.WriteAttributeString("xsi", "type", DatatypeFormatter.NS_XSI, xsiTypeName);
+            // Not for CDA:
+            if (result.CompatibilityMode == DatatypeFormatterCompatibilityMode.ClinicalDocumentArchitecture && (instanceHull is SXCM<TS>))
+                ;
+            else
+            {
+                string xsiTypeName = Util.CreateXSITypeName(instanceHull.GetType());
+                s.WriteAttributeString("xsi", "type", DatatypeFormatter.NS_XSI, xsiTypeName);
+            }
 
             // Output the formatting
             var hostResult = this.Host.Graph(s, (IGraphable)instanceHull);
@@ -107,6 +113,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Now determine the type of GTS
             string typeName = s.GetAttribute("type", "http://www.w3.org/2001/XMLSchema-instance");
+            if (String.IsNullOrEmpty(typeName) && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.ClinicalDocumentArchitecture)
+                typeName = "SXCM_TS";
+
             IDatatypeFormatter formatter;
 
             // Parse the type

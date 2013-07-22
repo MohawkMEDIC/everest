@@ -31,7 +31,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Formatter for the SXCM type
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SXCM")]
-    public class SXCMFormatter : IDatatypeFormatter
+    public class SXCMFormatter : PDVFormatter
     {
         /// <summary>
         /// Host of this formatter
@@ -41,20 +41,20 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Parse an SXCM
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s")]
-        public SXCM<T> Parse<T>(System.Xml.XmlReader s, DatatypeFormatterParseResult result) where T :  IAny, new()
-        {
-            // Return value
-            //SXCM<T> retVal = (T)Host.ParseObject(s, typeof(T));
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "s")]
+        //public SXCM<T> Parse<T>(System.Xml.XmlReader s, DatatypeFormatterParseResult result) where T :  IAny, new()
+        //{
+        //    // Return value
+        //    //SXCM<T> retVal = base.Parse<SXCM<TS>>(s result);
 
-            //// Operator
-            //if (s.GetAttribute("operator") != null)
-            //    retVal.Operator = (SetOperator?)Util.FromWireFormat(s.GetAttribute("operator"), typeof(SetOperator));
+        //    //// Operator
+        //    //if (s.GetAttribute("operator") != null)
+        //    //    retVal.Operator = (SetOperator?)Util.FromWireFormat(s.GetAttribute("operator"), typeof(SetOperator));
 
-            //return retVal;
-            result.AddResultDetail(new NotImplementedResultDetail(ResultDetailType.Error, "SXCM is an abstract class and cannot be instantiated by itself", s.ToString(), null));
-            return null;
-        }
+        //    //return retVal;
+        //    //result.AddResultDetail(new NotImplementedResultDetail(ResultDetailType.Error, "SXCM is an abstract class and cannot be instantiated by itself", s.ToString(), null));
+        //    //return null;
+        //}
 
         #region IDatatypeFormatter Members
 
@@ -62,7 +62,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Graph the SXCM to the console
         /// </summary>
-        public void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
+        public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             // Output the object
             Type t = o.GetType();
@@ -80,7 +80,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Parse an SXCM from the wire
         /// </summary>
-        public object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
+        public override object Parse(System.Xml.XmlReader s, DatatypeFormatterParseResult result)
         {
             // Determine the generic type formatter
             var formatter = DatatypeFormatter.GetFormatter(GenericArguments[0]);
@@ -121,24 +121,15 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// <summary>
         /// Handles SXCM
         /// </summary>
-        public string HandlesType
+        public override string HandlesType
         {
             get { return "SXCM"; }
         }
 
         /// <summary>
-        /// Gets or sets generic arguments
-        /// </summary>
-        public Type[] GenericArguments
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Get the supported properties for the rendering
         /// </summary>
-        public List<PropertyInfo> GetSupportedProperties()
+        public override List<PropertyInfo> GetSupportedProperties()
         {
             List<PropertyInfo> retVal = new List<PropertyInfo>(10);
             retVal.Add(typeof(SXCM<>).GetProperty("Operator"));
