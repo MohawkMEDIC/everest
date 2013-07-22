@@ -26,100 +26,15 @@ namespace MARC.Everest.Test
             "R02_04_02",
             "R02_04_03",
             "NE2008",
-            "NE2010"
+            "NE2010",
+            "CDAr2"
         };
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1805:DoNotInitializeUnnecessarily"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         static XMLValidator()
         {
 
-            string tmpDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            Directory.CreateDirectory(tmpDir);
-
-            Assembly asm = typeof(XMLValidator).Assembly;
-
-            foreach (var item in asm.GetManifestResourceNames())
-            {
-                if (!item.EndsWith("zip"))
-                    continue;
-
-                ZipInputStream zis = null;
-                Tracer.Trace(item);
-
-                try
-                {
-                    zis = new ZipInputStream(asm.GetManifestResourceStream(item));
-                    XmlReaderSettings settings = new XmlReaderSettings();
-
-                    // Prepare the unzipping operation
-                    ZipEntry entry = null;
-                    String basePath = Path.Combine(tmpDir, item);
-                    if (!Directory.Exists(basePath))
-                        Directory.CreateDirectory(basePath);
-
-                    List<String> files = new List<string>(10);
-
-                    // Unzip the rmim package
-                    while ((entry = zis.GetNextEntry()) != null)
-                    {
-                        if (entry.IsDirectory) // entry is a directory
-                        {
-                            string dirName = Path.Combine(basePath, entry.Name);
-                            if (!Directory.Exists(dirName))
-                                Directory.CreateDirectory(dirName);
-                        }
-                        else if (entry.IsFile) // entry is file, so extract file.
-                        {
-                            string fName = Path.Combine(basePath, entry.Name);
-                            FileStream fs = null;
-                            try
-                            {
-                                fs = File.Create(fName);
-                                byte[] buffer = new byte[2048]; // 2k buffer
-                                int szRead = 2048;
-                                while (szRead > 0)
-                                {
-                                    szRead = zis.Read(buffer, 0, buffer.Length);
-                                    if (szRead > 0)
-                                        fs.Write(buffer, 0, szRead);
-                                }
-                            }
-                            finally
-                            {
-                                if (fs != null)
-                                    fs.Close();
-                            }
-
-                            if (fName.EndsWith(".xsd"))
-                                files.Add(fName);
-                        }
-                    }
-
-                    foreach(var fName in files)
-                        settings.Schemas.Add("urn:hl7-org:v3", fName);
-
-                    settings.Schemas.ValidationEventHandler += new ValidationEventHandler(Schemas_ValidationEventHandler);
-                    settings.Schemas.Compile();
-                    ValidationSettings.Add(item.Replace("MARC.Everest.Test.Resources.","").Replace(".zip",""), settings);
-                    Directory.Delete(basePath, true);
-                }
-                catch (Exception e)
-                {
-                    //Assert.Fail(e.ToString());
-                }
-                finally
-                {
-                    if (zis != null)
-                    {
-                        zis.Close();
-                        zis.Dispose();
-                    }
-                }
-                
-            }
-
-            Directory.Delete(tmpDir, true);
-            System.GC.Collect();
+          
             //try
             //{
             //    foreach (String s in Directory.GetFiles(Environment.CurrentDirectory, "*.xsd"))
@@ -138,6 +53,114 @@ namespace MARC.Everest.Test
             //{
             //    Assert.Fail("Exception: " + SchemaException.ToString());
             //}
+        }
+
+        static XmlReaderSettings GetSettings(String release)
+        {
+
+            XmlReaderSettings retVal = null;
+            if (ValidationSettings.TryGetValue(release, out retVal))
+                return retVal;
+
+            string tmpDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(tmpDir);
+
+            Assembly asm = typeof(XMLValidator).Assembly;
+
+            try
+            {
+                foreach (var item in asm.GetManifestResourceNames())
+                {
+                    if (!item.EndsWith("zip"))
+                        continue;
+
+                    string itemRelease = item.Replace("MARC.Everest.Test.Resources.", "").Replace(".zip", "");
+                    if (itemRelease != release)
+                        continue;
+
+                    ZipInputStream zis = null;
+                    Tracer.Trace(item);
+
+                    try
+                    {
+                        zis = new ZipInputStream(asm.GetManifestResourceStream(item));
+                        retVal = new XmlReaderSettings();
+
+                        // Prepare the unzipping operation
+                        ZipEntry entry = null;
+                        String basePath = Path.Combine(tmpDir, item);
+                        if (!Directory.Exists(basePath))
+                            Directory.CreateDirectory(basePath);
+
+                        List<String> files = new List<string>(10);
+
+                        // Unzip the rmim package
+                        while ((entry = zis.GetNextEntry()) != null)
+                        {
+                            if (entry.IsDirectory) // entry is a directory
+                            {
+                                string dirName = Path.Combine(basePath, entry.Name);
+                                if (!Directory.Exists(dirName))
+                                    Directory.CreateDirectory(dirName);
+                            }
+                            else if (entry.IsFile) // entry is file, so extract file.
+                            {
+                                string fName = Path.Combine(basePath, entry.Name);
+                                FileStream fs = null;
+                                try
+                                {
+                                    fs = File.Create(fName);
+                                    byte[] buffer = new byte[2048]; // 2k buffer
+                                    int szRead = 2048;
+                                    while (szRead > 0)
+                                    {
+                                        szRead = zis.Read(buffer, 0, buffer.Length);
+                                        if (szRead > 0)
+                                            fs.Write(buffer, 0, szRead);
+                                    }
+                                }
+                                finally
+                                {
+                                    if (fs != null)
+                                        fs.Close();
+                                }
+
+                                if (fName.EndsWith(".xsd"))
+                                    files.Add(fName);
+                            }
+                        }
+
+                        foreach (var fName in files)
+                            retVal.Schemas.Add("urn:hl7-org:v3", fName);
+
+                        retVal.Schemas.ValidationEventHandler += new ValidationEventHandler(Schemas_ValidationEventHandler);
+                        retVal.Schemas.Compile();
+                        ValidationSettings.Add(release, retVal);
+                        Directory.Delete(basePath, true);
+                        return retVal;
+                    }
+                    catch (Exception e)
+                    {
+                        //Assert.Fail(e.ToString());
+                        return retVal;
+                    }
+                    finally
+                    {
+                        if (zis != null)
+                        {
+                            zis.Close();
+                            zis.Dispose();
+                        }
+                    }
+
+                }
+            }
+            finally
+            {
+                Directory.Delete(tmpDir, true);
+                System.GC.Collect();
+            }
+            return retVal;
         }
 
         static void Schemas_ValidationEventHandler(object sender, ValidationEventArgs e)
@@ -166,7 +189,8 @@ namespace MARC.Everest.Test
                 object[] releaseName = release.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false);
                 if (releaseName.Length > 0)
                 {
-                    if (!ValidationSettings.TryGetValue((releaseName[0] as AssemblyInformationalVersionAttribute).InformationalVersion, out settings))
+                    settings = GetSettings((releaseName[0] as AssemblyInformationalVersionAttribute).InformationalVersion);
+                    if (settings == null)
                         Assert.Fail("Cannot find validation settings for '{0}'", (releaseName[0] as AssemblyInformationalVersionAttribute).InformationalVersion);
                 }
                 else
@@ -176,7 +200,7 @@ namespace MARC.Everest.Test
                     {
                         if(e.Severity == XmlSeverityType.Error && !e.Message.Contains("specializationType") && !e.Message.Contains("incomplete") &&
                             !e.Message.Contains("possible elements expected")) // Usually incomplete is due to the simple type creator not creating the necessary elements
-                                errorList.Add(String.Format("{0} : Validation exception: {1}" , e.Severity, e.Message));
+                                errorList.Add(String.Format("{0} : Validation exception: {1} @ {2},{3}" , e.Severity, e.Message, e.Exception.LineNumber, e.Exception.LinePosition));
                     });
 
                 rdr = XmlReader.Create(XmlInstance, settings);
