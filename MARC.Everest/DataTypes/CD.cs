@@ -408,7 +408,38 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
-        /// Converts a CD to a strongly typed CD
+        /// Converts a CE to a strongly typed CD
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates")]
+        public static CD<T> Parse(CE<String> ce)
+        {
+            CD<T> retVal = new CD<T>();
+            // Parse from wire format into this format
+            retVal.Code = CodeValue<T>.Parse(ce.Code);
+            // Code System
+            retVal.CodeSystem = ce.CodeSystem;
+            retVal.CodeSystemName = ce.CodeSystemName;
+            retVal.CodeSystemVersion = ce.CodeSystemVersion;
+            retVal.ControlActExt = ce.ControlActExt;
+            retVal.ControlActRoot = ce.ControlActRoot;
+            retVal.UpdateMode = ce.UpdateMode == null ? null : ce.UpdateMode.Clone() as CS<UpdateMode>;
+            retVal.NullFlavor = ce.NullFlavor as CS<NullFlavor>;
+            retVal.ValidTimeHigh = ce.ValidTimeHigh;
+            retVal.ValidTimeLow = ce.ValidTimeLow;
+            retVal.OriginalText = ce.OriginalText == null ? null : ce.OriginalText.Clone() as ED;
+            retVal.DisplayName = ce.DisplayName;
+            retVal.Translation = ce.Translation == null ? null : new SET<CD<T>>(ce.Translation, CD<T>.Comparator);
+            retVal.CodingRationale = ce.CodingRationale;
+            //retVal.Group = cd.Group != null ? cd.Group.Clone() as LIST<CDGroup> : null;
+            retVal.UpdateMode = ce.UpdateMode;
+            retVal.Flavor = ce.Flavor;
+
+            return retVal;
+        }
+
+
+        /// <summary>
+        /// Converts a CV to a strongly typed CD
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates")]
         public static CD<T> Parse(CV<String> cd)
@@ -435,6 +466,7 @@ namespace MARC.Everest.DataTypes
 
             return retVal;
         }
+
 
         /// <summary>
         /// Converts a <see cref="CD"/> to a <typeparamref name="T"/>
