@@ -155,7 +155,8 @@ namespace MARC.Everest.Test
                 context.PropertyAttribute.Conformance != MARC.Everest.Attributes.PropertyAttribute.AttributeConformanceType.Mandatory &&
                 context.PropertyAttribute.Conformance != MARC.Everest.Attributes.PropertyAttribute.AttributeConformanceType.Populated ||
                 context.PropertyAttribute != null &&
-                context.PropertyAttribute.Conformance == MARC.Everest.Attributes.PropertyAttribute.AttributeConformanceType.Optional)
+                context.PropertyAttribute.Conformance == MARC.Everest.Attributes.PropertyAttribute.AttributeConformanceType.Optional &&
+                !this.GenerateOptional)
                 return null;
 
             if(context.PropertyInfo != null && context.PropertyInfo.Name != null)
@@ -450,6 +451,9 @@ namespace MARC.Everest.Test
                 if (!Array.Exists<PropertyInfo>(allowedProperties, p => p.Name == prop.Name))
                     continue;
 
+                // Don't bother with anything from infrastructure root
+                if (prop.Name == "TypeId" || prop.Name == "RealmCode")
+                    continue;
 
                 if (!prop.CanWrite) //Not writable, don't even bother
                     continue;
@@ -516,5 +520,9 @@ namespace MARC.Everest.Test
         private static Dictionary<Type, ConstructorInfo> m_MandatoryConstructorCache;
         #endregion
 
+        /// <summary>
+        /// When true generates optional component
+        /// </summary>
+        public bool GenerateOptional { get; set; }
     }
 }
