@@ -1542,6 +1542,92 @@ namespace MARC.Everest.Test
             bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)).Structure);
             Assert.AreEqual(aValue, bValue);
         }
+
+        /// <summary>
+        /// Serialize an instance and deserialize it to ensure the types are the same using the following initialization data
+        /// <list type="table">
+        /// <listheader><term>Property</term><description>Comments</description></listheader>
+        /// <item><term>OriginalText</term><description>new MARC.Everest.DataTypes.ED(new System.Byte[] { 0 },"0")</description></item>
+        /// <item><term>Low</term><description>new MARC.Everest.DataTypes.INT(0)</description></item>
+        /// <item><term>LowIncluded</term><description>false</description></item>
+        /// <item><term>High</term><description>new MARC.Everest.DataTypes.INT(0)</description></item>
+        /// <item><term>HighIncluded</term><description>false</description></item>
+        /// <item><term>Width</term><description>new MARC.Everest.DataTypes.PQ((decimal)0,"0")</description></item>
+        /// <item><term>Operator</term><description>new System.Nullable&lt;MARC.Everest.DataTypes.SetOperator>(MARC.Everest.DataTypes.SetOperator.Hull)</description></item>
+        /// <item><term>Value</term><description>new MARC.Everest.DataTypes.INT(0)</description></item>
+        /// <item><term>NullFlavor</term><description>new MARC.Everest.DataTypes.CS&lt;MARC.Everest.DataTypes.NullFlavor>(MARC.Everest.DataTypes.NullFlavor.AskedUnknown)</description></item>
+        /// <item><term>UpdateMode</term><description>new MARC.Everest.DataTypes.CS&lt;MARC.Everest.DataTypes.UpdateMode>(MARC.Everest.DataTypes.UpdateMode.Add)</description></item>
+        /// <item><term>Flavor</term><description>"0"</description></item>
+        /// <item><term>ValidTimeLow</term><description>new MARC.Everest.DataTypes.TS(DateTime.Parse("2011-1-10"))</description></item>
+        /// <item><term>ValidTimeHigh</term><description>new MARC.Everest.DataTypes.TS(DateTime.Parse("2011-1-10"))</description></item>
+        /// <item><term>ControlActRoot</term><description>"0"</description></item>
+        /// </list>
+        [TestMethod]
+        public void IVLEqualsSerializationCenterWidthTest()
+        {
+            MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT> aValue = new MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>(), bValue = null;
+            //aValue.Low = new MARC.Everest.DataTypes.INT(0);
+            //aValue.LowIncluded = false;
+            aValue.Center = new MARC.Everest.DataTypes.INT(0);
+            aValue.Width = new MARC.Everest.DataTypes.PQ(0, "0");
+            aValue.Operator = new System.Nullable<MARC.Everest.DataTypes.SetOperator>(MARC.Everest.DataTypes.SetOperator.Hull);
+            aValue.Flavor = "0";
+            StringWriter sw = new StringWriter();
+            DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
+            XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
+            xw.WriteStartElement("test");
+            fmtr.Graph(xw, aValue);
+            xw.WriteEndElement(); // comp
+            xw.Flush();
+            StringReader sr = new StringReader(sw.ToString());
+            XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
+            rdr.Read(); rdr.Read();
+            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)).Structure);
+            Assert.AreEqual(aValue, bValue);
+        }
+        /// <summary>
+        /// Serialize an instance and deserialize it to ensure the types are the same using the following initialization data
+        /// <list type="table">
+        /// <listheader><term>Property</term><description>Comments</description></listheader>
+        /// <item><term>OriginalText</term><description>new MARC.Everest.DataTypes.ED(new System.Byte[] { 0 },"0")</description></item>
+        /// <item><term>Low</term><description>new MARC.Everest.DataTypes.INT(0)</description></item>
+        /// <item><term>LowIncluded</term><description>false</description></item>
+        /// <item><term>High</term><description>new MARC.Everest.DataTypes.INT(0)</description></item>
+        /// <item><term>HighIncluded</term><description>false</description></item>
+        /// <item><term>Width</term><description>new MARC.Everest.DataTypes.PQ((decimal)0,"0")</description></item>
+        /// <item><term>Operator</term><description>new System.Nullable&lt;MARC.Everest.DataTypes.SetOperator>(MARC.Everest.DataTypes.SetOperator.Hull)</description></item>
+        /// <item><term>Value</term><description>new MARC.Everest.DataTypes.INT(0)</description></item>
+        /// <item><term>NullFlavor</term><description>new MARC.Everest.DataTypes.CS&lt;MARC.Everest.DataTypes.NullFlavor>(MARC.Everest.DataTypes.NullFlavor.AskedUnknown)</description></item>
+        /// <item><term>UpdateMode</term><description>new MARC.Everest.DataTypes.CS&lt;MARC.Everest.DataTypes.UpdateMode>(MARC.Everest.DataTypes.UpdateMode.Add)</description></item>
+        /// <item><term>Flavor</term><description>"0"</description></item>
+        /// <item><term>ValidTimeLow</term><description>new MARC.Everest.DataTypes.TS(DateTime.Parse("2011-1-10"))</description></item>
+        /// <item><term>ValidTimeHigh</term><description>new MARC.Everest.DataTypes.TS(DateTime.Parse("2011-1-10"))</description></item>
+        /// <item><term>ControlActRoot</term><description>"0"</description></item>
+        /// </list>
+        [TestMethod]
+        public void IVLEqualsSerializationCenterTest()
+        {
+            MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT> aValue = new MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>(), bValue = null;
+            //aValue.Low = new MARC.Everest.DataTypes.INT(0);
+            //aValue.LowIncluded = false;
+            aValue.Center = new MARC.Everest.DataTypes.INT(0);
+            //aValue.Width = new MARC.Everest.DataTypes.PQ(0, "0");
+            aValue.Operator = new System.Nullable<MARC.Everest.DataTypes.SetOperator>(MARC.Everest.DataTypes.SetOperator.Hull);
+            aValue.Flavor = "0";
+            StringWriter sw = new StringWriter();
+            DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
+            XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
+            xw.WriteStartElement("test");
+            fmtr.Graph(xw, aValue);
+            xw.WriteEndElement(); // comp
+            xw.Flush();
+            StringReader sr = new StringReader(sw.ToString());
+            XmlStateReader rdr = new XmlStateReader(XmlReader.Create(sr));
+            rdr.Read(); rdr.Read();
+            bValue = Util.Convert<MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>>(fmtr.Parse(rdr, typeof(MARC.Everest.DataTypes.IVL<MARC.Everest.DataTypes.INT>)).Structure);
+            Assert.AreEqual(aValue, bValue);
+        }
+
         /// <summary>
         /// Serialize an instance and deserialize it to ensure the types are the same using the following initialization data
         /// <list type="table">

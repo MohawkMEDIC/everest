@@ -442,7 +442,19 @@ namespace MARC.Everest.Connectors
         /// Attempt casting <paramref name="value"/> to <paramref name="destType"/> placing the result 
         /// in <paramref name="result"/>
         /// </summary>
+        /// <exception cref="T:MARC.Everest.Exceptions.VocabularyException">When <paramref name="value"/> cannot be cast to a strongly typed vocabulary if required in <paramref name="result"/></exception>
         public static bool TryFromWireFormat(object value, Type destType, out object result)
+        {
+            return TryFromWireFormat(value, destType, out result);
+        }
+
+        /// <summary>
+        /// Attempt casting <paramref name="value"/> to <paramref name="destType"/> placing the result 
+        /// in <paramref name="result"/>
+        /// </summary>
+        /// <remarks>If null is passed as the <paramref name="resultDetails"/> parameter then a <see cref="T:MARC.Everest.Exceptions.VocabularyException"/>
+        /// will be thrown whenever vocabulary cannot be cast.</remarks>
+        public static bool TryFromWireFormat(object value, Type destType, out object result, IList<IResultDetail> resultDetails)
         {
             // The type represents a wrapper for an enumeration
             Type m_destType = destType;
@@ -480,16 +492,34 @@ namespace MARC.Everest.Connectors
             {
                 ParseMaps(m_destType);
                 if (!s_enumerationMaps.ContainsKey(string.Format(CultureInfo.InvariantCulture, "{0}.{1}", m_destType.FullName, value)) && !requiresExplicitCastCall)
-                    throw new VocabularyException(string.Format(EverestFrameworkContext.CurrentCulture, "Can't find value '{0}' in domain '{1}'.", value, m_destType.Name), value.ToString(), m_destType.Name, null);
+                {
+                    if (resultDetails == null)
+                        throw new VocabularyException(string.Format(EverestFrameworkContext.CurrentCulture, "Can't find value '{0}' in domain '{1}'.", value, m_destType.Name), value.ToString(), m_destType.Name, null);
+                    else
+                    {
+                        resultDetails.Add(new VocabularyIssueResultDetail(ResultDetailType.Error, string.Format(EverestFrameworkContext.CurrentCulture, "Can't find value '{0}' in domain '{1}'.", value, m_destType.Name), null, null));
+                        result = null;
+                        return false;
+                    }
+                }
 
                 try
                 {
                     value = Enum.Parse(m_destType, s_enumerationMaps[string.Format(CultureInfo.InvariantCulture, "{0}.{1}", m_destType.FullName, value)], false);
                 }
-                catch
+                catch(Exception e)
                 {
                     if (!requiresExplicitCastCall)
-                        throw new VocabularyException(string.Format(EverestFrameworkContext.CurrentCulture, "Can't find value '{0}' in domain '{1}'.", value, m_destType.Name), value.ToString(), m_destType.Name, null);
+                    {
+                        if (resultDetails == null)
+                            throw new VocabularyException(string.Format(EverestFrameworkContext.CurrentCulture, "Can't find value '{0}' in domain '{1}'.", value, m_destType.Name), value.ToString(), m_destType.Name, null);
+                        else
+                        {
+                            resultDetails.Add(new VocabularyIssueResultDetail(ResultDetailType.Error, string.Format(EverestFrameworkContext.CurrentCulture, "Can't find value '{0}' in domain '{1}'.", value, m_destType.Name), null, e));
+                            result = null;
+                            return false;
+                        }
+                    }
                 }
 
                 // Can we just return as is, or is a function needed?

@@ -146,6 +146,17 @@ namespace MARC.Everest.DataTypes
         public bool? HighClosed { get; set; }
 
         /// <summary>
+        /// The arithmetic mean of the interval
+        /// </summary>
+        [Property(Name = "center", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
+#if !WINDOWS_PHONE
+        [Description("The arithmetic mean of the interval")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
+#endif
+        public T Center { get; set; }
+
+        /// <summary>
         /// The difference between the high and low bondary. Width is used when the size of the interval is known
         /// but the actual start and end points are not known. 
         /// </summary>

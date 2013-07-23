@@ -160,6 +160,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 int sDepth = s.Depth;
                 string sName = s.Name;
 
+                
                 s.Read();
                 // string Name
                 while (!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Depth == sDepth && s.Name == sName))

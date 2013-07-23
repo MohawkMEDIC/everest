@@ -119,7 +119,11 @@ namespace MARC.Everest.DataTypes.Primitives
             CodeValue<T> retVal = new CodeValue<T>();
             try // to parse into the enum
             {
-                retVal.valueSetValue = (T)Util.FromWireFormat(codeValue.valueSetValue, typeof(T));
+                Object tryVal = null;
+                if(!Util.TryFromWireFormat(codeValue.valueSetValue, typeof(T), out tryVal, new List<IResultDetail>()))
+                    retVal.alternateCode = codeValue.valueSetValue ?? codeValue.alternateCode;
+                else
+                    retVal.valueSetValue = (T)tryVal;
             }
             catch (VocabularyException)
             {
