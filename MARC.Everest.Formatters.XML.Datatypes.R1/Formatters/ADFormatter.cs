@@ -42,7 +42,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             { AddressPartType.AdditionalLocator, "additionalLocator" },
             { AddressPartType.AddressLine, "streetAddressLine" },
            { AddressPartType.BuildingNumber, "houseNumber" },
-           { AddressPartType.Delimiter, "delimeter" },
+           { AddressPartType.Delimiter, "delimiter" },
            { AddressPartType.Country, "country" },
            { AddressPartType.State, "state" },
            { AddressPartType.County, "county" },
