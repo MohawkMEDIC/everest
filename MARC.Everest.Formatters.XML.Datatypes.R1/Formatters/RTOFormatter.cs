@@ -139,58 +139,55 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             if (s.GetAttribute("nullFlavor") != null)
                 ((ANY)instance).NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
-            else
-            {
-                PropertyInfo numeratorProperty= rtoGenericType.GetProperty("Numerator"),
+             
+            PropertyInfo numeratorProperty= rtoGenericType.GetProperty("Numerator"),
                     denominatorProperty = rtoGenericType.GetProperty("Denominator");
 
-                if (s.GetAttribute("specializationType") != null)
-                    ((ANY)instance).Flavor = s.GetAttribute("specializationType");
+            if (s.GetAttribute("specializationType") != null)
+                ((ANY)instance).Flavor = s.GetAttribute("specializationType");
 
-                // Get the values
-                // Elements
-                #region Elements
-                if (!s.IsEmptyElement)
+            // Get the values
+            // Elements
+            #region Elements
+            if (!s.IsEmptyElement)
+            {
+
+                int sDepth = s.Depth;
+                string sName = s.Name;
+
+                s.Read();
+                // string Name
+                while (!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Depth == sDepth && s.Name == sName))
                 {
-
-                    int sDepth = s.Depth;
-                    string sName = s.Name;
-
-                    s.Read();
-                    // string Name
-                    while (!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Depth == sDepth && s.Name == sName))
+                    string oldName = s.Name; // Name
+                    try
                     {
-                        string oldName = s.Name; // Name
-                        try
+                        if (s.LocalName == "numerator")
                         {
-                            if (s.LocalName == "numerator")
-                            {
-                                var parseResult = Host.Parse(s, GenericArguments[0]);
-                                result.Code = parseResult.Code;
-                                result.AddResultDetail(parseResult.Details);
-                                numeratorProperty.SetValue(instance, parseResult.Structure, null);
-                            }
-                            else if (s.LocalName == "denominator")
-                            {
-                                var parseResult = Host.Parse(s, GenericArguments[1]);
-                                result.Code = parseResult.Code;
-                                result.AddResultDetail(parseResult.Details);
-                                denominatorProperty.SetValue(instance, parseResult.Structure, null);
-                            }
+                            var parseResult = Host.Parse(s, GenericArguments[0]);
+                            result.Code = parseResult.Code;
+                            result.AddResultDetail(parseResult.Details);
+                            numeratorProperty.SetValue(instance, parseResult.Structure, null);
                         }
-                        catch (MessageValidationException e)
+                        else if (s.LocalName == "denominator")
                         {
-                            result.AddResultDetail(new MARC.Everest.Connectors.ResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, e.Message, e));
-                        }
-                        finally
-                        {
-                            if (s.Name == oldName) s.Read();
+                            var parseResult = Host.Parse(s, GenericArguments[1]);
+                            result.Code = parseResult.Code;
+                            result.AddResultDetail(parseResult.Details);
+                            denominatorProperty.SetValue(instance, parseResult.Structure, null);
                         }
                     }
+                    catch (MessageValidationException e)
+                    {
+                        result.AddResultDetail(new MARC.Everest.Connectors.ResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, e.Message, e));
+                    }
+                    finally
+                    {
+                        if (s.Name == oldName) s.Read();
+                    }
                 }
-                #endregion
-
             }
+            #endregion
 
             // Validate
             base.Validate(instance as ANY, s.ToString(), result);

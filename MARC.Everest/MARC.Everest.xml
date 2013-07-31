@@ -3435,9 +3435,14 @@
             Converts a CD to a strongly typed CD
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.CD`1.Parse(MARC.Everest.DataTypes.CE{System.String})">
+            <summary>
+            Converts a CE to a strongly typed CD
+            </summary>
+        </member>
         <member name="M:MARC.Everest.DataTypes.CD`1.Parse(MARC.Everest.DataTypes.CV{System.String})">
             <summary>
-            Converts a CD to a strongly typed CD
+            Converts a CV to a strongly typed CD
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.CD`1.op_Implicit(MARC.Everest.DataTypes.CD{`0})~`0">
@@ -4307,6 +4312,11 @@
             the <see cref="P:Low"/> and <see cref="P:High"/> properties are of type IVXB, however in R2
             IVXB is never defined. This property will be used in place of the IVXB "inclusive" attribute.
             </remarks>
+        </member>
+        <member name="P:MARC.Everest.DataTypes.IVL`1.Center">
+            <summary>
+            The arithmetic mean of the interval
+            </summary>
         </member>
         <member name="P:MARC.Everest.DataTypes.IVL`1.Width">
             <summary>
@@ -11555,6 +11565,15 @@
             Attempt casting <paramref name="value"/> to <paramref name="destType"/> placing the result 
             in <paramref name="result"/>
             </summary>
+            <exception cref="T:MARC.Everest.Exceptions.VocabularyException">When <paramref name="value"/> cannot be cast to a strongly typed vocabulary if required in <paramref name="result"/></exception>
+        </member>
+        <member name="M:MARC.Everest.Connectors.Util.TryFromWireFormat(System.Object,System.Type,System.Object@,System.Collections.Generic.IList{MARC.Everest.Connectors.IResultDetail})">
+            <summary>
+            Attempt casting <paramref name="value"/> to <paramref name="destType"/> placing the result 
+            in <paramref name="result"/>
+            </summary>
+            <remarks>If null is passed as the <paramref name="resultDetails"/> parameter then a <see cref="T:MARC.Everest.Exceptions.VocabularyException"/>
+            will be thrown whenever vocabulary cannot be cast.</remarks>
         </member>
         <member name="T:MARC.Everest.Connectors.ResultDetail">
             <summary>

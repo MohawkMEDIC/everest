@@ -100,12 +100,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             object instance = sxprGenericType.GetConstructor(Type.EmptyTypes).Invoke(null);
 
             if (s.GetAttribute("nullFlavor") != null)
-            {
                 ((ANY)instance).NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
-                return instance;
-            }
-            else
-            {
                 // Try get operator 
                 if (s.GetAttribute("operator") != null)
                     sxprGenericType.GetProperty("Operator").SetValue(instance, Util.FromWireFormat(s.GetAttribute("operator"), typeof(SetOperator?)), null);
@@ -173,7 +168,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
                 ((IListContainer)instance).ContainedList = componentList;
                 #endregion
-            }
 
             // Validate
             ANYFormatter validation = new ANYFormatter();

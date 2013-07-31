@@ -143,78 +143,76 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             if (s.GetAttribute("nullFlavor") != null)
                 ((ANY)instance).NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
-            else
+
+            // Try get operator and value
+            if (s.GetAttribute("operator") != null)
+                pivlGenericType.GetProperty("Operator").SetValue(instance, Util.FromWireFormat(s.GetAttribute("operator"), typeof(SetOperator?)), null);
+            if (s.GetAttribute("value") != null)
+                result.AddResultDetail(new NotSupportedChoiceResultDetail(
+                    ResultDetailType.Warning, "The 'value' attribute of a SXCM does not interpretable in this context, and has been ignored", s.ToString(), null));
+
+            //    pivlGenericType.GetProperty("Value").SetValue(instance, Util.FromWireFormat(s.GetAttribute("value"), GenericArguments[0]), null);
+            if (s.GetAttribute("institutionSpecified") != null)
+                pivlGenericType.GetProperty("InstitutionSpecified").SetValue(instance, Util.FromWireFormat(s.GetAttribute("institutionSpecified"), typeof(bool?)), null);
+            if (s.GetAttribute("alignment") != null)
+                pivlGenericType.GetProperty("Alignment").SetValue(instance, Util.FromWireFormat(s.GetAttribute("alignment"), typeof(CalendarCycle?)), null);
+
+            // Get property information
+            PropertyInfo phaseProperty = pivlGenericType.GetProperty("Phase"),
+               periodProperty = pivlGenericType.GetProperty("Period"),
+               frequencyProperty = pivlGenericType.GetProperty("Frequency");
+
+            // Now process the elements
+            #region Elements
+            if (!s.IsEmptyElement)
             {
-                // Try get operator and value
-                if (s.GetAttribute("operator") != null)
-                    pivlGenericType.GetProperty("Operator").SetValue(instance, Util.FromWireFormat(s.GetAttribute("operator"), typeof(SetOperator?)), null);
-                if (s.GetAttribute("value") != null)
-                    result.AddResultDetail(new NotSupportedChoiceResultDetail(
-                        ResultDetailType.Warning, "The 'value' attribute of a SXCM does not interpretable in this context, and has been ignored", s.ToString(), null));
 
-                //    pivlGenericType.GetProperty("Value").SetValue(instance, Util.FromWireFormat(s.GetAttribute("value"), GenericArguments[0]), null);
-                if (s.GetAttribute("institutionSpecified") != null)
-                    pivlGenericType.GetProperty("InstitutionSpecified").SetValue(instance, Util.FromWireFormat(s.GetAttribute("institutionSpecified"), typeof(bool?)), null);
-                if (s.GetAttribute("alignment") != null)
-                    pivlGenericType.GetProperty("Alignment").SetValue(instance, Util.FromWireFormat(s.GetAttribute("alignment"), typeof(CalendarCycle?)), null);
+                int sDepth = s.Depth;
+                string sName = s.Name;
 
-                // Get property information
-                PropertyInfo phaseProperty = pivlGenericType.GetProperty("Phase"),
-                   periodProperty = pivlGenericType.GetProperty("Period"),
-                   frequencyProperty = pivlGenericType.GetProperty("Frequency");
-
-                // Now process the elements
-                #region Elements
-                if (!s.IsEmptyElement)
+                s.Read();
+                // string Name
+                while (!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Depth == sDepth && s.Name == sName))
                 {
-
-                    int sDepth = s.Depth;
-                    string sName = s.Name;
-
-                    s.Read();
-                    // string Name
-                    while (!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Depth == sDepth && s.Name == sName))
+                    string oldName = s.Name; // Name
+                    try
                     {
-                        string oldName = s.Name; // Name
-                        try
+                        if (s.LocalName == "phase") // low value
                         {
-                            if (s.LocalName == "phase") // low value
-                            {
-                                var hostResult = Host.Parse(s, phaseIvlType);
-                                result.AddResultDetail(hostResult.Details);
-                                phaseProperty.SetValue(instance, hostResult.Structure, null);
-                            }
-                            else if (s.LocalName == "period") // high value
-                            {
-                                var hostResult = Host.Parse(s, typeof(PQ));
-                                result.AddResultDetail(hostResult.Details);
-                                periodProperty.SetValue(instance, hostResult.Structure, null);
-                            }
-                            else if (s.LocalName == "frequency" && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian) // frequency
-                            {
-                                var hostResult = Host.Parse(s, typeof(RTO<INT,PQ>));
-                                result.AddResultDetail(hostResult.Details);
-                                frequencyProperty.SetValue(instance, hostResult.Structure, null);
-                            }
-                            else if (s.NodeType == System.Xml.XmlNodeType.Element)
-                                result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning,
-                                    s.LocalName, s.NamespaceURI, s.ToString(), null));
+                            var hostResult = Host.Parse(s, phaseIvlType);
+                            result.AddResultDetail(hostResult.Details);
+                            phaseProperty.SetValue(instance, hostResult.Structure, null);
+                        }
+                        else if (s.LocalName == "period") // high value
+                        {
+                            var hostResult = Host.Parse(s, typeof(PQ));
+                            result.AddResultDetail(hostResult.Details);
+                            periodProperty.SetValue(instance, hostResult.Structure, null);
+                        }
+                        else if (s.LocalName == "frequency" && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian) // frequency
+                        {
+                            var hostResult = Host.Parse(s, typeof(RTO<INT, PQ>));
+                            result.AddResultDetail(hostResult.Details);
+                            frequencyProperty.SetValue(instance, hostResult.Structure, null);
+                        }
+                        else if (s.NodeType == System.Xml.XmlNodeType.Element)
+                            result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning,
+                                s.LocalName, s.NamespaceURI, s.ToString(), null));
 
 
-                        }
-                        catch (MessageValidationException e) // Message validation error
-                        {
-                            result.AddResultDetail(new MARC.Everest.Connectors.ResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, e.Message, s.ToString(), e));
-                        }
-                        finally
-                        {
-                            if (s.Name == oldName) s.Read();
-                        }
+                    }
+                    catch (MessageValidationException e) // Message validation error
+                    {
+                        result.AddResultDetail(new MARC.Everest.Connectors.ResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, e.Message, s.ToString(), e));
+                    }
+                    finally
+                    {
+                        if (s.Name == oldName) s.Read();
                     }
                 }
-                #endregion
-
             }
+            #endregion
+
 
             // Validate
             string pathName = s is XmlStateReader ? (s as XmlStateReader).CurrentPath : s.Name;

@@ -42,7 +42,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             { AddressPartType.AdditionalLocator, "additionalLocator" },
             { AddressPartType.AddressLine, "streetAddressLine" },
            { AddressPartType.BuildingNumber, "houseNumber" },
-           { AddressPartType.Delimiter, "delimeter" },
+           { AddressPartType.Delimiter, "delimiter" },
            { AddressPartType.Country, "country" },
            { AddressPartType.State, "state" },
            { AddressPartType.County, "county" },
@@ -160,6 +160,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 int sDepth = s.Depth;
                 string sName = s.Name;
 
+                
                 s.Read();
                 // string Name
                 while (!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Depth == sDepth && s.Name == sName))
@@ -185,7 +186,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             part.Type = adxpType;
                             retVal.Part.Add(part); // Add to AD
                         }
-                        else
+                        else if(s.NodeType == System.Xml.XmlNodeType.Element)
                             result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null));
                     }
                     catch (MessageValidationException e)

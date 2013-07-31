@@ -103,7 +103,7 @@ namespace MARC.Everest.DataTypes
 #if !WINDOWS_PHONE
     [Serializable]
 #endif
-    public abstract class SXCM<T> : PDV<T>, IEquatable<SXCM<T>>, ISetComponent<T>
+    public class SXCM<T> : PDV<T>, IEquatable<SXCM<T>>, ISetComponent<T>
         where T : IAny
     {
 

@@ -91,8 +91,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             if (s.GetAttribute("nullFlavor") != null)
                 ((ANY)instance).NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
-            else
-            {
                 // Try get operator and value
                 if (s.GetAttribute("operator") != null)
                     eivlGenericType.GetProperty("Operator").SetValue(instance, Util.FromWireFormat(s.GetAttribute("operator"), typeof(SetOperator?)), null);
@@ -148,7 +146,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 }
                 #endregion
 
-            }
 
             // Validate
             ANYFormatter validation = new ANYFormatter();

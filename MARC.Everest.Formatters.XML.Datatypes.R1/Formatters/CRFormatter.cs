@@ -95,8 +95,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // NullFlavor ? 
             if (s.GetAttribute("nullFlavor") != null)
                 ((ANY)instance).NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
-            else
-            {
                 
                 // JF - Supported only in CA extensions to R1 data types
                 if (s.GetAttribute("specializationType") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
@@ -146,7 +144,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     }
                 }
                 #endregion
-            }
 
             base.Validate((ANY)instance, s.ToString(), result);
 

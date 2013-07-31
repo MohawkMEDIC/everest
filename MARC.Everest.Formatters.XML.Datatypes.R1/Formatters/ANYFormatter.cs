@@ -139,7 +139,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Read the NullFlavor, and Specialization data from the wire
             if (s.GetAttribute("nullFlavor") != null) // Stop processing if null flavor is present
                 instance.NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
-            else if (s.GetAttribute("specializationType") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
+            if (s.GetAttribute("specializationType") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
                 instance.Flavor = s.GetAttribute("specializationType");
 
             return instance;
