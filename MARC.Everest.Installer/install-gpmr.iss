@@ -27,7 +27,7 @@ OutputDir=..\dist
 ;SetupIconFile=D:\work\appicon.ico
 Compression=lzma/ultra
 SolidCompression=no
-AppCopyright=Copyright (C) 2008-2012, Mohawk College of Applied Arts and Technology
+AppCopyright=Copyright (C) 2008-2013, Mohawk College of Applied Arts and Technology
 WizardImageFile=install-logo.bmp
 WizardSmallImageFile=install-logo-small.bmp
 
