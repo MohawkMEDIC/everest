@@ -11063,11 +11063,20 @@
             to create nested generic types
             </summary>
         </member>
+        <member name="M:MARC.Everest.Connectors.Util.TryFromWireFormat(System.Object,System.Type,System.Object@)">
+            <summary>
+            Attempt casting <paramref name="value"/> to <paramref name="destType"/> placing the result 
+            in <paramref name="result"/>
+            </summary>
+            <exception cref="T:MARC.Everest.Exceptions.VocabularyException">When <paramref name="value"/> cannot be cast to a strongly typed vocabulary if required in <paramref name="result"/></exception>
+        </member>
         <member name="M:MARC.Everest.Connectors.Util.TryFromWireFormat(System.Object,System.Type,System.Object@,System.Collections.Generic.IList{MARC.Everest.Connectors.IResultDetail})">
             <summary>
             Attempt casting <paramref name="value"/> to <paramref name="destType"/> placing the result 
             in <paramref name="result"/>
             </summary>
+            <remarks>If null is passed as the <paramref name="resultDetails"/> parameter then a <see cref="T:MARC.Everest.Exceptions.VocabularyException"/>
+            will be thrown whenever vocabulary cannot be cast.</remarks>
         </member>
         <member name="T:MARC.Everest.DataTypes.UpdateMode">
             <summary>

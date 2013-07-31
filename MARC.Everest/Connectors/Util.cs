@@ -445,7 +445,7 @@ namespace MARC.Everest.Connectors
         /// <exception cref="T:MARC.Everest.Exceptions.VocabularyException">When <paramref name="value"/> cannot be cast to a strongly typed vocabulary if required in <paramref name="result"/></exception>
         public static bool TryFromWireFormat(object value, Type destType, out object result)
         {
-            return TryFromWireFormat(value, destType, out result);
+            return TryFromWireFormat(value, destType, out result, null);
         }
 
         /// <summary>
