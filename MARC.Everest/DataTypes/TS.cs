@@ -276,7 +276,8 @@ namespace MARC.Everest.DataTypes
             }
             set
             {
-                if (!DateValuePrecision.HasValue)
+                
+                if (value != null && !DateValuePrecision.HasValue)
                 {
                     DatePrecision tdprec = DatePrecision.Full;
                     if (m_flavorPrecisions.TryGetValue(value, out tdprec))

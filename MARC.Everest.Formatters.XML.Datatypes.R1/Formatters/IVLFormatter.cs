@@ -89,7 +89,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     ResultDetailType.Warning, "Though XML ITS supports it, use of the IVL 'value' attribute should be avoided. The data has been serialized but may be uninterpretable by anoher system. Any additional properties such as low, high, and width will not be parsed", s.ToString(), null));
                 //DOC: Further documentation required.
             }
-            else if (lowValue != null && highValue != null) // low & high
+            if (lowValue != null && highValue != null) // low & high
             {
                 // low
                 if (lowClosedValue != null)
@@ -221,7 +221,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     result.AddResultDetail(new ResultDetail(ResultDetailType.Warning, "width and value can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
 
             }
-            
+            else if (valueValue != null)
+                ;
             // No need for this ;
             else
                 result.AddResultDetail(new ResultDetail(ResultDetailType.Error,
@@ -372,10 +373,18 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Process any leftovers as Value !!!
             try
             {
+                leftoverWriter.WriteEndElement();
                 leftoverWriter.Flush();
                 leftOvers.Seek(0, SeekOrigin.Begin);
-                var baseResult = base.Parse(XmlReader.Create(leftOvers), result);
-                valueProperty.SetValue(instance, baseResult, null);
+                using (XmlReader xr = XmlReader.Create(leftOvers))
+                {
+                    xr.MoveToContent();
+                    if (xr.AttributeCount > 1 || !xr.IsEmptyElement)
+                    {
+                        var baseResult = base.Parse(xr, result);
+                        valueProperty.SetValue(instance, Util.FromWireFormat(baseResult, valueProperty.PropertyType), null);
+                    }
+                }
             }
             catch { }
             // Validate

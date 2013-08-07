@@ -73,9 +73,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 s.WriteAttributeString("operator", Util.ToWireFormat(oper));
 
             // Format the object
-            var formatter = DatatypeFormatter.GetFormatter(valu.GetType());
-            formatter.Host = this.Host; 
-            formatter.Graph(s, valu, result);
+            if (valu != null)
+            {
+                var formatter = DatatypeFormatter.GetFormatter(valu.GetType());
+                formatter.Host = this.Host;
+                formatter.Graph(s, valu, result);
+            }
         }
 
         /// <summary>

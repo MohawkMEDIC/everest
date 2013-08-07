@@ -185,5 +185,12 @@ namespace MARC.Everest.DataTypes
             return retVal;
         }
 
+        /// <summary>
+        /// Gets just the value type from the SXCM
+        /// </summary>
+        internal static T ToValueType(SXCM<T> value)
+        {
+            return value.Value;
+        }
     }
 }

@@ -6940,7 +6940,7 @@
             </mif:vocabulary>
          </mif:attribute>
          <mif:attribute name="effectiveTime" sortKey="8" minimumMultiplicity="0"
-                        maximumMultiplicity="1"
+                        maximumMultiplicity="*"
                         isMandatory="false"
                         isImmutable="false">
             <mif:derivedFrom staticModelDerivationId="1" className="SubstanceAdministration"
@@ -6949,7 +6949,11 @@
                              attributeName="effectiveTime"/>
             <mif:derivedFrom staticModelDerivationId="3" className="SubstanceAdministration"
                              attributeName="effectiveTime"/>
-            <mif:type name="GTS"/>
+			 <!-- JF : To Match XSD -->
+			 <mif:type name="SXCM">
+				 <mif:argumentDatatype name="TS"/>
+			 </mif:type>
+            <!--<mif:type name="GTS"/>-->
          </mif:attribute>
          <mif:attribute name="priorityCode" sortKey="9" minimumMultiplicity="0" maximumMultiplicity="1"
                         isMandatory="false"
