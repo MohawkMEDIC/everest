@@ -232,7 +232,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.HeuristicEngine
                 if (retVal.Name.Contains("`"))
                     retVal.Name = retVal.Name.Substring(0, retVal.Name.IndexOf("`"));
                 retVal.MemberOf = t.MemberOf;
-                retVal.GenericSupplier = t.GenericSupplier;
+
+                if (type.IsGenericTypeDefinition)
+                    retVal.GenericSupplier = t.GenericSupplier;
+                else
+                    retVal.GenericSupplier = null;
 
             }
             else if(typeMaps.ContainsKey(String.Format("{0}#", t.Name))) // Maps types 

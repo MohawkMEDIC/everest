@@ -64,7 +64,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Now comes the fun part .. we'll need to graph the Value property onto the stream, 
             if (pv.Value != null)
+            {
                 xw.WriteAttributeString("value", Util.ToWireFormat(pv.Value));
+            }
         }
       
         /// <summary>

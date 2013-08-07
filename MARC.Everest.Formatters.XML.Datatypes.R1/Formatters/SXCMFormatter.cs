@@ -24,6 +24,8 @@ using MARC.Everest.Connectors;
 using MARC.Everest.Interfaces;
 using System.Reflection;
 using MARC.Everest.DataTypes.Interfaces;
+using System.Xml;
+using System.IO;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 {
@@ -31,12 +33,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// Formatter for the SXCM type
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SXCM")]
-    public class SXCMFormatter : PDVFormatter
+    public class SXCMFormatter : ANYFormatter
     {
-        /// <summary>
-        /// Host of this formatter
-        /// </summary>
-        public IXmlStructureFormatter Host { get; set; }
 
         /// <summary>
         /// Parse an SXCM
@@ -67,10 +65,13 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Output the object
             Type t = o.GetType();
             ANY any = (ANY)o;
+            base.Graph(s, o, result);
+
             object oper = t.GetProperty("Operator").GetValue(o, null),
                 valu = t.GetProperty("Value").GetValue(o, null);
             if (oper != null && any.NullFlavor == null)
                 s.WriteAttributeString("operator", Util.ToWireFormat(oper));
+
             // Format the object
             var formatter = DatatypeFormatter.GetFormatter(valu.GetType());
             formatter.Host = this.Host; 
