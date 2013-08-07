@@ -77,8 +77,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
 
             // Output operator
-            if (operatorValue != null)
-                s.WriteAttributeString("operator", Util.ToWireFormat(operatorValue));
+            //if (operatorValue != null)
+            //    s.WriteAttributeString("operator", Util.ToWireFormat(operatorValue));
 
             // Graph base attribute(s)
             base.Graph(s, o, result);
@@ -381,8 +381,18 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     xr.MoveToContent();
                     if (xr.AttributeCount > 1 || !xr.IsEmptyElement)
                     {
-                        var baseResult = base.Parse(xr, result);
-                        valueProperty.SetValue(instance, Util.FromWireFormat(baseResult, valueProperty.PropertyType), null);
+                        bool isNotEmpty = !xr.IsEmptyElement;
+                        if (xr.MoveToFirstAttribute())
+                            do
+                            {
+                                isNotEmpty |= xr.Prefix != "xmlns" && xr.LocalName != "xmlns" && xr.NamespaceURI != DatatypeFormatter.NS_XSI;
+                            } while (!isNotEmpty && xr.MoveToNextAttribute());
+                        xr.MoveToElement();
+                        if (isNotEmpty)
+                        {
+                            var baseResult = base.Parse(xr, result);
+                            valueProperty.SetValue(instance, Util.FromWireFormat(baseResult, valueProperty.PropertyType), null);
+                        }
                     }
                 }
             }
