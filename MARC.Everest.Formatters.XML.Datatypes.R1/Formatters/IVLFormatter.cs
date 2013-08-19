@@ -86,7 +86,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (valueValue != null)
             {
                 result.AddResultDetail(new NotSupportedChoiceResultDetail(
-                    ResultDetailType.Warning, "Though XML ITS supports it, use of the IVL 'value' attribute should be avoided. The data has been serialized but may be uninterpretable by anoher system. Any additional properties such as low, high, and width will not be parsed", s.ToString(), null));
+                    ResultDetailType.Warning, "Though XML ITS supports it, use of the IVL 'value' attribute should be avoided. The data has been serialized but may be uninterpretable by anoher system.", s.ToString(), null));
                 //DOC: Further documentation required.
             }
             if (lowValue != null && highValue != null) // low & high
