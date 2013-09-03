@@ -101,25 +101,25 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 s.GetAttribute("codeSystemVersion") != null || s.GetAttribute("codeSystemName") != null ||
                 s.GetAttribute("displayName") != null)
                 sc.Code = new CD<string>();
-
-            if (s.GetAttribute("code") != null)
-                sc.Code.Code = Util.Convert<CodeValue<String>>(s.GetAttribute("code"));
-            if (s.GetAttribute("codeSystem") != null)
-                sc.Code.CodeSystem = s.GetAttribute("codeSystem");
-            if (s.GetAttribute("codeSystemVersion") != null)
-                sc.Code.CodeSystemVersion = s.GetAttribute("codeSystemVersion");
-            if (s.GetAttribute("codeSystemName") != null)
-                sc.Code.CodeSystemName = s.GetAttribute("codeSystemName");
-            if (s.GetAttribute("displayName") != null)
-                sc.Code.DisplayName = s.GetAttribute("displayName");
-
+            {
+                if (s.GetAttribute("code") != null)
+                    sc.Code.Code = Util.Convert<CodeValue<String>>(s.GetAttribute("code"));
+                if (s.GetAttribute("codeSystem") != null)
+                    sc.Code.CodeSystem = s.GetAttribute("codeSystem");
+                if (s.GetAttribute("codeSystemVersion") != null)
+                    sc.Code.CodeSystemVersion = s.GetAttribute("codeSystemVersion");
+                if (s.GetAttribute("codeSystemName") != null)
+                    sc.Code.CodeSystemName = s.GetAttribute("codeSystemName");
+                if (s.GetAttribute("displayName") != null)
+                    sc.Code.DisplayName = s.GetAttribute("displayName");
+            }
             // Read the ST parts
             ST st = (ST)base.Parse(s, result);
             sc.Language = st.Language;
             sc.Value = st.Value;
 
             return sc;
-           
+
         }
 
         /// <summary>
