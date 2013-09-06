@@ -112,6 +112,9 @@ namespace MARC.Everest.DataTypes
             { DatePrecision.Year, "yyyy" }
         };
 
+        // When an invalid date is passed to the value property it will re-gurgitate this value
+        private string m_invalidDateValue = String.Empty;
+
         /// <summary>
         /// Create a new instance of the timestamp
         /// </summary>
@@ -148,8 +151,10 @@ namespace MARC.Everest.DataTypes
         {
             get
             {
-                
-                if (DateValue == default(DateTime))
+
+                if (!String.IsNullOrEmpty(this.m_invalidDateValue))
+                    return this.m_invalidDateValue;
+                if (this.DateValue == default(DateTime))
                     return null;
 
                 // Impose flavor formatting
@@ -172,6 +177,7 @@ namespace MARC.Everest.DataTypes
             {
                 try
                 {
+                    this.m_invalidDateValue = null; // clear invalid date value
                     // Get proper format
                     //string flavorFormat = "";
                     //if (!m_flavorFormats.TryGetValue(Flavor ?? "", out flavorFormat))
@@ -209,6 +215,20 @@ namespace MARC.Everest.DataTypes
                             return;
                         }
 
+                        // HACK: Correct timezone as some CDA instances instances have only 3
+                        if (value.Contains("+") || value.Contains("-"))
+                        {
+                            int sTz = value.Contains("+") ? value.IndexOf("+") : value.IndexOf("-");
+                            string tzValue = value.Substring(sTz + 1);
+                            int iTzValue = 0;
+                            if (!Int32.TryParse(tzValue, out iTzValue)) // Invalid timezone can't even fix this
+                                throw new FormatException("Invalid timezone!");
+                            else if(iTzValue < 24)
+                                value = value.Substring(0, sTz + 1) + iTzValue.ToString("00") + "00";
+                            else
+                                value = value.Substring(0, sTz + 1) + iTzValue.ToString("0000");
+                        }
+
                         this.DateValuePrecision = (DatePrecision)(value.Length);
 
                         // HACK: Correct the milliseonds to be three digits if four are passed into the parse function
@@ -225,6 +245,7 @@ namespace MARC.Everest.DataTypes
                             value = value.Insert(eMs + 1, new string('0', 3 - (eMs - sMs)));
                             this.DateValuePrecision = (DatePrecision)(value.Length);
                         }
+                        
                     }
                     catch (Exception) { this.DateValuePrecision = DatePrecision.Full; }
 
@@ -240,7 +261,8 @@ namespace MARC.Everest.DataTypes
                 }
                 catch (Exception e)
                 {
-                    throw new FormatException(string.Format(EverestFrameworkContext.CurrentCulture, "The date string '{0}' is not in the proper format", value), e);
+                    this.m_invalidDateValue = value;
+                    this.DateValue = default(DateTime);
                 }
                 
             }
@@ -264,6 +286,11 @@ namespace MARC.Everest.DataTypes
         /// </code>
         /// </example>
         public DatePrecision? DateValuePrecision { get; set; }
+
+        /// <summary>
+        /// Returns true if the date contained in "Value" is invalid and was not translated to DateValue
+        /// </summary>
+        public bool IsInvalidDate { get { return !String.IsNullOrEmpty(this.m_invalidDateValue); } }
 
         /// <summary>
         /// JF: Fixes issue with setting flavor then precision
@@ -650,7 +677,9 @@ namespace MARC.Everest.DataTypes
         public override IEnumerable<Connectors.IResultDetail> ValidateEx()
         {
             var result = base.ValidateEx() as List<IResultDetail>;
-            if (this.DateValue == default(DateTime))
+            if (this.IsInvalidDate)
+                result.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TS", String.Format("Value {0} is not a valid HL7 date", this.m_invalidDateValue), null));
+            else if (this.DateValue == default(DateTime))
                 result.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TS", "Value must be populated with an valid HL7 Date", null));
             return result;
         }

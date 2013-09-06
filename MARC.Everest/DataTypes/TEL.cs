@@ -166,10 +166,10 @@ namespace MARC.Everest.DataTypes
             // Nothing to validate
             if (tel.Value == null) return true;
 
-            string[] allowedSchemes = new string[] { "file:", "nfs://", "ftp://", "cid://", "http://", "https://" };
+            string[] allowedSchemes = new string[] { "#", "file:", "nfs://", "ftp://", "cid://", "http://", "https://" };
             bool valid = tel.Use == null;
             foreach (string s in allowedSchemes)
-                if (((string)tel).StartsWith(s))
+                if (((string)tel).StartsWith(s, StringComparison.InvariantCulture))
                     return valid;
             return false;
         }

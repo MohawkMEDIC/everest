@@ -481,7 +481,7 @@ namespace MARC.Everest.Connectors
                 ;
             else if (m_destType.IsEnum && s_enumerationMaps.ContainsKey(string.Format(CultureInfo.InvariantCulture, "{0}.{1}", m_destType.FullName, value)))
             {
-                value = Enum.Parse(m_destType, s_enumerationMaps[string.Format(CultureInfo.InvariantCulture, "{0}.{1}", m_destType.FullName, value)], false);
+                value = Enum.Parse(m_destType, s_enumerationMaps[string.Format(CultureInfo.InvariantCulture, "{0}.{1}", m_destType.FullName, value)], true);
                 if (!requiresExplicitCastCall)
                 {
                     result = value;

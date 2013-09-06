@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MARC.Everest.DataTypes;
+using MARC.Everest.Connectors;
 
 namespace MARC.Everest.Test.DataTypes
 {
@@ -388,5 +389,70 @@ namespace MARC.Everest.Test.DataTypes
             Assert.AreEqual(testTime.ToString("yyyyMMddHHmmss.fffzzzz"), test.ToIVL().Low.DateValue.ToString("yyyyMMddHHmmss.fffzzzz"));
             Assert.AreEqual(testTime.ToString("yyyyMMddHHmmss.fffzzzz"), test.ToIVL().High.DateValue.ToString("yyyyMMddHHmmss.fffzzzz"));
         }
+
+        /// <summary>
+        /// Try parsing an invalid date value and determine if it is marked as invalid
+        /// </summary>
+        [TestMethod]
+        public void InvalidTSValueTest()
+        {
+            TS value = null;
+            try
+            {
+                value = Util.Convert<TS>("20130208011829+005:");
+                Assert.IsTrue(value.IsInvalidDate);
+                Assert.AreEqual(default(DateTime), value.DateValue);
+                Assert.AreEqual("20130208011829+005:", value.Value);
+                Assert.AreEqual(1, value.ValidateEx().Count());
+                Assert.IsFalse(value.Validate());
+            }
+            catch (Exception e)
+            {
+                Assert.Fail();
+            }
+        }
+
+        /// <summary>
+        /// Try parsing an invalid date value and determine if it is marked as invalid
+        /// </summary>
+        [TestMethod]
+        public void AdjustedTSValueTest()
+        {
+            TS value = null;
+            try
+            {
+                value = Util.Convert<TS>("20130208011829+005");
+                Assert.IsFalse(value.IsInvalidDate);
+                Assert.AreEqual(DateTime.Parse("2013-02-08T01:18:29+05:00"), value.DateValue);
+                Assert.IsTrue(value.Validate());
+            }
+            catch (Exception e)
+            {
+                Assert.Fail();
+            }
+        }
+        /// <summary>
+        /// Try parsing an valid date value and determine if it is marked as invalid
+        /// </summary>
+        [TestMethod]
+        public void ValidTSValueTest()
+        {
+            TS value = null;
+            try
+            {
+                value = Util.Convert<TS>("20130208011829+0500");
+                Assert.IsFalse(value.IsInvalidDate);
+                Assert.AreEqual(DateTime.Parse("2013-02-08T01:18:29+05:00"), value.DateValue);
+                Assert.IsTrue(value.Validate());
+                
+            }
+            catch (AssertFailedException)
+            { }
+            catch (Exception e)
+            {
+                Assert.Fail();
+            }
+        }
+
     }
 }
