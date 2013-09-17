@@ -251,6 +251,7 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         private BL SemanticEqualsInternal(SET<T> set)
         {
+            // Check if each of the set members are in this IVL
             return this.ToSet().SemanticEquals(set);
         }
 

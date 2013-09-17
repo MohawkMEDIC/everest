@@ -177,7 +177,7 @@ namespace MARC.Everest.DataTypes
             {
                 try
                 {
-                    this.m_invalidDateValue = null; // clear invalid date value
+                    this.m_invalidDateValue = String.Empty; // clear invalid date value
                     // Get proper format
                     //string flavorFormat = "";
                     //if (!m_flavorFormats.TryGetValue(Flavor ?? "", out flavorFormat))
@@ -485,12 +485,16 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Subtracts <paramref name="b"/> from <paramref name="a"/>
         /// </summary>
+        /// <exception cref="T:System.InvalidOperationException">If the <param name="a"/> value is an invalidly parsed date</exception>
         public static TS operator -(TS a, PQ b)
         {
+
             if (a == null || b == null)
                 return null;
             else if (a.IsNull || b.IsNull)
                 return new TS() { NullFlavor = DataTypes.NullFlavor.NoInformation };
+            else if (a.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform arithmetic on an invalid timestamp");
             else
             {
                 var retVal = new TS(a.DateValue.Subtract((TimeSpan)b), a.DateValuePrecision.HasValue ? a.DateValuePrecision.Value : DatePrecision.Full);
@@ -507,12 +511,16 @@ namespace MARC.Everest.DataTypes
         /// Subtracts <paramref name="b"/> from <paramref name="a"/>
         /// </summary>
         /// <remarks>The result of this operation is always returned in seconds</remarks>
+        /// <exception cref="T:System.InvalidOperationException">If the <paramref name="a"/> or <paramref name="b"/> value is an invalidly parsed date</exception>
         public static PQ operator -(TS a, TS b)
         {
+
             if (a == null || b == null)
                 return null;
             else if (a.IsNull || b.IsNull)
                 return new PQ() { NullFlavor = DataTypes.NullFlavor.NoInformation };
+            else if (a.IsInvalidDate || b.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform arithmetic on an invalid timestamp");
             else
                 return new PQ(a.DateValue.Subtract((DateTime)b), "s");
 
@@ -522,9 +530,13 @@ namespace MARC.Everest.DataTypes
         /// Convert this timestamp (with precision) to an interval
         /// </summary>
         /// <returns>The converted interval</returns>
+        /// <exception cref="T:System.InvalidOperationException">If the date instance is an invalidly parsed date</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IVL"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.DateTime.ToString(System.String)")]
         public IVL<TS> ToIVL()
         {
+
+            if (this.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform logical operations on an invalid timestamp");
 
             // Absolutely precise
             if (this.DateValuePrecision == DatePrecision.Full ||
@@ -588,7 +600,9 @@ namespace MARC.Everest.DataTypes
             if (other != null)
                 result = base.Equals((QTY<String>)other) &&
                     (this.DateValuePrecision ?? DatePrecision.Full) == (other.DateValuePrecision ?? DatePrecision.Full) &&
-                    (this.DateValue.ToString(m_precisionFormats[this.DateValuePrecision ?? DatePrecision.Full]) == other.DateValue.ToString(m_precisionFormats[other.DateValuePrecision ?? DatePrecision.Full]));
+                    (this.DateValue.ToString(m_precisionFormats[this.DateValuePrecision ?? DatePrecision.Full]) == other.DateValue.ToString(m_precisionFormats[other.DateValuePrecision ?? DatePrecision.Full])) &&
+                    this.IsInvalidDate == other.IsInvalidDate &&
+                    this.m_invalidDateValue == other.m_invalidDateValue;
             return result;
         }
 
@@ -609,12 +623,15 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Compares this TS instance to another
         /// </summary>
+        /// <exception cref="T:System.InvalidOperationException">If this date instance or <paramref name="other"/> is an invalidly parsed date</exception>
         public int CompareTo(TS other)
         {
             if (other == null || other.IsNull)
                 return 1;
             else if (this.IsNull && !other.IsNull)
                 return -1;
+            else if (this.IsInvalidDate || other.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform logical operations on an invalid timestamp");
             else
                 return this.DateValue.CompareTo(other.DateValue);
 
@@ -667,7 +684,8 @@ namespace MARC.Everest.DataTypes
             return (NullFlavor != null) ^ ((DateValue != default(DateTime) || UncertainRange != null) &&
                 ((this.Uncertainty != null && this.Uncertainty is PQ && PQ.IsValidTimeFlavor(this.Uncertainty as PQ)) || (this.Uncertainty == null)) &&
                 ((this.UncertainRange != null && this.UncertainRange.Low is PQ && this.UncertainRange.High is PQ && PQ.IsValidTimeFlavor(this.UncertainRange.Low as PQ) && PQ.IsValidTimeFlavor(this.UncertainRange.High as PQ)) || this.UncertainRange == null) &&
-                (((DateValue != default(DateTime)) ^ (this.UncertainRange != null)) || (this.DateValue == null && this.UncertainRange == null)));
+                (((DateValue != default(DateTime)) ^ (this.UncertainRange != null)) || (this.DateValue == null && this.UncertainRange == null)) &&
+                !this.IsInvalidDate);
 
         }
 
@@ -721,6 +739,9 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public override double ToDouble()
         {
+            if(this.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform logical operations on an invalid timestamp");
+
             return this.DateValue.Ticks;
         }
 
@@ -747,6 +768,9 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         private TS TranslateDateInternal(int value)
         {
+            if (this.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform logical operations on an invalid timestamp");
+
             TS retVal = null;
             switch (DateValuePrecision.Value)
             {

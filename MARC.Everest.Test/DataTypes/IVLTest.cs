@@ -300,6 +300,17 @@ namespace MARC.Everest.Test.DataTypes
             ivl.HighClosed = null;
             ivl.Width = null;
             Assert.IsFalse(ivl.Validate());
-        } 
+        }
+
+        /// <summary>
+        /// Semantic equality test
+        /// </summary>
+        [TestMethod]
+        public void IVLIsSemanticEqualsTest()
+        {
+            SET<INT> ints = new SET<INT>() { 1, 2, 4, 6 };
+            IVL<INT> range = new IVL<INT>(0, 7);
+
+        }
     }
 }
