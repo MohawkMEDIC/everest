@@ -59,7 +59,8 @@
       </xsl:for-each>
     </mif:attribute>
   </xsl:template>
-  
+
+  <xsl:template match="mif:property"></xsl:template>
   <!-- Standard rules -->
   <xsl:template match="node()|@*">
     <xsl:copy>
