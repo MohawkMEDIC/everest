@@ -309,12 +309,17 @@ namespace MARC.Everest.Connectors
         /// <returns></returns>
         public static Type ParseXSITypeName(string xsiType)
         {
+
             // Type tokens for the 
+            if (xsiType.Contains(":"))
+                xsiType = xsiType.Substring(xsiType.IndexOf(":"));
+
             Queue<String> typeNames = new Queue<string>(xsiType.Split('_'));
             var t = ParseXSITypeNameInternal(typeNames);
             if (typeNames.Count > 0)
                 throw new InvalidOperationException(String.Format(EverestFrameworkContext.CurrentCulture, "Generic parameter supplied to a non-generic type '{0}' used to construct '{1}'", xsiType, t.FullName));
             return t;
+
         }
 
         /// <summary>

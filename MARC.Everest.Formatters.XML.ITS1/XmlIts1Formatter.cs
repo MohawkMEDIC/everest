@@ -1022,17 +1022,24 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 // TODO: This may cause issue when assigning a QSET to an R1 or
                 //       SXPR to R2 instance as the XSI:TYPE will be inappropriately
                 //       assigned.
+                string xsiType = s.LookupPrefix("urn:hl7-org:v3");
+                if (!String.IsNullOrEmpty(xsiType))
+                    xsiType += ":";
+
                 if (typeof(ANY).IsAssignableFrom(g.GetType()))
-                    s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, Util.CreateXSITypeName(g.GetType()));
+                    xsiType += Util.CreateXSITypeName(g.GetType());
                 else if(propType != null && g.GetType().Assembly.FullName != propType.Assembly.FullName)
                 {
-                    string typeName = this.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null);
-                    s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, typeName);
+                    var typeName = this.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null);
 
                     lock(this.m_syncRoot)
                         if (!this.s_typeNameMaps.ContainsKey(typeName))
                             this.RegisterXSITypeName(typeName, g.GetType());
+                    xsiType += typeName;
                 }
+                if(!String.IsNullOrEmpty(xsiType))
+                    s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, xsiType);
+
                 //string xsdTypeName = String.Empty;
                 //object[] sa = g.GetType().GetCustomAttributes(typeof(StructureAttribute), false);
                 //if (sa.Length > 0 && (sa[0] as StructureAttribute).StructureType == StructureAttribute.StructureAttributeType.DataType)
@@ -1203,6 +1210,12 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// </summary>
         public Type ParseXSITypeName(string xsiTypeName)
         {
+
+            // HACK: Ignore the prefix and try to parse the name ... side effects : if someone has the same XSI type with a separate name
+            if (xsiTypeName.Contains(":"))
+                xsiTypeName = xsiTypeName.Substring(xsiTypeName.IndexOf(":"));
+
+            // Get the namespace
 
             // Is there an XSITypeName map that already exists for this type?
             Type retVal = null;
