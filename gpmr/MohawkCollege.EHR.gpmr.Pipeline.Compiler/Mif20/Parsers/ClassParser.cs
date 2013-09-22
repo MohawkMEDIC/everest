@@ -141,6 +141,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Parsers
             // Containing subsystem
             retVal.ContainerPackage = classInfo.CompilerRepository[classInfo.ScopedPackageName] as MohawkCollege.EHR.gpmr.COR.SubSystem;
 
+            // Fire parsed event
+            retVal.FireParsed();
+
             #region Specializations
 
             retVal.SpecializedBy = new List<TypeReference>();
@@ -467,9 +470,6 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Parsers
 
             // Sort the class content
             retVal.Content.Sort(new ClassContent.Comparator());
-
-            // Fire parsed event
-            retVal.FireParsed();
 
             // Return 
             return retVal;

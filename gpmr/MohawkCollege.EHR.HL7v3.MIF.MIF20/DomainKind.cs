@@ -80,6 +80,11 @@ namespace MohawkCollege.EHR.HL7v3.MIF.MIF20
         [XmlEnum("CT")]
         CT,
         /// <summary>
+        /// CommonProduct Model
+        /// </summary>
+        [XmlEnum("CP")]
+        CP,
+        /// <summary>
         /// DiagnosticImaging
         /// </summary>
         [XmlEnum("DI")]

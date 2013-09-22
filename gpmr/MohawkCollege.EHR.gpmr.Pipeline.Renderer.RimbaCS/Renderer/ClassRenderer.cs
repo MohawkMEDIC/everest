@@ -713,13 +713,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
                 foreach (Property p in choice.Content)
                 {
-                    if (p.Type.Class != null && p.Type.Class.IsAbstract) continue; // don't output abstract classes
-
-                    getTraversalFor.AppendFormat("\t\tif(this.$$pcName$$ is {0}) return \"{1}\";\r\n", CreateDatatypeRef(p.Type, p), p.Name);
 
                     // Set the property
                     if (p.Type.Class.BaseClass != null && tr != null && p.Type.Class.BaseClass.Name != tr.Name)
                         tr = null;
+
+                    if (p.Type.Class != null && p.Type.Class.IsAbstract) continue; // don't output abstract classes
+
+                    getTraversalFor.AppendFormat("\t\tif(this.$$pcName$$ is {0}) return \"{1}\";\r\n", CreateDatatypeRef(p.Type, p), p.Name);
 
                     // Generate getter
 
