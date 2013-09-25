@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -747,7 +747,7 @@ namespace MARC.Everest.DataTypes
             var retVal = new List<IResultDetail>(base.ValidateEx());
 
             if (!((this.Data != null) ^ (this.Reference != null)))
-                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", "The Data and Reference properties must be used exclusive of each other", null));
+                retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "ED", "The Data and Reference properties should be used exclusive of each other", null));
             if (this.NullFlavor != null && (this.Data != null || this.Reference != null))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "ED", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE));
             else if (this.NullFlavor == null && this.Data == null && this.Reference == null)

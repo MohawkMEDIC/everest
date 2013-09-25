@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -140,6 +140,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Parsers
 
             // Containing subsystem
             retVal.ContainerPackage = classInfo.CompilerRepository[classInfo.ScopedPackageName] as MohawkCollege.EHR.gpmr.COR.SubSystem;
+
+            // Fire parsed event
+            retVal.FireParsed();
 
             #region Specializations
 
@@ -467,9 +470,6 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Parsers
 
             // Sort the class content
             retVal.Content.Sort(new ClassContent.Comparator());
-
-            // Fire parsed event
-            retVal.FireParsed();
 
             // Return 
             return retVal;

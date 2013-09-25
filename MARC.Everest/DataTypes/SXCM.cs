@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -185,5 +185,12 @@ namespace MARC.Everest.DataTypes
             return retVal;
         }
 
+        /// <summary>
+        /// Gets just the value type from the SXCM
+        /// </summary>
+        internal static T ToValueType(SXCM<T> value)
+        {
+            return value.Value;
+        }
     }
 }

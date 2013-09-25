@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mohawk College of Applied Arts and Technology")]
 [assembly: AssemblyProduct("GPMR")]
-[assembly: AssemblyCopyright("Copyright ©  2008-2012 Mohawk College of Applied Arts and Technology")]
+[assembly: AssemblyCopyright("Copyright ©  2008-2013 Mohawk College of Applied Arts and Technology")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

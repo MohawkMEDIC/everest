@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -26,6 +26,7 @@ using MARC.Everest.Xml;
 using MARC.Everest.Interfaces;
 using System.Reflection;
 using System.Xml;
+using System.IO;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 {
@@ -33,7 +34,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
     /// IVL Formatter for DT R1
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IVL")]
-    public class IVLFormatter : PDVFormatter, IDatatypeFormatter
+    public class IVLFormatter : SXCMFormatter, IDatatypeFormatter
     {
 
         #region IDatatypeFormatter Members
@@ -48,10 +49,6 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         public override void Graph(System.Xml.XmlWriter s, object o, DatatypeFormatterGraphResult result)
         {
             
-            base.Graph(s, o, result);
-
-            if ((o as ANY).NullFlavor != null) return; // Nullflavor so the formatter doesn't format anything
-
             // Get the values the formatter needs to represent in XML
             Type ivlType = o.GetType();
             object operatorValue = ivlType.GetProperty("Operator").GetValue(o, null),
@@ -71,11 +68,27 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 result.AddResultDetail(new ResultDetail(ResultDetailType.Warning,
                     "The properties 'LowClosed' and 'HighClosed' will be used as low/@inclusive and high/@inclusive attributes for R1 formatting", s.ToString(), null));
 
+
             // Representations of the IVL type
-            if(operatorValue != null)
-                s.WriteAttributeString("operator", Util.ToWireFormat(operatorValue));
-            
-            
+            if ((o as ANY).NullFlavor != null)
+            {
+                base.Graph(s, o, result); // Nullflavor so the formatter doesn't format anything more than base
+                return;
+            }
+
+            // Output operator
+            //if (operatorValue != null)
+            //    s.WriteAttributeString("operator", Util.ToWireFormat(operatorValue));
+
+            // Graph base attribute(s)
+            base.Graph(s, o, result);
+
+            if (valueValue != null)
+            {
+                result.AddResultDetail(new NotSupportedChoiceResultDetail(
+                    ResultDetailType.Warning, "Though XML ITS supports it, use of the IVL 'value' attribute should be avoided. The data has been serialized but may be uninterpretable by anoher system.", s.ToString(), null));
+                //DOC: Further documentation required.
+            }
             if (lowValue != null && highValue != null) // low & high
             {
                 // low
@@ -126,7 +139,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                         "low, width, center can't be represented together in an IVL data type in R1. The data has been formatted but may be invalid", s.ToString(), null));
 
                 #endregion
-            }            
+            }
             else if (highValue != null && widthValue != null) // high & width
             {
                 result.AddResultDetail(this.WriteValueAsElement(s, "width", (IGraphable)widthValue, typeof(PQ)).Details);
@@ -209,11 +222,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             }
             else if (valueValue != null)
-            {
-                result.AddResultDetail(new NotSupportedChoiceResultDetail(
-                    ResultDetailType.Warning, "Though XML ITS supports it, use of the IVL 'value' attribute should be avoided. The data has been serialized but may be uninterpretable by anoher system", s.ToString(), null));
-                //DOC: Further documentation required.
-            }
+                ;
             // No need for this ;
             else
                 result.AddResultDetail(new ResultDetail(ResultDetailType.Error,
@@ -254,22 +263,38 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             Type ivlType = typeof(IVL<>);
             Type ivlGenericType = ivlType.MakeGenericType(GenericArguments);
 
+            // Sometimes there can be just a messy, unstructured value inline with this IVL (like in CCDA) so we still need to support that
+            MemoryStream leftOvers = new MemoryStream();
+            XmlWriter leftoverWriter = XmlWriter.Create(leftOvers);
+            leftoverWriter.WriteStartElement(s.LocalName, s.NamespaceURI);
+
             // Create an instance of rto from the rtoType
             object instance = ivlGenericType.GetConstructor(Type.EmptyTypes).Invoke(null);
 
-            if (s.GetAttribute("nullFlavor") != null)
-                ((ANY)instance).NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
-            // Try get operator and value
-            if (s.GetAttribute("operator") != null)
-                ivlGenericType.GetProperty("Operator").SetValue(instance, Util.FromWireFormat(s.GetAttribute("operator"), typeof(SetOperator?)), null);
-            if (s.GetAttribute("value") != null)
+            if (s.MoveToFirstAttribute())
             {
-                ivlGenericType.GetProperty("Value").SetValue(instance, Util.FromWireFormat(s.GetAttribute("value"), GenericArguments[0]), null);
-                result.AddResultDetail(new NotSupportedChoiceResultDetail(
-                        ResultDetailType.Warning, "Though XML ITS supports it, use of the IVL 'value' attribute should be avoided. The data has been parsed anyways.", s.ToString(), null));
+                do
+                {
+                    switch (s.LocalName)
+                    {
+                        case "nullFlavor":
+
+                            ((ANY)instance).NullFlavor = (NullFlavor)Util.FromWireFormat(s.GetAttribute("nullFlavor"), typeof(NullFlavor));
+                            break;
+                        case "operator":
+                            ivlGenericType.GetProperty("Operator").SetValue(instance, Util.FromWireFormat(s.GetAttribute("operator"), typeof(SetOperator?)), null);
+                            break;
+                        case "specializationType":
+                            if (result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
+                                ((ANY)instance).Flavor = s.GetAttribute("specializationType");
+                            break;
+                        default:
+                            leftoverWriter.WriteAttributeString(s.Prefix, s.LocalName, s.NamespaceURI, s.Value);
+                            break;
+                    }
+                } while (s.MoveToNextAttribute());
+                s.MoveToElement();
             }
-            if (s.GetAttribute("specializationType") != null && result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
-                ((ANY)instance).Flavor = s.GetAttribute("specializationType");
 
             // Get property information
             PropertyInfo lowProperty = ivlGenericType.GetProperty("Low"),
@@ -277,7 +302,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 widthProperty = ivlGenericType.GetProperty("Width"),
                 centerProperty = ivlGenericType.GetProperty("Center"),
                 lowClosedProperty = ivlGenericType.GetProperty("LowClosed"),
-                highClosedProperty = ivlGenericType.GetProperty("HighClosed");
+                highClosedProperty = ivlGenericType.GetProperty("HighClosed"),
+                valueProperty = ivlGenericType.GetProperty("Value");
 
             // Now process the elements
             #region Elements
@@ -312,14 +338,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             result.AddResultDetail(parseResult.Details);
                             highProperty.SetValue(instance, parseResult.Structure, null);
                         }
-                        else if (s.LocalName == "center") // center
+                        else if (s.NodeType == System.Xml.XmlNodeType.Element && s.LocalName == "center") // center
                         {
                             var parseResult = Host.Parse(s, GenericArguments[0]);
                             result.Code = parseResult.Code;
                             result.AddResultDetail(parseResult.Details);
                             centerProperty.SetValue(instance, parseResult.Structure, null);
                         }
-                        else if (s.LocalName == "width") // width
+                        else if (s.NodeType == System.Xml.XmlNodeType.Element && s.LocalName == "width") // width
                         {
                             var parseResult = Host.Parse(s, typeof(PQ));
                             result.Code = parseResult.Code;
@@ -327,7 +353,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                             widthProperty.SetValue(instance, parseResult.Structure, null);
                         }
                         else if (s.NodeType == System.Xml.XmlNodeType.Element)
-                            result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null));
+                        {
+                            leftoverWriter.WriteNode(s, true);
+                            //result.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null));
+                        }
                     }
                     catch (MessageValidationException e) // Message validation error
                     {
@@ -341,8 +370,33 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
             #endregion
 
-
-
+            // Process any leftovers as Value !!!
+            try
+            {
+                leftoverWriter.WriteEndElement();
+                leftoverWriter.Flush();
+                leftOvers.Seek(0, SeekOrigin.Begin);
+                using (XmlReader xr = XmlReader.Create(leftOvers))
+                {
+                    xr.MoveToContent();
+                    if (xr.AttributeCount > 1 || !xr.IsEmptyElement)
+                    {
+                        bool isNotEmpty = !xr.IsEmptyElement;
+                        if (xr.MoveToFirstAttribute())
+                            do
+                            {
+                                isNotEmpty |= xr.Prefix != "xmlns" && xr.LocalName != "xmlns" && xr.NamespaceURI != DatatypeFormatter.NS_XSI;
+                            } while (!isNotEmpty && xr.MoveToNextAttribute());
+                        xr.MoveToElement();
+                        if (isNotEmpty)
+                        {
+                            var baseResult = base.Parse(xr, result);
+                            valueProperty.SetValue(instance, Util.FromWireFormat(baseResult, valueProperty.PropertyType), null);
+                        }
+                    }
+                }
+            }
+            catch { }
             // Validate
             base.Validate(instance as ANY, s.LocalName, result);
 

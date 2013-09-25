@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -96,7 +96,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
         public virtual void Compile()
         {
-            System.Diagnostics.Trace.WriteLine(string.Format("Compiling static model package '{0}'...", staticModel.PackageLocation.ToString(MifCompiler.NAME_FORMAT)), "debug");
+            string modelName = staticModel.PackageLocation.ToString(MifCompiler.NAME_FORMAT);
+            System.Diagnostics.Trace.WriteLine(string.Format("Compiling static model package '{0}'...", modelName), "debug");
 
             // Check if the package has already been "compiled"
             if (ClassRepository.ContainsKey(staticModel.PackageLocation.ToString(MifCompiler.NAME_FORMAT)))
@@ -110,30 +111,18 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
             foreach (StaticModelDerivation smd in staticModel.DerivedFrom)
                 derivationSuppliers.Add(smd.StaticModelDerivationId, this.repository.Find(smd.TargetStaticModel) as Package);
 
+            // Compile owned entry points first
+            foreach (var ep in staticModel.OwnedEntryPoint)
+            {
+                var cls = staticModel.OwnedClass.Find(o => o.Choice is MohawkCollege.EHR.HL7v3.MIF.MIF20.StaticModel.Flat.Class && (o.Choice as MohawkCollege.EHR.HL7v3.MIF.MIF20.StaticModel.Flat.Class).Name == ep.ClassName);
+                if (cls != null)
+                    ProcessClassElement(cls, derivationSuppliers);
+            }
+
             // Compile all contained classes in the package
             foreach (ClassElement c in staticModel.OwnedClass)
             {
-                if (c.Choice is MohawkCollege.EHR.HL7v3.MIF.MIF20.StaticModel.Flat.Class) // todo: Finish this with CMET and Template Parameter
-                {
-                    ClassParser.ClassParameterInfo pi = new ClassParser.ClassParameterInfo();
-                    pi.Class = c.Choice as MohawkCollege.EHR.HL7v3.MIF.MIF20.StaticModel.Flat.Class;
-                    pi.CompilerRepository = ClassRepository;
-                    pi.DerivationSuppliers = derivationSuppliers; 
-                    pi.MifContainer = this.staticModel;
-                    pi.ScopedPackageName = staticModel.PackageLocation.Artifact == ArtifactKind.RIM ? "RIM" : staticModel.PackageLocation.ToString(MifCompiler.NAME_FORMAT);
-                    ClassParser.Parse(pi);
-                }
-                else if (c.Choice is StaticModelClassTemplateParameter)
-                {
-                    TypeParameter parm = TypeParameterParser.Parse(c.Choice as StaticModelClassTemplateParameter);
-                    templateParameters.Add(parm.ParameterName, parm);
-                }
-                else if (c.Choice is CommonModelElementRef)
-                {
-                    // Process a common model element reference
-                    CommonModelElementRef cmetRef = c.Choice as CommonModelElementRef;
-                    
-                }
+                ProcessClassElement(c, derivationSuppliers);
             }
 
             // Get a ref to the current sub-system
@@ -162,6 +151,30 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
                 ss.EntryPoint.Add(cls);
             }
 
+        }
+
+        private void ProcessClassElement(ClassElement c, Dictionary<string, Package> derivationSuppliers)
+        {
+            if (c.Choice is MohawkCollege.EHR.HL7v3.MIF.MIF20.StaticModel.Flat.Class) // todo: Finish this with CMET and Template Parameter
+            {
+                ClassParser.ClassParameterInfo pi = new ClassParser.ClassParameterInfo();
+                pi.Class = c.Choice as MohawkCollege.EHR.HL7v3.MIF.MIF20.StaticModel.Flat.Class;
+                pi.CompilerRepository = ClassRepository;
+                pi.DerivationSuppliers = derivationSuppliers;
+                pi.MifContainer = this.staticModel;
+                pi.ScopedPackageName = staticModel.PackageLocation.Artifact == ArtifactKind.RIM ? "RIM" : staticModel.PackageLocation.ToString(MifCompiler.NAME_FORMAT);
+                ClassParser.Parse(pi);
+            }
+            else if (c.Choice is StaticModelClassTemplateParameter)
+            {
+                TypeParameter parm = TypeParameterParser.Parse(c.Choice as StaticModelClassTemplateParameter);
+                templateParameters.Add(parm.ParameterName, parm);
+            }
+            else if (c.Choice is CommonModelElementRef)
+            {
+                // Process a common model element reference
+                CommonModelElementRef cmetRef = c.Choice as CommonModelElementRef;
+             }
         }
         
         
@@ -451,7 +464,10 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
 
                     // Warn
                     if (trf.Class == null)
+                    {
+                        
                         throw new InvalidOperationException(String.Format("Cannot make association to class '{0}' as it was not defined!", ae.ParticipantClassName));
+                    }
                     if (ae.ChoiceItem.Count != trf.Class.SpecializedBy.Count)
                         System.Diagnostics.Trace.WriteLine(string.Format("Number of choices on property does not match the number of child classes for its data type for association '{0}'", cc.Name), "warn");
 

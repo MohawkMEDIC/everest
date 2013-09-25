@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -166,10 +166,10 @@ namespace MARC.Everest.DataTypes
             // Nothing to validate
             if (tel.Value == null) return true;
 
-            string[] allowedSchemes = new string[] { "file:", "nfs://", "ftp://", "cid://", "http://", "https://" };
+            string[] allowedSchemes = new string[] { "#", "file:", "nfs://", "ftp://", "cid://", "http://", "https://" };
             bool valid = tel.Use == null;
             foreach (string s in allowedSchemes)
-                if (((string)tel).StartsWith(s))
+                if (((string)tel).StartsWith(s, StringComparison.InvariantCulture))
                     return valid;
             return false;
         }

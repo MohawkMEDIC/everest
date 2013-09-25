@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -251,6 +251,7 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         private BL SemanticEqualsInternal(SET<T> set)
         {
+            // Check if each of the set members are in this IVL
             return this.ToSet().SemanticEquals(set);
         }
 

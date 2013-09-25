@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -118,7 +118,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler
         public void Init(Pipeline Context)
         {
             hostContext = Context;
-            System.Diagnostics.Trace.WriteLine("Mohawk College MIF 1.0/2.0 to COR Converter\r\nCopyright(C) 2008-2012 Mohawk College of Applied Arts and Technology", "information");
+            System.Diagnostics.Trace.WriteLine("Mohawk College MIF 1.0/2.0 to COR Converter\r\nCopyright(C) 2008-2013 Mohawk College of Applied Arts and Technology", "information");
 
         }
 

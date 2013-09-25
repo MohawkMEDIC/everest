@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -64,7 +64,9 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Now comes the fun part .. we'll need to graph the Value property onto the stream, 
             if (pv.Value != null)
+            {
                 xw.WriteAttributeString("value", Util.ToWireFormat(pv.Value));
+            }
         }
       
         /// <summary>

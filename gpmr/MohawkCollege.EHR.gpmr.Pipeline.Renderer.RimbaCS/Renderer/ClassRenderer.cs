@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -713,13 +713,14 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
                 foreach (Property p in choice.Content)
                 {
-                    if (p.Type.Class != null && p.Type.Class.IsAbstract) continue; // don't output abstract classes
-
-                    getTraversalFor.AppendFormat("\t\tif(this.$$pcName$$ is {0}) return \"{1}\";\r\n", CreateDatatypeRef(p.Type, p), p.Name);
 
                     // Set the property
                     if (p.Type.Class.BaseClass != null && tr != null && p.Type.Class.BaseClass.Name != tr.Name)
                         tr = null;
+
+                    if (p.Type.Class != null && p.Type.Class.IsAbstract) continue; // don't output abstract classes
+
+                    getTraversalFor.AppendFormat("\t\tif(this.$$pcName$$ is {0}) return \"{1}\";\r\n", CreateDatatypeRef(p.Type, p), p.Name);
 
                     // Generate getter
 

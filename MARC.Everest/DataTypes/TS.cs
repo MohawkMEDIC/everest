@@ -1,5 +1,5 @@
 /* 
- * Copyright 2008-2012 Mohawk College of Applied Arts and Technology
+ * Copyright 2008-2013 Mohawk College of Applied Arts and Technology
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you 
  * may not use this file except in compliance with the License. You may 
@@ -112,6 +112,9 @@ namespace MARC.Everest.DataTypes
             { DatePrecision.Year, "yyyy" }
         };
 
+        // When an invalid date is passed to the value property it will re-gurgitate this value
+        private string m_invalidDateValue = String.Empty;
+
         /// <summary>
         /// Create a new instance of the timestamp
         /// </summary>
@@ -148,8 +151,10 @@ namespace MARC.Everest.DataTypes
         {
             get
             {
-                
-                if (DateValue == default(DateTime))
+
+                if (!String.IsNullOrEmpty(this.m_invalidDateValue))
+                    return this.m_invalidDateValue;
+                if (this.DateValue == default(DateTime))
                     return null;
 
                 // Impose flavor formatting
@@ -172,6 +177,7 @@ namespace MARC.Everest.DataTypes
             {
                 try
                 {
+                    this.m_invalidDateValue = String.Empty; // clear invalid date value
                     // Get proper format
                     //string flavorFormat = "";
                     //if (!m_flavorFormats.TryGetValue(Flavor ?? "", out flavorFormat))
@@ -209,6 +215,20 @@ namespace MARC.Everest.DataTypes
                             return;
                         }
 
+                        // HACK: Correct timezone as some CDA instances instances have only 3
+                        if (value.Contains("+") || value.Contains("-"))
+                        {
+                            int sTz = value.Contains("+") ? value.IndexOf("+") : value.IndexOf("-");
+                            string tzValue = value.Substring(sTz + 1);
+                            int iTzValue = 0;
+                            if (!Int32.TryParse(tzValue, out iTzValue)) // Invalid timezone can't even fix this
+                                throw new FormatException("Invalid timezone!");
+                            else if(iTzValue < 24)
+                                value = value.Substring(0, sTz + 1) + iTzValue.ToString("00") + "00";
+                            else
+                                value = value.Substring(0, sTz + 1) + iTzValue.ToString("0000");
+                        }
+
                         this.DateValuePrecision = (DatePrecision)(value.Length);
 
                         // HACK: Correct the milliseonds to be three digits if four are passed into the parse function
@@ -225,6 +245,7 @@ namespace MARC.Everest.DataTypes
                             value = value.Insert(eMs + 1, new string('0', 3 - (eMs - sMs)));
                             this.DateValuePrecision = (DatePrecision)(value.Length);
                         }
+                        
                     }
                     catch (Exception) { this.DateValuePrecision = DatePrecision.Full; }
 
@@ -240,7 +261,8 @@ namespace MARC.Everest.DataTypes
                 }
                 catch (Exception e)
                 {
-                    throw new FormatException(string.Format(EverestFrameworkContext.CurrentCulture, "The date string '{0}' is not in the proper format", value), e);
+                    this.m_invalidDateValue = value;
+                    this.DateValue = default(DateTime);
                 }
                 
             }
@@ -266,6 +288,11 @@ namespace MARC.Everest.DataTypes
         public DatePrecision? DateValuePrecision { get; set; }
 
         /// <summary>
+        /// Returns true if the date contained in "Value" is invalid and was not translated to DateValue
+        /// </summary>
+        public bool IsInvalidDate { get { return !String.IsNullOrEmpty(this.m_invalidDateValue); } }
+
+        /// <summary>
         /// JF: Fixes issue with setting flavor then precision
         /// </summary>
         public override string Flavor
@@ -276,7 +303,8 @@ namespace MARC.Everest.DataTypes
             }
             set
             {
-                if (!DateValuePrecision.HasValue)
+                
+                if (value != null && !DateValuePrecision.HasValue)
                 {
                     DatePrecision tdprec = DatePrecision.Full;
                     if (m_flavorPrecisions.TryGetValue(value, out tdprec))
@@ -457,12 +485,16 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Subtracts <paramref name="b"/> from <paramref name="a"/>
         /// </summary>
+        /// <exception cref="T:System.InvalidOperationException">If the <param name="a"/> value is an invalidly parsed date</exception>
         public static TS operator -(TS a, PQ b)
         {
+
             if (a == null || b == null)
                 return null;
             else if (a.IsNull || b.IsNull)
                 return new TS() { NullFlavor = DataTypes.NullFlavor.NoInformation };
+            else if (a.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform arithmetic on an invalid timestamp");
             else
             {
                 var retVal = new TS(a.DateValue.Subtract((TimeSpan)b), a.DateValuePrecision.HasValue ? a.DateValuePrecision.Value : DatePrecision.Full);
@@ -479,12 +511,16 @@ namespace MARC.Everest.DataTypes
         /// Subtracts <paramref name="b"/> from <paramref name="a"/>
         /// </summary>
         /// <remarks>The result of this operation is always returned in seconds</remarks>
+        /// <exception cref="T:System.InvalidOperationException">If the <paramref name="a"/> or <paramref name="b"/> value is an invalidly parsed date</exception>
         public static PQ operator -(TS a, TS b)
         {
+
             if (a == null || b == null)
                 return null;
             else if (a.IsNull || b.IsNull)
                 return new PQ() { NullFlavor = DataTypes.NullFlavor.NoInformation };
+            else if (a.IsInvalidDate || b.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform arithmetic on an invalid timestamp");
             else
                 return new PQ(a.DateValue.Subtract((DateTime)b), "s");
 
@@ -494,9 +530,13 @@ namespace MARC.Everest.DataTypes
         /// Convert this timestamp (with precision) to an interval
         /// </summary>
         /// <returns>The converted interval</returns>
+        /// <exception cref="T:System.InvalidOperationException">If the date instance is an invalidly parsed date</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IVL"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.DateTime.ToString(System.String)")]
         public IVL<TS> ToIVL()
         {
+
+            if (this.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform logical operations on an invalid timestamp");
 
             // Absolutely precise
             if (this.DateValuePrecision == DatePrecision.Full ||
@@ -560,7 +600,9 @@ namespace MARC.Everest.DataTypes
             if (other != null)
                 result = base.Equals((QTY<String>)other) &&
                     (this.DateValuePrecision ?? DatePrecision.Full) == (other.DateValuePrecision ?? DatePrecision.Full) &&
-                    (this.DateValue.ToString(m_precisionFormats[this.DateValuePrecision ?? DatePrecision.Full]) == other.DateValue.ToString(m_precisionFormats[other.DateValuePrecision ?? DatePrecision.Full]));
+                    (this.DateValue.ToString(m_precisionFormats[this.DateValuePrecision ?? DatePrecision.Full]) == other.DateValue.ToString(m_precisionFormats[other.DateValuePrecision ?? DatePrecision.Full])) &&
+                    this.IsInvalidDate == other.IsInvalidDate &&
+                    this.m_invalidDateValue == other.m_invalidDateValue;
             return result;
         }
 
@@ -581,12 +623,15 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Compares this TS instance to another
         /// </summary>
+        /// <exception cref="T:System.InvalidOperationException">If this date instance or <paramref name="other"/> is an invalidly parsed date</exception>
         public int CompareTo(TS other)
         {
             if (other == null || other.IsNull)
                 return 1;
             else if (this.IsNull && !other.IsNull)
                 return -1;
+            else if (this.IsInvalidDate || other.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform logical operations on an invalid timestamp");
             else
                 return this.DateValue.CompareTo(other.DateValue);
 
@@ -639,7 +684,8 @@ namespace MARC.Everest.DataTypes
             return (NullFlavor != null) ^ ((DateValue != default(DateTime) || UncertainRange != null) &&
                 ((this.Uncertainty != null && this.Uncertainty is PQ && PQ.IsValidTimeFlavor(this.Uncertainty as PQ)) || (this.Uncertainty == null)) &&
                 ((this.UncertainRange != null && this.UncertainRange.Low is PQ && this.UncertainRange.High is PQ && PQ.IsValidTimeFlavor(this.UncertainRange.Low as PQ) && PQ.IsValidTimeFlavor(this.UncertainRange.High as PQ)) || this.UncertainRange == null) &&
-                (((DateValue != default(DateTime)) ^ (this.UncertainRange != null)) || (this.DateValue == null && this.UncertainRange == null)));
+                (((DateValue != default(DateTime)) ^ (this.UncertainRange != null)) || (this.DateValue == null && this.UncertainRange == null)) &&
+                !this.IsInvalidDate);
 
         }
 
@@ -649,7 +695,9 @@ namespace MARC.Everest.DataTypes
         public override IEnumerable<Connectors.IResultDetail> ValidateEx()
         {
             var result = base.ValidateEx() as List<IResultDetail>;
-            if (this.DateValue == default(DateTime))
+            if (this.IsInvalidDate)
+                result.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TS", String.Format("Value {0} is not a valid HL7 date", this.m_invalidDateValue), null));
+            else if (this.DateValue == default(DateTime))
                 result.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "TS", "Value must be populated with an valid HL7 Date", null));
             return result;
         }
@@ -691,6 +739,9 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public override double ToDouble()
         {
+            if(this.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform logical operations on an invalid timestamp");
+
             return this.DateValue.Ticks;
         }
 
@@ -717,6 +768,9 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         private TS TranslateDateInternal(int value)
         {
+            if (this.IsInvalidDate)
+                throw new InvalidOperationException("Cannot perform logical operations on an invalid timestamp");
+
             TS retVal = null;
             switch (DateValuePrecision.Value)
             {
