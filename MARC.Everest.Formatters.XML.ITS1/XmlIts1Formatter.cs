@@ -1027,11 +1027,16 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 else if(propType != null && g.GetType().Assembly.FullName != propType.Assembly.FullName)
                 {
                     string typeName = this.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null);
-                    s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, typeName);
 
-                    lock(this.m_syncRoot)
-                        if (!this.s_typeNameMaps.ContainsKey(typeName))
-                            this.RegisterXSITypeName(typeName, g.GetType());
+                    // If there is no different then don't output
+                    if (typeName != String.Format("{0}.{1}", this.GetModelName(propType), this.GetStructureName(propType)))
+                    {
+                        s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, typeName);
+
+                        lock (this.m_syncRoot)
+                            if (!this.s_typeNameMaps.ContainsKey(typeName))
+                                this.RegisterXSITypeName(typeName, g.GetType());
+                    }
                 }
                 //string xsdTypeName = String.Empty;
                 //object[] sa = g.GetType().GetCustomAttributes(typeof(StructureAttribute), false);
@@ -1131,15 +1136,21 @@ namespace MARC.Everest.Formatters.XML.ITS1
 
             IXmlStructureFormatter ixsf = null;
             
-            // xsi type - We want to adjust the type based on this value
+            // xsi type? - We want to adjust the type based on this value
             try
             {
-                if (r.GetAttribute("type", NS_XSI) != null)
+                string xsiType = r.GetAttribute("type", NS_XSI);
+                // Is this model / type registered somewhere ?
+                if ((this.Settings & SettingsType.AlwaysCheckForOverrides) != 0 && xsiType == null &&
+                    !typeof(ANY).IsAssignableFrom(useType))
+                    xsiType = string.Format("{0}.{1}", this.GetModelName(useType), typeName);
+
+                if (xsiType != null)
                 {
                     if (typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
-                        ixsf = this.GetAdjustedFormatter(r.GetAttribute("type", NS_XSI)); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                        ixsf = this.GetAdjustedFormatter(xsiType); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
                     else
-                        useType = this.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                        useType = this.ParseXSITypeName(xsiType);
                 }
                 else
                     ixsf = (IXmlStructureFormatter)this.GraphAides.Find(t => t.HandleStructure.Contains(typeName));
@@ -1372,6 +1383,24 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 resultContext.AddResultDetail(details.Length > 0 ? details : new IResultDetail[] { new DatatypeValidationResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, o.GetType().ToString(), s.ToString()) });
         }
 
+        /// <summary>
+        /// Gets structure name
+        /// </summary>
+        private string GetModelName(Type useType)
+        {
+            // Already built, so we can forgo checking
+
+            // Create graph aides
+            //CreateGraphAides();
+
+            // Get the structure attribute and return the type name
+            object[] structureAttribute = useType.GetCustomAttributes(typeof(StructureAttribute), true);
+            string typeName = useType.Namespace;
+            if (structureAttribute.Length > 0)
+                typeName = (structureAttribute[0] as StructureAttribute).Model;
+
+            return typeName;
+        }
         /// <summary>
         /// Gets structure name
         /// </summary>

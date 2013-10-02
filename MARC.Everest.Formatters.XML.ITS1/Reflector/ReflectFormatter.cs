@@ -126,10 +126,16 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     switch (pa.PropertyType)
                     {
                         case PropertyAttribute.AttributeAttributeType.Structural:
-                            if (instance != null && !isInstanceNull)
+                            if ((Host.Settings & SettingsType.SuppressNullEnforcement) == 0)
+                            {
+                                if (instance != null && !isInstanceNull)
+                                    s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
+                                else if (isInstanceNull && pi.Name == "NullFlavor")
+                                    Host.WriteNullFlavorUtil(s, (IGraphable)instance);
+                            }
+                            else if(instance != null)
                                 s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
-                            else if (isInstanceNull && pi.Name == "NullFlavor")
-                                Host.WriteNullFlavorUtil(s, (IGraphable)instance);
+
                             break;
                         default:
 

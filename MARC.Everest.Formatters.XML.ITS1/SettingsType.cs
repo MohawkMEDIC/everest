@@ -44,8 +44,15 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <summary>
         /// When set prevents the formatter from emitting xsi:nil
         /// </summary>
-        SuppressXsiNil = 64
-
+        SuppressXsiNil = 64,
+        /// <summary>
+        /// When set; enforces strict NullFlavor rules
+        /// </summary>
+        SuppressNullEnforcement = 128,
+        /// <summary>
+        /// When set the formatter will always check for overridden classes
+        /// </summary>
+        AlwaysCheckForOverrides = 256
 #if !WINDOWS_PHONE
 ,
         /// <summary>
