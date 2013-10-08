@@ -262,7 +262,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             methodBodyAtt.Add(new CodeSnippetExpression("if(o == null) throw new System.ArgumentNullException(\"o\")"));
             methodBodyAtt.Add(new CodeSnippetExpression(String.Format("if(instance == null) throw new System.ArgumentException(System.String.Format(\"Could not cast type '{{0}}' to '{0}'!\", o.GetType().FullName))", trefTypeReference)));
             methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance.NullFlavor != null"));
-            methodBodyAtt.Add(new CodeSnippetStatement("bool suppressNull = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressNullEnforcement) == 0;"));
+            methodBodyAtt.Add(new CodeSnippetStatement("bool suppressNull = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressNullEnforcement) != 0;"));
 
             // Interaction?
             object[] structureAttributes = forType.GetCustomAttributes(typeof(StructureAttribute), false);
@@ -319,6 +319,10 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
                     // Is the instance's null flavor set?
                     // Remarks: We do this way because we still need to write the null flavor out even if the  null flavor
+                    methodBody.Add(new CodeSnippetStatement("System.Diagnostics.Trace.WriteLine(\"IIN:\" + isInstanceNull.ToString());"));
+                    methodBody.Add(new CodeSnippetStatement("System.Diagnostics.Trace.WriteLine(\"SN:\" + suppressNull.ToString());"));
+                    methodBody.Add(new CodeSnippetStatement("System.Diagnostics.Trace.WriteLine(\"LOG:\" + (!isInstanceNull && !suppressNull || suppressNull).ToString());"));
+
                     if (pi.Name != "NullFlavor" && forType.GetProperty("NullFlavor") != null)
                         methodBody.Add(new CodeSnippetStatement(String.Format("if(instance.{0} != null && (!isInstanceNull && !suppressNull || suppressNull)) {{\r\n", pi.Name)));
                     else if (pi.Name == "NullFlavor")
