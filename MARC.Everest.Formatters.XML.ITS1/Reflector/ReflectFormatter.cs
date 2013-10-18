@@ -133,8 +133,13 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                                 else if (isInstanceNull && pi.Name == "NullFlavor")
                                     Host.WriteNullFlavorUtil(s, (IGraphable)instance);
                             }
-                            else if(instance != null)
-                                s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
+                            else if (instance != null)
+                            {
+                                if (instance != null && pi.Name == "NullFlavor")
+                                    Host.WriteNullFlavorUtil(s, (IGraphable)instance);
+                                else if (instance != null)
+                                    s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
+                            }
 
                             break;
                         default:

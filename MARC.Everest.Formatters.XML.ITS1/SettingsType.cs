@@ -46,7 +46,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// </summary>
         SuppressXsiNil = 64,
         /// <summary>
-        /// When set; enforces strict NullFlavor rules
+        /// When set; does not enforce strict NullFlavor rules
         /// </summary>
         SuppressNullEnforcement = 128,
         /// <summary>

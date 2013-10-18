@@ -319,12 +319,13 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
                     // Is the instance's null flavor set?
                     // Remarks: We do this way because we still need to write the null flavor out even if the  null flavor
-                    methodBody.Add(new CodeSnippetStatement("System.Diagnostics.Trace.WriteLine(\"IIN:\" + isInstanceNull.ToString());"));
-                    methodBody.Add(new CodeSnippetStatement("System.Diagnostics.Trace.WriteLine(\"SN:\" + suppressNull.ToString());"));
-                    methodBody.Add(new CodeSnippetStatement("System.Diagnostics.Trace.WriteLine(\"LOG:\" + (!isInstanceNull && !suppressNull || suppressNull).ToString());"));
-
                     if (pi.Name != "NullFlavor" && forType.GetProperty("NullFlavor") != null)
-                        methodBody.Add(new CodeSnippetStatement(String.Format("if(instance.{0} != null && (!isInstanceNull && !suppressNull || suppressNull)) {{\r\n", pi.Name)));
+                    {
+                        if (propertyAttribute.PropertyType == PropertyAttribute.AttributeAttributeType.Structural)
+                            methodBody.Add(new CodeSnippetStatement(String.Format("if(instance.{0} != null && (isInstanceNull && suppressNull || !isInstanceNull)) {{\r\n", pi.Name)));
+                        else
+                            methodBody.Add(new CodeSnippetStatement(String.Format("if(instance.{0} != null && (!isInstanceNull)) {{\r\n", pi.Name)));
+                    }
                     else if (pi.Name == "NullFlavor")
                     {
                         methodBody.Add(new CodeSnippetExpression("if(instance.NullFlavor != null) this.Host.WriteNullFlavorUtil(s, instance.NullFlavor)"));
