@@ -940,7 +940,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                         string varInitValue = Util.Util.MakeFriendly(cc.Name);
 
                         // Documentation
-                        string doc = String.Format("\t\t/// <param name=\"{0}\">({2}) {1}</param>\r\n", cc.Name, cc.Documentation != null && cc.Documentation.Definition != null && cc.Documentation.Definition.Count > 0 ? cc.Documentation.Definition[0] : "No documentation available", cc.Conformance);
+                        string doc = String.Format("\t\t/// <param name=\"{0}\">({2}) {1}</param>\r\n", cc.Name, cc.Documentation != null && cc.Documentation.Definition != null && cc.Documentation.Definition.Count > 0 ? cc.Documentation.Definition[0].Replace("\r","").Replace("\n","").Replace("&","&amp;") : "No documentation available", cc.Conformance);
                         if(RimbaCsRenderer.SuppressDoc)
                             doc = String.Format("\t\t/// <param name=\"{0}\">({2}) {1}</param>\r\n", cc.Name, cc.BusinessName != null ? cc.BusinessName.Replace("\n", "").Replace("\r", "").Replace("&", "&amp;") : "No documentation available", cc.Conformance);
 

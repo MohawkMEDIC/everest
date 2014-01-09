@@ -265,7 +265,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             compilerParms.GenerateInMemory = !generateDeep;
             compilerParms.WarningLevel = 1;
             compilerParms.TempFiles.KeepFiles = generateDeep;
-
+            
 
             // Compile code dom
             // To see the generated code, set a breakpoint on the next line.

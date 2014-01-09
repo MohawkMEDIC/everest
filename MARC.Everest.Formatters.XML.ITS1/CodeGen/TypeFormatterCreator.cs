@@ -262,6 +262,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             methodBodyAtt.Add(new CodeSnippetExpression("if(o == null) throw new System.ArgumentNullException(\"o\")"));
             methodBodyAtt.Add(new CodeSnippetExpression(String.Format("if(instance == null) throw new System.ArgumentException(System.String.Format(\"Could not cast type '{{0}}' to '{0}'!\", o.GetType().FullName))", trefTypeReference)));
             methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance.NullFlavor != null"));
+            methodBodyAtt.Add(new CodeSnippetStatement("bool suppressNull = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressNullEnforcement) != 0;"));
+            methodBodyAtt.Add(new CodeSnippetStatement("bool suppressXsiNil = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressXsiNil) != 0;"));
 
             // Interaction?
             object[] structureAttributes = forType.GetCustomAttributes(typeof(StructureAttribute), false);
@@ -319,7 +321,12 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                     // Is the instance's null flavor set?
                     // Remarks: We do this way because we still need to write the null flavor out even if the  null flavor
                     if (pi.Name != "NullFlavor" && forType.GetProperty("NullFlavor") != null)
-                        methodBody.Add(new CodeSnippetStatement(String.Format("if(instance.{0} != null && !isInstanceNull) {{\r\n", pi.Name)));
+                    {
+                        if (propertyAttribute.PropertyType == PropertyAttribute.AttributeAttributeType.Structural)
+                            methodBody.Add(new CodeSnippetStatement(String.Format("if(instance.{0} != null && (isInstanceNull && suppressNull || !isInstanceNull)) {{\r\n", pi.Name)));
+                        else
+                            methodBody.Add(new CodeSnippetStatement(String.Format("if(instance.{0} != null && (isInstanceNull && suppressNull && suppressXsiNil || !isInstanceNull)) {{\r\n", pi.Name)));
+                    }
                     else if (pi.Name == "NullFlavor")
                     {
                         methodBody.Add(new CodeSnippetExpression("if(instance.NullFlavor != null) this.Host.WriteNullFlavorUtil(s, instance.NullFlavor)"));

@@ -263,5 +263,17 @@ namespace MARC.Everest.Test.DataTypes
             Assert.IsTrue(parentNode.NodeType == XmlNodeType.Document &&  nodeList.Count == 1 && 
             nodeList[0].LocalName == "test");
         }
+
+
+        /// <summary>
+        /// Parse empty ED
+        /// </summary>
+        [TestMethod]
+        public void EDParseEmptyContentTest()
+        {
+            string testString = "<hl7:code xmlns:hl7=\"urn:hl7-org:v3\" code=\"11503-0\" codeSystem=\"2.16.840.1.113883.6.1\" codeSystemName=\"LOINC\" codeSystemVersion=\"2.44\" displayName=\"Medical Records\"><hl7:originalText representation=\"TXT\" mediaType=\"text/plain\" /></hl7:code>";
+            var cd = R1SerializationHelper.ParseString<CD<String>>(testString);
+            Assert.IsNull(cd.OriginalText.Value, "Value is not null");
+        }
     }
 }
