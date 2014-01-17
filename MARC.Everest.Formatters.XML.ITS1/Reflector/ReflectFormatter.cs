@@ -206,6 +206,21 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                                 break;
                         }
                     }
+
+                    // Slow check
+                    if (formatAs == null && (this.Host.Settings & SettingsType.AlwaysCheckForOverrides) != 0)
+                    {
+                        foreach (PropertyAttribute pa in propertyAttributes)
+                        {
+                            if (pa.Type != null && pa.Type.IsAssignableFrom(instance.GetType()) && (context != null && context.GetType() == pa.InteractionOwner || (pa.InteractionOwner == null && formatAs == null)))
+                            {
+                                formatAs = pa;
+                                if (context == null || context.GetType() == formatAs.InteractionOwner)
+                                    break;
+                            }
+                        }
+                    }
+
                     //if(formatAs == null) // try to find a regular choice
                     //    foreach(PropertyAttribute pa in propertyAttributes)
                     //        if (pa.Type != null && instance.GetType() == pa.Type)
