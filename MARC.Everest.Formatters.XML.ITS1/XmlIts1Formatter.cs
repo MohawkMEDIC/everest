@@ -1035,7 +1035,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                     // If there is no different then don't output
                     if (typeName != String.Format("{0}.{1}", this.GetModelName(propType), this.GetStructureName(propType)))
                     {
-                        s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, typeName);
+                        xsiType += typeName;
 
                         lock (this.m_syncRoot)
                             if (!this.s_typeNameMaps.ContainsKey(typeName))
