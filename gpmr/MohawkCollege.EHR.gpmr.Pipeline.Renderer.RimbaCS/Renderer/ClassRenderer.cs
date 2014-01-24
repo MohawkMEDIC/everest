@@ -426,6 +426,12 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                             sw.Write(", OwnerClass = typeof({0}.RIM.{1})", ownerNs, realization.Container.Name);
                         sw.WriteLine(")]");
                     }
+
+                    // Markers
+                    // JF - 01/25/14 : Added support for marker
+                    foreach (var mt in Enum.GetNames(typeof(MarkerAttribute.MarkerAttributeType)))
+                        if (property.Name == mt)
+                            sw.Write("[Marker(MarkerType = MarkerAttribute.MarkerAttributeType.{0})]", mt);
                     // Already rendered
                     alreadyRendered.Add(key);
                 }

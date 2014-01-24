@@ -38,11 +38,11 @@ namespace MARC.Everest.Attributes
             /// <summary>
             /// The property identifies the flavour of the type.
             /// </summary>
-            Flavor, 
+            Flavor,
             /// <summary>
             /// The property identifies the NullFlavor attribute.
             /// </summary>
-            NullFlavor, 
+            NullFlavor,
             /// <summary>
             /// The property identifies the update mode attribute.
             /// </summary>
@@ -50,11 +50,11 @@ namespace MARC.Everest.Attributes
             /// <summary>
             /// The property identifies the context conduction attribute.
             /// </summary>
-            ContextConduction, 
+            ContextConduction,
             /// <summary>
             /// The property identifies the class code attribute.
             /// </summary>
-            ClassCode, 
+            ClassCode,
             /// <summary>
             /// The property identifies the type code attribute.
             /// </summary>
@@ -62,11 +62,19 @@ namespace MARC.Everest.Attributes
             /// <summary>
             /// The property identifies the determiner code attribute.
             /// </summary>
-            DeterminerCode, 
+            DeterminerCode,
             /// <summary>
             /// Property represents the data within the datatype.
             /// </summary>
-            Data
+            Data,
+            /// <summary>
+            /// Template identification
+            /// </summary>
+            TemplateId,
+            /// <summary>
+            /// TypeId element
+            /// </summary>
+            TypeId
         }
 
         /// <summary>

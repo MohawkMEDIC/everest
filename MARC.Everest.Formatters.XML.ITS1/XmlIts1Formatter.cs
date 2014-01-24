@@ -241,7 +241,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         private Dictionary<string, Type> s_rootNameMaps = new Dictionary<string, Type>();
 
         // Type name maps
-        private Dictionary<string, Type> s_typeNameMaps = new Dictionary<string, Type>();
+        protected Dictionary<string, Type> s_typeNameMaps = new Dictionary<string, Type>();
 
 #if !WINDOWS_PHONE
         // A shared wait thread pool for creating datatypes
@@ -258,7 +258,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         private ReflectFormatter m_reflectionFormatter = new ReflectFormatter();
 
         // Synchronization root
-        private readonly object m_syncRoot = new object();
+        protected readonly object m_syncRoot = new object();
         // True when build types is blocking
         private bool m_isBuildTypesBlocking = false;
 
@@ -1166,6 +1166,35 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 return aideResult.Structure;
             }
 
+            ITypeFormatter formatter = this.GetFormatter(useType);
+            if (formatter == null)
+                throw new InvalidOperationException(string.Format("Couldn't format '{0}' at {1}, verify formatter settings", useType.FullName, r.ToString()));
+
+            // Parse using the formatter
+            formatter.Host = this;
+
+            // Parse the object
+            IGraphable result = (IGraphable)formatter.Parse(r, useType, interactionContext, resultContext);
+
+            // We may have switched types, let's try and get the most appropriate validation
+            if (result != null && result.GetType() != useType)
+                formatter = GetFormatter(result.GetType());
+
+            // Validate
+            IResultDetail[] details = null;
+            if (details != null && result == null || ValidateConformance && (!formatter.Validate(result, currentPath, out details)))
+                resultContext.AddResultDetail(details.Length > 0 ? details : new IResultDetail[] { new ResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, String.Format("Couldn't parse type '{0}'", useType.ToString()), currentPath) });
+
+            
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a formatter that is appropriate for the specified type
+        /// </summary>
+        protected ITypeFormatter GetFormatter(Type useType)
+        {
+
 #if WINDOWS_PHONE
             ITypeFormatter formatter = m_codeGeneratorFormatter.GetFormatter(useType);
             if (formatter == null)
@@ -1188,23 +1217,8 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 formatter = m_codeGeneratorFormatter.GetFormatter(useType);
             }
 #endif
-            if (formatter == null)
-                throw new InvalidOperationException(string.Format("Couldn't format '{0}' at {1}, verify formatter settings", useType.FullName, r.ToString()));
-
-            // Parse using the formatter
-            formatter.Host = this;
-
-            // Parse the object
-            IGraphable result = (IGraphable)formatter.Parse(r, useType, interactionContext, resultContext);
-
-            IResultDetail[] details = null;
-            if (details != null && result == null || ValidateConformance && (!formatter.Validate(result, currentPath, out details)))
-                resultContext.AddResultDetail(details.Length > 0 ? details : new IResultDetail[] { new ResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, String.Format("Couldn't parse type '{0}'", useType.ToString()), currentPath) });
-
-            
-            return result;
+            return formatter;
         }
-
         /// <summary>
         /// Parse XSI type name
         /// </summary>
@@ -1277,7 +1291,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <summary>
         /// Creates an XSI:TYPE attribute that is friendly for RMIM structures
         /// </summary>
-        private string CreateXSITypeName(Type type, Type interactionContextType)
+        protected string CreateXSITypeName(Type type, Type interactionContextType)
         {
 
             StringBuilder xsiType = new StringBuilder();
@@ -1441,6 +1455,15 @@ namespace MARC.Everest.Formatters.XML.ITS1
         }
 
         #endregion
+        
+        /// <summary>
+        /// Gives the formatter a chance to correct the instance based on new knowledge gained by the formatter, should return an instance of the same type
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual object CorrectInstance(object instance)
+        {
+            return instance;
+        }
     }
 
     

@@ -451,6 +451,19 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                             resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(tempFormat.ToString(), pi.GetValue(instance, null).ToString(), s.ToString()));
                     }
 
+                    // Need to switch or re-evaluate our instance?
+                    var ma = pi.GetCustomAttributes(typeof(MarkerAttribute), true); 
+                    if(ma.Length > 0)
+                        switch ((ma[0] as MarkerAttribute).MarkerType)
+                        {
+                            case MarkerAttribute.MarkerAttributeType.TemplateId:
+                            case MarkerAttribute.MarkerAttributeType.TypeId:
+                                instance = this.Host.CorrectInstance(instance);
+                                break;
+                            default:
+                                break;
+                        }
+
                 }
             }
             

@@ -181,8 +181,6 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             method.Statements.Add(new CodeSnippetExpression("outDetails = new MARC.Everest.Connectors.IResultDetail[0]; System.Collections.Generic.List<MARC.Everest.Connectors.IResultDetail> details = new System.Collections.Generic.List<MARC.Everest.Connectors.IResultDetail>(10);"));
             method.Statements.Add(new CodeSnippetExpression("bool isValid = true;"));
 
-
-
             // Now determine the attributes
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("if(instance == null && o != null) throw new System.NullReferenceException(System.String.Format(\"Could not cast type '{{0}}' to '{0}'!\", o.GetType().FullName));", trefTypeRefernece);
@@ -204,6 +202,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                         sb.AppendFormat("if(instance.{0} == null) {{ isValid &= Host.CreateRequiredElements; details.Add(new MARC.Everest.Connectors.RequiredElementMissingResultDetail(isValid ? MARC.Everest.Connectors.ResultDetailType.Warning : MARC.Everest.Connectors.ResultDetailType.Error, \"Property {0} in {1} is marked 'populated' and isn't assigned (you must at minimum, assign a nullFlavor for this attribute)!\", location));  }} \r\n", pi.Name, tref.BaseType);
                     else if (pa.MinOccurs != 0)
                         sb.AppendFormat("if(instance.{0} != null && (instance.{0}.Count > {3} ||  instance.{0}.Count < {1})) {{ isValid &= false; details.Add(new MARC.Everest.Connectors.InsufficientRepetitionsResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"Property {0} in {2} does not have enough elements in the list, need between {1} and {3} elements!\", location));  }} \r\n", pi.Name, pa.MinOccurs, tref.BaseType, pa.MaxOccurs < 0 ? Int32.MaxValue : pa.MaxOccurs);
+
                 }
             }
 
@@ -573,6 +572,18 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                     methodElements.Add(new CodeSnippetExpression(String.Format("if(to{0:N}.ToString() != instance.{1}.ToString()) resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(to{0:N}.ToString(), instance.{1}.ToString(), true, s.ToString()))", toGuid, pi.Name)));
                             }
 
+                            // Marker? If yes give the host a chance to change the object before serializing
+                            var ma = pi.GetCustomAttributes(typeof(MarkerAttribute), true);
+                            if (ma.Length > 0)
+                                switch ((ma[0] as MarkerAttribute).MarkerType)
+                                {
+                                    case MarkerAttribute.MarkerAttributeType.TemplateId:
+                                    case MarkerAttribute.MarkerAttributeType.TypeId:
+                                        methodElements.Add(new CodeSnippetExpression(String.Format("instance = this.Host.CorrectInstance(instance);", pi.Name)));
+                                        break;
+                                    default:
+                                        break;
+                                }
                             methodElements.Add(new CodeSnippetStatement("}"));
 
                         }
