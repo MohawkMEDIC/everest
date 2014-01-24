@@ -133,7 +133,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
         private string CreateTypeReference(CodeTypeReference tref)
         {
             StringBuilder sb = new StringBuilder();
-            string bt = tref.BaseType;
+            string bt = tref.BaseType.Replace("+", ".");
 
             if (bt.Contains("`"))
                 sb.Append(bt.Substring(0, bt.IndexOf("`")));
@@ -264,6 +264,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance.NullFlavor != null"));
             methodBodyAtt.Add(new CodeSnippetStatement("bool suppressNull = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressNullEnforcement) != 0;"));
             methodBodyAtt.Add(new CodeSnippetStatement("bool suppressXsiNil = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressXsiNil) != 0;"));
+            methodBodyAtt.Add(new CodeSnippetStatement("bool alwaysCheckForOverrides = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.AlwaysCheckForOverrides) != 0;"));
 
             // Interaction?
             object[] structureAttributes = forType.GetCustomAttributes(typeof(StructureAttribute), false);
@@ -338,36 +339,47 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                     {
                         #region Property is a Choice
                         int ic = 0;
-                        // Must be a non structural attribute
-                        foreach (PropertyAttribute pa in propertyAttributes)
+                        string[] choiceTypeCheckConditions = {
+                                                                "instance.{0}.GetType() == typeof({1})",
+                                                                "alwaysCheckForOverrides && typeof({1}).IsAssignableFrom(instance.{0}.GetType())"
+                                                             };
+                        for (int tryCount = 0; tryCount < 2; tryCount++)
                         {
-
-                            // Only process if
-                            //  Type on the pa is not null , and
-                            //  Either
-                            //      1. The pa type matches the real property type (represents an alt traversal)
-                            //      2. The pi type is abstract (represents a choice)
-                            //      3. The pi is an object (represents a choice)
-
-                            if (pa.Type != null && (pa.Type == pi.PropertyType || (pa.Type.IsSubclassOf(pi.PropertyType) && pi.PropertyType.IsAssignableFrom(pa.Type)) || pi.PropertyType == typeof(object)))
+                            
+                            foreach (PropertyAttribute pa in propertyAttributes)
                             {
-                                // write if statement
-                                if(pa.InteractionOwner != null)
-                                    methodBody.Add(new CodeSnippetStatement(String.Format("{2} if(instance.{0}.GetType() == typeof({1}) && context is {3}) {{\r\n", pi.Name, pa.Type.FullName, ic > 0 ? "else" : "", CreateTypeReference(new CodeTypeReference(pa.InteractionOwner)))));
-                                else
-                                    methodBody.Add(new CodeSnippetStatement(String.Format("{2} if(instance.{0}.GetType() == typeof({1})) {{\r\n", pi.Name, pa.Type.FullName, ic > 0 ? "else" : "")));
-                                // Output
-                                if (pa.Type.GetInterface("MARC.Everest.Interfaces.IGraphable") != null) // Non Graphable
-                                    methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pa.Type)))));
-                                else if (pa.Type.GetInterface("System.Collections.IEnumerable") != null) // List
-                                    methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pa.Type)))));
-                                else // Not recognized
-                                    methodBody.Add(new CodeSnippetExpression(String.Format("s.WriteElementString(\"{0}\", \"urn:hl7-org:v3\", instance.{1}.ToString())\r\n", pa.Name, pi.Name)));
 
-                                methodBody.Add(new CodeSnippetStatement("}"));
-                                ic++;
+                                // Only process if
+                                //  Type on the pa is not null , and
+                                //  Either
+                                //      1. The pa type matches the real property type (represents an alt traversal)
+                                //      2. The pi type is abstract (represents a choice)
+                                //      3. The pi is an object (represents a choice)
+
+                                if (pa.Type != null && (pa.Type == pi.PropertyType || (pa.Type.IsSubclassOf(pi.PropertyType) && pi.PropertyType.IsAssignableFrom(pa.Type)) || pi.PropertyType == typeof(object)))
+                                {
+                                    // write if statement
+                                    String conditionString = String.Format(choiceTypeCheckConditions[tryCount],pi.Name, pa.Type.FullName);
+
+                                    if (pa.InteractionOwner != null)
+                                        methodBody.Add(new CodeSnippetStatement(String.Format("{0} if({1} && context is {2}) {{\r\n", ic > 0 ? "else" : "", conditionString, CreateTypeReference(new CodeTypeReference(pa.InteractionOwner)))));
+                                    else
+                                        methodBody.Add(new CodeSnippetStatement(String.Format("{0} if({1}) {{ \r\n", ic > 0 ? "else" : "", conditionString)));
+                                    // Output
+                                    if (pa.Type.GetInterface("MARC.Everest.Interfaces.IGraphable") != null) // Non Graphable
+                                        methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pa.Type)))));
+                                    else if (pa.Type.GetInterface("System.Collections.IEnumerable") != null) // List
+                                        methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pa.Type)))));
+                                    else // Not recognized
+                                        methodBody.Add(new CodeSnippetExpression(String.Format("s.WriteElementString(\"{0}\", \"urn:hl7-org:v3\", instance.{1}.ToString())\r\n", pa.Name, pi.Name)));
+
+                                    methodBody.Add(new CodeSnippetStatement("}"));
+                                    ic++;
+                                }
+
                             }
 
+                            
                         }
 
                         // Was a choice found?

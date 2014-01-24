@@ -145,7 +145,11 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         default:
 
                             // Instance is null
-                            if (instance == null || isInstanceNull)
+                            if (instance == null)
+                                continue;
+                            else if (isInstanceNull && (Host.Settings & (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil)) == (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil))
+                                resultContext.AddResultDetail(new FormalConstraintViolationResultDetail(ResultDetailType.Information, "The context is null however SuppressNullEnforcement and SuppressXsiNil are set, therefore elements will be graphed. This is not necessarily HL7v3 compliant", s.ToString(), null));
+                            else if (isInstanceNull)
                                 continue;
 
                             // Impose flavors or code?
@@ -202,6 +206,21 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                                 break;
                         }
                     }
+
+                    // Slow check
+                    if (formatAs == null && (this.Host.Settings & SettingsType.AlwaysCheckForOverrides) != 0)
+                    {
+                        foreach (PropertyAttribute pa in propertyAttributes)
+                        {
+                            if (pa.Type != null && pa.Type.IsAssignableFrom(instance.GetType()) && (context != null && context.GetType() == pa.InteractionOwner || (pa.InteractionOwner == null && formatAs == null)))
+                            {
+                                formatAs = pa;
+                                if (context == null || context.GetType() == formatAs.InteractionOwner)
+                                    break;
+                            }
+                        }
+                    }
+
                     //if(formatAs == null) // try to find a regular choice
                     //    foreach(PropertyAttribute pa in propertyAttributes)
                     //        if (pa.Type != null && instance.GetType() == pa.Type)

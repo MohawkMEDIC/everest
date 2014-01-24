@@ -91,7 +91,8 @@ namespace MARC.Everest.DataTypes
             { "FULLDATEWITHTIME", DatePrecision.Full },
             { "TS.DATE.FULL", DatePrecision.Day },
             { "TS.FULLDATE", DatePrecision.Day },
-            { "TS.DATETIME.FULL", DatePrecision.Second }
+            { "TS.DATETIME.FULL", DatePrecision.Second },
+            { "TS.DATETIME.MIN", DatePrecision.Minute }
         };
 
         /// <summary>
@@ -417,7 +418,19 @@ namespace MARC.Everest.DataTypes
         public static bool IsValidFullDateTimeFlavor(TS ts)
         {
             if (ts.NullFlavor != null)
-                return true; return ts.DateValuePrecision >= DatePrecision.Second;
+                return true; 
+            return ts.DateValuePrecision >= DatePrecision.Second;
+        }
+
+        /// <summary>
+        /// Flavor handler for TS.FULLDATETIME.MIN
+        /// </summary>
+        [Flavor(Name = "TS.DATETIME.MIN")]
+        public static bool IsValidDateTimeMinuteFlavor(TS ts)
+        {
+            if (!ts.IsNull)
+                return true;
+            return ts.DateValuePrecision == DatePrecision.Minute || ts.DateValuePrecision == DatePrecision.MinuteNoTimezone;
         }
 
         /// <summary>
