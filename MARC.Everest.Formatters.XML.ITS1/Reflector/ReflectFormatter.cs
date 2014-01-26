@@ -126,15 +126,30 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     switch (pa.PropertyType)
                     {
                         case PropertyAttribute.AttributeAttributeType.Structural:
-                            if (instance != null && !isInstanceNull)
-                                s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
-                            else if (isInstanceNull && pi.Name == "NullFlavor")
-                                Host.WriteNullFlavorUtil(s, (IGraphable)instance);
+                            if ((Host.Settings & SettingsType.SuppressNullEnforcement) == 0)
+                            {
+                                if (instance != null && !isInstanceNull)
+                                    s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
+                                else if (isInstanceNull && pi.Name == "NullFlavor")
+                                    Host.WriteNullFlavorUtil(s, (IGraphable)instance);
+                            }
+                            else if (instance != null)
+                            {
+                                if (instance != null && pi.Name == "NullFlavor")
+                                    Host.WriteNullFlavorUtil(s, (IGraphable)instance);
+                                else if (instance != null)
+                                    s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
+                            }
+
                             break;
                         default:
 
                             // Instance is null
-                            if (instance == null || isInstanceNull)
+                            if (instance == null)
+                                continue;
+                            else if (isInstanceNull && (Host.Settings & (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil)) == (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil))
+                                resultContext.AddResultDetail(new FormalConstraintViolationResultDetail(ResultDetailType.Information, "The context is null however SuppressNullEnforcement and SuppressXsiNil are set, therefore elements will be graphed. This is not necessarily HL7v3 compliant", s.ToString(), null));
+                            else if (isInstanceNull)
                                 continue;
 
                             // Impose flavors or code?
@@ -191,6 +206,21 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                                 break;
                         }
                     }
+
+                    // Slow check
+                    if (formatAs == null && (this.Host.Settings & SettingsType.AlwaysCheckForOverrides) != 0)
+                    {
+                        foreach (PropertyAttribute pa in propertyAttributes)
+                        {
+                            if (pa.Type != null && pa.Type.IsAssignableFrom(instance.GetType()) && (context != null && context.GetType() == pa.InteractionOwner || (pa.InteractionOwner == null && formatAs == null)))
+                            {
+                                formatAs = pa;
+                                if (context == null || context.GetType() == formatAs.InteractionOwner)
+                                    break;
+                            }
+                        }
+                    }
+
                     //if(formatAs == null) // try to find a regular choice
                     //    foreach(PropertyAttribute pa in propertyAttributes)
                     //        if (pa.Type != null && instance.GetType() == pa.Type)
@@ -363,109 +393,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             if (s.IsEmptyElement) return instance;
 
             // Read content
-            string currentElementName = s.LocalName,
-                lastElementRead = s.LocalName;
-            while(true)
-            {
-
-                // End of stream or item not read
-                if (lastElementRead == s.LocalName && !s.Read())
-                    break;
-
-                lastElementRead = s.LocalName;
-
-                // Element is end element and matches the starting element namd
-                if (s.NodeType == System.Xml.XmlNodeType.EndElement && s.LocalName == currentElementName)
-                    break;
-                // Element is an end element
-                //else if (s.NodeType == System.Xml.XmlNodeType.EndElement)
-                //    currentDepth--;
-                // Element is a start element
-                else if (s.NodeType == System.Xml.XmlNodeType.Element)
-                {
-                    // Get the element choice property
-#if WINDOWS_PHONE
-                    PropertyInfo pi = properties.Find(o => o.GetCustomAttributes(true).Count(a => 
-                        a is PropertyAttribute && 
-                        (a as PropertyAttribute).Name == s.LocalName && 
-                        ((a as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) > 0);
-#else
-                    PropertyInfo pi = Array.Find(properties, o => o.GetCustomAttributes(true).Count(a => 
-                        a is PropertyAttribute && 
-                        (a as PropertyAttribute).Name == s.LocalName && 
-                        ((a as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) > 0);
-#endif
-                    if (pi == null)
-                    {
-                        resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null));
-                        continue;
-                    }
-
-                    // Get the property attribute that defined the choice
-#if WINDOWS_PHONE
-                    PropertyAttribute pa = pi.GetCustomAttributes(true).Find(p => 
-                        p is PropertyAttribute && 
-                        (p as PropertyAttribute).Name == s.LocalName && 
-                        ((p as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) as PropertyAttribute;
-#else
-                    PropertyAttribute pa = Array.Find(pi.GetCustomAttributes(true), p => 
-                        p is PropertyAttribute && 
-                        (p as PropertyAttribute).Name == s.LocalName && 
-                        ((p as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) as PropertyAttribute;
-#endif
-                    // Can we set the PI?
-                    if (pi == null || !pi.CanWrite) continue;
-
-                    // Now time to set the PI
-                    if (String.IsNullOrEmpty(s.GetAttribute("specializationType")) && s is MARC.Everest.Xml.XmlStateReader && (this.Host.Settings & SettingsType.AllowFlavorImposing) == SettingsType.AllowFlavorImposing) (s as MARC.Everest.Xml.XmlStateReader).AddFakeAttribute("specializationType", pa.ImposeFlavorId);
-
-                    // Cannot deserialize this
-                    if (pa.Type == null && pi.PropertyType == typeof(System.Object))
-                        resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, pi.Name, "urn:hl7-org:v3", s.ToString(), null));
-                    // Simple deserialization if PA type has IGraphable or PI type has IGraphable and PA type not specified
-                    else if (pi.GetSetMethod() != null &&
-                        (pa.Type != null && pa.Type.GetInterface(typeof(IGraphable).FullName, false) != null) ||
-                        (pa.Type == null && pi.PropertyType.GetInterface(typeof(IGraphable).FullName, false) != null))
-                    {
-                        object tempFormat = Host.ParseObject(s, pa.Type ?? pi.PropertyType, currentInteractionType, resultContext);
-                        if (!String.IsNullOrEmpty(pa.FixedValue) && !pa.FixedValue.Equals(Util.ToWireFormat(tempFormat)) && pa.PropertyType != PropertyAttribute.AttributeAttributeType.Traversable)
-                            resultContext.AddResultDetail(new FixedValueMisMatchedResultDetail(Util.ToWireFormat(tempFormat), pa.FixedValue, s.ToString()));
-                        pi.SetValue(instance, Util.FromWireFormat(tempFormat, pa.Type ?? pi.PropertyType), null);
-                    }
-                    // Call an Add method on a collection type
-                    else if (pi.PropertyType.GetMethod("Add") != null) // Collection type
-                        pi.PropertyType.GetMethod("Add").Invoke(pi.GetValue(instance, null), new object[] { 
-                            Util.FromWireFormat(Host.ParseObject(s, pi.PropertyType.GetGenericArguments()[0], currentInteractionType, resultContext), pi.PropertyType.GetGenericArguments()[0])
-                        });
-                    // Call the ParseXML custom function on object
-                    else if (pi.GetSetMethod() != null && pi.PropertyType.GetMethod("ParseXml", BindingFlags.Public | BindingFlags.Static) != null)
-                        pi.SetValue(instance, pi.PropertyType.GetMethod("ParseXml").Invoke(instance, new object[] { s }), null);
-                    // Property type is a simple string
-                    else if (pi.GetSetMethod() != null && pi.PropertyType == typeof(string)) // Read content... 
-                        pi.SetValue(instance, Util.FromWireFormat(s.ReadInnerXml(), typeof(String)), null);
-                    // No Set method is used, fixed value?
-                    else
-                    {
-                        object tempFormat = Host.ParseObject(s, pa.Type ?? pi.PropertyType, currentInteractionType, resultContext);
-                        if (tempFormat.ToString() != pi.GetValue(instance, null).ToString() && pa.PropertyType != PropertyAttribute.AttributeAttributeType.Traversable)
-                            resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(tempFormat.ToString(), pi.GetValue(instance, null).ToString(), s.ToString()));
-                    }
-
-                    // Need to switch or re-evaluate our instance?
-                    var ma = pi.GetCustomAttributes(typeof(MarkerAttribute), true); 
-                    if(ma.Length > 0)
-                        switch ((ma[0] as MarkerAttribute).MarkerType)
-                        {
-                            case MarkerAttribute.MarkerAttributeType.TemplateId:
-                            case MarkerAttribute.MarkerAttributeType.TypeId:
-                                instance = this.Host.CorrectInstance(instance);
-                                break;
-                            default:
-                                break;
-                        }
-
-                }
-            }
+            instance = this.Host.ParseElementContent(s, instance, s.LocalName, currentInteractionType, resultContext);
             
             return instance;
         }
@@ -551,5 +479,122 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
         }
 
         #endregion
+
+
+        /// <summary>
+        /// Parse element contents
+        /// </summary>
+        public Object ParseElementContent(System.Xml.XmlReader s, ref Object instance, string terminationElement, Type currentInteractionType, XmlIts1FormatterParseResult resultContext)
+        {
+            String lastElementRead = s.LocalName;
+            var properties = instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            int tDepth = terminationElement == lastElementRead && s.NodeType == System.Xml.XmlNodeType.Element ? s.Depth : s.Depth - 1;// Set the termination depth
+            while (true)
+            {
+
+                // End of stream or item not read
+                if (lastElementRead == s.LocalName && !s.Read())
+                    break;
+
+                lastElementRead = s.LocalName;
+
+                // Element is end element and matches the starting element namd
+                if (s.NodeType == System.Xml.XmlNodeType.EndElement && s.LocalName == terminationElement && s.Depth == tDepth)
+                    break;
+                // Element is an end element
+                //else if (s.NodeType == System.Xml.XmlNodeType.EndElement)
+                //    currentDepth--;
+                // Element is a start element
+                else if (s.NodeType == System.Xml.XmlNodeType.Element)
+                {
+                    // Get the element choice property
+#if WINDOWS_PHONE
+                    PropertyInfo pi = properties.Find(o => o.GetCustomAttributes(true).Count(a => 
+                        a is PropertyAttribute && 
+                        (a as PropertyAttribute).Name == s.LocalName && 
+                        ((a as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) > 0);
+#else
+                    PropertyInfo pi = Array.Find(properties, o => o.GetCustomAttributes(true).Count(a =>
+                        a is PropertyAttribute &&
+                        (a as PropertyAttribute).Name == s.LocalName &&
+                        ((a as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) > 0);
+#endif
+                    if (pi == null)
+                    {
+                        resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null));
+                        continue;
+                    }
+
+                    // Get the property attribute that defined the choice
+#if WINDOWS_PHONE
+                    PropertyAttribute pa = pi.GetCustomAttributes(true).Find(p => 
+                        p is PropertyAttribute && 
+                        (p as PropertyAttribute).Name == s.LocalName && 
+                        ((p as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) as PropertyAttribute;
+#else
+                    PropertyAttribute pa = Array.Find(pi.GetCustomAttributes(true), p =>
+                        p is PropertyAttribute &&
+                        (p as PropertyAttribute).Name == s.LocalName &&
+                        ((p as PropertyAttribute).InteractionOwner ?? currentInteractionType) == currentInteractionType) as PropertyAttribute;
+#endif
+                    // Can we set the PI?
+                    if (pi == null || !pi.CanWrite) continue;
+
+                    // Now time to set the PI
+                    if (String.IsNullOrEmpty(s.GetAttribute("specializationType")) && s is MARC.Everest.Xml.XmlStateReader && (this.Host.Settings & SettingsType.AllowFlavorImposing) == SettingsType.AllowFlavorImposing) (s as MARC.Everest.Xml.XmlStateReader).AddFakeAttribute("specializationType", pa.ImposeFlavorId);
+
+                    // Cannot deserialize this
+                    if (pa.Type == null && pi.PropertyType == typeof(System.Object))
+                        resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, pi.Name, "urn:hl7-org:v3", s.ToString(), null));
+                    // Simple deserialization if PA type has IGraphable or PI type has IGraphable and PA type not specified
+                    else if (pi.GetSetMethod() != null &&
+                        (pa.Type != null && pa.Type.GetInterface(typeof(IGraphable).FullName, false) != null) ||
+                        (pa.Type == null && pi.PropertyType.GetInterface(typeof(IGraphable).FullName, false) != null))
+                    {
+                        object tempFormat = Host.ParseObject(s, pa.Type ?? pi.PropertyType, currentInteractionType, resultContext);
+                        if (!String.IsNullOrEmpty(pa.FixedValue) && !pa.FixedValue.Equals(Util.ToWireFormat(tempFormat)) && pa.PropertyType != PropertyAttribute.AttributeAttributeType.Traversable)
+                            resultContext.AddResultDetail(new FixedValueMisMatchedResultDetail(Util.ToWireFormat(tempFormat), pa.FixedValue, s.ToString()));
+                        pi.SetValue(instance, Util.FromWireFormat(tempFormat, pa.Type ?? pi.PropertyType), null);
+                    }
+                    // Call an Add method on a collection type
+                    else if (pi.PropertyType.GetMethod("Add") != null) // Collection type
+                        pi.PropertyType.GetMethod("Add").Invoke(pi.GetValue(instance, null), new object[] { 
+                            Util.FromWireFormat(Host.ParseObject(s, pi.PropertyType.GetGenericArguments()[0], currentInteractionType, resultContext), pi.PropertyType.GetGenericArguments()[0])
+                        });
+                    // Call the ParseXML custom function on object
+                    else if (pi.GetSetMethod() != null && pi.PropertyType.GetMethod("ParseXml", BindingFlags.Public | BindingFlags.Static) != null)
+                        pi.SetValue(instance, pi.PropertyType.GetMethod("ParseXml").Invoke(instance, new object[] { s }), null);
+                    // Property type is a simple string
+                    else if (pi.GetSetMethod() != null && pi.PropertyType == typeof(string)) // Read content... 
+                        pi.SetValue(instance, Util.FromWireFormat(s.ReadInnerXml(), typeof(String)), null);
+                    // No Set method is used, fixed value?
+                    else
+                    {
+                        object tempFormat = Host.ParseObject(s, pa.Type ?? pi.PropertyType, currentInteractionType, resultContext);
+                        if (tempFormat.ToString() != pi.GetValue(instance, null).ToString() && pa.PropertyType != PropertyAttribute.AttributeAttributeType.Traversable)
+                            resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(tempFormat.ToString(), pi.GetValue(instance, null).ToString(), s.ToString()));
+                    }
+
+                    // Need to switch or re-evaluate our instance?
+                    var ma = pi.GetCustomAttributes(typeof(MarkerAttribute), true);
+                    if (ma.Length > 0)
+                        switch ((ma[0] as MarkerAttribute).MarkerType)
+                        {
+                            case MarkerAttribute.MarkerAttributeType.TemplateId:
+                            case MarkerAttribute.MarkerAttributeType.TypeId:
+
+                                var newInstance = this.Host.CorrectInstance(instance);
+                                if (newInstance.GetType() != instance.GetType())
+                                    return this.Host.ParseElementContent(s, newInstance, terminationElement, currentInteractionType, resultContext);
+                                break;
+                            default:
+                                break;
+                        }
+
+                }
+            }
+
+            return instance;
+        }
     }
 }

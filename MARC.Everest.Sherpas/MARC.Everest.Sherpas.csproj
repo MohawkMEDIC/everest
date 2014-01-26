@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FC75C77E-4596-4603-8BEB-DFC428C24BAB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MARC.Everest.Sherpas</RootNamespace>
+    <AssemblyName>MARC.Everest.Sherpas</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\TemplateAttribute.cs" />
+    <Compile Include="Exception\DuplicateTemplateException.cs" />
+    <Compile Include="Formatter\XML\ITS1\ClinicalDocumentFormatter.cs" />
+    <Compile Include="ResultDetail\InvalidTemplateClassResultDetail.cs" />
+    <Compile Include="ResultDetail\TemplateConstraintViolationResultDetail.cs" />
+    <Compile Include="ResultDetail\UnknownTemplateResultDetail.cs" />
+    <Compile Include="Interface\IMessageTypeTemplate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MARC.Everest.Formatters.XML.Datatypes.R1\MARC.Everest.Formatters.XML.Datatypes.R1.csproj">
+      <Project>{65AF0627-C230-4618-8435-415301686563}</Project>
+      <Name>MARC.Everest.Formatters.XML.Datatypes.R1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MARC.Everest.Formatters.XML.ITS1\MARC.Everest.Formatters.XML.ITS1.csproj">
+      <Project>{CC69A026-FB42-4C44-BDEB-8E956AC0E41A}</Project>
+      <Name>MARC.Everest.Formatters.XML.ITS1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MARC.Everest\MARC.Everest.csproj">
+      <Project>{283B7891-BF96-4C00-BF6D-955EE68BBFBB}</Project>
+      <Name>MARC.Everest</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

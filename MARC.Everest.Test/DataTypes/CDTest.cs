@@ -702,6 +702,7 @@ namespace MARC.Everest.Test.DataTypes
             // The test passes if the Code attribute of the CD<NullFlavor> is the same as NullFlavor.NoInformation.
             Assert.AreEqual(MARC.Everest.DataTypes.NullFlavor.NoInformation, (NullFlavor)test.Code);
         }
+
          
     }
 }

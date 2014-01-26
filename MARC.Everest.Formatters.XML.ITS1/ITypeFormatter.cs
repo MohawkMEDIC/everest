@@ -61,5 +61,11 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <returns>True if the object is valid, false otherwise</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o")]
         bool Validate(IGraphable o, string location, out IResultDetail[] details);
+        /// <summary>
+        /// Parse element content from the current position
+        /// </summary>
+        /// <remarks>This method is used to process the elements from the current position into the specified instance</remarks>
+        object ParseElementContent(XmlReader r, ref Object instance, String terminationElement, Type interactionType, XmlIts1FormatterParseResult resultContext);
+
     }
 }

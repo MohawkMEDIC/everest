@@ -86,7 +86,7 @@ namespace MARC.Everest.Test
 
 
         [TestMethod]
-        public void InstanceCDAr2Test_FMTR_MARCEverestRMIMUVCDAr2POCD_MT000040UVClinicalDocument()
+        public void InstanceCDAr2Test_DefaultUniProcessor_MARCEverestRMIMUVCDAr2POCD_MT000040UVClinicalDocument()
         {
 
 
@@ -99,6 +99,7 @@ namespace MARC.Everest.Test
             MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter fmtr = new MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter();
             fmtr.GraphAides.Add(new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.ClinicalDocumentArchitecture });
             fmtr.ValidateConformance = false;
+            fmtr.Settings = SettingsType.DefaultUniprocessor;
             var graphResult = fmtr.Graph(ms, original);
 
             Assert.IsTrue(graphResult.Code == MARC.Everest.Connectors.ResultCode.Accepted || graphResult.Code == MARC.Everest.Connectors.ResultCode.AcceptedNonConformant);
@@ -133,7 +134,54 @@ namespace MARC.Everest.Test
 
         }
 
+        [TestMethod]
+        public void InstanceCDAr2Test_DefaultLegacy_MARCEverestRMIMUVCDAr2POCD_MT000040UVClinicalDocument()
+        {
 
+
+            MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument original = TypeCreator.GetCreator(typeof(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument)).CreateInstance() as MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument;
+
+            // New ms
+            MemoryStream ms = new MemoryStream();
+
+            // Format
+            MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter fmtr = new MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter();
+            fmtr.GraphAides.Add(new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.ClinicalDocumentArchitecture });
+            fmtr.ValidateConformance = false;
+            fmtr.Settings = SettingsType.DefaultLegacy;
+            var graphResult = fmtr.Graph(ms, original);
+
+            Assert.IsTrue(graphResult.Code == MARC.Everest.Connectors.ResultCode.Accepted || graphResult.Code == MARC.Everest.Connectors.ResultCode.AcceptedNonConformant);
+
+            // Seek back to begin
+            ms.Seek(0, SeekOrigin.Begin);
+
+            // Parse
+            MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument parsed = (MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument)fmtr.Parse(ms, original.GetType().Assembly).Structure;
+
+            // Assert
+            Assert.AreEqual(original.ClassCode, parsed.ClassCode);
+            Assert.AreEqual(original.MoodCode, parsed.MoodCode);
+            Assert.AreEqual(original.Id, parsed.Id);
+            Assert.AreEqual(original.Code, parsed.Code);
+            Assert.AreEqual(original.Title, parsed.Title);
+            Assert.AreEqual(original.EffectiveTime, parsed.EffectiveTime);
+            Assert.AreEqual(original.ConfidentialityCode, parsed.ConfidentialityCode);
+            Assert.AreEqual(original.LanguageCode, parsed.LanguageCode);
+            Assert.AreEqual(original.SetId, parsed.SetId);
+            Assert.AreEqual(original.VersionNumber, parsed.VersionNumber);
+            Assert.AreEqual(original.CopyTime, parsed.CopyTime);
+            Assert.AreEqual(original.DataEnterer, parsed.DataEnterer);
+            Assert.AreEqual(original.Custodian, parsed.Custodian);
+            Assert.AreEqual(original.LegalAuthenticator, parsed.LegalAuthenticator);
+            Assert.AreEqual(original.Component, parsed.Component);
+            Assert.AreEqual(original.ComponentOf, parsed.ComponentOf);
+            Assert.AreEqual(original.NullFlavor, parsed.NullFlavor);
+            Assert.AreEqual(original.RealmCode, parsed.RealmCode);
+            Assert.AreEqual(original.TypeId, parsed.TypeId);
+            Assert.AreEqual(original.TemplateId, parsed.TemplateId);
+
+        }
 
     }
 }
