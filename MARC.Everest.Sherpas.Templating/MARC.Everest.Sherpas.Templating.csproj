@@ -41,11 +41,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Format\ArtifactTemplateBase.cs" />
+    <Compile Include="Format\AssignmentStatementDefinition.cs" />
     <Compile Include="Format\ClassTemplateDefinition.cs" />
+    <Compile Include="Format\ConceptDomainRefDefinition.cs" />
+    <Compile Include="Format\ConditionalStatementDefinition.cs" />
+    <Compile Include="Format\EnumerationLiteralDefinition.cs" />
     <Compile Include="Format\EnumerationTemplateDefinition.cs" />
+    <Compile Include="Format\InitializationInstructionDefinition.cs" />
+    <Compile Include="Format\MethodDefinitionBase.cs" />
+    <Compile Include="Format\MethodInvokationStatementDefinition.cs" />
+    <Compile Include="Format\ProjectInfoDefinition.cs" />
+    <Compile Include="Format\PropertyChoiceTemplateDefinition.cs" />
+    <Compile Include="Format\PropertyTemplateContainer.cs" />
     <Compile Include="Format\PropertyTemplateDefinition.cs" />
-    <Compile Include="Format\TemplateDefinition.cs" />
-    <Compile Include="Format\ValidationRule.cs" />
+    <Compile Include="Format\TemplateProjectDefinition.cs" />
+    <Compile Include="Format\TypeDefinition.cs" />
+    <Compile Include="Format\ValidationInstructionDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +66,13 @@
     <Content Include="XSLT\decor.xslt">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="XSLT\Notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MARC.Everest\MARC.Everest.csproj">
+      <Project>{283B7891-BF96-4C00-BF6D-955EE68BBFBB}</Project>
+      <Name>MARC.Everest</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

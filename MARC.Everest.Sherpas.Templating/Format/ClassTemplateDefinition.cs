@@ -10,7 +10,7 @@ namespace MARC.Everest.Sherpas.Templating.Format
     /// Represents a restriction on a class
     /// </summary>
     [XmlType("ClassTemplate", Namespace = "urn:marc-hi:everest/sherpas/template")]
-    public class ClassTemplateDefinition : ArtifactTemplateBase
+    public class ClassTemplateDefinition : PropertyTemplateContainer
     {
 
         /// <summary>
@@ -35,16 +35,7 @@ namespace MARC.Everest.Sherpas.Templating.Format
             }
         }
 
-        /// <summary>
-        /// Template instructions applied to the class
-        /// </summary>
-        [XmlElement("propertyTemplate", typeof(PropertyTemplateDefinition))]
-        public List<ArtifactTemplateBase> Templates { get; set; }
-
-        /// <summary>
-        /// Gets or sets the validation rules
-        /// </summary>
-        [XmlElement("validationRule")]
-        public List<ValidationRule> Validation { get; set; }
+        
+       
     }
 }

@@ -14,7 +14,12 @@
     <msxsl:assembly name="System.Linq"/>
     <![CDATA[
     
-//HACK: What madness is this?
+    public bool matches(String text, String regex)
+    {
+      Regex re = new Regex(regex);
+      return re.Match(text).Success;
+    }
+    //HACK: What madness is this?
     public String CopyInnerXmlAsString(Object node)
     {
       foreach(var nd in node as IEnumerable)
@@ -68,7 +73,7 @@
         string retVal = original;
         foreach (char c in original)
         {
-            Regex validChars = new Regex("[A-Za-z0-9_]");
+            Regex validChars = new Regex("[A-Za-z0-9_/]");
             if (!validChars.IsMatch(c.ToString()))
                 retVal = retVal.Replace(c.ToString(), "");
         }

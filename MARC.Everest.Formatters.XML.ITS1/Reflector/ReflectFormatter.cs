@@ -484,16 +484,19 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
         /// <summary>
         /// Parse element contents
         /// </summary>
-        public Object ParseElementContent(System.Xml.XmlReader s, ref Object instance, string terminationElement, Type currentInteractionType, XmlIts1FormatterParseResult resultContext)
+        public Object ParseElementContent(System.Xml.XmlReader s, Object instance, string terminationElement, Type currentInteractionType, XmlIts1FormatterParseResult resultContext)
         {
             String lastElementRead = s.LocalName;
+            bool fromExternalSource = !(terminationElement == lastElementRead && s.NodeType == System.Xml.XmlNodeType.Element);
             var properties = instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            int tDepth = terminationElement == lastElementRead && s.NodeType == System.Xml.XmlNodeType.Element ? s.Depth : s.Depth - 1;// Set the termination depth
+            int tDepth = !fromExternalSource ? s.Depth : s.Depth - 1; // Set the termination depth
             while (true)
             {
 
                 // End of stream or item not read
-                if (lastElementRead == s.LocalName && !s.Read())
+                if (fromExternalSource)
+                    fromExternalSource = false; // HACK: Skip the first read as we're already given context here
+                else if (lastElementRead == s.LocalName && !s.Read())
                     break;
 
                 lastElementRead = s.LocalName;

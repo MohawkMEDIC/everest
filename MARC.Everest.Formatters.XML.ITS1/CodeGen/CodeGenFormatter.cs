@@ -32,6 +32,7 @@ using System.Diagnostics;
 #if !WINDOWS_PHONE
 using Microsoft.CSharp;
 using MARC.Everest.Threading;
+using System.IO;
 #endif
 
 namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
@@ -242,12 +243,15 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             CSharpCodeProvider csharpCodeProvider = new CSharpCodeProvider();
             CodeCompileUnit compileUnit = new CodeCompileUnit();
             compileUnit.Namespaces.Add(ns);
-            compileUnit.ReferencedAssemblies.Add(typeof(II).Assembly.Location);
-            compileUnit.ReferencedAssemblies.Add(typeof(ITypeFormatter).Assembly.Location);
 
             // Was this assembly loaded directly from disk or from a byte array
             foreach(var asm in rmimAssemblies)
                 compileUnit.ReferencedAssemblies.Add(asm.Location);
+
+            // Get any other references that might need to be used
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+                if (!compileUnit.ReferencedAssemblies.Contains(asm.Location) && asm.FullName.StartsWith("MARC.Everest"))
+                    compileUnit.ReferencedAssemblies.Add(Path.GetFileName(asm.Location ?? asm.FullName));
 
             compileUnit.ReferencedAssemblies.Add("System.dll");
             compileUnit.ReferencedAssemblies.Add("System.Xml.dll");
@@ -265,6 +269,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             compilerParms.GenerateInMemory = !generateDeep;
             compilerParms.WarningLevel = 1;
             compilerParms.TempFiles.KeepFiles = generateDeep;
+            compilerParms.IncludeDebugInformation = false;
             
 
             // Compile code dom

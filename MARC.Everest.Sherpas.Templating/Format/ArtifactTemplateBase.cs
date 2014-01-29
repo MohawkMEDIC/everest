@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using System.Xml;
 
 namespace MARC.Everest.Sherpas.Templating.Format
 {
@@ -16,13 +17,19 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// <summary>
         /// Gets or sets basic documentation which describes the template
         /// </summary>
-        [XmlElement("doc")]
-        public String Documentation { get; set; }
+        [XmlElement("documentation")]
+        public XmlElement Documentation { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier for the template
         /// </summary>
-        [XmlElement("templateId")]
-        public List<String> Id { get; set; }
+        [XmlAttribute("id")]
+        public String Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name
+        /// </summary>
+        [XmlAttribute("name")]
+        public String Name { get; set; }
     }
 }

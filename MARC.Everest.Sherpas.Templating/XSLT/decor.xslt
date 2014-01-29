@@ -6,22 +6,22 @@
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:marc="urn:marc-hi:everest/sherpas/template"
 >
-    <xsl:output method="xml" indent="yes"/>
+  <xsl:output method="xml" indent="yes"/>
 
   <xsl:include href="CommonFunctions.xslt"/>
 
   <xsl:param name="language" select="'en-US'"/>
-  
-  
-  <xsl:template match="decor">
-      <marc:Template>
-        <marc:projectInfo>
-          <xsl:apply-templates select="project"/>
-        </marc:projectInfo>
 
-        <xsl:apply-templates select="terminology/valueSet | rules/template"/>
-      </marc:Template>
-    </xsl:template>
+
+  <xsl:template match="decor">
+    <marc:Template>
+      <marc:projectInfo>
+        <xsl:apply-templates select="project"/>
+      </marc:projectInfo>
+
+      <xsl:apply-templates select="terminology/valueSet | rules/template"/>
+    </marc:Template>
+  </xsl:template>
 
   <!-- Project Level Templates - This is information that will end up on the AssemblyInfo -->
   <xsl:template match="project">
@@ -37,7 +37,7 @@
       <xsl:attribute name="name">
         <xsl:value-of select="marc:PascalCaseName(@name)"/>
       </xsl:attribute>
-      <xsl:attribute name="valueSetId">
+      <xsl:attribute name="id">
         <xsl:value-of select="@id"/>
       </xsl:attribute>
       <xsl:apply-templates/>
@@ -46,8 +46,18 @@
 
   <!-- Class Template -->
   <xsl:template match="element">
-    
-    <marc:propertyTemplate name="{marc:PascalCaseName(marc:CleanElementName(@name))}" minOccurs="{@minimumMultiplicity}" maxOccurs="{@maximumMultiplicity}" >
+
+    <marc:propertyTemplate name="{marc:PascalCaseName(marc:CleanElementName(@name))}" >
+      <xsl:if test="@minimumMultiplicity">
+        <xsl:attribute name="minOccurs">
+          <xsl:value-of select="@minimumMultiplicity"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="@maximumMultiplicity">
+        <xsl:attribute name="maxOccurs">
+          <xsl:value-of select="@maximumMultiplicity"/>
+        </xsl:attribute>
+      </xsl:if>
       <xsl:attribute name="conformance">
         <xsl:choose>
           <xsl:when test="@conformance = 'M' or @isMandatory = 'true'">Mandatory</xsl:when>
@@ -56,7 +66,7 @@
           <xsl:otherwise>Optional</xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
-      
+
       <xsl:if test="@datatype">
         <marc:type name="{@datatype}">
           <xsl:if test="vocabulary[@valueSet]">
@@ -64,19 +74,21 @@
           </xsl:if>
         </marc:type>
       </xsl:if>
-      
+
       <!-- Contains? -->
-      <xsl:if test="@contains">
-        <marc:contains type="{@contains}"/>
-        <marc:validationInstruction>
-          <marc:when propertyName="{marc:PascalCaseName(marc:CleanElementName(@name))}" operator="NCONT" valueRef="{marc:PascalCaseName(marc:CleanElementName(@name))}">
-            <marc:emit type="MARC.Everest.Sherpas.ResultDetail.TemplateMissingContentResultDetail">
-              <marc:set propertyName="Type" valueRef="MARC.Everest.ResultDetailType.Warning"/>
-              <marc:set propertyName="Property" value="{marc:PascalCaseName(marc:CleanElementName(@name))}"/>
-              <marc:set propertyName="Required" value="{@contains}"/>
-            </marc:emit>
-          </marc:when>
-        </marc:validationInstruction>
+      <xsl:if test="@contains and not(marc:matches(@contains,'(\d+\.)(\d+\.?)+'))">
+        <marc:type name="{@contains}"/>
+        <xsl:if test="not(local-name(parent::node()) = 'choice') and @minOccurs='1'">
+          <marc:validationInstruction>
+            <marc:when propertyName="{marc:PascalCaseName(marc:CleanElementName(@name))}" operator="NCONT" valueRef="{marc:PascalCaseName(marc:CleanElementName(@name))}">
+              <marc:emit type="MARC.Everest.Sherpas.ResultDetail.TemplateMissingContentResultDetail">
+                <marc:set propertyName="Type" valueRef="MARC.Everest.ResultDetailType.Warning"/>
+                <marc:set propertyName="Property" value="{marc:PascalCaseName(marc:CleanElementName(@name))}"/>
+                <marc:set propertyName="Required" value="{@contains}"/>
+              </marc:emit>
+            </marc:when>
+          </marc:validationInstruction>
+        </xsl:if>
       </xsl:if>
       <xsl:apply-templates />
 
@@ -84,10 +96,33 @@
 
   </xsl:template>
 
+  <!-- Include -->
+  <xsl:template match="include">
+    <xsl:variable name="refName" select="@ref"/>
+    <xsl:variable name="ref" select="//rules/template[@name = $refName]"/>
+    <xsl:choose>
+      <xsl:when test="count($ref/element) = 1 and not($ref/element[1]/@datatype)">
+        <marc:propertyTemplate>
+          <xsl:attribute name="name">
+            <xsl:value-of select="marc:PascalCaseName(marc:CleanElementName($ref/element[1]/@name))"/>
+          </xsl:attribute>
+          <xsl:attribute name="ref">
+            <xsl:value-of select="$refName"/>
+          </xsl:attribute>
+        </marc:propertyTemplate>
+
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="$ref/element"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Attribute -->
   <xsl:template match="attribute">
     <xsl:choose>
       <!-- Describing -->
-      <xsl:when test="@name and not(../@datatype)">
+      <xsl:when test="@name and not(../@datatype or ./@value)">
         <marc:propertyTemplate name="{marc:PascalCaseName(@name)}">
           <xsl:if test="@isOptional='true'">
             <xsl:attribute name="conformance">Optional</xsl:attribute>
@@ -121,7 +156,7 @@
             </marc:emit>
           </marc:where>
         </marc:validationInstruction>
-      </xsl:when>      
+      </xsl:when>
       <!-- Setting -->
       <xsl:otherwise>
         <marc:initialize>
@@ -133,92 +168,89 @@
               <xsl:when test="local-name() = 'name' and ../@value">
                 <marc:set propertyName="{marc:PascalCaseName(.)}" value="{../@value}"/>
               </xsl:when>
-              <xsl:when test="local-name() = 'name'"></xsl:when>
+              <xsl:when test="local-name() = 'name' or (local-name() = 'value' and (../../vocabulary or ../@name)) " ></xsl:when>
               <xsl:otherwise>
                 <marc:set propertyName="{marc:PascalCaseName(local-name())}" value="{.}"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:for-each>
         </marc:initialize>
-        
-          <xsl:for-each select="@*">
 
-              <xsl:choose>
-              <xsl:when test="local-name() = 'isOptional' or local-name() = 'prohibited' or local-name() = 'datatype'"></xsl:when>
-              <xsl:when test="local-name() = 'name' and ../@value">
-                <marc:validationInstruction>
+        <xsl:for-each select="@*">
 
-                  <marc:where propertyName="{marc:PascalCaseName(.)}" operator="NE" value="{../@value}">
-                    <marc:emit type="MARC.Everest.Sherpas.ResultDetail.TemplateFixedValueMisMatchResultDetail">
-                      <marc:set propertyName="Type" valueRef="MARC.Everest.ResultDetailType.Warning"/>
-                      <marc:set propertyName="Property" value="{marc:PascalCaseName(.)}"/>
-                      <marc:set propertyName="Expected" value="{../@value}"/>
-                      <marc:set propertyName="Actual" valueRef="{marc:PascalCaseName(.)}"/>
-                      <marc:set propertyName="IsIgnored" value="true"/>
-                    </marc:emit>
-                  </marc:where>
-                </marc:validationInstruction>
-              </xsl:when>
-              <xsl:when test="local-name() = 'name'"></xsl:when>
-              <xsl:otherwise>
-                <marc:validationInstruction>
-                  <marc:where propertyName="{marc:PascalCaseName(marc:CleanElementName(local-name()))}" operator="NE" value="{.}">
-                    <marc:emit type="MARC.Everest.Sherpas.ResultDetail.TemplateFixedValueMisMatchResultDetail">
-                      <marc:set propertyName="Type" valueRef="MARC.Everest.ResultDetailType.Warning"/>
-                      <marc:set propertyName="Property" value="{marc:PascalCaseName(local-name())}"/>
-                      <marc:set propertyName="Expected" value="{.}"/>
-                      <marc:set propertyName="Actual" valueRef="{marc:PascalCaseName(local-name())}"/>
-                      <marc:set propertyName="IsIgnored" value="true"/>
-                    </marc:emit>
-                  </marc:where>
-                </marc:validationInstruction>
-              </xsl:otherwise>
-            </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="local-name() = 'isOptional' or local-name() = 'prohibited' or local-name() = 'datatype'"></xsl:when>
+            <xsl:when test="local-name() = 'name' and ../@value">
+              <marc:validationInstruction>
 
-
-          </xsl:for-each>
-          
+                <marc:where propertyName="{marc:PascalCaseName(.)}" operator="NE" value="{../@value}">
+                  <marc:emit type="MARC.Everest.Sherpas.ResultDetail.TemplateFixedValueMisMatchResultDetail">
+                    <marc:set propertyName="Type" valueRef="MARC.Everest.ResultDetailType.Warning"/>
+                    <marc:set propertyName="Property" value="{marc:PascalCaseName(.)}"/>
+                    <marc:set propertyName="Expected" value="{../@value}"/>
+                    <marc:set propertyName="Actual" valueRef="{marc:PascalCaseName(.)}"/>
+                    <marc:set propertyName="IsIgnored" value="true"/>
+                  </marc:emit>
+                </marc:where>
+              </marc:validationInstruction>
+            </xsl:when>
+            <xsl:when test="local-name() = 'name' or (local-name() = 'value' and (../../vocabulary or ../@name)) " ></xsl:when>
+            <xsl:otherwise>
+              <marc:validationInstruction>
+                <marc:where propertyName="{marc:PascalCaseName(marc:CleanElementName(local-name()))}" operator="NE" value="{.}">
+                  <marc:emit type="MARC.Everest.Sherpas.ResultDetail.TemplateFixedValueMisMatchResultDetail">
+                    <marc:set propertyName="Type" valueRef="MARC.Everest.ResultDetailType.Warning"/>
+                    <marc:set propertyName="Property" value="{marc:PascalCaseName(local-name())}"/>
+                    <marc:set propertyName="Expected" value="{.}"/>
+                    <marc:set propertyName="Actual" valueRef="{marc:PascalCaseName(local-name())}"/>
+                    <marc:set propertyName="IsIgnored" value="true"/>
+                  </marc:emit>
+                </marc:where>
+              </marc:validationInstruction>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:for-each>
       </xsl:otherwise>
     </xsl:choose>
-
   </xsl:template>
 
+  <!-- Vocabulary Entry (attribute = initialization) -->
   <xsl:template match="vocabulary[not(@valueSet)]">
-
     <marc:initialize>
       <!--
           propertyName="{marc:PascalCaseName(marc:CleanElementName(../@name))}">-->
       <xsl:for-each select="@*">
-          <marc:set propertyName="{marc:PascalCaseName(local-name())}" value="{.}"/>
+        <marc:set propertyName="{marc:PascalCaseName(local-name())}" value="{.}"/>
       </xsl:for-each>
     </marc:initialize>
 
     <xsl:for-each select="@*">
-          <marc:validationInstruction>
-            <marc:where propertyName="{marc:PascalCaseName(marc:CleanElementName(local-name()))}" operator="NE" value="{.}">
-              <marc:emit type="MARC.Everest.Sherpas.ResultDetail.TemplateFixedValueMisMatchResultDetail">
-                <marc:set propertyName="Type" valueRef="MARC.Everest.ResultDetailType.Warning"/>
-                <marc:set propertyName="Property" value="{marc:PascalCaseName(local-name())}"/>
-                <marc:set propertyName="Expected" value="{.}"/>
-                <marc:set propertyName="Actual" valueRef="{marc:PascalCaseName(local-name())}"/>
-                <marc:set propertyName="IsIgnored" value="true"/>
-              </marc:emit>
-            </marc:where>
-          </marc:validationInstruction>
+      <marc:validationInstruction>
+        <marc:where propertyName="{marc:PascalCaseName(marc:CleanElementName(local-name()))}" operator="NE" value="{.}">
+          <marc:emit type="MARC.Everest.Sherpas.ResultDetail.TemplateFixedValueMisMatchResultDetail">
+            <marc:set propertyName="Type" valueRef="MARC.Everest.ResultDetailType.Warning"/>
+            <marc:set propertyName="Property" value="{marc:PascalCaseName(local-name())}"/>
+            <marc:set propertyName="Expected" value="{.}"/>
+            <marc:set propertyName="Actual" valueRef="{marc:PascalCaseName(local-name())}"/>
+            <marc:set propertyName="IsIgnored" value="true"/>
+          </marc:emit>
+        </marc:where>
+      </marc:validationInstruction>
     </xsl:for-each>
-    
+
   </xsl:template>
-  
+
   <!-- Equivalent to setting a temporary variable -->
   <xsl:template match="let">
     <marc:validationInstruction>
       <marc:call method="ValidationContext.SetXPathVariable">
         <marc:param value="{@name}"/>
         <marc:param value="{@value}"/>
-      </marc:call> 
+      </marc:call>
     </marc:validationInstruction>
   </xsl:template>
 
+  <!-- An Assertion = Validation Instruction -->
   <xsl:template match="assert">
     <marc:validationInstruction>
       <marc:call method="ValidationContext.EvaluateXPathTest">
@@ -243,17 +275,55 @@
       </marc:where>
     </marc:validationInstruction>
   </xsl:template>
-  
+
   <!-- Root Class Template -->
   <xsl:template match="template">
-    <marc:classTemplate name="{marc:PascalCaseName(@name)}" baseClass="{marc:GetBaseClass(./classification/@type)}" traversalName="{marc:CleanElementName(./element/@name)}">
-      <xsl:apply-templates select="*[local-name() != 'element']"/>
-      <xsl:for-each select="element">
-        <xsl:apply-templates />
-      </xsl:for-each>
-    </marc:classTemplate>
+    <xsl:if test="count(element) = 1 and not(element[1]/@datatype)">
+      <marc:classTemplate name="{marc:PascalCaseName(@name)}" traversalName="{marc:CleanElementName(./element/@name)}" id="{@id}">
+        <xsl:attribute name="baseClass">
+          <xsl:value-of select="marc:GetBaseClass(./classification/@type)"/>
+        </xsl:attribute>
+        <xsl:apply-templates select="*[local-name() != 'element']"/>
+        <xsl:for-each select="element">
+          <xsl:apply-templates />
+        </xsl:for-each>
+      </marc:classTemplate>
+    </xsl:if>
   </xsl:template>
-  
+
+
+  <!-- Choice = Restrict the allowed choices -->
+  <xsl:template match="choice">
+
+    <marc:propertyChoiceTemplate>
+      <xsl:apply-templates />
+    </marc:propertyChoiceTemplate>
+    <marc:validationInstruction>
+      <marc:when operation="XOR">
+        <xsl:for-each select="element">
+          <marc:when propertyName="{marc:PascalCaseName(marc:CleanElementName(@name))}" operator="IS" valueRef="{@contains}"/>
+        </xsl:for-each>
+        <xsl:for-each select="include">
+          <xsl:variable name="refName" select="@ref"/>
+          <xsl:variable name="ref" select="//template[@name = $refName]"/>
+          <marc:when propertyName="{marc:PascalCaseName(marc:CleanElementName($ref/element[1]/@name))}" operator="IS" valueRef="{@ref}"/>
+        </xsl:for-each>
+        <marc:emit type="MARC.Everest.Sherpas.ResultDetail.TemplateNotSupportedChoiceResultDetail">
+          <marc:set propertyName="Type" valueRef="MARC.Everest.ResultDetailType.Warning"/>
+          <xsl:for-each select="element">
+            <marc:set propertyName="AllowedChoice" value="{marc:CleanElementName(@name)} of {@contains}"/>
+          </xsl:for-each>
+          <xsl:for-each select="element">
+            <xsl:variable name="refName" select="@ref"/>
+            <xsl:variable name="ref" select="//template[@name = $refName]"/>
+            <marc:set propertyName="AllowedChoice" value="{marc:CleanElementName($ref/element[1]/@name)} of {@ref}"/>
+          </xsl:for-each>
+        </marc:emit>
+      </marc:when>
+    </marc:validationInstruction>
+  </xsl:template>
+
+  <!-- Concept -->
   <xsl:template match="concept">
     <marc:literal>
       <xsl:attribute name="literalName">
@@ -274,13 +344,17 @@
   <xsl:template match="completeCodeSystem">
     <marc:conceptDomainRef value="{@codeSystem}"/>
   </xsl:template>
-  
+
   <xsl:template match="copyright" mode="project">
     <marc:copyrightHolder>
-      <xhtml:p><xsl:value-of select="@years"/> <xsl:value-of select="@by"/></xhtml:p>
+      <xhtml:p>
+        <xsl:value-of select="@years"/>
+        <xsl:value-of select="@by"/>
+      </xhtml:p>
       <xhtml:p>
         <xsl:for-each select="./addrLine">
-          <xsl:value-of select="text()"/><xhtml:br/>
+          <xsl:value-of select="text()"/>
+          <xhtml:br/>
         </xsl:for-each>
       </xhtml:p>
     </marc:copyrightHolder>
@@ -298,6 +372,11 @@
     </marc:version>
   </xsl:template>
 
+  <xsl:template match="example">
+    <marc:sampleRendering>
+      <xsl:apply-templates mode="doc"/>
+    </marc:sampleRendering>
+  </xsl:template>
   <xsl:template match="desc">
     <xsl:if test="@language = $language">
       <marc:documentation>
@@ -309,11 +388,11 @@
   <xsl:template match="@* | *" mode="doc">
     <xsl:copy-of select="."/>
   </xsl:template>
-  
+
   <xsl:template match="@* | *" priority="-1" mode="project"></xsl:template>
   <xsl:template match="@* | *">
     <xsl:apply-templates/>
   </xsl:template>
   <xsl:template match="@* | *" priority="-1"></xsl:template>
-  
+
 </xsl:stylesheet>

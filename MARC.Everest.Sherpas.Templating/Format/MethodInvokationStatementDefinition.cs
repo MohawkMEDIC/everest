@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MARC.Everest.Sherpas.Templating.Format
 {
-    class ValidationRule
+    class MethodInvokationStatementDefinition
     {
     }
 }

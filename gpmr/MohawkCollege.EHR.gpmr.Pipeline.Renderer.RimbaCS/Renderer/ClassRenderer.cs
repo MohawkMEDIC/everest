@@ -1172,7 +1172,27 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
             #region Properties
 
             int propertySort = 0;
-            foreach (ClassContent cc in cls.Content)
+
+            // Get the content up the tree
+            
+            List<ClassContent> content = new List<ClassContent>(cls.Content);
+            var c = cls.BaseClass;
+            while (c != null && c.Class != null)
+            {
+                content.AddRange(c.Class.Content);
+                foreach (var itm in c.Class.Content)
+                {
+                    if (content.Exists(o => o.Name == itm.Name)) continue;
+                    var addItm = itm.Clone() as ClassContent;
+                    addItm.Container = cls; // set the container
+                    content.Add(addItm);
+                }
+                c = c.Class.BaseClass;
+            }
+            // Sort
+            content.Sort(new ClassContent.Comparator());
+
+            foreach (ClassContent cc in content)
                 sw.WriteLine(CreateProperty(cc, OwnerNs, propertySort++));
 
             #endregion

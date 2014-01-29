@@ -239,6 +239,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
         /// <summary>
         /// Create a graphing method
         /// </summary>
+        /// TODO: Performance - Integrate this into the GenerateMethods()
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "lastWasAttribute"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         private CodeMemberMethod CreateGraphMethod(Type forType)
         {
@@ -470,47 +471,60 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
         /// Create a parse method
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "r"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private CodeMemberMethod CreateParseMethod(Type forType)
+        private CodeMemberMethod[] CreateMethodImplementations(Type forType)
         {
-            CodeMemberMethod method = new CodeMemberMethod();
-            method.Name = "Parse";
-            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Xml.XmlReader), "s"));
-            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Type), "useType"));
-            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Type), "currentInteractionType"));
-            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(XmlIts1FormatterParseResult), "resultContext"));
-            method.Attributes = MemberAttributes.Public;
-            method.ReturnType = new CodeTypeReference(typeof(object));
+            CodeMemberMethod parseMethod = new CodeMemberMethod();
+            parseMethod.Name = "Parse";
+            parseMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Xml.XmlReader), "s"));
+            parseMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Type), "useType"));
+            parseMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Type), "currentInteractionType"));
+            parseMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(XmlIts1FormatterParseResult), "resultContext"));
+            parseMethod.Attributes = MemberAttributes.Public;
+            parseMethod.ReturnType = new CodeTypeReference(typeof(object));
+            CodeMemberMethod parseElementMethod = new CodeMemberMethod();
+            parseElementMethod.Name = "ParseElementContent";
+            parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Xml.XmlReader), "s"));
+            parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Object), "instancePtr"));
+            parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.String), "sName"));
+            parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Type), "currentInteractionType"));
+            parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(XmlIts1FormatterParseResult), "resultContext"));
+            parseElementMethod.Attributes = MemberAttributes.Public;
+            parseElementMethod.ReturnType = new CodeTypeReference(typeof(object));
 
-            CodeStatementCollection methodBuilder = new CodeStatementCollection();
+
+            CodeStatementCollection parseMethodBuilder = new CodeStatementCollection();
 
             
                 // Check for xsi:nil
-            methodBuilder.Add(new CodeSnippetExpression("System.String nil = s.GetAttribute(\"nil\", MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.NS_XSI)"));
-            methodBuilder.Add(new CodeSnippetExpression("if(!System.String.IsNullOrEmpty(nil) && System.Convert.ToBoolean(nil)) return null;"));
-            methodBuilder.Add(new CodeSnippetExpression(String.Format("{0} instance = new {0}();", CreateTypeReference(new CodeTypeReference(forType)))));
+            parseMethodBuilder.Add(new CodeSnippetExpression("System.String nil = s.GetAttribute(\"nil\", MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.NS_XSI)"));
+            parseMethodBuilder.Add(new CodeSnippetExpression("if(!System.String.IsNullOrEmpty(nil) && System.Convert.ToBoolean(nil)) return null;"));
+            parseMethodBuilder.Add(new CodeSnippetExpression(String.Format("{0} instance = new {0}();", CreateTypeReference(new CodeTypeReference(forType)))));
 
 
             // Assert that it is a start element
-            methodBuilder.Add(new CodeSnippetExpression("if(s.NodeType != System.Xml.XmlNodeType.Element) throw new System.InvalidOperationException(System.String.Format(\"Expected node type of Element, actual node type is '{0}'\", s.NodeType))"));
+            parseMethodBuilder.Add(new CodeSnippetExpression("if(s.NodeType != System.Xml.XmlNodeType.Element) throw new System.InvalidOperationException(System.String.Format(\"Expected node type of Element, actual node type is '{0}'\", s.NodeType))"));
 
             // Check for ITS verison?
             object[] structureAttributes = forType.GetCustomAttributes(typeof(StructureAttribute), false);
             var structureAttribute = structureAttributes[0] as StructureAttribute;
             if (structureAttribute.StructureType == StructureAttribute.StructureAttributeType.Interaction)
             {
-                methodBuilder.Add(new CodeSnippetStatement("if(s.GetAttribute(\"ITSVersion\") != \"XML_1.0\") "));
-                methodBuilder.Add(new CodeSnippetExpression("throw new System.InvalidOperationException(System.String.Format(\"This formatter can only parse XML_1.0 structures. This structure claims to be '{0}'.\", s.GetAttribute(\"ITSVersion\")))"));
+                parseMethodBuilder.Add(new CodeSnippetStatement("if(s.GetAttribute(\"ITSVersion\") != \"XML_1.0\") "));
+                parseMethodBuilder.Add(new CodeSnippetExpression("throw new System.InvalidOperationException(System.String.Format(\"This formatter can only parse XML_1.0 structures. This structure claims to be '{0}'.\", s.GetAttribute(\"ITSVersion\")))"));
             }
 
-            CodeStatementCollection methodAttributes = new CodeStatementCollection(), methodElements = new CodeStatementCollection();
+            CodeStatementCollection parseMethodAttributes = new CodeStatementCollection(), parseContentMethodBuilder = new CodeStatementCollection();
 
             //methodBuilder.Append("System.Diagnostics.Debug.WriteLine(System.String.Format(\"{0}{1}\", new System.String('\\t',s.Depth), s.Name));");
             // Method element statements
             //methodBuilder.Add(new CodeSnippetExpression("System.Collections.Generic.List<MARC.Everest.Connectors.ResultDetail> resultDetail = new System.Collections.Generic.List<MARC.Everest.Connectors.ResultDetail>()"));
-            methodElements.Add(new CodeSnippetExpression("if(s.IsEmptyElement) return instance;\r\nstring sName = s.Name;\r\nint sDepth = s.Depth"));
-            methodElements.Add(new CodeSnippetStatement("s.Read();\r\nwhile(!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Name == sName && s.Depth == sDepth)) {"));
-            methodElements.Add(new CodeSnippetStatement("string oldName = s.LocalName; \r\n try { if(s.NodeType == System.Xml.XmlNodeType.Element) { "));
+            parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("{0} instance = instancePtr as {0};", CreateTypeReference(new CodeTypeReference(forType)))));
+            parseContentMethodBuilder.Add(new CodeSnippetExpression("int sDepth = sName == s.LocalName && s.NodeType == System.Xml.XmlNodeType.Element ? s.Depth : s.Depth - 1"));
+            parseContentMethodBuilder.Add(new CodeSnippetStatement("\r\nwhile(!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Name == sName && s.Depth == sDepth || s.EOF)) {"));
+            parseContentMethodBuilder.Add(new CodeSnippetStatement("string oldName = s.LocalName; \r\n try { if(s.NodeType == System.Xml.XmlNodeType.Element) { "));
 
+
+            
             int cnt = 0;
 
             List<String> generatedProperties = new List<string>(forType.GetProperties().Length);
@@ -544,25 +558,25 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                             if (pi.GetSetMethod() != null)
                             {
                                 if (!String.IsNullOrEmpty(pa.FixedValue))
-                                    methodAttributes.Add(new CodeSnippetStatement(String.Format("if(s.GetAttribute(\"{1}\") != null){{ if(!\"{3}\".Equals(s.GetAttribute(\"{1}\"))) resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(s.GetAttribute(\"{1}\"), \"{3}\", false, s.ToString()));  instance.{0} = ({2})MARC.Everest.Connectors.Util.FromWireFormat(s.GetAttribute(\"{1}\"), typeof({2})); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)), pa.FixedValue)));
+                                    parseMethodAttributes.Add(new CodeSnippetStatement(String.Format("if(s.GetAttribute(\"{1}\") != null){{ if(!\"{3}\".Equals(s.GetAttribute(\"{1}\"))) resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(s.GetAttribute(\"{1}\"), \"{3}\", false, s.ToString()));  instance.{0} = ({2})MARC.Everest.Connectors.Util.FromWireFormat(s.GetAttribute(\"{1}\"), typeof({2})); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)), pa.FixedValue)));
                                 else
-                                    methodAttributes.Add(new CodeSnippetExpression(String.Format("if(s.GetAttribute(\"{1}\") != null) instance.{0} = ({2})MARC.Everest.Connectors.Util.FromWireFormat(s.GetAttribute(\"{1}\"), typeof({2}))", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
+                                    parseMethodAttributes.Add(new CodeSnippetExpression(String.Format("if(s.GetAttribute(\"{1}\") != null) instance.{0} = ({2})MARC.Everest.Connectors.Util.FromWireFormat(s.GetAttribute(\"{1}\"), typeof({2}))", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
                             }
                             else
-                                methodAttributes.Add(new CodeSnippetExpression(String.Format("if(s.GetAttribute(\"{1}\") != null && s.GetAttribute(\"{1}\") != MARC.Everest.Connectors.Util.ToWireFormat(instance.{0})) resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(s.GetAttribute(\"{1}\"), instance.{0}.ToString(), true, s.ToString()))", pi.Name, pa.Name)));
+                                parseMethodAttributes.Add(new CodeSnippetExpression(String.Format("if(s.GetAttribute(\"{1}\") != null && s.GetAttribute(\"{1}\") != MARC.Everest.Connectors.Util.ToWireFormat(instance.{0})) resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(s.GetAttribute(\"{1}\"), instance.{0}.ToString(), true, s.ToString()))", pi.Name, pa.Name)));
                         }
                         else
                         {
-                            methodElements.Add(new CodeSnippetStatement(String.Format("{2} if(s.LocalName == \"{0}\" {1}) {{\r\n", pa.Name, pa.InteractionOwner != null ? string.Format("&& currentInteractionType == typeof({0})", pa.InteractionOwner.FullName) : "", cnt > 0 ? "else" : "")));
+                            parseContentMethodBuilder.Add(new CodeSnippetStatement(String.Format("{2} if(s.LocalName == \"{0}\" {1}) {{\r\n", pa.Name, pa.InteractionOwner != null ? string.Format("&& currentInteractionType == typeof({0})", pa.InteractionOwner.FullName) : "", cnt > 0 ? "else" : "")));
                             cnt++;
 
                             // Fake attributes
                             if (!String.IsNullOrEmpty(pa.ImposeFlavorId))
-                                methodElements.Add(new CodeSnippetExpression(String.Format("if(System.String.IsNullOrEmpty(s.GetAttribute(\"specializationType\")) && s is MARC.Everest.Xml.XmlStateReader && (this.Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.AllowFlavorImposing) == MARC.Everest.Formatters.XML.ITS1.SettingsType.AllowFlavorImposing) (s as MARC.Everest.Xml.XmlStateReader).AddFakeAttribute(\"specializationType\", \"{0}\")", pa.ImposeFlavorId)));
+                                parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("if(System.String.IsNullOrEmpty(s.GetAttribute(\"specializationType\")) && s is MARC.Everest.Xml.XmlStateReader && (this.Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.AllowFlavorImposing) == MARC.Everest.Formatters.XML.ITS1.SettingsType.AllowFlavorImposing) (s as MARC.Everest.Xml.XmlStateReader).AddFakeAttribute(\"specializationType\", \"{0}\")", pa.ImposeFlavorId)));
 
                             // No way to deserialize this appropriately :( So we'll add a remark that says so
                             if (pa.Type == null && propertyAttribute.Length == 1 && pi.PropertyType == typeof(System.Object))
-                                methodElements.Add(new CodeSnippetExpression(String.Format("resultContext.AddResultDetail(new MARC.Everest.Connectors.NotImplementedElementResultDetail(MARC.Everest.Connectors.ResultDetailType.Warning, \"{0}\", \"urn:hl7-org:v3\", s.ToString(), null))", pa.Name)));
+                                parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("resultContext.AddResultDetail(new MARC.Everest.Connectors.NotImplementedElementResultDetail(MARC.Everest.Connectors.ResultDetailType.Warning, \"{0}\", \"urn:hl7-org:v3\", s.ToString(), null))", pa.Name)));
                             else if (pi.GetSetMethod() != null &&
                                 ((pa.Type != null && pa.Type.GetInterface("MARC.Everest.Interfaces.IGraphable") != null) ||
                                 (pa.Type == null && pi.PropertyType.GetInterface("MARC.Everest.Interfaces.IGraphable") != null))) // element that is graphable
@@ -570,25 +584,25 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
                                 // Directly assignable? 
                                 var nameGuid = Guid.NewGuid().ToString("N");
-                                methodElements.Add(new CodeSnippetExpression(String.Format("object d{2} = Host.ParseObject(s, typeof({1}), currentInteractionType, resultContext); instance.{0} = d{2} is {1} ? d{2} as {1} : ({1})MARC.Everest.Connectors.Util.FromWireFormat(d{2}, typeof({1}))", pi.Name, CreateTypeReference(new CodeTypeReference(pa.Type ?? pi.PropertyType)), nameGuid)));
-                                
+                                parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("object d{2} = Host.ParseObject(s, typeof({1}), currentInteractionType, resultContext); instance.{0} = d{2} is {1} ? d{2} as {1} : ({1})MARC.Everest.Connectors.Util.FromWireFormat(d{2}, typeof({1}))", pi.Name, CreateTypeReference(new CodeTypeReference(pa.Type ?? pi.PropertyType)), nameGuid)));
+
                                 // Fixed value
                                 if (!String.IsNullOrEmpty(pa.FixedValue) && pa.PropertyType != PropertyAttribute.AttributeAttributeType.Traversable)
-                                    methodElements.Add(new CodeSnippetExpression(String.Format("if(!\"{1}\".Equals(d{0}.ToString())) resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(d{0}.ToString(), \"{1}\", false, s.ToString()))", nameGuid, pa.FixedValue)));
+                                    parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("if(!\"{1}\".Equals(d{0}.ToString())) resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(d{0}.ToString(), \"{1}\", false, s.ToString()))", nameGuid, pa.FixedValue)));
 
                             }
                             else if (pi.PropertyType.GetMethod("Add") != null) // Collection...
-                                methodElements.Add(new CodeSnippetExpression(String.Format("object d{2} = Host.ParseObject(s, typeof({1}), currentInteractionType, resultContext); instance.{0}.Add(d{2} is {1} ? ({1})d{2} : ({1})MARC.Everest.Connectors.Util.FromWireFormat(d{2}, typeof({1})))", pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType.GetGenericArguments()[0])), Guid.NewGuid().ToString("N"))));
+                                parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("object d{2} = Host.ParseObject(s, typeof({1}), currentInteractionType, resultContext); instance.{0}.Add(d{2} is {1} ? ({1})d{2} : ({1})MARC.Everest.Connectors.Util.FromWireFormat(d{2}, typeof({1})))", pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType.GetGenericArguments()[0])), Guid.NewGuid().ToString("N"))));
                             else if (pi.GetSetMethod() != null && pi.PropertyType.GetMethod("ParseXml", BindingFlags.Public | BindingFlags.Static) != null)
-                                methodElements.Add(new CodeSnippetExpression(String.Format("instance.{0} = {1}.ParseXml(s)", pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
+                                parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("instance.{0} = {1}.ParseXml(s)", pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
                             else if (pi.GetSetMethod() != null && pi.PropertyType == typeof(string)) // Read content... 
-                                methodElements.Add(new CodeSnippetExpression(String.Format("instance.{0} = s.ReadInnerXml();", pi.Name)));
+                                parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("instance.{0} = s.ReadInnerXml();", pi.Name)));
                             else
                             {
                                 Guid toGuid = Guid.NewGuid();
-                                methodElements.Add(new CodeSnippetExpression(String.Format("object to{0:N} = Host.ParseObject(s, typeof({1}), currentInteractionType, resultContext)", toGuid, CreateTypeReference(new CodeTypeReference(pa.Type ?? pi.PropertyType)))));
-                                if(pa.PropertyType != PropertyAttribute.AttributeAttributeType.Traversable)
-                                    methodElements.Add(new CodeSnippetExpression(String.Format("if(to{0:N}.ToString() != instance.{1}.ToString()) resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(to{0:N}.ToString(), instance.{1}.ToString(), true, s.ToString()))", toGuid, pi.Name)));
+                                parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("object to{0:N} = Host.ParseObject(s, typeof({1}), currentInteractionType, resultContext)", toGuid, CreateTypeReference(new CodeTypeReference(pa.Type ?? pi.PropertyType)))));
+                                if (pa.PropertyType != PropertyAttribute.AttributeAttributeType.Traversable)
+                                    parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("if(to{0:N}.ToString() != instance.{1}.ToString()) resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(to{0:N}.ToString(), instance.{1}.ToString(), true, s.ToString()))", toGuid, pi.Name)));
                             }
 
                             // Marker? If yes give the host a chance to change the object before serializing
@@ -599,14 +613,13 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                     case MarkerAttribute.MarkerAttributeType.TemplateId:
                                     case MarkerAttribute.MarkerAttributeType.TypeId:
                                         // TODO: Write a process-object body method which takes over doing this
-                                        methodElements.Add(new CodeSnippetExpression(String.Format("var newInstance = this.Host.CorrectInstance(instance);", pi.Name)));
-                                        methodElements.Add(new CodeSnippetExpression(String.Format("if(newInstance.GetType() != instance.GetType()) this.Host.ParseElementContent(s, newInstance, sName, currentInteractionType, resultContext)")));
+                                        parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("var newInstance = this.Host.CorrectInstance(instance);", pi.Name)));
+                                        parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("if(newInstance.GetType() != instance.GetType()) return this.Host.ParseElementContent(s, newInstance, sName, currentInteractionType, resultContext)")));
                                         break;
                                     default:
                                         break;
                                 }
-                            methodElements.Add(new CodeSnippetStatement("}"));
-
+                            parseContentMethodBuilder.Add(new CodeSnippetStatement("}"));
                         }
                     }
                 }
@@ -614,21 +627,24 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             //TODO: XmlReader r;
 
             // Didn't understand that element?
-            methodElements.Add(new CodeSnippetStatement("else { resultContext.AddResultDetail(new MARC.Everest.Connectors.NotImplementedElementResultDetail(MARC.Everest.Connectors.ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null)); }"));
+            parseContentMethodBuilder.Add(new CodeSnippetStatement("else { resultContext.AddResultDetail(new MARC.Everest.Connectors.NotImplementedElementResultDetail(MARC.Everest.Connectors.ResultDetailType.Warning, s.LocalName, s.NamespaceURI, s.ToString(), null)); }"));
 
             // Finish method elements
-            methodElements.Add(new CodeSnippetStatement("}")); // if s.NodeType ==
-            methodElements.Add(new CodeSnippetStatement("}")); // Try
-            methodElements.Add(new CodeSnippetStatement("catch (System.Exception e) { resultContext.AddResultDetail(new MARC.Everest.Connectors.ResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, e.Message, s.ToString(), e)); }"));
-            methodElements.Add(new CodeSnippetStatement("finally { if(oldName.Equals(s.LocalName)) s.Read(); } }")); // while
+            parseContentMethodBuilder.Add(new CodeSnippetStatement("}")); // if s.NodeType ==
+            parseContentMethodBuilder.Add(new CodeSnippetStatement("}")); // Try
+            parseContentMethodBuilder.Add(new CodeSnippetStatement("catch (System.Exception e) { resultContext.AddResultDetail(new MARC.Everest.Connectors.ResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, e.Message, s.ToString(), e)); }"));
+            parseContentMethodBuilder.Add(new CodeSnippetStatement("finally { if(oldName.Equals(s.LocalName)) s.Read(); } }")); // while
             //methodElements.Add(new CodeSnippetExpression("Details = resultDetail.ToArray()"));
 
-            method.Statements.AddRange(methodBuilder);
-            method.Statements.AddRange(methodAttributes);
-            method.Statements.AddRange(methodElements);
-            method.Statements.Add(new CodeSnippetExpression("return instance"));
+            XmlReader r;
+            parseMethod.Statements.AddRange(parseMethodBuilder);
+            parseMethod.Statements.AddRange(parseMethodAttributes);
+            parseMethod.Statements.Add(new CodeSnippetExpression("if(s.IsEmptyElement) return instance;\r\nstring sName = s.Name;\r\nreturn this.Host.ParseElementContent(s, instance, s.LocalName, currentInteractionType, resultContext);"));
+            parseElementMethod.Statements.AddRange(parseContentMethodBuilder);
+            parseElementMethod.Statements.Add(new CodeSnippetExpression("return instance"));
 
-            return method;
+
+            return new CodeMemberMethod[] { parseMethod, parseElementMethod };
         }
 
         /// <summary>
@@ -682,7 +698,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                 ctd.Members.Add(CreateHostProperty(forType));
                 //ctd.Members.Add(CreateDetailProperty(forType));
                 ctd.Members.Add(CreateGraphMethod(forType));
-                ctd.Members.Add(CreateParseMethod(forType));
+                ctd.Members.AddRange(this.CreateMethodImplementations(forType));
                 ctd.Members.Add(CreateHandlesTypeProperty(forType));
                 ctd.Members.Add(CreateValidateMethod(forType));
             }

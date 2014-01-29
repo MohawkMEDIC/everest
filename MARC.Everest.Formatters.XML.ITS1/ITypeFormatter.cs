@@ -65,7 +65,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Parse element content from the current position
         /// </summary>
         /// <remarks>This method is used to process the elements from the current position into the specified instance</remarks>
-        object ParseElementContent(XmlReader r, ref Object instance, String terminationElement, Type interactionType, XmlIts1FormatterParseResult resultContext);
+        object ParseElementContent(XmlReader r, Object instance, String terminationElement, Type interactionType, XmlIts1FormatterParseResult resultContext);
 
     }
 }

@@ -9,10 +9,16 @@ namespace MARC.Everest.Sherpas.Templating.Format
     /// <summary>
     /// Represents a template definition file
     /// </summary>
-    [XmlType("TemplateDefinition", Namespace = "urn:marc-hi:everest/sherpas/template")]
+    [XmlType("TemplateProjectDefinition", Namespace = "urn:marc-hi:everest/sherpas/template")]
     [XmlRoot("Template", Namespace = "urn:marc-hi:everest/sherpas/template")]
-    public class TemplateDefinition
+    public class TemplateProjectDefinition
     {
+
+        /// <summary>
+        /// Represents project information
+        /// </summary>
+        [XmlElement("projectInfo")]
+        public ProjectInfoDefinition ProjectInfo { get; set; }
         /// <summary>
         /// Get the templated classes
         /// </summary>

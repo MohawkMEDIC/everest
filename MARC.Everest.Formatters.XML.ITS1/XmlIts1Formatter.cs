@@ -1139,7 +1139,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
             formatter.Host = this;
 
             // Parse the object
-            return formatter.ParseElementContent(r, ref instance, terminationElement, interactionType, resultContext);
+            return formatter.ParseElementContent(r, instance, terminationElement, interactionType, resultContext);
         }
 
         /// <summary>
