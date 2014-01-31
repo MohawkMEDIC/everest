@@ -30929,6 +30929,8 @@ namespace MARC.Everest.Test
             Assert.AreEqual(original.Receiver, parsed.Receiver);
             Assert.AreEqual(original.RespondTo, parsed.RespondTo);
             Assert.AreEqual(original.Sender, parsed.Sender);
+            EqualUtility.PrintEquals(original.controlActEvent, parsed.controlActEvent, "controlAct");
+
             Assert.AreEqual(original.controlActEvent, parsed.controlActEvent);
             Assert.AreEqual(original.NullFlavor, parsed.NullFlavor);
             Assert.AreEqual(original.RealmCode, parsed.RealmCode);
@@ -37246,7 +37248,8 @@ namespace MARC.Everest.Test
             ms.Seek(0, SeekOrigin.Begin);
 
             // Parse
-            MARC.Everest.RMIM.CA.R020401.Interactions.PORX_IN040080CA parsed = (MARC.Everest.RMIM.CA.R020401.Interactions.PORX_IN040080CA)fmtr.Parse(ms, original.GetType().Assembly).Structure;
+            var parseResult = fmtr.Parse(ms, original.GetType().Assembly);
+            MARC.Everest.RMIM.CA.R020401.Interactions.PORX_IN040080CA parsed = (MARC.Everest.RMIM.CA.R020401.Interactions.PORX_IN040080CA)parseResult.Structure;
 
             // Assert
             Assert.AreEqual(original.Id, parsed.Id);

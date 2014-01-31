@@ -1,0 +1,56 @@
+﻿Note 1 : This structure
+
+<marc:propertyTemplate name="component/nonXMLBody" minOccurs="1" maxOccurs="1" conformance="Mandatory">
+                    <marc:documentation>SHALL contain exactly one [1..1] component/nonXMLBody (CONF:7620).</marc:documentation>
+                    
+                    <marc:propertyTemplate name="text" minOccurs="1" maxOccurs="1" conformance="Mandatory">
+                        <marc:documentation>This component/nonXMLBody SHALL contain exactly one [1..1] text (CONF:7622).<p />The text element SHALL either contain a reference element with a value attribute, or have a representation attribute with the value of B64, a mediaType attribute, and contain the media content.<p />The value of @mediaType, if present, SHALL be drawn from the value set
+                            2.16.840.1.113883.11.20.7.1 SupportedFileFormats STATIC 20100512.</marc:documentation>
+                        
+                    </marc:propertyTemplate>
+                </marc:propertyTemplate>
+
+Is the same as:
+
+	<marc:propertyTemplate name="component" minOccurs="1" maxOccurs="1" conformance="Mandatory">
+      <marc:propertyTemplate name="nonXMLBody" minOccurs="1" maxOccurs="1" conformance="Mandatory">
+        <marc:documentation>SHALL contain exactly one [1..1] component/nonXMLBody (CONF:7620).</marc:documentation>
+
+        <marc:propertyTemplate name="text" minOccurs="1" maxOccurs="1" conformance="Mandatory">
+          <marc:documentation>
+            This component/nonXMLBody SHALL contain exactly one [1..1] text (CONF:7622).<p />The text element SHALL either contain a reference element with a value attribute, or have a representation attribute with the value of B64, a mediaType attribute, and contain the media content.<p />The value of @mediaType, if present, SHALL be drawn from the value set
+            2.16.840.1.113883.11.20.7.1 SupportedFileFormats STATIC 20100512.
+          </marc:documentation>
+        </marc:propertyTemplate>
+      </marc:propertyTemplate>
+
+
+
+Note 2: This
+
+                      <marc:propertyTemplate name="component" minOccurs="1" maxOccurs="1" conformance="Mandatory">
+                        <marc:type name="EKGImpressionSection" />
+                        <marc:initialize>
+                          <marc:set propertyName="typeCode" value="COMP" />
+                          <marc:set propertyName="contextConductionInd" value="true" />
+                        </marc:initialize>
+                        <marc:validationInstruction>
+                        </marc:validationInstruction>
+                        <marc:validationInstruction>
+                        </marc:validationInstruction>
+                      </marc:propertyTemplate>
+                      <marc:propertyTemplate name="component" minOccurs="1" maxOccurs="1" conformance="Mandatory">
+                        <marc:type name="AnotherSection" />
+                        <marc:initialize>
+                          <marc:set propertyName="typeCode" value="COMP" />
+                          <marc:set propertyName="contextConductionInd" value="true" />
+                        </marc:initialize>
+                        <marc:validationInstruction>
+                          
+                        </marc:validationInstruction>
+                        <marc:validationInstruction>
+                          
+                        </marc:validationInstruction>
+                      </marc:propertyTemplate>
+
+Is the same as:

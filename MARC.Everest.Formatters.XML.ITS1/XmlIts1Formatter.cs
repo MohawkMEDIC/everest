@@ -1128,7 +1128,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <summary>
         /// Parse elements from the specified type
         /// </summary>
-        public virtual object ParseElementContent(XmlReader r, Object instance, String terminationElement, Type interactionType, XmlIts1FormatterParseResult resultContext)
+        public virtual object ParseElementContent(XmlReader r, Object instance, String terminationElement, int terminationDepth, Type interactionType, XmlIts1FormatterParseResult resultContext)
         {
             Type instanceType = instance.GetType();
             ITypeFormatter formatter = this.GetFormatter(instanceType);
@@ -1139,7 +1139,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
             formatter.Host = this;
 
             // Parse the object
-            return formatter.ParseElementContent(r, instance, terminationElement, interactionType, resultContext);
+            return formatter.ParseElementContent(r, instance,  terminationElement, terminationDepth, interactionType, resultContext);
         }
 
         /// <summary>
@@ -1224,11 +1224,11 @@ namespace MARC.Everest.Formatters.XML.ITS1
         {
 
 #if WINDOWS_PHONE
-            ITypeFormatter formatter = m_codeGeneratorFormatter.GetFormatter(useType);
-            if (formatter == null)
                 formatter = new ReflectFormatter();
 #else
-            ITypeFormatter formatter = m_codeGeneratorFormatter.GetFormatter(useType);
+            ITypeFormatter formatter = new ReflectFormatter();
+            if((Settings & SettingsType.UseGeneratorFormat) == SettingsType.UseGeneratorFormat)
+                formatter = m_codeGeneratorFormatter.GetFormatter(useType);
             // Is there a formatter and if there is not a formatter 
             // can we create one?
             if (formatter == null && (Settings & SettingsType.UseGeneratorFormat) == SettingsType.UseGeneratorFormat)

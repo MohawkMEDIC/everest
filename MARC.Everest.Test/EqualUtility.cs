@@ -38,7 +38,7 @@ namespace MARC.Everest.Test
                         equals = aList[i] != null && aList[i].Equals(bList[i]);
 
                         if (!equals && aList[i] != null)
-                            Debug.WriteLine(String.Format("{0} ({1})", aPath, aList[i].GetType().FullName));
+                            Debug.WriteLine(String.Format("{0} ({1}) {2} != {3}", aPath, aList[i].GetType().FullName, aList[i], bList[i]));
 
                         if (aList[i] != null && bList[i] != null &&
                             !typeof(MARC.Everest.DataTypes.ANY).IsAssignableFrom(aList[i].GetType()))
@@ -47,7 +47,7 @@ namespace MARC.Everest.Test
                 }
                 else if (!equals && aPiValue != null)
                 {
-                    Debug.WriteLine(String.Format("{0} ({1})", myPath, pi.PropertyType.FullName));
+                    Debug.WriteLine(String.Format("{0} ({1}) {2} != {3}", myPath, pi.PropertyType.FullName, aPiValue, bPiValue));
                     if (aPiValue != null && bPiValue != null &&
                         !typeof(MARC.Everest.DataTypes.ANY).IsAssignableFrom(aPiValue.GetType()))
                         PrintEquals(aPiValue, bPiValue, myPath);

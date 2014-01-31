@@ -393,7 +393,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             if (s.IsEmptyElement) return instance;
 
             // Read content
-            instance = this.Host.ParseElementContent(s, instance, s.LocalName, currentInteractionType, resultContext);
+            instance = this.Host.ParseElementContent(s, instance, s.LocalName, s.Depth, currentInteractionType, resultContext);
             
             return instance;
         }
@@ -484,12 +484,12 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
         /// <summary>
         /// Parse element contents
         /// </summary>
-        public Object ParseElementContent(System.Xml.XmlReader s, Object instance, string terminationElement, Type currentInteractionType, XmlIts1FormatterParseResult resultContext)
+        public Object ParseElementContent(System.Xml.XmlReader s, Object instance, string terminationElement, int terminationDepth, Type currentInteractionType, XmlIts1FormatterParseResult resultContext)
         {
             String lastElementRead = s.LocalName;
             bool fromExternalSource = !(terminationElement == lastElementRead && s.NodeType == System.Xml.XmlNodeType.Element);
             var properties = instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            int tDepth = !fromExternalSource ? s.Depth : s.Depth - 1; // Set the termination depth
+            int tDepth = terminationDepth; // Set the termination depth
             while (true)
             {
 
@@ -502,7 +502,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 lastElementRead = s.LocalName;
 
                 // Element is end element and matches the starting element namd
-                if (s.NodeType == System.Xml.XmlNodeType.EndElement && s.LocalName == terminationElement && s.Depth == tDepth)
+                if (s.NodeType == System.Xml.XmlNodeType.EndElement && s.LocalName == terminationElement && s.Depth == terminationDepth)
                     break;
                 // Element is an end element
                 //else if (s.NodeType == System.Xml.XmlNodeType.EndElement)
@@ -588,7 +588,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
 
                                 var newInstance = this.Host.CorrectInstance(instance);
                                 if (newInstance.GetType() != instance.GetType())
-                                    return this.Host.ParseElementContent(s, newInstance, terminationElement, currentInteractionType, resultContext);
+                                    return this.Host.ParseElementContent(s, newInstance, terminationElement, s.Depth, currentInteractionType, resultContext);
                                 break;
                             default:
                                 break;

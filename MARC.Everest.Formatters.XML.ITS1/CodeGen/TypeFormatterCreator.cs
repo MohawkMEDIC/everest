@@ -486,6 +486,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Xml.XmlReader), "s"));
             parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Object), "instancePtr"));
             parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.String), "sName"));
+            parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Int32), "sDepth"));
             parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(System.Type), "currentInteractionType"));
             parseElementMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(XmlIts1FormatterParseResult), "resultContext"));
             parseElementMethod.Attributes = MemberAttributes.Public;
@@ -519,9 +520,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             // Method element statements
             //methodBuilder.Add(new CodeSnippetExpression("System.Collections.Generic.List<MARC.Everest.Connectors.ResultDetail> resultDetail = new System.Collections.Generic.List<MARC.Everest.Connectors.ResultDetail>()"));
             parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("{0} instance = instancePtr as {0};", CreateTypeReference(new CodeTypeReference(forType)))));
-            parseContentMethodBuilder.Add(new CodeSnippetExpression("int sDepth = sName == s.LocalName && s.NodeType == System.Xml.XmlNodeType.Element ? s.Depth : s.Depth - 1"));
-            parseContentMethodBuilder.Add(new CodeSnippetStatement("\r\nwhile(!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.Name == sName && s.Depth == sDepth || s.EOF)) {"));
-            parseContentMethodBuilder.Add(new CodeSnippetStatement("string oldName = s.LocalName; \r\n try { if(s.NodeType == System.Xml.XmlNodeType.Element) { "));
+            parseContentMethodBuilder.Add(new CodeSnippetStatement("s.Read(); \r\nwhile(!(s.NodeType == System.Xml.XmlNodeType.EndElement && s.LocalName == sName && s.Depth == sDepth || s.EOF)) {"));
+            parseContentMethodBuilder.Add(new CodeSnippetStatement("string oldName = s.LocalName; \r\n try { if(s.Depth < sDepth) throw new System.InvalidOperationException(\"Ooops! We're out!\"); if(s.NodeType == System.Xml.XmlNodeType.Element) { "));
 
 
             
@@ -614,7 +614,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                     case MarkerAttribute.MarkerAttributeType.TypeId:
                                         // TODO: Write a process-object body method which takes over doing this
                                         parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("var newInstance = this.Host.CorrectInstance(instance);", pi.Name)));
-                                        parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("if(newInstance.GetType() != instance.GetType()) return this.Host.ParseElementContent(s, newInstance, sName, currentInteractionType, resultContext)")));
+                                        parseContentMethodBuilder.Add(new CodeSnippetExpression(String.Format("if(newInstance.GetType() != instance.GetType()) return this.Host.ParseElementContent(s, newInstance, sName, sDepth, currentInteractionType, resultContext)")));
                                         break;
                                     default:
                                         break;
@@ -639,7 +639,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             XmlReader r;
             parseMethod.Statements.AddRange(parseMethodBuilder);
             parseMethod.Statements.AddRange(parseMethodAttributes);
-            parseMethod.Statements.Add(new CodeSnippetExpression("if(s.IsEmptyElement) return instance;\r\nstring sName = s.Name;\r\nreturn this.Host.ParseElementContent(s, instance, s.LocalName, currentInteractionType, resultContext);"));
+            parseMethod.Statements.Add(new CodeSnippetExpression("if(s.IsEmptyElement) return instance;\r\nstring sName = s.LocalName;\r\nreturn this.Host.ParseElementContent(s, instance, s.LocalName, s.Depth, currentInteractionType, resultContext);"));
             parseElementMethod.Statements.AddRange(parseContentMethodBuilder);
             parseElementMethod.Statements.Add(new CodeSnippetExpression("return instance"));
 
