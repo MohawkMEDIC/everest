@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MARC.Everest, Version=1.5.0.0, Culture=neutral, PublicKeyToken=ba5b2480018546af, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Solution Items\MARC.Everest.dll</HintPath>
+    </Reference>
+    <Reference Include="MARC.Everest.Formatters.XML.ITS1, Version=1.2.0.0, Culture=neutral, PublicKeyToken=a761391c991e4f91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Solution Items\MARC.Everest.Formatters.XML.ITS1.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,40 +48,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binder\ClassTemplateBinder.cs" />
+    <Compile Include="Binder\EnumerationTemplateBinder.cs" />
+    <Compile Include="Binder\PropertyTemplateBinder.cs" />
     <Compile Include="Format\ArtifactTemplateBase.cs" />
     <Compile Include="Format\AssignmentStatementDefinition.cs" />
     <Compile Include="Format\ClassTemplateDefinition.cs" />
-    <Compile Include="Format\ConceptDomainRefDefinition.cs" />
+    <Compile Include="Format\BasicTypeReference.cs" />
     <Compile Include="Format\ConditionalStatementDefinition.cs" />
+    <Compile Include="Format\ConstructorInvokationStatementDefinition.cs" />
     <Compile Include="Format\EnumerationLiteralDefinition.cs" />
     <Compile Include="Format\EnumerationTemplateDefinition.cs" />
-    <Compile Include="Format\InitializationInstructionDefinition.cs" />
     <Compile Include="Format\MethodDefinitionBase.cs" />
     <Compile Include="Format\MethodInvokationStatementDefinition.cs" />
+    <Compile Include="Format\OperatorType.cs" />
     <Compile Include="Format\ProjectInfoDefinition.cs" />
     <Compile Include="Format\PropertyChoiceTemplateDefinition.cs" />
     <Compile Include="Format\PropertyTemplateContainer.cs" />
     <Compile Include="Format\PropertyTemplateDefinition.cs" />
     <Compile Include="Format\TemplateProjectDefinition.cs" />
     <Compile Include="Format\TypeDefinition.cs" />
-    <Compile Include="Format\ValidationInstructionDefinition.cs" />
+    <Compile Include="Binder\BindingContext.cs" />
+    <Compile Include="Interface\IArtifactBinder.cs" />
+    <Compile Include="Interface\ITemplateLoader.cs" />
+    <Compile Include="Interface\ITemplateRenderer.cs" />
+    <Compile Include="Renderer\RenderContext.cs" />
+    <Compile Include="Loader\AssemblyStylesheetLoader.cs" />
+    <Compile Include="Loader\XsltBasedLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderer\CS\CodeDomRenderer.cs" />
+    <Compile Include="Interface\IArtifactRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="XSLT\CommonFunctions.xslt">
+    <EmbeddedResource Include="XSLT\CommonFunctions.xslt">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="XSLT\decor.xslt">
+    </EmbeddedResource>
+    <EmbeddedResource Include="XSLT\decor.xslt">
       <SubType>Designer</SubType>
-    </Content>
+    </EmbeddedResource>
     <Content Include="XSLT\Notes.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MARC.Everest\MARC.Everest.csproj">
-      <Project>{283B7891-BF96-4C00-BF6D-955EE68BBFBB}</Project>
-      <Name>MARC.Everest</Name>
+    <ProjectReference Include="..\MARC.Everest.Sherpas\MARC.Everest.Sherpas.csproj">
+      <Project>{FC75C77E-4596-4603-8BEB-DFC428C24BAB}</Project>
+      <Name>MARC.Everest.Sherpas</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

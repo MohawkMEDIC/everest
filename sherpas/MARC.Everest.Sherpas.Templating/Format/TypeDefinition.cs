@@ -10,19 +10,15 @@ namespace MARC.Everest.Sherpas.Templating.Format
     /// Represents a type definition
     /// </summary>
     [XmlType("TypeDefinition", Namespace = "urn:marc-hi:everest/sherpas/template")]
-    public class TypeDefinition
+    public class TypeDefinition : BasicTypeReference
     {
-        /// <summary>
-        /// Gets the name of the type definition
-        /// </summary>
-        [XmlAttribute("name")]
-        public String Name { get; set; }
 
         /// <summary>
         /// Gets the template parameters (typically value sets) for the type
         /// </summary>
-        [XmlElement("type")]
-        public List<TypeDefinition> TemplateParameter { get; set; }
+        [XmlElement("type", typeof(TypeDefinition))]
+        [XmlElement("enum", typeof(BasicTypeReference))]
+        public List<BasicTypeReference> TemplateParameter { get; set; }
 
     }
 }

@@ -18,7 +18,13 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// Gets or sets basic documentation which describes the template
         /// </summary>
         [XmlElement("documentation")]
-        public XmlElement Documentation { get; set; }
+        public XmlNode[] Documentation { get; set; }
+
+        /// <summary>
+        /// Sample render
+        /// </summary>
+        [XmlElement("sampleRendering")]
+        public XmlNode[] Example { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier for the template

@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>b5e33639-5d28-4bdd-8482-70c909b65a46</ProjectGuid>
+    <ProjectGuid>{FA47C063-3E6D-4EA0-AD8A-107680243CD8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MARC.Everest.Sherpas.Test</RootNamespace>
@@ -33,10 +33,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MARC.Everest">
+      <HintPath>..\Solution Items\MARC.Everest.dll</HintPath>
+    </Reference>
+    <Reference Include="MARC.Everest.Formatters.XML.Datatypes.R1">
+      <HintPath>..\Solution Items\MARC.Everest.Formatters.XML.Datatypes.R1.dll</HintPath>
+    </Reference>
+    <Reference Include="MARC.Everest.Formatters.XML.ITS1">
+      <HintPath>..\Solution Items\MARC.Everest.Formatters.XML.ITS1.dll</HintPath>
+    </Reference>
+    <Reference Include="MARC.Everest.RMIM.UV.CDAr2">
+      <HintPath>..\Solution Items\MARC.Everest.RMIM.UV.CDAr2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -44,7 +58,20 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Everest\SherpasFormatterTests.cs" />
+    <Compile Include="Everest\Templates\EKGImpressionSection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="R1erializationHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MARC.Everest.Sherpas.Templating\MARC.Everest.Sherpas.Templating.csproj">
+      <Project>{A5CFFCCC-8EFB-44BA-9603-18C9AAC631F0}</Project>
+      <Name>MARC.Everest.Sherpas.Templating</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MARC.Everest.Sherpas\MARC.Everest.Sherpas.csproj">
+      <Project>{FC75C77E-4596-4603-8BEB-DFC428C24BAB}</Project>
+      <Name>MARC.Everest.Sherpas</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

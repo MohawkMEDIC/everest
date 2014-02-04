@@ -16,12 +16,12 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// Gets or sets a reference to a concept domain
         /// </summary>
         [XmlElement("conceptDomainRef")]
-        public ConceptDomainRefDefinition ConceptDomainReference { get; set; }
+        public BasicTypeReference ConceptDomainReference { get; set; }
 
         /// <summary>
         /// Gets or sets a literal definition
         /// </summary>
         [XmlElement("literal")]
-        public List<EnumerationLiteralDefinition> MyProperty { get; set; }
+        public List<EnumerationLiteralDefinition> Literal { get; set; }
     }
 }

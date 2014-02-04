@@ -14,25 +14,13 @@ namespace MARC.Everest.Sherpas.Templating.Format
     {
 
         /// <summary>
-        /// Gets or sets the base class for the template definition
-        /// </summary>
-        [XmlIgnore]
-        public Type BaseClass { get; private set; }
-
-        /// <summary>
         /// Gets or sets the fully qualified name of the base class
         /// </summary>
-        [XmlAttribute("baseClass")]
-        public String BaseClassName
+        [XmlElement("baseClass")]
+        public BasicTypeReference BaseClass
         {
-            get
-            {
-                return this.BaseClass == null ? null : this.BaseClass.AssemblyQualifiedName;
-            }
-            set
-            {
-                this.BaseClass = Type.GetType(value);
-            }
+            get;
+            set;
         }
 
         

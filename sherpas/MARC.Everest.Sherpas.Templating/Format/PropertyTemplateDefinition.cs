@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using MARC.Everest.Attributes;
+using System.Reflection;
 
 namespace MARC.Everest.Sherpas.Templating.Format
 {
@@ -13,11 +14,12 @@ namespace MARC.Everest.Sherpas.Templating.Format
     [XmlType("PropertyTemplateDefinition", Namespace = "urn:marc-hi:everest/sherpas/template")]
     public class PropertyTemplateDefinition : PropertyTemplateContainer
     {
+
         /// <summary>
         /// Gets or sets the type that this particular property should take
         /// </summary>
         [XmlElement("type")]
-        public List<TypeDefinition> Type { get; set; }
+        public TypeDefinition Type { get; set; }
 
         /// <summary>
         /// Indicates the conformance of the property
@@ -42,5 +44,17 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// </summary>
         [XmlAttribute("ref")]
         public String TemplateReference { get; set; }
+
+        /// <summary>
+        /// Identifies that a choice within the property's type must contain the specified item
+        /// </summary>
+        [XmlAttribute("contains")]
+        public String Contains { get; set; }
+
+        /// <summary>
+        /// Gets or sets the propertyInfo related to the property that this restricts
+        /// </summary>
+        [XmlIgnore]
+        public PropertyInfo Property { get; set; }
     }
 }

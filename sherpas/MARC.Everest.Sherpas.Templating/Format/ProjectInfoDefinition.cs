@@ -14,6 +14,14 @@ namespace MARC.Everest.Sherpas.Templating.Format
     public class ProjectInfoDefinition
     {
         /// <summary>
+        /// Project information definition
+        /// </summary>
+        public ProjectInfoDefinition()
+        {
+            this.OriginalAuthor = new List<string>();
+        }
+
+        /// <summary>
         /// Gets or sets the name of the project
         /// </summary>
         [XmlElement("name")]
@@ -21,7 +29,7 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// <summary>
         /// Gets or sets the copyright holder(s) of the project
         /// </summary>
-        [XmlElement("copyright")]
+        [XmlElement("copyrightHolder")]
         public XmlElement[] Copyright { get; set; }
         /// <summary>
         /// Gets or sets the original authors of the project

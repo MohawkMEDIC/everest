@@ -35,7 +35,7 @@ namespace MARC.Everest.Test.Sherpas
                 docFormatter.Graph(xw, testDocument);
                 xw.Flush();
             }
-            R2SerializationHelper.XmlIsEquivalent(expected, sw.ToString());
+            R1SerializationHelper.XmlIsEquivalent(expected, sw.ToString());
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace MARC.Everest.Test.Sherpas
                 docFormatter.Graph(xw, testDocument);
                 xw.Flush();
             }
-            R2SerializationHelper.XmlIsEquivalent(expected, sw.ToString());
+            R1SerializationHelper.XmlIsEquivalent(expected, sw.ToString());
         }
 
         /// <summary>

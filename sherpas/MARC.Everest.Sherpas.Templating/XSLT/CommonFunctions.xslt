@@ -39,13 +39,13 @@
       switch(classification)
       {
         case "cdadocumentlevel":
-          return "MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument";
+          return "POCD_MT000040UV.ClinicalDocument";
          case "cdasectionlevel":
-          return "MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Section";
+          return "POCD_MT000040UV.Section";
          case "cdaentrylevel":
-          return "MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalStatement";
+          return "POCD_MT000040UV.clinicalStatement";
          case "cdaheaderlevel":
-          return "MARC.Everest.IGraphable";
+          return "MARC.Everest.Interfaces.IGraphable";
          default:
           return "System.Object";
       }
@@ -53,7 +53,7 @@
     
     public String PascalCaseName(String original)
     {
-    /*
+    
       if (original == null || original.Length == 0) return original;
       original = original.Trim();
       string retVal = "";
@@ -62,7 +62,7 @@
               retVal += s.ToUpper().Substring(0, 1) + s.Substring(1);
           else
               retVal += s.ToUpper() + "_";
-*/
+
       return MakeFriendly(original);
     }
     

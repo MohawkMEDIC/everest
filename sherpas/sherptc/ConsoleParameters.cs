@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MohawkCollege.Util.Console.Parameters;
 using System.ComponentModel;
+using System.Collections.Specialized;
 
 namespace sherptc
 {
@@ -17,8 +18,9 @@ namespace sherptc
         /// </summary>
         [Parameter("source")]
         [Parameter("s")]
+        [Parameter("*")]
         [Description("Identifies the CDA template that is to be generated")]
-        public String Template { get; set; }
+        public StringCollection Template { get; set; }
 
         /// <summary>
         /// Gets or sets the verbosity
@@ -47,17 +49,24 @@ namespace sherptc
         /// <summary>
         /// Identifies the renderer that should be used to output the class
         /// </summary>
-        [Parameter("renderer")]
-        [Parameter("r")]
-        [Description("Identifies the output format renderer that should be created")]
-        public String Renderer { get; set; }
+        //[Parameter("renderer")]
+        //[Parameter("r")]
+        //[Description("Identifies the output format renderer that should be created")]
+        //public String Renderer { get; set; }
 
         /// <summary>
-        /// Gets or sets the pipeline that is to be applied
+        /// Specifies the locale in which comments should be generated
         /// </summary>
-        [Parameter("parser")]
-        [Parameter("p")]
-        [Description("Identifies the pipeline parser that should be used to parse the template file")]
-        public String Parser { get; set; }
+        [Parameter("locale")]
+        [Parameter("l")]
+        [Description("Identifies the locale from which comments should be used")]
+        public String Locale { get; set; }
+
+        /// <summary>
+        /// Specifies a place to save the merged project
+        /// </summary>
+        [Parameter("save")]
+        [Description("Identifies a file name to save the bound template file")]
+        public String SaveTpl { get; set; }
     }
 }

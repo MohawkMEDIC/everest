@@ -34,6 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MohawkCollege.EHR.Util.SimpleXSD">
+      <HintPath>..\Solution Items\MohawkCollege.EHR.Util.SimpleXSD.dll</HintPath>
+    </Reference>
+    <Reference Include="MohawkCollege.Util.Console.Parameters">
+      <HintPath>..\Solution Items\MohawkCollege.Util.Console.Parameters.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,8 +49,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleExtension.cs" />
+    <Compile Include="ConsoleParameters.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MARC.Everest.Sherpas.Templating\MARC.Everest.Sherpas.Templating.csproj">
+      <Project>{A5CFFCCC-8EFB-44BA-9603-18C9AAC631F0}</Project>
+      <Name>MARC.Everest.Sherpas.Templating</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MARC.Everest.Sherpas\MARC.Everest.Sherpas.csproj">
+      <Project>{FC75C77E-4596-4603-8BEB-DFC428C24BAB}</Project>
+      <Name>MARC.Everest.Sherpas</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
