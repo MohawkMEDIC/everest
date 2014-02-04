@@ -348,6 +348,8 @@ namespace MARC.Everest.Connectors
             // Find the type 
             Type cType = Array.Find(typeof(Util).Assembly.GetTypes(), findPredicate);
 #endif
+            if (cType == null)
+                return null;
 
             // Determine if the type is generic in nature?
             if (cType.IsGenericTypeDefinition) // Yes

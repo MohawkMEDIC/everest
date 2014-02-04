@@ -248,15 +248,29 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                         sw.WriteLine("\t\t\t}");
                         sw.WriteLine("\t\t\t#endregion");
 
-                        swEx.WriteLine("\t\t\t#region Validate {0}", pCasedName); 
-                        swEx.WriteLine("\t\t\tif(this.{0} == null) retVal.Add(new MARC.Everest.Connectors.MandatoryElementMissingResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"{0} does not meet criteria for {1} element\", \"{0}\"));", pCasedName, cc.Conformance);
+                        swEx.WriteLine("\t\t\t#region Validate {0}", pCasedName);
+                        if(cc.Conformance == ClassContent.ConformanceKind.Mandatory)
+                            swEx.WriteLine("\t\t\tif(this.{0} == null || this.{0}.NullFlavor != null) retVal.Add(new MARC.Everest.Connectors.MandatoryElementMissingResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"{0} is marked MANDATORY, it must be carry a value and cannot have a NullFlavor\", \"{0}\"));", pCasedName, cc.Conformance);
+                        else
+                            swEx.WriteLine("\t\t\tif(this.{0} == null) retVal.Add(new MARC.Everest.Connectors.RequiredElementMissingResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"{0} is marked POPULATED, it must carry a value however can have a NullFlavor \", \"{0}\"));", pCasedName, cc.Conformance);
+
                         swEx.WriteLine("\t\t\telse {");
                         swEx.WriteLine("\t\t\t\tSystem.Reflection.MethodInfo mi = this.{0}.GetType().GetMethod(\"ValidateEx\");", pCasedName);
                         swEx.WriteLine("\t\t\t\tif(mi != null) {{ foreach(var res in (IEnumerable<MARC.Everest.Connectors.IResultDetail>)mi.Invoke(this.{0}, null)) {{ \r\n\t\t\t\t if(res.Location != null) res.Location = \"{0}.\" + res.Location; \r\n\t\t\t\t else res.Location = \"{0}\"; \r\n\t\t\t\t retVal.Add(res); \r\n\t\t\t }} \r\n\t\t\t }} ", pCasedName);
                         swEx.WriteLine("\t\t\t}");
+
+                        
                         swEx.WriteLine("\t\t\t#endregion");
 
                     }
+                }
+
+                // Fixed value?
+                if (cc is Property && !String.IsNullOrEmpty((cc as Property).FixedValue))
+                {
+                    swEx.WriteLine("\t\t\t#region Fixed Value for {0}", pCasedName);
+                    swEx.WriteLine("\t\t\tif(this.{0} != null && MARC.Everest.Connectors.Util.ToWireFormat(this.{0}) != \"{1}\") retVal.Add(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(MARC.Everest.Connectors.Util.ToWireFormat(this.{0}), \"{1}\", false, \"{0}\"));", pCasedName, (cc as Property).FixedValue); 
+                    swEx.WriteLine("\t\t\t#endregion");
                 }
             }
 
