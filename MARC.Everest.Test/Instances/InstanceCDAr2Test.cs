@@ -36,6 +36,49 @@ namespace MARC.Everest.Test
 
 
         [TestMethod]
+        public void InstanceCDAR2Test_Order_SubstanceAdministration()
+        {
+            MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument original = TypeCreator.GetCreator(typeof(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument)).CreateInstance() as MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument;
+            original.Component = new Component2();
+            original.Component.SetBodyChoice(new StructuredBody());
+            
+            original.Component.GetBodyChoiceIfStructuredBody().Component.Add(new Component3()
+            {
+                Section = new Section()
+                {
+                    Entry = new List<Entry>() {
+                        new Entry() {
+                            ClinicalStatement = new SubstanceAdministration() {
+                                Consumable = new Consumable(),
+                                EntryRelationship = new List<EntryRelationship>()
+                                {
+                                    new EntryRelationship()
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // New ms
+            MemoryStream ms = new MemoryStream();
+
+            // Format
+            MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter fmtr = new MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter();
+            fmtr.GraphAides.Add(new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.ClinicalDocumentArchitecture });
+            fmtr.ValidateConformance = false;
+            var graphResult = fmtr.Graph(ms, original);
+
+            Assert.IsTrue(graphResult.Code == MARC.Everest.Connectors.ResultCode.Accepted || graphResult.Code == MARC.Everest.Connectors.ResultCode.AcceptedNonConformant);
+
+            // Seek back to begin
+            ms.Seek(0, SeekOrigin.Begin);
+            String xmlString = System.Text.Encoding.UTF8.GetString(ms.GetBuffer(), 0, (int)ms.Length);
+            Assert.IsTrue(xmlString.IndexOf("<entryRelationship") > xmlString.IndexOf("<consumable"), "entryRelationship must appear after consumable");
+
+        }
+
+        [TestMethod]
         public void InstanceCDAR2Test_XSD_ClinicalDocument()
         {
             MemoryStream stream = new MemoryStream();
