@@ -91,6 +91,7 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                     if (asd.PropertyName != null && !(method is ConstructorInvokationStatementDefinition))
                     {
                         var pi = ResolvePropertyInfo(asd.PropertyName, realType);
+
                         asd.PropertyName = pi.Name;
                     }
                     
@@ -114,9 +115,10 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                         asd.PropertyName = null;
                         continue;
                     }
-                    else if (asd.PropertyName != null)
+                    else if (!String.IsNullOrEmpty(asd.PropertyName))
                     {
                         var pi = ResolvePropertyInfo(asd.PropertyName, realType);
+                        
                         asd.PropertyName = pi.Name;
                     }
 
@@ -158,8 +160,9 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                 scanType = ResolvePropertyTraversalType(parentPropertyTemplate.TraversalName, parentPropertyTemplate.Property);
             }
 
+            
             // List?
-            if (scanType.GetInterface(typeof(IList<>).FullName) != null)
+            if (scanType != null && scanType.GetInterface(typeof(IList<>).FullName) != null)
                 scanType = scanType.GetGenericArguments()[0];
 
             // Seek property

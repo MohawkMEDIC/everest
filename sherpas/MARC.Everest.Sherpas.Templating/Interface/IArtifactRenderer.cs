@@ -20,6 +20,6 @@ namespace MARC.Everest.Sherpas.Template.Interface
         /// <summary>
         /// Render the specified object returning the declared member
         /// </summary>
-        System.CodeDom.CodeTypeMember Render(RenderContext context);
+        System.CodeDom.CodeTypeMemberCollection Render(RenderContext context);
     }
 }

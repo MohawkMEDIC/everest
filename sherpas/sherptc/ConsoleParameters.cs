@@ -44,7 +44,7 @@ namespace sherptc
         [Parameter("output")]
         [Parameter("o")]
         [Description("Identifies the file where the generated template should be placed")]
-        public String OutputDirectory { get; set; }
+        public String OutputFile { get; set; }
 
         /// <summary>
         /// Identifies the renderer that should be used to output the class

@@ -41,6 +41,10 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// </summary>
         [XmlElement("version")]
         public String Version { get; set; }
-
+        /// <summary>
+        /// Assembly reference
+        /// </summary>
+        [XmlAttribute("assembly")]
+        public String AssemblyRef { get; set; }
     }
 }

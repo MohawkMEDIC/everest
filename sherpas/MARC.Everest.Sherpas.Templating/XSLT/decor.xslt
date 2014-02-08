@@ -33,14 +33,14 @@
   </xsl:template>
 
   <!-- Value Set -->
-  <xsl:template match="valueSet[./*]">
+  <xsl:template match="valueSet[./conceptList]">
     <marc:enumerationTemplate>
       <xsl:attribute name="name">
         <xsl:value-of select="marc:PascalCaseName(@name)"/>
       </xsl:attribute>
-      <xsl:attribute name="id">
+      <marc:id>
         <xsl:value-of select="@id"/>
-      </xsl:attribute>
+      </marc:id>
       <xsl:apply-templates/>
     </marc:enumerationTemplate>
   </xsl:template>
@@ -108,15 +108,16 @@
         <xsl:choose>
           <xsl:when test="contains(@datatype, '.')">
             <marc:type name="{substring-before(@datatype, '.')}" flavor="{substring-after(@datatype, '.')}">
-              <xsl:if test="vocabulary[@valueSet]">
-                <marc:type name="{vocabulary/@valueSet}"/>
+              <xsl:if test="vocabulary[@valueSet or @domain]">
+                <marc:type name="{vocabulary/@valueSet | vocabulary/@domain}"/>
               </xsl:if>
+
             </marc:type>
           </xsl:when>
           <xsl:otherwise>
             <marc:type name="{@datatype}">
-              <xsl:if test="vocabulary[@valueSet]">
-                <marc:type name="{vocabulary/@valueSet}"/>
+              <xsl:if test="vocabulary[@valueSet or @domain]">
+                <marc:type name="{vocabulary/@valueSet | vocabulary/@domain}"/>
               </xsl:if>
             </marc:type>
           </xsl:otherwise>
@@ -256,7 +257,7 @@
   </xsl:template>
 
   <!-- Vocabulary Entry (attribute = initialization) -->
-  <xsl:template match="vocabulary[not(@valueSet)]">
+  <xsl:template match="vocabulary[not(@valueSet) and not(@domain)]">
     
     <marc:initialize>
       <!--
@@ -335,7 +336,12 @@
     <xsl:variable name="name" select="@name"/>
     <xsl:variable name="id" select="@id"/>
     <xsl:if test="count(element) = 1 and not(element[1]/@datatype) and count(//*[@ref=$name or @contains = $name or @ref=$id or @contains = $id]) > 0">
-      <marc:classTemplate name="{marc:PascalCaseName(@name)}" traversalName="{marc:CleanElementName(./element/@name)}" id="{@id}">
+      <marc:classTemplate name="{marc:PascalCaseName(@name)}" traversalName="{marc:CleanElementName(./element/@name)}">
+        <xsl:for-each select=".//element[marc:CleanElementName(@name) = 'templateId' and attribute/@root]">
+          <marc:id>
+            <xsl:value-of select="attribute/@root"/>
+          </marc:id>
+        </xsl:for-each>
         <marc:baseClass name="{marc:GetBaseClass(./classification/@type)}"/>
         <xsl:apply-templates select="*[local-name() != 'element']"/>
         <xsl:for-each select="element">
@@ -349,9 +355,7 @@
   <!-- Choice = Restrict the allowed choices -->
   <xsl:template match="choice">
 
-    <marc:propertyChoiceTemplate>
-      <xsl:apply-templates />
-    </marc:propertyChoiceTemplate>
+    <xsl:apply-templates />
     <marc:validationInstruction>
       <marc:where operation="XOR">
         <xsl:for-each select="element">

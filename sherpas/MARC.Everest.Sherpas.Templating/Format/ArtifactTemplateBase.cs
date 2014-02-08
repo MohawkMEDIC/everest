@@ -29,8 +29,8 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// <summary>
         /// Gets or sets the identifier for the template
         /// </summary>
-        [XmlAttribute("id")]
-        public String Id { get; set; }
+        [XmlElement("id")]
+        public List<String> Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name

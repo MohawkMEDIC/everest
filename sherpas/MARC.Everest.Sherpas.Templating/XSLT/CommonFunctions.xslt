@@ -29,9 +29,12 @@
     
     public String CleanElementName(String name)
     {
-      if(name.Contains(":"))
-        return name.Substring(name.IndexOf(":") + 1);
-      return name;
+      String retVal = name;
+      if(retVal.Contains(":"))
+        retVal = retVal.Substring(retVal.IndexOf(":") + 1);
+      if(retVal.Contains("["))
+        retVal = retVal.Substring(0, retVal.IndexOf("["));
+      return retVal;
     }
     
     public String GetBaseClass(string classification)
@@ -73,7 +76,7 @@
         string retVal = original;
         foreach (char c in original)
         {
-            Regex validChars = new Regex("[A-Za-z0-9_/]");
+            Regex validChars = new Regex("[A-Za-z0-9_]");
             if (!validChars.IsMatch(c.ToString()))
                 retVal = retVal.Replace(c.ToString(), "");
         }

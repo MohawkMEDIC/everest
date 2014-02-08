@@ -11,6 +11,7 @@ using System.Reflection;
 using MARC.Everest.Sherpas.Templating.Binder;
 using System.Xml.Serialization;
 using System.CodeDom;
+using MARC.Everest.Sherpas.Templating.Renderer.CS;
 
 namespace sherptc
 {
@@ -46,11 +47,13 @@ namespace sherptc
                 // Now load
                 Console.Out.WriteLineIf(parameters.Verbose, "Loading template files into template project...");
                 TemplateProjectDefinition compileTemplate = new TemplateProjectDefinition();
+
                 foreach (var s in parameters.Template)
                 {
                     Console.Out.WriteLineIf(parameters.Verbose, "\t{0}", Path.GetFileNameWithoutExtension(s));
                     compileTemplate.Merge(loader.LoadTemplate(s));
                 }
+                compileTemplate.ProjectInfo.AssemblyRef = asm.FullName;
 
                 // Now compile or normalize the template ... I.e. bind them
                 Console.Out.WriteLineIf(parameters.Verbose, "Binding template project to assembly '{0}'...", asm.GetName().Name);
@@ -68,6 +71,13 @@ namespace sherptc
                 // Save bound template?
                 if (!String.IsNullOrEmpty(parameters.SaveTpl))
                     compileTemplate.Save(parameters.SaveTpl);
+
+                // Render
+                if (String.IsNullOrEmpty(parameters.OutputFile))
+                    parameters.OutputFile = Path.GetFileNameWithoutExtension(parameters.Template[0]) + ".cs";
+
+                CodeDomRenderer renderer = new CodeDomRenderer();
+                renderer.Render(compileTemplate, parameters.OutputFile);
             }
             catch (Exception e)
             {

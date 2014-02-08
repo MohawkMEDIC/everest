@@ -54,7 +54,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer
         /// <summary>
         /// Get the artifact binder
         /// </summary>
-        public IArtifactRenderer GetBinder()
+        public IArtifactRenderer GetRenderer()
         {
             if (this.Artifact == null)
                 throw new ArgumentNullException(String.Empty, "Artifact must not be null!");

@@ -46,7 +46,8 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                 throw new InvalidOperationException("Cannot have ClassTemplates which are not bound to a physical type");
             // Bind properties
             Trace.TraceInformation("Processing Contents");
-            foreach (var tpl in classTemplate.Templates)
+            var tplColl = new List<PropertyTemplateContainer>(classTemplate.Templates);
+            foreach(var tpl in tplColl)
             {
                 BindingContext childContext = new BindingContext(context, tpl);
                 var binder = childContext.GetBinder();
