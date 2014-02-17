@@ -62,7 +62,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             if(instance.Translation != null)
                 foreach (var tx in instance.Translation)
                 {
-                    s.WriteStartElement("translation", "urn:hl7-org:v3");
+                    s.WriteStartElement("translation", null);
                     var hostResult = this.Host.Graph(s, tx);
                     result.Code = hostResult.Code;
                     result.AddResultDetail(hostResult.Details);

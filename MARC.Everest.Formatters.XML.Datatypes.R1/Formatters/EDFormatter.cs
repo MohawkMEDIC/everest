@@ -85,14 +85,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (instance_ed.Reference != null)
             {
                 TELFormatter refFormatter = new TELFormatter();
-                s.WriteStartElement("reference", "urn:hl7-org:v3");
+                s.WriteStartElement("reference", null);
                 refFormatter.Graph(s, instance_ed.Reference, result);
                 s.WriteEndElement();
             }
             if (instance_ed.Thumbnail != null)
             {
                 EDFormatter thumbFormatter = new EDFormatter();
-                s.WriteStartElement("thumbnail", "urn:hl7-org:v3");
+                s.WriteStartElement("thumbnail", null);
                 thumbFormatter.Graph(s, instance_ed.Thumbnail, result);
                 s.WriteEndElement();
             }

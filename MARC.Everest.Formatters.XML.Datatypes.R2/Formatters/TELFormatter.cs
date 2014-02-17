@@ -65,7 +65,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // format elements
             if (tel.UseablePeriod != null)
             {
-                s.WriteStartElement("useablePeriod", "urn:hl7-org:v3");
+                s.WriteStartElement("useablePeriod", null);
                 var hostResult = this.Host.Graph(s, tel.UseablePeriod);
                 result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement();

@@ -67,7 +67,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Elements
             if (instance_tel.UseablePeriod != null)
             {
-                s.WriteStartElement("useablePeriod", "urn:hl7-org:v3");
+                s.WriteStartElement("useablePeriod", null);
                 GTSFormatter formatterHelper = new GTSFormatter();
                 formatterHelper.Host = this.Host;
                 formatterHelper.Graph(s, instance_tel.UseablePeriod, result);

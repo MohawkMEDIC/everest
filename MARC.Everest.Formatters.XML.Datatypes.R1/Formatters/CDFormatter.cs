@@ -55,7 +55,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             {
                 foreach (IGraphable ig in instance_ics.Qualifier)
                 {
-                    s.WriteStartElement("qualifier", "urn:hl7-org:v3");
+                    s.WriteStartElement("qualifier", null);
                     var hostResult = Host.Graph(s, ig);
                     result.AddResultDetail(hostResult.Details);
                     result.Code = hostResult.Code;

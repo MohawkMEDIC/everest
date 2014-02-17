@@ -61,7 +61,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (instance_ics.OriginalText != null) // Original Text
             {
                 EDFormatter edFormatter = new EDFormatter();
-                s.WriteStartElement("originalText", "urn:hl7-org:v3");
+                s.WriteStartElement("originalText", null);
                 edFormatter.Graph(s, instance_ics.OriginalText, result);
                 s.WriteEndElement();
             }

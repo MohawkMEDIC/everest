@@ -39,6 +39,7 @@ namespace MARC.Everest.Attributes
             this.MaxOccurs = 1;
             this.MinLength = 0;
             this.MaxLength = Int32.MaxValue;
+            this.NamespaceUri = "urn:hl7-org:v3";
         }
 
         /// <summary>
@@ -86,6 +87,10 @@ namespace MARC.Everest.Attributes
             Optional
         }
 
+        /// <summary>
+        /// Gets or sets the namespace of URI of the property
+        /// </summary>
+        public string NamespaceUri { get; set; }
 
         /// <summary>
         /// Gets or sets an identifier of a value set to which valid codes are members.

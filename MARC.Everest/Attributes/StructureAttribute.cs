@@ -30,6 +30,15 @@ namespace MARC.Everest.Attributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum, AllowMultiple = false)]
     public sealed class StructureAttribute : NamedAttribute
     {
+
+        /// <summary>
+        /// Namespace uri
+        /// </summary>
+        public StructureAttribute()
+        {
+            this.NamespaceUri = "urn:hl7-org:v3";
+        }
+
         /// <summary>
         /// Identifies the type of structures that can be represented in the RMIM class
         /// </summary>
@@ -64,6 +73,11 @@ namespace MARC.Everest.Attributes
             /// </summary>
             CodeSystem
         }
+
+        /// <summary>
+        /// Gets or sets the namespace of this data type
+        /// </summary>
+        public string NamespaceUri { get; set; }
 
         /// <summary>
         /// Identifies the type of structure this represents.

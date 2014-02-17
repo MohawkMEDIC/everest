@@ -83,7 +83,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             while (enumerator.Current != null)
             {
                 if (count != 0) // Not the first element, write the element name again
-                    s.WriteStartElement(currentElementName, "urn:hl7-org:v3");
+                    s.WriteStartElement(currentElementName, null);
 
                 // JF: Output XSI:Type
                 if (GenericArguments != null && !enumerator.Current.GetType().Equals(GenericArguments[0]))

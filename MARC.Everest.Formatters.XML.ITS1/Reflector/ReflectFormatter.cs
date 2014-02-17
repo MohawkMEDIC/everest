@@ -72,7 +72,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             if (structureAttribute.StructureType == StructureAttribute.StructureAttributeType.Interaction)
             {
                 isEntryPoint = true;
-                s.WriteStartElement(structureAttribute.Name, "urn:hl7-org:v3");
+                s.WriteStartElement(structureAttribute.Name, structureAttribute.NamespaceUri);
                 s.WriteAttributeString("ITSVersion","XML_1.0"); // Add ITS version
                 s.WriteAttributeString("xmlns", "xsi", null, XmlIts1Formatter.NS_XSI);
             }
@@ -81,7 +81,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 isEntryPoint = true;
                 if (isEntryPoint)
                 {
-                    s.WriteStartElement(structureAttribute.Name, "urn:hl7-org:v3");
+                    s.WriteStartElement(structureAttribute.Name, structureAttribute.NamespaceUri);
                     s.WriteAttributeString("xmlns", "xsi", null, XmlIts1Formatter.NS_XSI);
                 }
             }
@@ -176,13 +176,13 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                                 // Ensure the data is not empty
                                 if (instance is IColl && (instance as IColl).IsEmpty && (instance as IImplementsNullFlavor).NullFlavor == null)
                                     continue;
-                                Host.WriteElementUtil(s, pa.Name, instance as IGraphable, pi.PropertyType, context, resultContext);
+                                Host.WriteElementUtil(s, pa.NamespaceUri, pa.Name, instance as IGraphable, pi.PropertyType, context, resultContext);
                             }
                             else if (instance is ICollection)
                             {
                                 Type genType = pi.PropertyType.GetGenericArguments()[0];
                                 foreach (object itm in (instance as ICollection))
-                                    Host.WriteElementUtil(s, pa.Name, itm as IGraphable, genType, context, resultContext);
+                                    Host.WriteElementUtil(s, pa.NamespaceUri, pa.Name, itm as IGraphable, genType, context, resultContext);
                             }
                             else
                                 s.WriteElementString(pa.Name, instance.ToString());
@@ -234,11 +234,11 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     if (formatAs == null)
                         resultContext.AddResultDetail(new NotSupportedChoiceResultDetail(ResultDetailType.Error, String.Format("Type {0} is not a valid choice according to available choice elements and won't be formatted", instance.GetType()), s.ToString(), null));
                     else if (instance.GetType().GetInterface("MARC.Everest.Interfaces.IGraphable", false) != null) // Non Graphable
-                        Host.WriteElementUtil(s, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.Type, context, resultContext);
+                        Host.WriteElementUtil(s, formatAs.NamespaceUri, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.Type, context, resultContext);
                     else if (instance.GetType().GetInterface("System.Collections.IEnumerable", false) != null) // List
-                        foreach (MARC.Everest.Interfaces.IGraphable ig in instance as IEnumerable) { Host.WriteElementUtil(s, formatAs.Name, ig, instance.GetType(), context, resultContext); }
+                        foreach (MARC.Everest.Interfaces.IGraphable ig in instance as IEnumerable) { Host.WriteElementUtil(s, formatAs.NamespaceUri, formatAs.Name, ig, instance.GetType(), context, resultContext); }
                     else // Not recognized
-                        s.WriteElementString(formatAs.Name, "urn:hl7-org:v3", instance.ToString());
+                        s.WriteElementString(formatAs.Name, formatAs.NamespaceUri, instance.ToString());
 
                 }
             }
@@ -451,7 +451,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
 
                     // Cannot deserialize this
                     if (pa.Type == null && pi.PropertyType == typeof(System.Object))
-                        resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, pi.Name, "urn:hl7-org:v3", s.ToString(), null));
+                        resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, pi.Name, pa.NamespaceUri, s.ToString(), null));
                     // Simple deserialization if PA type has IGraphable or PI type has IGraphable and PA type not specified
                     else if (pi.GetSetMethod() != null &&
                         (pa.Type != null && pa.Type.GetInterface(typeof(IGraphable).FullName, false) != null) ||

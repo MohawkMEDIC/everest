@@ -57,7 +57,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Write out the original text first
             if (originalText.OriginalText != null)
             {
-                s.WriteStartElement("originalText", "urn:hl7-org:v3");
+                s.WriteStartElement("originalText", null);
                 var hostResult = this.Host.Graph(s, originalText.OriginalText);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -67,7 +67,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Now the terms
             foreach (var term in (o as IEnumerable))
             {
-                s.WriteStartElement("term", "urn:hl7-org:v3");
+                s.WriteStartElement("term", null);
 
                 var hostResult = this.Host.Graph(s, term as IGraphable);
                 result.Code = hostResult.Code;
