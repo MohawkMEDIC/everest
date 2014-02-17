@@ -1212,7 +1212,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <summary>
         /// Parse XSI type name
         /// </summary>
-        public Type ParseXSITypeName(string xsiTypeName)
+        public override Type ParseXSITypeName(string xsiTypeName)
         {
 
             // Is there an XSITypeName map that already exists for this type?
@@ -1267,7 +1267,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <summary>
         /// Creates an XSI:TYPE attribute that is friendly for RMIM structures
         /// </summary>
-        public string CreateXSITypeName(Type type)
+        public virtual string CreateXSITypeName(Type type)
         {
             return this.CreateXSITypeName(type, null);
         }

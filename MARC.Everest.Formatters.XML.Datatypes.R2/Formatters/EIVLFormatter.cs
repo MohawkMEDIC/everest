@@ -67,7 +67,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Original text
             if (originalTextValue != null)
             {
-                s.WriteStartElement("originalText", null);
+                s.WriteStartElement("originalText", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, originalTextValue as IGraphable);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -76,7 +76,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Valid combinations
             if (offsetValue != null)
             {
-                s.WriteStartElement("offset", null);
+                s.WriteStartElement("offset", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, offsetValue as IGraphable);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);

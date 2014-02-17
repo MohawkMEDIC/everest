@@ -59,14 +59,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Write elements
             if (eventValue != null)
             {
-                s.WriteStartElement("event", null);
+                s.WriteStartElement("event", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, (IGraphable)eventValue);
                 result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement();
             }
             if (offsetValue != null)
             {
-                s.WriteStartElement("offset", null);
+                s.WriteStartElement("offset", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, (IGraphable)offsetValue);
                 result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement();

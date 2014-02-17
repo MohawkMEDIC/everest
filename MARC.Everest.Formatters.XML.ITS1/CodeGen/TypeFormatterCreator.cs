@@ -261,7 +261,12 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             CodeStatementCollection methodBodyEle = new CodeStatementCollection(), methodBodyAtt = new CodeStatementCollection();
             methodBodyAtt.Add(new CodeSnippetExpression("if(o == null) throw new System.ArgumentNullException(\"o\")"));
             methodBodyAtt.Add(new CodeSnippetExpression(String.Format("if(instance == null) throw new System.ArgumentException(System.String.Format(\"Could not cast type '{{0}}' to '{0}'!\", o.GetType().FullName))", trefTypeReference)));
-            methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance.NullFlavor != null"));
+
+            if(forType.GetProperty("NullFlavor") != null)
+                methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance.NullFlavor != null"));
+            else
+                methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance != null"));
+
             methodBodyAtt.Add(new CodeSnippetStatement("bool suppressNull = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressNullEnforcement) != 0;"));
             methodBodyAtt.Add(new CodeSnippetStatement("bool suppressXsiNil = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressXsiNil) != 0;"));
             methodBodyAtt.Add(new CodeSnippetStatement("bool alwaysCheckForOverrides = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.AlwaysCheckForOverrides) != 0;"));
@@ -321,7 +326,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
                     // Is the instance's null flavor set?
                     // Remarks: We do this way because we still need to write the null flavor out even if the  null flavor
-                    if (pi.Name != "NullFlavor" && forType.GetProperty("NullFlavor") != null)
+                    if (pi.Name != "NullFlavor")
                     {
                         if (propertyAttribute.PropertyType == PropertyAttribute.AttributeAttributeType.Structural)
                             methodBody.Add(new CodeSnippetStatement(String.Format("if(instance.{0} != null && (isInstanceNull && suppressNull || !isInstanceNull)) {{\r\n", pi.Name)));

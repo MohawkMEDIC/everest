@@ -79,7 +79,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Original text
             if (originalTextValue != null)
             {
-                s.WriteStartElement("originalText", null);
+                s.WriteStartElement("originalText", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, originalTextValue as IGraphable);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(result.Details);
@@ -89,7 +89,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Phase
             if (phaseValue != null)
             {
-                s.WriteStartElement("phase", null);
+                s.WriteStartElement("phase", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, phaseValue as IGraphable);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(result.Details);
@@ -99,7 +99,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Frequency or period
             if(frequencyValue != null)
             {
-                s.WriteStartElement("frequency", null);
+                s.WriteStartElement("frequency", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, frequencyValue as IGraphable);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(result.Details);
@@ -107,7 +107,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             }
             else if (periodValue != null)
             {
-                s.WriteStartElement("period", null);
+                s.WriteStartElement("period", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, periodValue as IGraphable);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(result.Details);

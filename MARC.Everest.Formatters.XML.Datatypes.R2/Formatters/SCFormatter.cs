@@ -48,7 +48,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Code 
             if (instance.Code != null)
             {
-                s.WriteStartElement("code", null);
+                s.WriteStartElement("code", "urn:hl7-org:v3");
 
                 // Code
                 var hostResult = this.Host.Graph(s, instance.Code);

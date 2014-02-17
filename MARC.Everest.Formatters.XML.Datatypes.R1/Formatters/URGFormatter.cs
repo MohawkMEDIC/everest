@@ -77,12 +77,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // an IVXB<T> (i.e. no low/high closed)
             if (lowValue != null && highValue != null) // low & high
             {
-                s.WriteStartElement("low", null);
+                s.WriteStartElement("low", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, (IGraphable)lowValue);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement();
-                s.WriteStartElement("high", null);
+                s.WriteStartElement("high", "urn:hl7-org:v3");
                 hostResult = Host.Graph(s, (IGraphable)highValue);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -99,13 +99,13 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
             else if (lowValue != null && widthValue != null) // Low & width
             {
-                s.WriteStartElement("low", null);
+                s.WriteStartElement("low", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, (IGraphable)lowValue);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
 
                 s.WriteEndElement();
-                s.WriteStartElement("width", null);
+                s.WriteStartElement("width", "urn:hl7-org:v3");
                 hostResult = Host.Graph(s, (IGraphable)widthValue);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -123,13 +123,13 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
             else if (highValue != null && widthValue != null) // high & width
             {
-                s.WriteStartElement("width", null);
+                s.WriteStartElement("width", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, (IGraphable)widthValue);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
 
                 s.WriteEndElement();
-                s.WriteStartElement("high", null);
+                s.WriteStartElement("high", "urn:hl7-org:v3");
                 hostResult = Host.Graph(s, (IGraphable)highValue);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -147,7 +147,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
             else if (lowValue != null) // low only
             {
-                s.WriteStartElement("low", null);
+                s.WriteStartElement("low", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, (IGraphable)lowValue);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -155,7 +155,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
             else if (highValue != null) // High only
             {
-                s.WriteStartElement("high", null);
+                s.WriteStartElement("high", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, (IGraphable)highValue);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -164,7 +164,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
             else if (widthValue != null) // width only
             {
-                s.WriteStartElement("width", null);
+                s.WriteStartElement("width", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, (IGraphable)widthValue);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);

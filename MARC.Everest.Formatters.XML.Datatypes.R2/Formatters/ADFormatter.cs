@@ -62,7 +62,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             if(instance.Part != null)
                 foreach (var part in instance.Part)
                 {
-                    s.WriteStartElement("part", null);
+                    s.WriteStartElement("part", "urn:hl7-org:v3");
                     ADXPFormatter adFormatter = new ADXPFormatter();
                     adFormatter.Graph(s, part, result);
                     s.WriteEndElement();
@@ -71,7 +71,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Useable period
             if (instance.UseablePeriod != null)
             {
-                s.WriteStartElement("useablePeriod", null);
+                s.WriteStartElement("useablePeriod", "urn:hl7-org:v3");
                 GTSFormatter gtsFormatter = new GTSFormatter();
                 gtsFormatter.Host = this.Host;
                 gtsFormatter.Graph(s, instance.UseablePeriod, result);

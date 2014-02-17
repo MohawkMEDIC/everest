@@ -74,12 +74,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
                         s.WriteAttributeString("value", textEncoding.GetString(instance_ed.Data));
                         break;
                     case EncapsulatedDataRepresentation.B64:
-                        s.WriteStartElement("data", null);
+                        s.WriteStartElement("data", "urn:hl7-org:v3");
                         s.WriteBase64(instance_ed.Data, 0, instance_ed.Data.Length);
                         s.WriteEndElement();// data
                         break;
                     case EncapsulatedDataRepresentation.XML:
-                        s.WriteStartElement("xml", null);
+                        s.WriteStartElement("xml", "urn:hl7-org:v3");
                         s.WriteRaw(instance_ed.XmlData.OuterXml);
                         s.WriteEndElement(); // xml
                         break;
@@ -88,7 +88,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Elements
             if (instance_ed.Reference != null)
             {
-                s.WriteStartElement("reference", null);
+                s.WriteStartElement("reference", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, instance_ed.Reference);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -96,13 +96,13 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             }
             if (instance_ed.IntegrityCheck != null && instance_ed.IntegrityCheck.Length > 0)
             {
-                s.WriteStartElement("integrityCheck", null);
+                s.WriteStartElement("integrityCheck", "urn:hl7-org:v3");
                 s.WriteBase64(instance_ed.IntegrityCheck, 0, instance_ed.IntegrityCheck.Length);
                 s.WriteEndElement(); // intcheck
             }
             if (instance_ed.Thumbnail != null)
             {
-                s.WriteStartElement("thumbnail", null);
+                s.WriteStartElement("thumbnail", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, instance_ed.Thumbnail);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -111,7 +111,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             }
             if (instance_ed.Description != null)
             {
-                s.WriteStartElement("description", null);
+                s.WriteStartElement("description", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, instance_ed.Description);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -121,7 +121,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             {
                 foreach (var trans in instance_ed.Translation)
                 {
-                    s.WriteStartElement("translation", null);
+                    s.WriteStartElement("translation", "urn:hl7-org:v3");
                     var hostResult = Host.Graph(s, trans);
                     result.Code = hostResult.Code;
                     result.AddResultDetail(hostResult.Details);

@@ -69,6 +69,11 @@ namespace MARC.Everest.Xml
             return CurrentPath;
         }
 
+        /// <summary>
+        /// Identifies the default namespace to emit when no namespace is specified for Element
+        /// </summary>
+        public String DefaultElementNamespaceUri { get; set; }
+
         //DOC: Documentation Required
         /// <summary>
         /// 
@@ -321,6 +326,9 @@ namespace MARC.Everest.Xml
         /// <param name="ns"></param>
         public override void WriteStartElement(string prefix, string localName, string ns)
         {
+            if (ns == null)
+                ns = this.DefaultElementNamespaceUri;
+
             m_InnerWriter.WriteStartElement(prefix, localName, ns);
             m_NameStack.Push(new XmlQualifiedName(localName, ns));
         }

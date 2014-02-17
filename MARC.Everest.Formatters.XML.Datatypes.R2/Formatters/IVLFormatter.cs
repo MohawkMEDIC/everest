@@ -71,7 +71,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Original text
             if (originalTextValue != null)
             {
-                s.WriteStartElement("originalText", null);
+                s.WriteStartElement("originalText", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, originalTextValue as IGraphable);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -82,7 +82,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Valid combinations
             if (lowValue != null)
             {
-                s.WriteStartElement("low", null);
+                s.WriteStartElement("low", "urn:hl7-org:v3");
 
                 // Low value XSI?
                 if (lowValue.GetType() != GenericArguments[0])
@@ -94,7 +94,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
                 s.WriteEndElement();
                 if (highValue != null)
                 {
-                    s.WriteStartElement("high", null);
+                    s.WriteStartElement("high", "urn:hl7-org:v3");
 
                     if (highValue.GetType() != GenericArguments[0])
                         s.WriteAttributeString("xsi", "type", DatatypeR2Formatter.NS_XSI, DatatypeR2Formatter.CreateXSITypeName(highValue.GetType()));
@@ -108,7 +108,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             }
             else if (highValue != null)
             {
-                s.WriteStartElement("high", null);
+                s.WriteStartElement("high", "urn:hl7-org:v3");
 
                 // High value XSI
                 if (highValue.GetType() != GenericArguments[0])
@@ -122,14 +122,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             }
             if (widthValue != null && ((lowValue == null) ^ (highValue == null) || lowValue == null && highValue == null ))
             {
-                s.WriteStartElement("width", null);
+                s.WriteStartElement("width", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, widthValue as IGraphable);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement();
                 if (valueValue != null)
                 {
-                    s.WriteStartElement("any", null);
+                    s.WriteStartElement("any", "urn:hl7-org:v3");
 
                     // Value value xsi type
                     if (valueValue.GetType() != GenericArguments[0])
@@ -144,7 +144,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             }
             else if (valueValue != null)
             {
-                s.WriteStartElement("any", null);
+                s.WriteStartElement("any", "urn:hl7-org:v3");
 
                 // Value value xsi type
                 if (valueValue.GetType() != GenericArguments[0])
