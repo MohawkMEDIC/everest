@@ -236,7 +236,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
         /// </summary>
         private IFormatterGraphResult WriteValueAsElement(XmlWriter s, String element, IGraphable value, Type expectedType, params KeyValuePair<String, String>[] attrs)
         {
-            s.WriteStartElement(element, "urn:hl7-org:v3");
+            s.WriteStartElement(element, null);
 
             // Value value xsi type
             if (expectedType != null && value.GetType() != expectedType)
@@ -379,7 +379,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 using (XmlReader xr = XmlReader.Create(leftOvers))
                 {
                     xr.MoveToContent();
-                    if (xr.AttributeCount > 1 || !xr.IsEmptyElement)
+                    if (xr.AttributeCount > 0 || !xr.IsEmptyElement)
                     {
                         bool isNotEmpty = !xr.IsEmptyElement;
                         if (xr.MoveToFirstAttribute())

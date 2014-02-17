@@ -888,7 +888,7 @@ namespace MARC.Everest.Test
             StringWriter sw = new StringWriter();
             DatatypeFormatter fmtr = new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.Canadian };
             XmlStateWriter xw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 }));
-            xw.WriteStartElement("test");
+            xw.WriteStartElement("test", "urn:hl7-org:v3");
             fmtr.Graph(xw, aValue);
             xw.WriteEndElement(); // comp
             xw.Flush();

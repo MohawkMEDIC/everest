@@ -53,7 +53,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             {
                 foreach (IGraphable ig in instance_ics.Translation)
                 {
-                    s.WriteStartElement("translation", "urn:hl7-org:v3");
+                    s.WriteStartElement("translation", null);
                     var hostResult = Host.Graph(s, ig);
                     result.Code = hostResult.Code;
                     result.AddResultDetail(hostResult.Details);

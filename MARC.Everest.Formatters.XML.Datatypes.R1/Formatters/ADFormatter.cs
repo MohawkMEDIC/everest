@@ -98,7 +98,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Null flavor
             if (instance == null || instance.NullFlavor != null)
                 return;
-
+            
             // use
             if (instance.Use != null)
                 s.WriteAttributeString("use", Util.ToWireFormat(instance.Use));
@@ -111,7 +111,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 foreach (ADXP part in instance.Part)
                 {
                     if (mapping.ContainsKey(part.Type ?? AddressPartType.AddressLine))
-                        s.WriteStartElement(mapping[part.Type ?? AddressPartType.AddressLine], "urn:hl7-org:v3");
+                        s.WriteStartElement(mapping[part.Type ?? AddressPartType.AddressLine], null);
                     else
                         throw new MessageValidationException(string.Format("Can't represent address part '{0}' in datatypes R1 at '{1}'", part.Type, (s as XmlStateWriter).CurrentPath));
 
@@ -124,7 +124,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Useable period
             if (instance.UseablePeriod != null)
             {
-                    s.WriteStartElement("useablePeriod", "urn:hl7-org:v3");
+                    s.WriteStartElement("useablePeriod", null);
                     GTSFormatter gtsFormatter = new GTSFormatter();
                     gtsFormatter.Host = this.Host;
                     gtsFormatter.Graph(s, instance.UseablePeriod, result);

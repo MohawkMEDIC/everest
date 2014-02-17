@@ -56,7 +56,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 int count = 0;
                 foreach (var component in componentValue)
                 {
-                    s.WriteStartElement("comp", "urn:hl7-org:v3");
+                    s.WriteStartElement("comp", null);
                     object value = component;
                     var compType = component.GetType();
 

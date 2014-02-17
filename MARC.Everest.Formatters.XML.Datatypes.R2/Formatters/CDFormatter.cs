@@ -322,7 +322,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Display name
             if (displayName != null)
             {
-                s.WriteStartElement("displayName", "urn:hl7-org:v3");
+                s.WriteStartElement("displayName", null);
                 var hostResult = this.Host.Graph(s, displayName as IGraphable);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -332,7 +332,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Original text
             if (cv.OriginalText != null)
             {
-                s.WriteStartElement("originalText", "urn:hl7-org:v3");
+                s.WriteStartElement("originalText", null);
                 var hostResult = this.Host.Graph(s, cv.OriginalText);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -343,7 +343,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             if(ce != null && ce.Translation != null)
                 foreach (var translation in ce.Translation)
                 {
-                    s.WriteStartElement("translation", "urn:hl7-org:v3");
+                    s.WriteStartElement("translation", null);
                     var hostResult = this.Host.Graph(s, translation);
                     result.Code = hostResult.Code;
                     result.AddResultDetail(hostResult.Details);

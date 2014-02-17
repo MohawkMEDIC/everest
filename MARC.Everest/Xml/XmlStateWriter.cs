@@ -25,6 +25,8 @@ using System.Xml;
 
 namespace MARC.Everest.Xml
 {
+
+
     /// <summary>
     /// A <see cref="T:System.Xml.XmlWriter"/> that tracks its state
     /// </summary>

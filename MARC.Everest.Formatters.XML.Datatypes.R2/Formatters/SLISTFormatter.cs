@@ -54,7 +54,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Origin
             if (instance.Origin != null)
             {
-                s.WriteStartElement("origin", "urn:hl7-org:v3");
+                s.WriteStartElement("origin", null);
                 var hostResult = this.Host.Graph(s, instance.Origin as IGraphable);
                 result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement();
@@ -62,7 +62,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Scaling
             if (instance.Scale != null)
             {
-                s.WriteStartElement("scale", "urn:hl7-org:v3");
+                s.WriteStartElement("scale", null);
 
                 // Output xsi type
                 s.WriteAttributeString("xsi", "type", DatatypeR2Formatter.NS_XSI, DatatypeR2Formatter.CreateXSITypeName(instance.Scale.GetType()));
@@ -76,7 +76,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             {
                 foreach (var itm in instance.Items)
                 {
-                    s.WriteStartElement("digit", "urn:hl7-org:v3");
+                    s.WriteStartElement("digit", null);
                     var hostResult = this.Host.Graph(s, itm);
                     result.AddResultDetail(hostResult.Details);
                     s.WriteEndElement();

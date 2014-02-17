@@ -128,7 +128,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                         var prt = part.Clone() as ENXP;
                         prt.Type = pt;
                         prt.Qualifier = qualifiers;
-                        s.WriteStartElement(mapping[pt], "urn:hl7-org:v3");
+                        s.WriteStartElement(mapping[pt], null);
                         ENXPFormatter enFormatter = new ENXPFormatter();
                         enFormatter.Graph(s, prt, result);
                         s.WriteEndElement();
@@ -144,7 +144,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (instance.ValidTimeLow != null || instance.ValidTimeHigh != null)
             {
                 IVL<TS> validTime = new IVL<TS>(instance.ValidTimeLow, instance.ValidTimeHigh);
-                s.WriteStartElement("validTime", "urn:hl7-org:v3");
+                s.WriteStartElement("validTime", null);
                 var hostResult = this.Host.Graph(s, validTime);
                 result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement(); // valid time

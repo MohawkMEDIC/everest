@@ -551,8 +551,8 @@ namespace MARC.Everest.Formatters.XML.ITS1
                     r.Read();
 
             // Detect if we can parse this...
-            if (r.NamespaceURI != "urn:hl7-org:v3")
-                throw new XmlException(string.Format("Can't parse '{0}' in namespace '{1}'. The data does not appear to be an HL7v3 instance", r.LocalName, r.NamespaceURI), null);
+            //if (r.NamespaceURI != "urn:hl7-org:v3")
+            //    throw new XmlException(string.Format("Can't parse '{0}' in namespace '{1}'. The data does not appear to be an HL7v3 instance", r.LocalName, r.NamespaceURI), null);
 
             // Do we have a formatter for the object
             Type mappedType;
@@ -562,7 +562,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
             {
                 object[] structureAttribute = t.GetCustomAttributes(typeof(StructureAttribute), true);
                 if (structureAttribute.Length > 0 && ((structureAttribute[0] as StructureAttribute).StructureType == StructureAttribute.StructureAttributeType.Interaction || (structureAttribute[0] as StructureAttribute).IsEntryPoint)
-                    && (structureAttribute[0] as StructureAttribute).Name == r.LocalName)
+                    && (structureAttribute[0] as StructureAttribute).Name == r.LocalName && (structureAttribute[0] as StructureAttribute).NamespaceUri == r.NamespaceURI)
                     return true;
                 return false;
             };
@@ -870,15 +870,15 @@ namespace MARC.Everest.Formatters.XML.ITS1
                     r.Read();
 
             // Detect if we can parse this...
-            if (r.NamespaceURI != "urn:hl7-org:v3")
-                throw new XmlException(string.Format("Can't parse '{0}' in namespace '{1}'. The data does not appear to be an HL7v3 instance", r.LocalName, r.NamespaceURI), null);
+            //if (r.NamespaceURI != "urn:hl7-org:v3")
+            //    throw new XmlException(string.Format("Can't parse '{0}' in namespace '{1}'. The data does not appear to be an HL7v3 instance", r.LocalName, r.NamespaceURI), null);
 
             // Predicate will find the mapped type for us
             Predicate<Type> typeComparator = delegate(Type t)
             {
                 object[] structureAttribute = t.GetCustomAttributes(typeof(StructureAttribute), true);
                 if (structureAttribute.Length > 0 && ((structureAttribute[0] as StructureAttribute).StructureType == StructureAttribute.StructureAttributeType.Interaction || (structureAttribute[0] as StructureAttribute).IsEntryPoint)
-                    && (structureAttribute[0] as StructureAttribute).Name == r.LocalName)
+                    && (structureAttribute[0] as StructureAttribute).Name == r.LocalName && (structureAttribute[0] as StructureAttribute).NamespaceUri == r.NamespaceURI)
                     return true;
                 return false;
             };
@@ -1000,7 +1000,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// Utility function for helper formatters
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual void WriteElementUtil(XmlWriter s, string elementName, IGraphable g, Type propType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
+        public virtual void WriteElementUtil(XmlWriter s, string namespaceUri, string elementName, IGraphable g, Type propType, IGraphable context, XmlIts1FormatterGraphResult resultContext)
         {
             ThrowIfDisposed();
 
@@ -1014,7 +1014,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 g = (g as INormalizable).Normalize();
 
             // Write start of element
-            s.WriteStartElement(elementName, "urn:hl7-org:v3");
+            s.WriteStartElement(elementName, namespaceUri);
             
             // JF: Output XSI:Type
             if (!g.GetType().Equals(propType) )
@@ -1307,6 +1307,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
             else
             {
                 StructureAttribute sa = saList[0] as StructureAttribute;
+                
                 // Is the type generic?
                 if (type.IsGenericType) // yes, then first we output the interaction 
                 {

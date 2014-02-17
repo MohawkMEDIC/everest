@@ -53,7 +53,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             IOriginalText originalText = o as IOriginalText;
             if (originalText.OriginalText != null)
             {
-                s.WriteStartElement("originalText", "urn:hl7-org:v3");
+                s.WriteStartElement("originalText", null);
                 var hostResult = this.Host.Graph(s, originalText.OriginalText);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -68,7 +68,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Graph low / hi
             if (lowValue != null)
             {
-                s.WriteStartElement("low", "urn:hl7-org:v3");
+                s.WriteStartElement("low", null);
                 s.WriteAttributeString("xsi", "type", DatatypeR2Formatter.NS_XSI, DatatypeR2Formatter.CreateXSITypeName(lowValue.GetType()));
                 var hostResult = this.Host.Graph(s, lowValue as IGraphable);
                 result.Code = hostResult.Code;
@@ -77,7 +77,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             }
             if (highValue != null)
             {
-                s.WriteStartElement("high", "urn:hl7-org:v3");
+                s.WriteStartElement("high", null);
                 s.WriteAttributeString("xsi", "type", DatatypeR2Formatter.NS_XSI, DatatypeR2Formatter.CreateXSITypeName(lowValue.GetType()));
                 var hostResult = this.Host.Graph(s, highValue as IGraphable);
                 result.Code = hostResult.Code;

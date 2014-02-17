@@ -64,7 +64,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             if(opq.Translation != null && (opq.NullFlavor == null || opq.NullFlavor.Equals(NullFlavor.Derived)))
                 foreach (var trans in opq.Translation)
                 {
-                    s.WriteStartElement("translation", "urn:hl7-org:v3");
+                    s.WriteStartElement("translation", null);
                     
                     // Graph
                     var hostResult = this.Host.Graph(s, trans);
