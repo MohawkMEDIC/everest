@@ -29,8 +29,8 @@ namespace MARC.Everest.Test.Instances
             structureFormatter.ValidateConformance = false;
             structureFormatter.GraphAides.Add(new DatatypeFormatter() { ValidateConformance = false });
             structureFormatter.RegisterXSITypeName("custom:RecordTarget", typeof(RecordTarget));
-            structureFormatter.RegisterXSITypeName("custom:ClinicalDocument", typeof(ClinicalDocument));
-            structureFormatter.RegisterXSITypeName("custom:StructuredBody", typeof(StructuredBody));
+            //structureFormatter.RegisterXSITypeName("custom:ClinicalDocument", typeof(ClinicalDocument));
+            //structureFormatter.RegisterXSITypeName("custom:StructuredBody", typeof(StructuredBody));
             return structureFormatter;
         }
 
