@@ -69,7 +69,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Serialize the numerator
             if (numerator != null)
             {
-                s.WriteStartElement("numerator", null);
+                s.WriteStartElement("numerator", "urn:hl7-org:v3");
 
                 // Write the XSI type
                 string xsiTypeName = DatatypeR2Formatter.CreateXSITypeName(numerator.GetType());
@@ -88,7 +88,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Serialize Denominator
             if (denominator != null)
             {
-                s.WriteStartElement("denominator", null);
+                s.WriteStartElement("denominator", "urn:hl7-org:v3");
 
                 // Write the XSI type
                 string xsiTypeName = DatatypeR2Formatter.CreateXSITypeName(denominator.GetType());

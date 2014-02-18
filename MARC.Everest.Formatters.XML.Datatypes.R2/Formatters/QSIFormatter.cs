@@ -56,7 +56,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Write out the original text first
             if (originalText.OriginalText != null)
             {
-                s.WriteStartElement("originalText", null);
+                s.WriteStartElement("originalText", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, originalText.OriginalText);
                 result.Code = hostResult.Code;
                 result.AddResultDetail(hostResult.Details);
@@ -66,7 +66,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Now the terms
             foreach (var term in (o as IEnumerable))
             {
-                s.WriteStartElement("term", null);
+                s.WriteStartElement("term", "urn:hl7-org:v3");
 
                 
                 // JF: Output XSI:Type

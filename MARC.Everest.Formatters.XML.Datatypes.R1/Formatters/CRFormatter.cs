@@ -62,14 +62,14 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Graph the non-structural elements
             if (nameValue != null)
             {
-                s.WriteStartElement("name");
+                s.WriteStartElement("name", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, nameValue as IGraphable);
                 result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement(); // end name
             }
             if (valueValue != null)
             {
-                s.WriteStartElement("value");
+                s.WriteStartElement("value", "urn:hl7-org:v3");
                 var hostResult = this.Host.Graph(s, valueValue as IGraphable);
                 result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement(); // end value

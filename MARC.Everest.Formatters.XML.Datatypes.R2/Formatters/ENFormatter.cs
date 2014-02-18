@@ -59,7 +59,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Parts
             foreach (var enxp in enInstance.Part)
             {
-                s.WriteStartElement("part", null);
+                s.WriteStartElement("part", "urn:hl7-org:v3");
 
                 // Output the type
                 var hostResult = this.Host.Graph(s, enxp);

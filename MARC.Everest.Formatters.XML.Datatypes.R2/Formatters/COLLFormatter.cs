@@ -56,7 +56,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
                 {
 
                     // Start the item tag
-                    s.WriteStartElement("item", null);
+                    s.WriteStartElement("item", "urn:hl7-org:v3");
 
                     // Output an XSI type if the type does not match the generic parameter
                     if (itm.GetType() != GenericArguments[0])

@@ -25,6 +25,7 @@ using System.Text;
 using System.Xml;
 using System.Diagnostics;
 using System.Globalization;
+using System.ComponentModel;
 
 namespace MARC.Everest.Xml
 {
@@ -34,7 +35,7 @@ namespace MARC.Everest.Xml
     /// <example>
     /// See <see cref="T:MARC.Everest.Xml.XmlStateWriter"/> for an example of using these classes
     /// </example>
-    public class XmlStateReader : XmlReader
+    public class XmlStateReader : XmlReader, IXmlNamespaceResolver
     {
 
         /// <summary>
@@ -43,6 +44,7 @@ namespace MARC.Everest.Xml
         /// <returns></returns>
         public override string ToString()
         {
+            
             return this.CurrentPath;
         }
 
@@ -51,8 +53,8 @@ namespace MARC.Everest.Xml
         private Stack<XmlQualifiedName> nameStack = new Stack<XmlQualifiedName>();
         // Allows formatters to add pseudo attributes that aren't part of the XML instance, but 
         // are added by meta data in the API. Example of using this would be flavors
-        private Dictionary<String, String> fakeAttributes = new Dictionary<string, string>(); 
-
+        private Dictionary<String, String> fakeAttributes = new Dictionary<string, string>();
+      
         //DOC: Documentation Required
         /// <summary>
         /// 
@@ -62,6 +64,10 @@ namespace MARC.Everest.Xml
         public XmlStateReader(XmlReader xr)
         {
             innerReader = xr;
+
+            if (!(xr is IXmlNamespaceResolver))
+                throw new ArgumentException("xr", "XmlReader must implement IXmlNamespaceResolver");
+
             nameStack = new Stack<XmlQualifiedName>(100);
             if (xr.ReadState != ReadState.Initial)
                 nameStack.Push(new XmlQualifiedName(xr.LocalName, xr.NamespaceURI));
@@ -416,5 +422,25 @@ namespace MARC.Everest.Xml
         {
             get { return innerReader.Value; }
         }
+
+        #region IXmlNamespaceResolver Members
+
+        /// <summary>
+        /// Get namespaces in the specified scope
+        /// </summary>
+        public IDictionary<string, string> GetNamespacesInScope(XmlNamespaceScope scope)
+        {
+            return (this.innerReader as IXmlNamespaceResolver).GetNamespacesInScope(scope);
+        }
+
+        /// <summary>
+        /// Not implemented
+        /// </summary>
+        public string LookupPrefix(string namespaceName)
+        {
+            return (this.innerReader as IXmlNamespaceResolver).LookupPrefix(namespaceName);
+        }
+
+        #endregion
     }
 }

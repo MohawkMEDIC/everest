@@ -81,7 +81,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             if (instance.Translation != null)
                 foreach (var trans in instance.Translation)
                 {
-                    s.WriteStartElement("translation", null);
+                    s.WriteStartElement("translation", "urn:hl7-org:v3");
                     PQRFormatter pqrFormatter = new PQRFormatter();
                     pqrFormatter.Graph(s, trans, result);
                     s.WriteEndElement();

@@ -78,7 +78,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             // Write elements
             if (phaseValue != null)
             {
-                s.WriteStartElement("phase", null);
+                s.WriteStartElement("phase", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, (IGraphable)phaseValue);
                 result.AddResultDetail(hostResult.Details);
                 s.WriteEndElement();
@@ -89,7 +89,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 // JF - Frequency is not supported by UV R1
                 if (result.CompatibilityMode == DatatypeFormatterCompatibilityMode.Canadian)
                 {
-                    s.WriteStartElement("frequency", null);
+                    s.WriteStartElement("frequency", "urn:hl7-org:v3");
                     var hostResult = this.Host.Graph(s, (IGraphable)frequencyValue);
                     result.AddResultDetail(hostResult.Details);
                     result.Code = hostResult.Code;
@@ -100,7 +100,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                     RTO<INT, PQ> rto = frequencyValue as RTO<INT, PQ>;
                     periodValue = rto.Denominator / rto.Numerator;
                     result.AddResultDetail(new PropertyValuePropagatedResultDetail(ResultDetailType.Warning, "Frequency", "Period", periodValue, s.ToString()));
-                    s.WriteStartElement("period", null);
+                    s.WriteStartElement("period", "urn:hl7-org:v3");
                     var hostResult = Host.Graph(s, (IGraphable)periodValue);
                     result.AddResultDetail(hostResult.Details);
                     result.Code = hostResult.Code;
@@ -109,7 +109,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
             }
             else if (periodValue != null)
             {
-                s.WriteStartElement("period", null);
+                s.WriteStartElement("period", "urn:hl7-org:v3");
                 var hostResult = Host.Graph(s, (IGraphable)periodValue);
                 result.AddResultDetail(hostResult.Details);
                 result.Code = hostResult.Code;

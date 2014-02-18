@@ -58,26 +58,26 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R2.Formatters
             // Expression
             if (qty.Expression != null)
             {
-                s.WriteStartElement("expression", null);
+                s.WriteStartElement("expression", "urn:hl7-org:v3");
                 this.Host.Graph(s, qty.Expression as IGraphable);
                 s.WriteEndElement();
             }
             if (qty.OriginalText != null)
             {
-                s.WriteStartElement("originalText", null);
+                s.WriteStartElement("originalText", "urn:hl7-org:v3");
                 this.Host.Graph(s, qty.OriginalText as IGraphable);
                 s.WriteEndElement();
             }
             if (qty.NullFlavor == null && qty.Uncertainty != null)
             {
-                s.WriteStartElement("uncertainty", null);
+                s.WriteStartElement("uncertainty", "urn:hl7-org:v3");
                 s.WriteAttributeString("xsi", "type", DatatypeR2Formatter.NS_XSI, DatatypeR2Formatter.CreateXSITypeName(qty.Uncertainty.DataType));
                 this.Host.Graph(s, qty.Uncertainty as IGraphable);
                 s.WriteEndElement();
             }
             if (qty.UncertainRange != null)
             {
-                s.WriteStartElement("uncertainRange", null);
+                s.WriteStartElement("uncertainRange", "urn:hl7-org:v3");
                 this.Host.Graph(s, qty.UncertainRange);
                 s.WriteEndElement();
             }
