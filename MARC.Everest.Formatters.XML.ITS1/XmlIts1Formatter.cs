@@ -1022,26 +1022,28 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 // TODO: This may cause issue when assigning a QSET to an R1 or
                 //       SXPR to R2 instance as the XSI:TYPE will be inappropriately
                 //       assigned.
-                string xsiType = s.LookupPrefix("urn:hl7-org:v3");
-                if (!String.IsNullOrEmpty(xsiType))
-                    xsiType += ":";
 
+                string xsiType = String.Empty;
                 if (typeof(ANY).IsAssignableFrom(g.GetType()))
+                {
+                    xsiType += s.LookupPrefix("urn:hl7-org:v3");
+                    if (!String.IsNullOrEmpty(xsiType))
+                        xsiType += ":";
                     xsiType += Util.CreateXSITypeName(g.GetType());
-                else if(propType != null && g.GetType().Assembly.FullName != propType.Assembly.FullName)
+                }
+                else if (propType != null && g.GetType().Assembly.FullName != propType.Assembly.FullName)
                 {
                     string typeName = this.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null, s as IXmlNamespaceResolver);
 
                     // If there is no different then don't output
                     if (typeName != String.Format("{0}.{1}", this.GetModelName(propType), this.GetStructureName(propType)))
                     {
-                        xsiType += typeName;
 
                         lock (this.m_syncRoot)
                             if (!this.s_typeNameMaps.ContainsKey(typeName))
                                 this.RegisterXSITypeName(typeName, g.GetType());
                     }
-                    xsiType += typeName;
+                    xsiType = typeName;
                 }
                 if(!String.IsNullOrEmpty(xsiType))
                     s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, xsiType);

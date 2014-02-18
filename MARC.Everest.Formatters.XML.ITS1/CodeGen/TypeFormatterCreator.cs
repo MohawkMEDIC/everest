@@ -265,7 +265,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             if(forType.GetProperty("NullFlavor") != null)
                 methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance.NullFlavor != null"));
             else
-                methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance != null"));
+                methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance == null"));
 
             methodBodyAtt.Add(new CodeSnippetStatement("bool suppressNull = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressNullEnforcement) != 0;"));
             methodBodyAtt.Add(new CodeSnippetStatement("bool suppressXsiNil = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressXsiNil) != 0;"));
