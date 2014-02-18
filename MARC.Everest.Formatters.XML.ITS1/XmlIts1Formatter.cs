@@ -1026,7 +1026,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                     s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, Util.CreateXSITypeName(g.GetType()));
                 else if(propType != null && g.GetType().Assembly.FullName != propType.Assembly.FullName)
                 {
-                    string typeName = this.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null);
+                    string typeName = this.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null, s as IXmlNamespaceResolver);
 
                     // If there is no different then don't output
                     if (typeName != String.Format("{0}.{1}", this.GetModelName(propType), this.GetStructureName(propType)))
@@ -1143,14 +1143,14 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 // Is this model / type registered somewhere ?
                 if ((this.Settings & SettingsType.AlwaysCheckForOverrides) != 0 && xsiType == null &&
                     !typeof(ANY).IsAssignableFrom(useType))
-                    xsiType = string.Format("{0}.{1}", this.GetModelName(useType), typeName);
+                    xsiType = this.CreateXSITypeName(useType, interactionContext, r as IXmlNamespaceResolver);
 
                 if (xsiType != null)
                 {
                     if (typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
                         ixsf = this.GetAdjustedFormatter(xsiType); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
                     else
-                        useType = this.ParseXSITypeName(xsiType);
+                        useType = this.ParseXSITypeName(xsiType, r as IXmlNamespaceResolver);
                 }
                 else
                     ixsf = (IXmlStructureFormatter)this.GraphAides.Find(t => t.HandleStructure.Contains(typeName));
@@ -1212,19 +1212,43 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <summary>
         /// Parse XSI type name
         /// </summary>
-        public override Type ParseXSITypeName(string xsiTypeName)
+        public virtual Type ParseXSITypeName(string xsiTypeName)
         {
+            return this.ParseXSITypeName(xsiTypeName, null);
+        }
 
+        /// <summary>
+        /// Parse an xsi:type name
+        /// </summary>
+        private Type ParseXSITypeName(string xsiTypeName, IXmlNamespaceResolver namespaceResolver)
+        {
             // Is there an XSITypeName map that already exists for this type?
             Type retVal = null;
 
             if (this.s_typeNameMaps.TryGetValue(xsiTypeName, out retVal))
                 return retVal;
 
-            // Try to get a type from the assembly
+            // NS Prefix?
+            String[] nsTokens = xsiTypeName.Split(':');
+            string namespaceUri = "urn:hl7-org:v3";
+            if (nsTokens.Length == 2)
+            {
+                xsiTypeName = nsTokens[1];
+                namespaceUri = namespaceResolver.LookupNamespace(nsTokens[0]);
+            }
 
             // Step one, tokenize the parts based on . separator
-            String[] tokens = xsiTypeName.Split('.');
+            String[] tokens = null;
+            if(xsiTypeName.Contains("."))
+                tokens = new String[] {
+                    xsiTypeName.Substring(0, xsiTypeName.LastIndexOf(".") ),
+                    xsiTypeName.Substring(xsiTypeName.LastIndexOf(".") + 1)
+                };
+            else
+                tokens = new string[] { 
+                    "",
+                    xsiTypeName
+                };
 
             // Is the first part an interaction?
             if (tokens.Length == 3)
@@ -1242,7 +1266,8 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 {
                     object[] structureAttribute = t.GetCustomAttributes(typeof(StructureAttribute), true);
                     if (structureAttribute.Length > 0 && ((StructureAttribute)structureAttribute[0]).Name == structureName &&
-                        (((StructureAttribute)structureAttribute[0]).Model ?? t.Namespace.Substring(t.Namespace.LastIndexOf(".") + 1)) == modelName)
+                        (((StructureAttribute)structureAttribute[0]).Model ?? t.Namespace) == modelName &&
+                        (((StructureAttribute)structureAttribute[0]).NamespaceUri == namespaceUri))
                         return true;
                     return false;
                 };
@@ -1269,13 +1294,13 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// </summary>
         public virtual string CreateXSITypeName(Type type)
         {
-            return this.CreateXSITypeName(type, null);
+            return this.CreateXSITypeName(type, null, null);
         }
 
         /// <summary>
         /// Creates an XSI:TYPE attribute that is friendly for RMIM structures
         /// </summary>
-        private string CreateXSITypeName(Type type, Type interactionContextType)
+        private string CreateXSITypeName(Type type, Type interactionContextType, IXmlNamespaceResolver namespaceResolver)
         {
 
             StringBuilder xsiType = new StringBuilder();
@@ -1294,6 +1319,13 @@ namespace MARC.Everest.Formatters.XML.ITS1
             {
                 StructureAttribute sa = saList[0] as StructureAttribute;
                 
+                // Namespace prefix?
+                if (!String.IsNullOrEmpty(sa.NamespaceUri) && namespaceResolver != null)
+                {
+                    string prefix = namespaceResolver.LookupPrefix(sa.NamespaceUri);
+                    if (!String.IsNullOrEmpty(prefix))
+                        xsiType.AppendFormat("{0}:", prefix);
+                }
                 // Is the type generic?
                 if (type.IsGenericType) // yes, then first we output the interaction 
                 {
@@ -1306,7 +1338,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 }
 
                 // Output the model and class name
-                xsiType.AppendFormat("{0}.{1}", sa.Model ?? type.Namespace.Substring(type.Namespace.LastIndexOf(".") + 1), sa.Name);
+                xsiType.AppendFormat("{0}.{1}", sa.Model ?? type.Namespace, sa.Name);
 
             }
 
