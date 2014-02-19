@@ -1256,7 +1256,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 };
             else
                 tokens = new string[] { 
-                    "",
+                    null,
                     xsiTypeName
                 };
 
@@ -1276,7 +1276,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 {
                     object[] structureAttribute = t.GetCustomAttributes(typeof(StructureAttribute), true);
                     if (structureAttribute.Length > 0 && ((StructureAttribute)structureAttribute[0]).Name == structureName &&
-                        (((StructureAttribute)structureAttribute[0]).Model ?? t.Namespace) == modelName &&
+                        (((StructureAttribute)structureAttribute[0]).Model) == modelName &&
                         (((StructureAttribute)structureAttribute[0]).NamespaceUri == namespaceUri))
                         return true;
                     return false;
@@ -1348,8 +1348,10 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 }
 
                 // Output the model and class name
-                xsiType.AppendFormat("{0}.{1}", sa.Model ?? type.Namespace, sa.Name);
-
+                if(sa.Model != null)
+                    xsiType.AppendFormat("{0}.{1}", sa.Model, sa.Name);
+                else
+                    xsiType.Append(sa.Name);
             }
 
             return xsiType.ToString();
