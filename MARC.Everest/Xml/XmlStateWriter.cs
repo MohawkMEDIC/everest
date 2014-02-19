@@ -25,6 +25,8 @@ using System.Xml;
 
 namespace MARC.Everest.Xml
 {
+
+
     /// <summary>
     /// A <see cref="T:System.Xml.XmlWriter"/> that tracks its state
     /// </summary>
@@ -53,7 +55,7 @@ namespace MARC.Everest.Xml
     /// writer.WriteEndElement();
     /// </code>
     /// </example>    
-    public class XmlStateWriter : XmlWriter
+    public class XmlStateWriter : XmlWriter, IXmlNamespaceResolver
     {
         private XmlWriter m_InnerWriter;
         private Stack<XmlQualifiedName> m_NameStack = new Stack<XmlQualifiedName>();
@@ -66,6 +68,11 @@ namespace MARC.Everest.Xml
         {
             return CurrentPath;
         }
+
+        /// <summary>
+        /// Identifies the default namespace to emit when no namespace is specified for Element
+        /// </summary>
+        public String DefaultElementNamespaceUri { get; set; }
 
         //DOC: Documentation Required
         /// <summary>
@@ -319,6 +326,9 @@ namespace MARC.Everest.Xml
         /// <param name="ns"></param>
         public override void WriteStartElement(string prefix, string localName, string ns)
         {
+            if (ns == null)
+                ns = this.DefaultElementNamespaceUri;
+
             m_InnerWriter.WriteStartElement(prefix, localName, ns);
             m_NameStack.Push(new XmlQualifiedName(localName, ns));
         }
@@ -359,5 +369,27 @@ namespace MARC.Everest.Xml
             m_InnerWriter.WriteWhitespace(ws);
         }
 
+
+        #region IXmlNamespaceResolver Members
+
+        /// <summary>
+        /// Get namespaces in scope
+        /// </summary>
+        /// <exception cref="T:System.NotImplementedException">This method is not implemented in this version of the Everest Framework</exception>
+        public IDictionary<string, string> GetNamespacesInScope(XmlNamespaceScope scope)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Lookup a namespace prefix
+        /// </summary>
+        /// <exception cref="T:System.NotImplementedException">This method is not implemented in this version of the Everest Framework</exception>
+        public string LookupNamespace(string prefix)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

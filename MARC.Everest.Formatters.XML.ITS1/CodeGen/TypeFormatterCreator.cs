@@ -261,7 +261,12 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             CodeStatementCollection methodBodyEle = new CodeStatementCollection(), methodBodyAtt = new CodeStatementCollection();
             methodBodyAtt.Add(new CodeSnippetExpression("if(o == null) throw new System.ArgumentNullException(\"o\")"));
             methodBodyAtt.Add(new CodeSnippetExpression(String.Format("if(instance == null) throw new System.ArgumentException(System.String.Format(\"Could not cast type '{{0}}' to '{0}'!\", o.GetType().FullName))", trefTypeReference)));
-            methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance.NullFlavor != null"));
+
+            if(forType.GetProperty("NullFlavor") != null)
+                methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance.NullFlavor != null"));
+            else
+                methodBodyAtt.Add(new CodeSnippetExpression("bool isInstanceNull = instance == null"));
+
             methodBodyAtt.Add(new CodeSnippetStatement("bool suppressNull = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressNullEnforcement) != 0;"));
             methodBodyAtt.Add(new CodeSnippetStatement("bool suppressXsiNil = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.SuppressXsiNil) != 0;"));
             methodBodyAtt.Add(new CodeSnippetStatement("bool alwaysCheckForOverrides = (Host.Settings & MARC.Everest.Formatters.XML.ITS1.SettingsType.AlwaysCheckForOverrides) != 0;"));
@@ -321,7 +326,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
                     // Is the instance's null flavor set?
                     // Remarks: We do this way because we still need to write the null flavor out even if the  null flavor
-                    if (pi.Name != "NullFlavor" && forType.GetProperty("NullFlavor") != null)
+                    if (pi.Name != "NullFlavor")
                     {
                         if (propertyAttribute.PropertyType == PropertyAttribute.AttributeAttributeType.Structural)
                             methodBody.Add(new CodeSnippetStatement(String.Format("if(instance.{0} != null && (isInstanceNull && suppressNull || !isInstanceNull)) {{\r\n", pi.Name)));
@@ -367,9 +372,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                         methodBody.Add(new CodeSnippetStatement(String.Format("{0} if({1}) {{ \r\n", ic > 0 ? "else" : "", conditionString)));
                                     // Output
                                     if (pa.Type.GetInterface("MARC.Everest.Interfaces.IGraphable") != null) // Non Graphable
-                                        methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pa.Type)))));
+                                        methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{3}\", \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pa.Type)), pa.NamespaceUri)));
                                     else if (pa.Type.GetInterface("System.Collections.IEnumerable") != null) // List
-                                        methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pa.Type)))));
+                                        methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{3}\", \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pa.Type)), pa.NamespaceUri)));
                                     else // Not recognized
                                         methodBody.Add(new CodeSnippetExpression(String.Format("s.WriteElementString(\"{0}\", \"urn:hl7-org:v3\", instance.{1}.ToString())\r\n", pa.Name, pi.Name)));
 
@@ -390,11 +395,11 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                             if (pa != null && pi.PropertyType.GetInterface("MARC.Everest.Interfaces.IGraphable") != null) // Non Graphable
                             {
                                 retValChanged = true;
-                                methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
+                                methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{3}\", \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)), pa.NamespaceUri)));
                             }
                             else if (pa != null && pi.PropertyType.GetInterface("System.Collections.IEnumerable") != null) // List
                             {
-                                methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
+                                methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{3}\", \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)), pa.NamespaceUri)));
                                 retValChanged = true;
                             }
                             else if (pa != null) // Not recognized
@@ -423,7 +428,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                             if (piInterfaces.Contains(typeof(IColl)))
                                 methodBody.Add(new CodeSnippetStatement(String.Format("if(!instance.{0}.IsEmpty || instance.{0}.NullFlavor != null)", pi.Name)));
                             retValChanged = true;
-                            methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)))));
+                            methodBody.Add(new CodeSnippetExpression(String.Format("Host.WriteElementUtil(s, \"{3}\", \"{0}\", (MARC.Everest.Interfaces.IGraphable)instance.{1}, typeof({2}), context, resultContext)", pa.Name, pi.Name, CreateTypeReference(new CodeTypeReference(pi.PropertyType)), pa.NamespaceUri)));
                         }
                         else if (piInterfaces.Contains(typeof(ICollection))) // List
                         {
@@ -431,7 +436,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                             Type lType = pi.PropertyType;
                             if (lType.GetGenericArguments().Length > 0)
                                 lType = lType.GetGenericArguments()[0];
-                            methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(lType)))));
+                            methodBody.Add(new CodeSnippetStatement(String.Format("foreach(MARC.Everest.Interfaces.IGraphable ig in instance.{0}) {{ Host.WriteElementUtil(s, \"{3}\", \"{1}\", ig, typeof({2}), context, resultContext); }}", pi.Name, pa.Name, CreateTypeReference(new CodeTypeReference(lType)), pa.NamespaceUri)));
                             retValChanged = true;
                         }
                         else // Not recognized

@@ -642,26 +642,35 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                 sw.Write("\t\tpublic ");
                 string pName = CreatePascalCasedName(cc as Property);   
 
+               
+                // Property name
+                // IF the property name is equal to the generic parameter, we don't pascal case it
+                // IF the property name is equal to the containing class name, we use the name of the datatype it references as the property name
+
+                // Is this a backing property
                 // JF: Are there any members in the parent that we're overriding?
                 string modifier = "virtual";
+
                 if (property.Container != null && property.Container is Class)
                 {
                     var containerClassRef = (property.Container as Class).BaseClass;
                     while (containerClassRef != null && containerClassRef.Class != null)
                     {
-                        foreach(var content in containerClassRef.Class.Content)
+                        foreach (var content in containerClassRef.Class.Content)
                         {
-                            if (content is Property && CreatePascalCasedName(content as Property) == pName ||
-                                content is Choice && CreatePascalCasedName(content as Choice) == pName)
+                            if (content.ToString() == property.ToString())
                                 modifier = "override";
+                            else if (content is Property && CreatePascalCasedName(content as Property) == pName ||
+                                content is Choice && CreatePascalCasedName(content as Choice) == pName)
+                                modifier = "new virtual";
 
                         }
                         containerClassRef = containerClassRef.Class.BaseClass;
                     }
-                    
+
                 }
                 sw.Write("{0} ", modifier);
-
+                
                 // Is it a list?
                 if (property.MaxOccurs != "1" &&
                     (!Datatypes.IsCollectionType(tr)))
@@ -1188,12 +1197,11 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
             int propertySort = 0;
 
             // Get the content up the tree
-            
+
             List<ClassContent> content = new List<ClassContent>(cls.Content);
             var c = cls.BaseClass;
             while (c != null && c.Class != null)
             {
-                content.AddRange(c.Class.Content);
                 foreach (var itm in c.Class.Content)
                 {
                     if (content.Exists(o => o.Name == itm.Name)) continue;

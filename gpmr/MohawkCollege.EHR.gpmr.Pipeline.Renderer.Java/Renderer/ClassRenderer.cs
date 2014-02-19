@@ -177,13 +177,35 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
             // Render the property attribute
             sw.Write(RenderPropertyAttribute(cc, ownerPackage, propertySort));
 
+            // JF: Are there any members in the parent that we're overriding?
+            String modifier = "";
+            if (cc.Container != null && cc.Container is Class)
+            {
+                var containerClassRef = (cc.Container as Class).BaseClass;
+                while (containerClassRef != null && containerClassRef.Class != null)
+                {
+                    foreach (var content in containerClassRef.Class.Content)
+                    {
+                        if (content.ToString() == property.ToString())
+                            modifier = "@Override";
+                        //else if (content is Property && CreatePascalCasedName(content as Property) == pName ||
+                        //    content is Choice && CreatePascalCasedName(content as Choice) == pName)
+                        //    modifier = "new virtual";
+
+                    }
+                    containerClassRef = containerClassRef.Class.BaseClass;
+                }
+
+            }
             // Render the getter
+            sw.Write(modifier);
             sw.WriteLine("\tpublic {0} get{1}() {{ return this.m_{2}; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name));
 
             // Render setters
             // Default setter
             sw.Write(DocumentationRenderer.Render(cc.Documentation, 1));
 
+            sw.Write(modifier);
             sw.WriteLine("\tpublic void {3}{1}({0} value) {{ this.m_{2} = value; }}", dtr, Util.Util.PascalCase(cc.Name), Util.Util.MakeFriendly(cc.Name), setterName);
 
             // Now to render the helper methods that can set the backing property, these are convenience methods
@@ -589,8 +611,26 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
 
             #region Render Properties
 
+            // Get the content up the tree
+
+            List<ClassContent> content = new List<ClassContent>(cls.Content);
+            var c = cls.BaseClass;
+            while (c != null && c.Class != null)
+            {
+                foreach (var itm in c.Class.Content)
+                {
+                    if (content.Exists(o => o.Name == itm.Name)) continue;
+                    var addItm = itm.Clone() as ClassContent;
+                    addItm.Container = cls; // set the container
+                    content.Add(addItm);
+                }
+                c = c.Class.BaseClass;
+            }
+            // Sort
+            content.Sort(new ClassContent.Comparator());
+
             int propertySort = 0;
-            foreach (ClassContent cc in cls.Content)
+            foreach (ClassContent cc in content)
                 sw.WriteLine(RenderClassContent(cc, ownerPackage, propertySort++));
 
             #endregion

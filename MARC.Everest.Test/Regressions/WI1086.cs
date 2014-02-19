@@ -107,7 +107,7 @@ namespace MARC.Everest.Test.Regressions
                 Assert.IsNull(instance.Receiver, "Receiver");
 
                 // Test 2, /sender should also be null (xsi:nil = true)
-                Assert.IsNull(instance.Sender, "Sender");
+                Assert.IsNotNull(instance.Sender, "Sender");
 
                 // Test 3, /acknowledgement should not be null and should have a null flavor (a notification should be notified though)
                 Assert.IsNotNull(instance.Acknowledgement);
@@ -145,8 +145,8 @@ namespace MARC.Everest.Test.Regressions
                 // Test 1, /receiver should be null (xsi:nil = true)
                 Assert.IsNull(instance.Receiver, "Receiver");
 
-                // Test 2, /sender should also be null (xsi:nil = true)
-                Assert.IsNull(instance.Sender, "Sender");
+                // Test 2, /sender should also be null (xsi:nil = true but there is other data)
+                Assert.IsNotNull(instance.Sender, "Sender");
 
                 // Test 3, /acknowledgement should not be null and should have a null flavor (a notification should be notified though)
                 Assert.IsNotNull(instance.Acknowledgement);
