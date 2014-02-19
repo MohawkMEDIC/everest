@@ -1036,7 +1036,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                     string typeName = this.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null, s as IXmlNamespaceResolver);
 
                     // If there is no different then don't output
-                    if (typeName != this.CreateXSITypeName(propType, context.GetType(), s as IXmlNamespaceResolver))
+                    if (typeName != this.CreateXSITypeName(propType, context == null ? null : context.GetType(), s as IXmlNamespaceResolver))
                     {                    
                         xsiType = typeName;
                         lock (this.m_syncRoot)
@@ -1287,7 +1287,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 };
             else
                 tokens = new string[] { 
-                    "",
+                    null,
                     xsiTypeName
                 };
 
@@ -1307,7 +1307,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 {
                     object[] structureAttribute = t.GetCustomAttributes(typeof(StructureAttribute), true);
                     if (structureAttribute.Length > 0 && ((StructureAttribute)structureAttribute[0]).Name == structureName &&
-                        (((StructureAttribute)structureAttribute[0]).Model ?? t.Namespace) == modelName &&
+                        (((StructureAttribute)structureAttribute[0]).Model) == modelName &&
                         (((StructureAttribute)structureAttribute[0]).NamespaceUri == namespaceUri))
                         return true;
                     return false;
@@ -1379,8 +1379,10 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 }
 
                 // Output the model and class name
-                xsiType.AppendFormat("{0}.{1}", sa.Model ?? type.Namespace, sa.Name);
-
+                if(sa.Model != null)
+                    xsiType.AppendFormat("{0}.{1}", sa.Model, sa.Name);
+                else
+                    xsiType.Append(sa.Name);
             }
 
             return xsiType.ToString();
