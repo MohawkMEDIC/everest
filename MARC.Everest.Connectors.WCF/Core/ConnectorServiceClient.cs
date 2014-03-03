@@ -23,6 +23,7 @@ using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading;
+using System.Diagnostics;
 
 namespace MARC.Everest.Connectors.WCF.Core
 {
@@ -209,7 +210,13 @@ namespace MARC.Everest.Connectors.WCF.Core
         /// <returns>The resulting message.</returns>
         public System.ServiceModel.Channels.Message ProcessInboundMessage(System.ServiceModel.Channels.Message m)
         {
+#if DEBUG
+            Trace.WriteLine("Processing inbound channel message");
+#endif
             return base.Channel.ProcessInboundMessage(m);
+#if DEBUG
+            Trace.WriteLine("Done Processing inbound channel message");
+#endif        
         }
 
         #endregion

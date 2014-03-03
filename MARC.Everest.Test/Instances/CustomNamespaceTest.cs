@@ -1,4 +1,22 @@
-﻿using System;
+﻿/**
+ * Copyright 2008-2014 Mohawk College of Applied Arts and Technology
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you 
+ * may not use this file except in compliance with the License. You may 
+ * obtain a copy of the License at 
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0 
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+ * License for the specific language governing permissions and limitations under 
+ * the License.
+ * 
+ * User: fyfej
+ * Date: 18-2-2014
+ */
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -16,6 +34,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MARC.Everest.Test.Instances
 {
+    /// <summary>
+    /// Custom namespace tests
+    /// </summary>
+    /// <remarks>
+    /// Much of this code was contributed by BenekDlugonogi via the MARC-HI Everest Forums link at : http://te.marc-hi.ca/forums/default.aspx?g=posts&t=19
+    /// </remarks>
     [TestClass]
     public class CustomNamespaceTest
     {
