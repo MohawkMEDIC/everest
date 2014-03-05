@@ -38,7 +38,7 @@ namespace MARC.Everest.Test.Instances
     /// Custom namespace tests
     /// </summary>
     /// <remarks>
-    /// Much of this code was contributed by BenekDlugonogi via the MARC-HI Everest Forums link at : http://te.marc-hi.ca/forums/default.aspx?g=posts&t=19
+    /// Much of this code was contributed by Benek Dlugonogi via the MARC-HI Everest Forums link at : http://te.marc-hi.ca/forums/default.aspx?g=posts&t=19
     /// </remarks>
     [TestClass]
     public class CustomNamespaceTest

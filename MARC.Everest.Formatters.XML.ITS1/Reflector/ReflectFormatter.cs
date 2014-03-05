@@ -28,6 +28,7 @@ using MARC.Everest.Interfaces;
 using System.Collections;
 using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.DataTypes;
+using System.Diagnostics;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -147,7 +148,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                             // Instance is null
                             if (instance == null)
                                 continue;
-                            else if (isInstanceNull && (Host.Settings & (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil)) == (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil))
+                            else if (isInstanceNull && (Host.Settings & (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil)) != 0)
                                 resultContext.AddResultDetail(new FormalConstraintViolationResultDetail(ResultDetailType.Information, "The context is null however SuppressNullEnforcement and SuppressXsiNil are set, therefore elements will be graphed. This is not necessarily HL7v3 compliant", s.ToString(), null));
                             else if (isInstanceNull)
                                 continue;
@@ -189,8 +190,15 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                             break;
                     }
                 }
-                else if(propertyAttributes.Length > 1 && instance != null && !isInstanceNull) // Choice
+                else if(propertyAttributes.Length > 1) // Choice
                 {
+                    // Instance is null
+                    if (instance == null)
+                        continue;
+                    else if (isInstanceNull && (Host.Settings & (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil)) != 0)
+                        resultContext.AddResultDetail(new FormalConstraintViolationResultDetail(ResultDetailType.Information, "The context is null however SuppressNullEnforcement and SuppressXsiNil are set, therefore elements will be graphed. This is not necessarily HL7v3 compliant", s.ToString(), null));
+                    else if (isInstanceNull)
+                        continue;
 #if WINDOWS_PHONE
                     PropertyAttribute formatAs = propertyAttributes.Find(cpa => (cpa as PropertyAttribute).Type == null) as PropertyAttribute;
 #else

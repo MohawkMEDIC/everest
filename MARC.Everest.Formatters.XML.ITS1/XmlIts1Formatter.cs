@@ -1126,6 +1126,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <param name="interactionContext">The current interaction being parsed</param>
         /// <returns>The parsed object</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "r"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual IGraphable ParseObject(XmlReader r, Type useType, Type interactionContext, XmlIts1FormatterParseResult resultContext)
         {
             ThrowIfDisposed();

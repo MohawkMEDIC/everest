@@ -112,6 +112,15 @@ namespace MARC.Everest.Connectors
         }
 
         #endregion
+
+        /// <summary>
+        /// Represent this as a string
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return String.Format("{0}: {1} @ {2}", this.Type, this.Message, this.Location);
+        }
     }
 
     /// <summary>
