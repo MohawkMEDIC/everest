@@ -10,10 +10,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mohawk College of Applied Arts and Technology")]
 [assembly: AssemblyProduct("MARC-HI Everest Framework")]
-[assembly: AssemblyCopyright("Copyright ©  2009 Mohawk College of Applied Arts and Technology")]
+[assembly: AssemblyCopyright("Copyright ©  2009-2014 Mohawk College of Applied Arts and Technology")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyInformationalVersion("1.2")]
+[assembly: AssemblyInformationalVersion("1.3")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
