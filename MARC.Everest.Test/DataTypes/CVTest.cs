@@ -104,6 +104,127 @@ namespace MARC.Everest.Test.DataTypes
         /// <summary>
         /// Testing Function Validate must return TRUE.
         /// When the following values are not Nullified:
+        ///     NullFlavor      : FIXED TO OTH
+        ///     OriginalText    : Original Textual description
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVNullFlavorOTHOriginalTextTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = null;
+            cv.CodeSystemName = null;
+            cv.DisplayName = null;
+            cv.OriginalText = "Test";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.IsTrue(cv.Validate());
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     NullFlavor      : FIXED TO OTH
+        ///     OriginalText    : Original Textual description
+        ///     Code            : The initial code
+        /// And, the rest of the variables are Nullified:
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVNullFlavorOTHCodeTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = "Foo";
+            cv.CodeSystem = null;
+            cv.CodeSystemName = null;
+            cv.DisplayName = null;
+            cv.OriginalText = "Test";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.IsFalse(cv.Validate());
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     NullFlavor      : FIXED TO OTH
+        ///     OriginalText    : Original Textual description
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVNullFlavorOTHCodeSystemTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = "1.2.3.4.5.6.7.8";
+            cv.CodeSystemName = null;
+            cv.DisplayName = null;
+            cv.OriginalText = "Test";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.IsTrue(cv.Validate());
+        }
+
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     NullFlavor      : FIXED TO OTH
+        ///     OriginalText    : Original Textual description
+        ///     CodeSystemName  : The name of the code system 
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVNullFlavorOTHCodeSystemNameNoCodeSystemTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = null;
+            cv.CodeSystemName = "TEST";
+            cv.DisplayName = null;
+            cv.OriginalText = "Test";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.IsFalse(cv.Validate());
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     NullFlavor      : FIXED TO OTH
+        ///     OriginalText    : Original Textual description
+        ///     CodeSystemName  : The name of the code system 
+        ///     CodeSystem      : The code system the code was picked from
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVNullFlavorOTHCodeSystemNameCodeSystemTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = "1.2.3.4.5.6";
+            cv.CodeSystemName = "TEST";
+            cv.DisplayName = null;
+            cv.OriginalText = "Test";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.IsTrue(cv.Validate());
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
         ///     Code            : The initial code
         /// And, the rest of the variables are Nullified:
         ///     CodeSystem      : The code system the code was picked from
@@ -382,6 +503,457 @@ namespace MARC.Everest.Test.DataTypes
             cv.NullFlavor = NullFlavor.NotAsked;
             Assert.IsFalse(cv.Validate());
         }
+
+
+        #region ValidateEX
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     NullFlavor
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExNullFlavorTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = null;
+            cv.CodeSystemName = null;
+            cv.DisplayName = null;
+            cv.NullFlavor = NullFlavor.NoInformation;
+            Assert.AreEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     NullFlavor      : FIXED TO OTH
+        ///     OriginalText    : Original Textual description
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExNullFlavorOTHOriginalTextTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = null;
+            cv.CodeSystemName = null;
+            cv.DisplayName = null;
+            cv.OriginalText = "Test";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.AreEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     NullFlavor      : FIXED TO OTH
+        ///     OriginalText    : Original Textual description
+        ///     Code            : The initial code
+        /// And, the rest of the variables are Nullified:
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExNullFlavorOTHCodeTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = "Foo";
+            cv.CodeSystem = null;
+            cv.CodeSystemName = null;
+            cv.DisplayName = null;
+            cv.OriginalText = "Test";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.AreNotEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     NullFlavor      : FIXED TO OTH
+        ///     OriginalText    : Original Textual description
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExNullFlavorOTHCodeSystemTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = "1.2.3.4.5.6.7.8";
+            cv.CodeSystemName = null;
+            cv.DisplayName = null;
+            cv.OriginalText = "Test";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.AreEqual(cv.ValidateEx().Count(), 0);
+        }
+
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     NullFlavor      : FIXED TO OTH
+        ///     OriginalText    : Original Textual description
+        ///     CodeSystemName  : The name of the code system 
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExNullFlavorOTHCodeSystemNameNoCodeSystemTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = null;
+            cv.CodeSystemName = "TEST";
+            cv.DisplayName = null;
+            cv.OriginalText = "Test";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.AreNotEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     NullFlavor      : FIXED TO OTH
+        ///     OriginalText    : Original Textual description
+        ///     CodeSystemName  : The name of the code system 
+        ///     CodeSystem      : The code system the code was picked from
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExNullFlavorOTHCodeSystemNameCodeSystemTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = "1.2.3.4.5.6";
+            cv.CodeSystemName = "TEST";
+            cv.DisplayName = null;
+            cv.OriginalText = "Test";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.AreEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     Code            : The initial code
+        /// And, the rest of the variables are Nullified:
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExCodeTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = "284196006";
+            cv.CodeSystem = null;
+            cv.CodeSystemName = null;
+            cv.DisplayName = null;
+            cv.NullFlavor = null;
+            Assert.AreEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        /// And, the rest of the variables are Nullified:
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExCodeCodeSystemTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = "284196006";
+            cv.CodeSystem = "2.16.840.1.113883.6.96";
+            cv.CodeSystemName = null;
+            cv.DisplayName = null;
+            cv.NullFlavor = null;
+            Assert.AreEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     Code            : The initial code
+        ///     DisplayName     : The display name for the code
+        /// And, the rest of the variables are Nullified:
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExCodeDisplayNameTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = "284196006";
+            cv.CodeSystem = null;
+            cv.CodeSystemName = null;
+            cv.DisplayName = "Burn of skin";
+            cv.NullFlavor = null;
+            Assert.AreEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        /// And, the rest of the variables are Nullified:
+        ///     DisplayName     : The display name for the code
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExCodeCodeSystemCodeSystemNameTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = "284196006";
+            cv.CodeSystem = "2.16.840.1.113883.6.96";
+            cv.CodeSystemName = "SNOMED CT";
+            cv.DisplayName = null;
+            cv.NullFlavor = null;
+            Assert.AreEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        /// And, the rest of the variables are Nullified:
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExCodeCodeSystemCodeSystemNameDisplayNameTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = "284196006";
+            cv.CodeSystem = "2.16.840.1.113883.6.96";
+            cv.CodeSystemName = "SNOMED CT";
+            cv.DisplayName = "Burn of skin";
+            cv.NullFlavor = null;
+            Assert.AreEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return FALSE.
+        /// When the following values are not Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        ///     NullFlavor
+        /// And, there are no nullified variables.
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExCodeCodeSystemCodeSystemNameDisplayNameNullFlavorTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = "284196006";
+            cv.CodeSystem = "2.16.840.1.113883.6.96";
+            cv.CodeSystemName = "SNOMED CT";
+            cv.DisplayName = "Burn of skin";
+            cv.NullFlavor = NullFlavor.NoInformation;
+            Assert.AreNotEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return FALSE.
+        /// When the following values are not Nullified:
+        ///     DisplayName     : The display name for the code
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExDisplayNameTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = null;
+            cv.CodeSystemName = null;
+            cv.DisplayName = "Burn of skin";
+            cv.NullFlavor = null;
+            Assert.AreNotEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return FALSE.
+        /// When the following values are not Nullified:
+        ///     CodeSystem      : The code system the code was picked from
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystemName  : The name of the code system 
+        ///     DisplayName     : The display name for the code
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExCodeSystemTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = "2.16.840.1.113883.6.96";
+            cv.CodeSystemName = null;
+            cv.DisplayName = null;
+            cv.NullFlavor = null;
+            Assert.AreNotEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return FALSE.
+        /// When the following values are not Nullified:
+        ///     CodeSystemName  : The name of the code system 
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     DisplayName     : The display name for the code
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExCodeSystemNameTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = null;
+            cv.CodeSystemName = "SNOMED CT";
+            cv.DisplayName = null;
+            cv.NullFlavor = null;
+            Assert.AreNotEqual(cv.ValidateEx().Count(), 0);
+        }
+
+
+        /// <summary>
+        /// Testing Function ValidateEx must returns no results
+        /// When the following values are not Nullified:
+        ///     DisplayName     : The display name for the code
+        /// And, the rest of the variables are Nullified:
+        ///     CodeSystemName  : The name of the code system 
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExDisplayNameNoCodeTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = null;
+            cv.DisplayName = "TEST";
+            cv.NullFlavor = null;
+            Assert.AreNotEqual(cv.ValidateEx().Count(), 0);
+        }
+
+
+        /// <summary>
+        /// Testing Function Validate must return FALSE.
+        /// When the following values are not Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystemName  : The name of the code system 
+        /// And, the rest of the variables are Nullified:
+        ///     CodeSystem      : The code system the code was picked from
+        ///     DisplayName     : The display name for the code
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExCodeSystemNameCodeTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = "284196006";
+            cv.CodeSystem = null;
+            cv.CodeSystemName = "SNOMED CT";
+            cv.DisplayName = null;
+            cv.NullFlavor = null;
+            Assert.AreNotEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return FALSE.
+        /// When the following values are not Nullified:
+        ///     DisplayName     : The display name for the code
+        ///     NullFlavor
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     CodeSystemName  : The name of the code system 
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExDisplayNameNullFlavorTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = null;
+            cv.CodeSystemName = null;
+            cv.DisplayName = "Burn of skin";
+            cv.NullFlavor = NullFlavor.NotAsked;
+            Assert.AreNotEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return TRUE.
+        /// When the following values are not Nullified:
+        ///     OriginalText     : The original text for the code
+        ///     NullFlavor
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExOriginalTextNullFlavorTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = "2.3.2.3.2.32.23.23";
+            cv.CodeSystemName = null;
+            cv.OriginalText = "Burn of skin";
+            cv.NullFlavor = NullFlavor.Other;
+            Assert.AreEqual(cv.ValidateEx().Count(), 0);
+        }
+
+        /// <summary>
+        /// Testing Function Validate must return FALSE.
+        /// When the following values are not Nullified:
+        ///     CodeSystemName  : The name of the code system 
+        ///     NullFlavor
+        /// And, the rest of the variables are Nullified:
+        ///     Code            : The initial code
+        ///     CodeSystem      : The code system the code was picked from
+        ///     DisplayName     : The display name for the code
+        /// </summary>
+        [TestMethod]
+        public void CVValidateExCodeSystemNameNullFlavorTest()
+        {
+            CV<String> cv = new CV<String>();
+            cv.Code = null;
+            cv.CodeSystem = null;
+            cv.CodeSystemName = "SNOMED CT";
+            cv.DisplayName = null;
+            cv.NullFlavor = NullFlavor.NotAsked;
+            Assert.AreNotEqual(cv.ValidateEx().Count(), 0);
+        }
+        #endregion
 
         /// <summary>
         /// Casting String to CV
