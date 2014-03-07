@@ -795,12 +795,18 @@ namespace MARC.Everest.Connectors.WCF
                 throw new ConnectorException(ConnectorException.MSG_NULL_FORMATTER, ConnectorException.ReasonType.NullFormatter);
 
             Dictionary<string, List<string>> parameters = ConnectionStringParser.ParseConnectionString(ConnectionString);
-            string endpointName = null, endpointAddress = null;
+            string endpointName = null, endpointAddress = null, bindingClass = null, bindingConfiguration = null;
 
             // Parameters
             foreach (KeyValuePair<string, List<string>> parm in parameters)
                 switch (parm.Key)
                 {
+                    case "binding":
+                        bindingClass = parm.Value[0];
+                        break;
+                    case "bindingConfiguration":
+                        bindingConfiguration = parm.Value[0];
+                        break;
                     case "endpointname":
                         endpointName = parm.Value[0];
                         break;
@@ -809,8 +815,33 @@ namespace MARC.Everest.Connectors.WCF
                         break;
                 }
 
+            if (bindingClass != null)
+            { 
+                Binding binding = null;
+                switch (bindingClass)
+                {
+                    case "wsHttpBinding":
+                        if (!String.IsNullOrEmpty(bindingConfiguration))
+                            binding = new WSHttpBinding(bindingConfiguration);
+                        else
+                            binding = new WSHttpBinding(SecurityMode.None, false);
+                        break;
+                    case "basicHttpBinding":
+                        if (!String.IsNullOrEmpty(bindingConfiguration))
+                            binding = new BasicHttpBinding(bindingConfiguration);
+                        else
+                            binding = new BasicHttpBinding();
+                        break;
+                    default:
+                        throw new InvalidOperationException("Could not understand binding");
+                }
+                if (endpointAddress == null)
+                    throw new InvalidOperationException("When manually specifying binding you must specify an endpointAddress");
+                else
+                    wcfClient = new ConnectorServiceClient(binding, new EndpointAddress(endpointAddress));
+            }
             // Create the client
-            if (endpointName == null)
+            else if (endpointName == null)
                 throw new InvalidOperationException("The connection string must include the 'endpointName' attribute!");
             else if (endpointAddress == null)
                 wcfClient = new ConnectorServiceClient(endpointName);

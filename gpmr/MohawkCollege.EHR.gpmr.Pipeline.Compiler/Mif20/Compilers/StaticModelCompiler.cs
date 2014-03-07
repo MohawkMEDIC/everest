@@ -308,6 +308,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
                     asc.Ends[1] as AssociationEnd
                 };
 
+
                 // Loop so we write the code once
                 for (int i = 0; i < 2; i++)
                 {
@@ -380,8 +381,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
                     }
 
                     // Add to repository
-                    (ClassRepository[string.Format("{0}.{1}", staticModel.PackageLocation.Artifact == ArtifactKind.RIM ? "RIM" : staticModel.PackageLocation.ToString(MifCompiler.NAME_FORMAT),
-                        ends[1 - i].ParticipantClassName)] as MohawkCollege.EHR.gpmr.COR.Class).AddContent(p);
+                    if(ends[1 - i].Conformance != ConformanceKind.NotPermitted)
+                        (ClassRepository[string.Format("{0}.{1}", staticModel.PackageLocation.Artifact == ArtifactKind.RIM ? "RIM" : staticModel.PackageLocation.ToString(MifCompiler.NAME_FORMAT),
+                            ends[1 - i].ParticipantClassName)] as MohawkCollege.EHR.gpmr.COR.Class).AddContent(p);
 
                 }
             }
@@ -418,8 +420,8 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
                 if (!ClassRepository.ContainsKey(string.Format("{0}.{1}", staticModel.PackageLocation.Artifact == ArtifactKind.RIM ? "RIM" : staticModel.PackageLocation.ToString(MifCompiler.NAME_FORMAT),
                     ntae.ParticipantClassName)))
                     System.Diagnostics.Trace.WriteLine(string.Format("Can't bind property '{0}' to class '{1}'... Class does not exist", cc.Name, ntae.ParticipantClassName), "error");
-                    //throw new Exception(string.Format("Can't bind property '{0}' to class '{1}'... Class does not exist", p.Name, ae.ParticipantClassName));
-                else // Append the property to the class
+                //throw new Exception(string.Format("Can't bind property '{0}' to class '{1}'... Class does not exist", p.Name, ae.ParticipantClassName));
+                else if (ae.Conformance != ConformanceKind.NotPermitted) // Append the property to the class
                 {
                     MohawkCollege.EHR.gpmr.COR.Class cls = ClassRepository[string.Format("{0}.{1}", staticModel.PackageLocation.Artifact == ArtifactKind.RIM ? "RIM" : staticModel.PackageLocation.ToString(MifCompiler.NAME_FORMAT),
                     ntae.ParticipantClassName)] as MohawkCollege.EHR.gpmr.COR.Class;
@@ -428,6 +430,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Compilers
                     if (templateParameters.ContainsKey(ae.ParticipantClassName))
                         cls.AddTypeParameter(templateParameters[ae.ParticipantClassName]);
                 }
+                else
+                    return;
+
                 #endregion
 
                 // Choice or property?

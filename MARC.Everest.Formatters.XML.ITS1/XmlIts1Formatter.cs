@@ -261,8 +261,11 @@ namespace MARC.Everest.Formatters.XML.ITS1
         // The reflection formatter
         private ReflectFormatter m_reflectionFormatter = new ReflectFormatter();
 
-        // Synchronization root
+        /// <summary>
+        /// The root of synchronization
+        /// </summary>
         protected readonly object m_syncRoot = new object();
+
         // True when build types is blocking
         private bool m_isBuildTypesBlocking = false;
 
@@ -1158,6 +1161,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <param name="interactionContext">The current interaction being parsed</param>
         /// <returns>The parsed object</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "r"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual IGraphable ParseObject(XmlReader r, Type useType, Type interactionContext, XmlIts1FormatterParseResult resultContext)
         {
             ThrowIfDisposed();
@@ -1179,7 +1183,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
 
                 if (xsiType != null)
                 {
-                    if (typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
+                    if (useType.IsInterface || typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
                         ixsf = this.GetAdjustedFormatter(xsiType); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
                     else
                     {

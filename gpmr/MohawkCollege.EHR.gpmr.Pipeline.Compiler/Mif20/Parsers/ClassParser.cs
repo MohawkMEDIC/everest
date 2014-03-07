@@ -104,6 +104,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Compiler.Mif20.Parsers
             retVal.Content = new List<ClassContent>();
             foreach (ClassAttribute ca in cls.Attribute)
             {
+                if (ca.Conformance == ConformanceKind.NotPermitted) continue;
                 MohawkCollege.EHR.gpmr.COR.Property prp = PropertyParser.Parse(ca, vocabularyBindingRealm, cr,derivationSuppliers);
                 prp.Container = retVal;
                 retVal.AddContent(prp);
