@@ -9,6 +9,7 @@ using MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV;
 using MARC.Everest.Formatters.XML.Datatypes.R1;
 using System.Diagnostics;
 using MARC.Everest.Formatters.XML.ITS1;
+using System.Xml;
 
 namespace MARC.Everest.Test
 {
@@ -85,22 +86,24 @@ namespace MARC.Everest.Test
 
             try
             {
-                IResultDetail[] details = null;
+                IFormatterGraphResult gresult;
                 TypeCreator tc = TypeCreator.GetCreator(typeof(ClinicalDocument));
                 tc.GenerateOptional = true;
                 MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument original = tc.CreateInstance() as MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument;
+                original.TypeId = new Everest.DataTypes.II("2.16.840.1.113883.1.3", "POCD_HD000040");
                 original.ComponentOf = TypeCreator.GetCreator(typeof(Component1)).CreateInstance() as Component1;
                 original.Component = new Component2();
                 original.Component.SetBodyChoice(TypeCreator.GetCreator(typeof(StructuredBody)).CreateInstance() as StructuredBody);
                 XmlIts1Formatter fmtr = new XmlIts1Formatter();
                 fmtr.GraphAides.Add(new ClinicalDocumentDatatypeFormatter());
-                fmtr.Graph(stream, original);
+                using (XmlWriter xw = XmlWriter.Create(stream, new XmlWriterSettings() { Indent = true }))
+                    gresult = fmtr.Graph(xw, original);
                 stream.Seek(0, SeekOrigin.Begin);
-                XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument), stream, out details);
+                //XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument), stream, out details);
 
 
-                if (details.Length > 0)
-                    foreach (var item in details)
+                if (gresult.Details.Count() > 0)
+                    foreach (var item in gresult.Details)
                         if (item.Type == ResultDetailType.Error)
                             Tracer.Trace(item.Message);
             }

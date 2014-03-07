@@ -250,7 +250,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
                         swEx.WriteLine("\t\t\t#region Validate {0}", pCasedName);
                         if(cc.Conformance == ClassContent.ConformanceKind.Mandatory)
-                            swEx.WriteLine("\t\t\tif(this.{0} == null || this.{0}.NullFlavor != null) retVal.Add(new MARC.Everest.Connectors.MandatoryElementMissingResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"{0} is marked MANDATORY, it must be carry a value and cannot have a NullFlavor\", \"{0}\"));", pCasedName, cc.Conformance);
+                            swEx.WriteLine("\t\t\tif(this.{0} == null) retVal.Add(new MARC.Everest.Connectors.MandatoryElementMissingResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"{0} is marked MANDATORY, it must be carry a value and cannot have a NullFlavor\", \"{0}\"));", pCasedName, cc.Conformance);
                         else
                             swEx.WriteLine("\t\t\tif(this.{0} == null) retVal.Add(new MARC.Everest.Connectors.RequiredElementMissingResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, \"{0} is marked POPULATED, it must carry a value however can have a NullFlavor \", \"{0}\"));", pCasedName, cc.Conformance);
 
@@ -604,7 +604,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
 
                 // Property attribute
-                sw.Write(CreatePropertyAttribute(cc as Property, ownerNs, 2, propertySort));
+                sw.Write(CreatePropertyAttribute(cc as Property, ownerNs, 2, propertySort * 10));
 
                 sw.WriteLine("#if !WINDOWS_PHONE");
                 // Set browsing off for fixed values
@@ -746,7 +746,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
                 // Create property attributes
                 foreach (Property p in choice.Content)
-                    sw.Write(CreatePropertyAttribute(p, ownerNs, 2, propertySort));
+                    sw.Write(CreatePropertyAttribute(p, ownerNs, 2, propertySort * 10));
 
 
                 // Write editor attributes
@@ -1345,6 +1345,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
             #region Clone Function
 
+            sw.WriteLine("\t\t/// <summary>Makes a shallow clone of this object</summary>");
             sw.WriteLine("\t\tpublic new object Clone() { return this.MemberwiseClone(); }");
 
             #endregion

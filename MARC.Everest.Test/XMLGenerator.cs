@@ -29,11 +29,10 @@ namespace MARC.Everest.Test
             string resourceName = String.Format(instanceType.FullName).Replace(".", "");
 
             var formatter = new MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter();
-            formatter.Settings = MARC.Everest.Formatters.XML.ITS1.SettingsType.DefaultUniprocessor;
             formatter.ValidateConformance = false;
             // Testing pregen
             formatter.GraphAides.Add(new MARC.Everest.Formatters.XML.Datatypes.R1.DatatypeFormatter());
-            formatter.BuildCache(Assembly.Load("MARC.Everest.RMIM.CA.R020402").GetTypes());
+            //formatter.BuildCache(Assembly.Load("MARC.Everest.RMIM.CA.R020402").GetTypes());
 
             IGraphable result = TypeCreator.GetCreator(instanceType).CreateInstance() as IGraphable;
 

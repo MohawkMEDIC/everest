@@ -236,6 +236,10 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// XSI
         /// </summary>
         public const string NS_XSI = "http://www.w3.org/2001/XMLSchema-instance";
+        /// <summary>
+        /// HL7
+        /// </summary>
+        public const string NS_HL7 = "urn:hl7-org:v3";
 
         // A dictionary of root name maps that are used by the default Parse method
         private Dictionary<string, Type> s_rootNameMaps = new Dictionary<string, Type>();
@@ -752,7 +756,8 @@ namespace MARC.Everest.Formatters.XML.ITS1
         {
             if (this.s_typeNameMaps.ContainsKey(xsiTypeName))
                 throw new DuplicateItemException(String.Format("'{0}' is already registered to another type", xsiTypeName));
-            this.s_typeNameMaps.Add(xsiTypeName, type);
+            lock(this.m_syncRoot)
+                this.s_typeNameMaps.Add(xsiTypeName, type);
         }
 
         /// <summary>
@@ -1177,7 +1182,11 @@ namespace MARC.Everest.Formatters.XML.ITS1
                     if (typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
                         ixsf = this.GetAdjustedFormatter(xsiType); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
                     else
+                    {
                         useType = this.ParseXSITypeName(xsiType, r as IXmlNamespaceResolver);
+                        if (typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
+                            ixsf = this.GetAdjustedFormatter(xsiType); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                    }
                 }
                 else
                     ixsf = (IXmlStructureFormatter)this.GraphAides.Find(t => t.HandleStructure.Contains(typeName));
@@ -1212,10 +1221,10 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 formatter = GetFormatter(result.GetType());
 
             // Validate
-            IResultDetail[] details = null;
-            if (details != null && result == null || ValidateConformance && (!formatter.Validate(result, currentPath, out details)))
-                resultContext.AddResultDetail(details.Length > 0 ? details : new IResultDetail[] { new ResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, String.Format("Couldn't parse type '{0}'", useType.ToString()), currentPath) });
-
+            if (result == null)
+                resultContext.AddResultDetail(new ResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, String.Format("Couldn't parse type '{0}'", useType.ToString()), currentPath));
+            else if(ValidateConformance)
+                resultContext.AddResultDetail(formatter.Validate(result, currentPath));
             
             return result;
         }
@@ -1227,7 +1236,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         {
 
 #if WINDOWS_PHONE
-                formatter = new ReflectFormatter();
+            ITypeFormatter formatter = new ReflectFormatter();
 #else
             ITypeFormatter formatter = new ReflectFormatter();
             if((Settings & SettingsType.UseGeneratorFormat) == SettingsType.UseGeneratorFormat)
@@ -1455,8 +1464,16 @@ namespace MARC.Everest.Formatters.XML.ITS1
         {
             IResultDetail[] details = null;
 
-            if (ValidateConformance && (!formatter.Validate(o, s.ToString(), out details)))
-                resultContext.AddResultDetail(details.Length > 0 ? details : new IResultDetail[] { new DatatypeValidationResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, o.GetType().ToString(), s.ToString()) });
+            if (ValidateConformance && typeof(ANY).IsAssignableFrom(o.GetType()))
+                foreach (var itm in (o as ANY).ValidateEx())
+                {
+                    itm.Location = s.ToString();
+                    resultContext.AddResultDetail(itm);
+                }
+            else if (ValidateConformance)
+                resultContext.AddResultDetail(formatter.Validate(o, s.ToString()));
+
+            //    resultContext.AddResultDetail(details.Length > 0 ? details : new IResultDetail[] { new DatatypeValidationResultDetail(ValidateConformance ? ResultDetailType.Error : ResultDetailType.Warning, o.GetType().ToString(), s.ToString()) });
         }
 
         /// <summary>
@@ -1542,6 +1559,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         {
             return instance;
         }
+
     }
 
     

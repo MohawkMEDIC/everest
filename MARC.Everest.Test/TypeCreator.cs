@@ -336,7 +336,7 @@ namespace MARC.Everest.Test
             //Tracer.Trace(string.Format("CreateComplexObject of type {0}", t.GetCSharpGenericName()), context);
 
             if (context.PropertyAttribute != null)
-                if (context.PropertyAttribute.Conformance == MARC.Everest.Attributes.PropertyAttribute.AttributeConformanceType.Optional)
+                if (context.PropertyAttribute.Conformance == MARC.Everest.Attributes.PropertyAttribute.AttributeConformanceType.Optional && !this.GenerateOptional)
                     if (context.PropertyAttributes.Count == 1) //Not a choice
                         if (null != context.PropertyInfo && context.PropertyInfo.PropertyType == t)
                             return null;

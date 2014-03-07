@@ -11,6 +11,7 @@ using System.Resources;
 using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace MARC.Everest.Test
 {
@@ -199,7 +200,7 @@ namespace MARC.Everest.Test
                 settings.ValidationEventHandler += new ValidationEventHandler(delegate(object sender, ValidationEventArgs e)
                     {
                         if(e.Severity == XmlSeverityType.Error && !e.Message.Contains("specializationType") && !e.Message.Contains("incomplete") &&
-                            !e.Message.Contains("possible elements expected")) // Usually incomplete is due to the simple type creator not creating the necessary elements
+                            !e.Message.Contains("equal its fixed value") && !e.Message.Contains("The Enumeration constraint failed") && !e.Message.Contains("memberTypes of the union")) // Usually incomplete is due to the simple type creator not creating the necessary elements
                                 errorList.Add(String.Format("{0} : Validation exception: {1} @ {2},{3}" , e.Severity, e.Message, e.Exception.LineNumber, e.Exception.LinePosition));
                     });
 
@@ -233,8 +234,9 @@ namespace MARC.Everest.Test
             }
             //System.Diagnostics.Debug.WriteLine(DebugMessage);
 
-            
-            
+
+            if (errorList.Count > 0)
+                Trace.WriteLine(System.Text.Encoding.UTF8.GetString(XmlInstance.GetBuffer(), 0, (int)XmlInstance.Length));
             return errorList;
         }
         

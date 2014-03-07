@@ -300,7 +300,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
                 Type piType = pi.PropertyType;
                 List<Type> piInterfaces = new List<Type>(piType.GetInterfaces()); ;
-                object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), true);
+                object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), false);
 
                 if (propertyAttributes.Length > 0) // Property attribute ... process it
                 {

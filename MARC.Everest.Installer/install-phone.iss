@@ -39,23 +39,23 @@ Name: english; MessagesFile: compiler:Default.isl
 Source: .\installsupp\netfx\dotNetFx40_Full_setup.exe; DestDir: {tmp} ; Flags: dontcopy
 
 ; Phone R020401
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020401.Phone.dll; DestDir: {app}; Flags: ignoreversion; 
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020401.Phone.xml; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020401.Phone.dll; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020401.Phone.xml; DestDir: {app}; Flags: ignoreversion; 
 ; Phone R020402
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020402.Phone.dll; DestDir: {app}; Flags: ignoreversion; 
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020402.Phone.xml; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020402.Phone.dll; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020402.Phone.xml; DestDir: {app}; Flags: ignoreversion; 
 ; Phone R020403
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020403.Phone.dll; DestDir: {app}; Flags: ignoreversion;
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020403.Phone.xml; DestDir: {app}; Flags: ignoreversion;
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020403.Phone.dll; DestDir: {app}; Flags: ignoreversion;
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020403.Phone.xml; DestDir: {app}; Flags: ignoreversion;
 ; Phone NE2008
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2008.Phone.dll; DestDir: {app}; Flags: ignoreversion;
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2008.Phone.xml; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2008.Phone.dll; DestDir: {app}; Flags: ignoreversion;
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2008.Phone.xml; DestDir: {app}; Flags: ignoreversion; 
 ; Phone NE2010
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2010.Phone.dll; DestDir: {app}; Flags: ignoreversion; 
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2010.Phone.xml; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2010.Phone.dll; DestDir: {app}; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2010.Phone.xml; DestDir: {app}; Flags: ignoreversion; 
 ; Phone CDA
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.Phone.dll; DestDir: {app}; Flags: ignoreversion;
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.Phone.xml; DestDir: {app}; Flags: ignoreversion;
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.CDAr2.Phone.dll; DestDir: {app}; Flags: ignoreversion;
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.CDAr2.Phone.xml; DestDir: {app}; Flags: ignoreversion;
 
 #ifdef TFSBuild
 ; Phone Components

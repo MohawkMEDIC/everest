@@ -46,29 +46,29 @@ Name: english; MessagesFile: compiler:Default.isl
 Source: .\installsupp\netfx\dotNetFx35setup.exe; DestDir: {tmp} ; Flags: dontcopy
 
 ; R02.04.01
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020401.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020401.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
-;Source: .\installsupp\cs\MARC.Everest.Formatters.XML.ITS1.R02.04.01.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020401.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\ca
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020401.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020401.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
+;Source: ..\Solution Items\MARC.Everest.Formatters.XML.ITS1.R02.04.01.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020401.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\ca
 ; R02.04.02
-;Source: .\installsupp\cs\MARC.Everest.Formatters.XML.ITS1.R02.04.02.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020402.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020402.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020402.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\ca
+;Source: ..\Solution Items\MARC.Everest.Formatters.XML.ITS1.R02.04.02.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020402.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020402.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020402.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\ca
 ; R02.04.03
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020403.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020403.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
-;Source: .\installsupp\cs\MARC.Everest.Formatters.XML.ITS1.R02.04.03.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020403.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\ca
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020403.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020403.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
+;Source: ..\Solution Items\MARC.Everest.Formatters.XML.ITS1.R02.04.03.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ca
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020403.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\ca
 ; NE2008
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2008.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.NE2008.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ne
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2008.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\ne
-;Source: .\installsupp\cs\MARC.Everest.Formatters.XML.ITS1.NE2008.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ne
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2008.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.NE2008.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ne
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2008.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\ne
+;Source: ..\Solution Items\MARC.Everest.Formatters.XML.ITS1.NE2008.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ne
 ; NE2010
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2010.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.NE2010.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ne
-;Source: .\installsupp\cs\MARC.Everest.Formatters.XML.ITS1.NE2010.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ne
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2010.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\ne
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2010.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.NE2010.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ne
+;Source: ..\Solution Items\MARC.Everest.Formatters.XML.ITS1.NE2010.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\ne
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2010.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\ne
 ; CDA
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.CDAr2.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\cda
-;Source: .\installsupp\cs\MARC.Everest.Formatters.XML.ITS1.CDAr2.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\cda
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\cda
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.CDAr2.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.CDAr2.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\cda
+;Source: ..\Solution Items\MARC.Everest.Formatters.XML.ITS1.CDAr2.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\cda
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.CDAr2.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\cda
 
 #ifdef TFSBuild
 

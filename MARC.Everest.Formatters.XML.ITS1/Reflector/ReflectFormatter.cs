@@ -328,9 +328,11 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
 
             PropertyInfo[] properties = useType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
+            String nil = s.GetAttribute("nil", XmlIts1Formatter.NS_XSI);
+
             // If XSI:NIL is true and there is no other data, then the data is null
             if ((this.Host.Settings & SettingsType.SuppressNullEnforcement) == 0 &&
-                s.AttributeCount == 1 && s.GetAttribute("nil", XmlIts1Formatter.NS_XSI) == "true" &&
+                s.AttributeCount == 1 && nil != null && Convert.ToBoolean(nil) &&
                 s.IsEmptyElement)
                 return null;
 
@@ -390,8 +392,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
 
             // Nil? 
             // BUG: Fixed, xsi:nil may also have a null-flavor
-            String nil = s.GetAttribute("nil", XmlIts1Formatter.NS_XSI);
-            if (!String.IsNullOrEmpty(nil) && Convert.ToBoolean(nil))
+            if (!String.IsNullOrEmpty(nil) && Convert.ToBoolean(nil) && (this.Host.Settings & SettingsType.SuppressNullEnforcement) == 0)
                 return instance;
 
 
@@ -415,24 +416,18 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
         /// <summary>
         /// Validates the specified object
         /// </summary>
-        public bool Validate(MARC.Everest.Interfaces.IGraphable o, string location, out MARC.Everest.Connectors.IResultDetail[] details)
+        public IEnumerable<IResultDetail> Validate(MARC.Everest.Interfaces.IGraphable o, string location)
         {
             List<IResultDetail> dtls = new List<IResultDetail>(10);
             bool isValid = true;
 
             // Null return bool
             if (o == null)
-            {
-                details = dtls.ToArray();
-                return true;
-            }
+                return dtls;
 
             PropertyInfo nullFlavorAttrib = o.GetType().GetProperty("NullFlavor");
             if (nullFlavorAttrib != null && nullFlavorAttrib.GetValue(o, null) != null)
-            {
-                details = dtls.ToArray();
-                return true;
-            }
+                return dtls;
 
             // Scan property info for violations
             foreach (var pi in this.GetBuildProperties(o.GetType()))
@@ -480,8 +475,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 }
             }
 
-            details = dtls.ToArray();
-            return isValid;
+            return dtls;
         }
 
         #endregion
@@ -495,7 +489,6 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             String lastElementRead = s.LocalName;
             bool fromExternalSource = !(terminationElement == lastElementRead && s.NodeType == System.Xml.XmlNodeType.Element);
             var properties = instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            int tDepth = terminationDepth; // Set the termination depth
             while (true)
             {
 
@@ -504,7 +497,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     fromExternalSource = false; // HACK: Skip the first read as we're already given context here
                 else if (lastElementRead == s.LocalName && !s.Read())
                     break;
-
+                
                 lastElementRead = s.LocalName;
 
                 // Element is end element and matches the starting element namd

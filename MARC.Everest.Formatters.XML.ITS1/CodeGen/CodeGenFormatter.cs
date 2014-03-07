@@ -200,7 +200,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                         {
 
                             // Type formatter creator
-                            TypeFormatterCreator crtr = new TypeFormatterCreator();
+                            TypeFormatterCreatorEx crtr = new TypeFormatterCreatorEx();
 
                             // Reset event
                             crtr.CodeTypeDeclarationCompleted += new CreateTypeFormatterCompletedDelegate(delegate(CodeTypeDeclaration result)
@@ -264,13 +264,15 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
             compileUnit.AssemblyCustomAttributes.Add(cadecl);
 
+
             // Setup compiler
             CompilerParameters compilerParms = new CompilerParameters();
             compilerParms.GenerateInMemory = !generateDeep;
             compilerParms.WarningLevel = 1;
             compilerParms.TempFiles.KeepFiles = generateDeep;
             compilerParms.IncludeDebugInformation = false;
-            
+            //using(StreamWriter sw = new StreamWriter("C:\\temp\\csgen.cs"))
+            //    csharpCodeProvider.GenerateCodeFromCompileUnit(compileUnit, sw, null);
 
             // Compile code dom
             // To see the generated code, set a breakpoint on the next line.

@@ -60,17 +60,17 @@ Name: english; MessagesFile: compiler:Default.isl
 #endif
 Source: .\installsupp\netfx\dotNetFx35setup.exe; DestDir: {tmp}; Flags: dontcopy
 
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020401.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020401.dll; DestDir: {app}\lib; Flags: ignoreversion; 
-;Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020401.xml; DestDir: {app}\lib; Flags: ignoreversion; 
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020402.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020402.dll; DestDir: {app}\lib; Flags: ignoreversion;
-;Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020402.xml; DestDir: {app}\lib; Flags: ignoreversion; 
-Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020403.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020403.dll; DestDir: {app}\lib; Flags: ignoreversion; 
-;Source: .\installsupp\cs\MARC.Everest.RMIM.CA.R020403.xml; DestDir: {app}\lib; Flags: ignoreversion;
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2008.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.NE2008.dll; DestDir: {app}\lib; Flags: ignoreversion; 
-;Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2008.xml; DestDir: {app}\lib; Flags: ignoreversion; 
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2010.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.NE2010.dll; DestDir: {app}\lib; Flags: ignoreversion; 
-;Source: .\installsupp\cs\MARC.Everest.RMIM.UV.NE2010.xml; DestDir: {app}\lib; Flags: ignoreversion; 
-Source: .\installsupp\cs\MARC.Everest.RMIM.UV.CDAr2.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.CDAr2.dll; DestDir: {app}\lib; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020401.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020401.dll; DestDir: {app}\lib; Flags: ignoreversion; 
+;Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020401.xml; DestDir: {app}\lib; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020402.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020402.dll; DestDir: {app}\lib; Flags: ignoreversion;
+;Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020402.xml; DestDir: {app}\lib; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020403.dll; StrongAssemblyName: MARC.Everest.RMIM.CA.R020403.dll; DestDir: {app}\lib; Flags: ignoreversion; 
+;Source: ..\Solution Items\MARC.Everest.RMIM.CA.R020403.xml; DestDir: {app}\lib; Flags: ignoreversion;
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2008.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.NE2008.dll; DestDir: {app}\lib; Flags: ignoreversion; 
+;Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2008.xml; DestDir: {app}\lib; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2010.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.NE2010.dll; DestDir: {app}\lib; Flags: ignoreversion; 
+;Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2010.xml; DestDir: {app}\lib; Flags: ignoreversion; 
+Source: ..\Solution Items\MARC.Everest.RMIM.UV.CDAr2.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.CDAr2.dll; DestDir: {app}\lib; Flags: ignoreversion; 
 
 
 #ifdef TFSBuild

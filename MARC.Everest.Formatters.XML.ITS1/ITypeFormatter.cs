@@ -60,7 +60,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <param name="o">The object to check</param>
         /// <returns>True if the object is valid, false otherwise</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o")]
-        bool Validate(IGraphable o, string location, out IResultDetail[] details);
+        IEnumerable<IResultDetail> Validate(IGraphable o, string location);
         /// <summary>
         /// Parse element content from the current position
         /// </summary>
