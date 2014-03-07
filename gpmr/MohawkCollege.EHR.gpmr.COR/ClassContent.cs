@@ -94,7 +94,7 @@ namespace MohawkCollege.EHR.gpmr.COR
                 {
                     
                     //return ordComp < 0 ? -1 : ordComp > 0 ? 1 : 0;
-                    return a.SortKey.CompareTo(b.SortKey);
+                    return String.CompareOrdinal(a.SortKey, b.SortKey);
                 }
             }
 

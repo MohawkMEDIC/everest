@@ -1136,6 +1136,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// <param name="interactionContext">The current interaction being parsed</param>
         /// <returns>The parsed object</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "r"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "System.String.Format(System.String,System.Object)")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual IGraphable ParseObject(XmlReader r, Type useType, Type interactionContext, XmlIts1FormatterParseResult resultContext)
         {
             ThrowIfDisposed();
@@ -1157,7 +1158,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
 
                 if (xsiType != null)
                 {
-                    if (typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
+                    if (useType.IsInterface || typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
                         ixsf = this.GetAdjustedFormatter(xsiType); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
                     else
                         useType = this.ParseXSITypeName(xsiType, r as IXmlNamespaceResolver);

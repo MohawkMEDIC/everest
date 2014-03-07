@@ -390,6 +390,8 @@ namespace MARC.Everest.DataTypes
                 return false;
             else if (this.Part == otherAd.Part)
                 return true;
+            else if (this.Part.Count != otherAd.Part.Count)
+                return false;
             else
             {
                 for (int i = 0; i < this.Part.Count; i++)

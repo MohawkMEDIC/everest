@@ -403,7 +403,7 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.Java.Renderer
         /// </summary>
         private string CreateStructureAnnotation(Class cls)
         {
-            return String.Format("@Structure(name = \"{0}\", structureType = StructureType.MESSAGETYPE, isEntryPoint = {1})", cls.Name, cls.ContainerPackage.EntryPoint.Exists(o => o.Name == cls.Name) ? "true" : "false");
+            return String.Format("@Structure(name = \"{0}\", structureType = StructureType.MESSAGETYPE, isEntryPoint = {1}, model =\"{2}\", publisher = {3})", cls.Name, cls.ContainerPackage.EntryPoint.Exists(o => o.Name == cls.Name) ? "true" : "false", cls.ContainerName, cls.Documentation != null ? "\"" + cls.Documentation.Copyright + "\"" : "Structure.NULL");
         }
 
         /// <summary>

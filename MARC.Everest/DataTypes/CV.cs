@@ -422,14 +422,15 @@ namespace MARC.Everest.DataTypes
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemName", "CodeSystem"), null));
                 if(CodeSystemVersion != null && CodeSystem == null)
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "CodeSystemVersion", "CodeSystem"), null));
-                if(CodeSystem != null && (Code == null || NullFlavor != null && !((NullFlavor)NullFlavor).IsChildConcept(DataTypes.NullFlavor.Other)))
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystem can only be used when Code is populated or NullFlavor does implies Other", null));
+                if(CodeSystem != null && NullFlavor == null && Code == null)
+                        retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "CodeSystem can only be used when Code is populated or NullFlavor does implies Other", null));
                 if(DisplayName != null && Code == null)
-                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "DisplayName", "CodeSystem"), null));
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "DisplayName", "Code"), null));
                 if(Code != null && Code.IsAlternateCodeSpecified && CodeSystem == null)
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "When Code has an alternate code specified, CodeSystem must be populated", null));
                 if(ValueSetVersion != null && ValueSet == null)
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", String.Format(EverestFrameworkContext.CurrentCulture, ValidationMessages.MSG_DEPENDENT_VALUE_MISSING, "ValueSetVersion", "ValueSet"), null));
+
             }
             else // NullfLavor is something other than OTHER
             { 
@@ -447,6 +448,8 @@ namespace MARC.Everest.DataTypes
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "ValueSet may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
                 if(ValueSetVersion != null)
                     retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "ValueSetVersion may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
+                if (DisplayName != null)
+                    retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "CV", "DisplayName may only be specified when NullFlavor is not populated, or is populated with a NullFlavor that implies 'Other'", null));
 
             }
             return retVal ;

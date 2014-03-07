@@ -82,7 +82,8 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 instanceHull = instanceHull.GetType().GetMethod("TranslateToSXPR").Invoke(instanceHull, null);
             
             // Not for CDA:
-            if (result.CompatibilityMode == DatatypeFormatterCompatibilityMode.ClinicalDocumentArchitecture && (instanceHull is SXCM<TS>))
+            // FIX: We use GetType comparison because IS has side effects in that all IVL, PIVL, etc. are instances.
+            if (result.CompatibilityMode == DatatypeFormatterCompatibilityMode.ClinicalDocumentArchitecture && (instanceHull.GetType().Equals(typeof(SXCM<TS>))))
                 ;
             else
             {

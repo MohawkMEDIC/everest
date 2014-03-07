@@ -111,28 +111,32 @@ namespace MARC.Everest.VisualStudio.Wizards.Stages
             // Scan the installation director
             foreach (var file in Directory.GetFiles(Path.Combine(installDir.Value.ToString(), "lib"), "*.dll"))
             {
-                Assembly asm = Assembly.ReflectionOnlyLoadFrom(file);
-                var cad = CustomAttributeData.GetCustomAttributes(asm);
-                bool isGPMR = false;
-                string desc = string.Empty,
-                    iVersion = string.Empty ;
-                foreach (var ad in cad)
+                try
                 {
-                    isGPMR |= (ad.ToString().Contains("AssemblyDescription") && ad.ConstructorArguments[0].Value.ToString().Contains("GPMR"));
-                    if (ad.ToString().Contains("AssemblyTitleAttribute"))
-                        desc = ad.ConstructorArguments[0].Value.ToString();
-                    else if (ad.ToString().Contains("AssemblyInformationalVersion"))
-                        iVersion = ad.ConstructorArguments[0].Value.ToString();
+                    Assembly asm = Assembly.ReflectionOnlyLoadFrom(file);
+                    var cad = CustomAttributeData.GetCustomAttributes(asm);
+                    bool isGPMR = false;
+                    string desc = string.Empty,
+                        iVersion = string.Empty;
+                    foreach (var ad in cad)
+                    {
+                        isGPMR |= (ad.ToString().Contains("AssemblyDescription") && ad.ConstructorArguments[0].Value.ToString().Contains("GPMR"));
+                        if (ad.ToString().Contains("AssemblyTitleAttribute"))
+                            desc = ad.ConstructorArguments[0].Value.ToString();
+                        else if (ad.ToString().Contains("AssemblyInformationalVersion"))
+                            iVersion = ad.ConstructorArguments[0].Value.ToString();
 
+                    }
+                    if (isGPMR)
+                        cboGPMR.Items.Add(new DisplayableKeyValuePair<String, String>(String.Format("{0} ({1})", desc, iVersion), file));
+                    else if (!String.IsNullOrEmpty(desc))
+                    {
+                        cklFeatures.Items.Add(new DisplayableKeyValuePair<String, String>(desc, file));
+                        if (Path.GetFileNameWithoutExtension(file).Equals("MARC.Everest"))
+                            cklFeatures.SetItemChecked(cklFeatures.Items.Count - 1, true);
+                    }
                 }
-                if (isGPMR)
-                    cboGPMR.Items.Add(new DisplayableKeyValuePair<String, String>(String.Format("{0} ({1})", desc, iVersion), file));
-                else if(!String.IsNullOrEmpty(desc))
-                {
-                    cklFeatures.Items.Add(new DisplayableKeyValuePair<String, String>(desc, file));
-                    if (Path.GetFileNameWithoutExtension(file).Equals("MARC.Everest"))
-                        cklFeatures.SetItemChecked(cklFeatures.Items.Count - 1, true);
-                }
+                catch (Exception) { }
             }
             AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve -= new ResolveEventHandler(CurrentDomain_ReflectionOnlyAssemblyResolve);
             cboGPMR.SelectedIndex = 0;
