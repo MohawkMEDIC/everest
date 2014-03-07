@@ -43,7 +43,15 @@ namespace MARC.Everest.Test
         /// </summary>
         internal static String SerializeAsString(IGraphable graph)
         {
-            DatatypeFormatter fmtr = new DatatypeFormatter();
+            return SerializeAsString(graph, DatatypeFormatterCompatibilityMode.Universal);
+        }
+
+        /// <summary>
+        /// Serialize as a string
+        /// </summary>
+        internal static String SerializeAsString(IGraphable graph, DatatypeFormatterCompatibilityMode mode)
+        {
+            DatatypeFormatter fmtr = new DatatypeFormatter(mode);
             StringWriter sw = new StringWriter();
             XmlStateWriter xsw = new XmlStateWriter(XmlWriter.Create(sw, new XmlWriterSettings() { Indent = true }));
             xsw.WriteStartElement("test", "urn:hl7-org:v3");
@@ -56,7 +64,6 @@ namespace MARC.Everest.Test
             Assert.AreEqual(ResultCode.Accepted, result.Code);
             return sw.ToString();
         }
-
 
         /// <summary>
         /// Parse from string
