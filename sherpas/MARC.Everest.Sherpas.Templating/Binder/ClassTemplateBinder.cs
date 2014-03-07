@@ -44,6 +44,9 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                 }
             else
                 throw new InvalidOperationException("Cannot have ClassTemplates which are not bound to a physical type");
+
+
+            
             // Bind properties
             Trace.TraceInformation("Processing Contents");
             var tplColl = new List<PropertyTemplateContainer>(classTemplate.Templates);
@@ -57,6 +60,11 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                     binder.Bind(childContext);
             }
 
+            // Move validation and initialization down
+            foreach (var mi in classTemplate.Initialize)
+                PropertyTemplateBinder.UpdateMethodToPath(mi, classTemplate.BaseClass.Type, null);
+            foreach (var mi in classTemplate.Validation)
+                PropertyTemplateBinder.UpdateMethodToPath(mi, classTemplate.BaseClass.Type, null);
 
             // trace finish
             Trace.TraceInformation("Finished binding '{0}'", classTemplate.Name);

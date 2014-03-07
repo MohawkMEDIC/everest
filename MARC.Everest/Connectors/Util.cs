@@ -339,7 +339,7 @@ namespace MARC.Everest.Connectors
                 var typeMapAtt = a.GetCustomAttributes(typeof(TypeMapAttribute), false);
                 bool result = false;
                 foreach (TypeMapAttribute tma in typeMapAtt)
-                    result |= (tma.Name == typeName) && (String.IsNullOrEmpty(tma.ArgumentType) ^ (tma.ArgumentType == typeNames.Peek()));
+                    result |= (tma.Name == typeName) && (String.IsNullOrEmpty(tma.ArgumentType) ^ (tma.ArgumentType != null && tma.ArgumentType == typeNames.Peek()));
                 return result || (structureAtt[0] as StructureAttribute).Name == typeName;
             };
 #if WINDOWS_PHONE

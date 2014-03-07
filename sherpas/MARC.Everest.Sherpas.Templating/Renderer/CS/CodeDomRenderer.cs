@@ -10,6 +10,7 @@ using MARC.Everest.DataTypes;
 using System.Reflection;
 using MARC.Everest.Attributes;
 using System.Diagnostics;
+using System.CodeDom.Compiler;
 
 namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 {
@@ -54,7 +55,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             // Start rendering the project
             foreach (var itm in project.Templates)
             {
-                RenderContext context = new RenderContext(itm, project);
+                RenderContext context = new RenderContext(itm, project, nsRoot);
                 var renderer = context.GetRenderer();
                 if (renderer == null)
                     Trace.TraceError("Cannot find a valid Renderer for template of type '{0}'", itm.GetType().Name);
@@ -81,7 +82,21 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             }
             else if (Path.GetExtension(outputFile) == ".dll")
             {
-                ;
+                CompilerParameters parameters = new CompilerParameters();
+                parameters.GenerateInMemory = false;
+                parameters.IncludeDebugInformation = false;
+                parameters.OutputAssembly = outputFile;
+                parameters.TempFiles.KeepFiles = true;
+                parameters.WarningLevel = 4;
+
+                var result = csharpCodeProvider.CompileAssemblyFromDom(parameters, renderUnit);
+                foreach (CompilerError rs in result.Errors)
+                {
+                    Trace.TraceError(rs.ToString());
+                    if (File.Exists(rs.FileName))
+                        File.Copy(rs.FileName, Path.ChangeExtension(outputFile, ".cs"), true);
+                }
+                Trace.TraceInformation("Compile finished with {0} errors", result.Errors.Count);
             }
 
         }

@@ -50,9 +50,13 @@ namespace MARC.Everest.Sherpas.Templating.Format
                     t = Util.ParseXSITypeName(this.Name);
                 }
                 catch { }
-                if (t == typeof(object))
-                    t = s_formatter.ParseXSITypeName(this.Name);
-                return t;
+                try
+                {
+                    if (t == typeof(object))
+                        t = s_formatter.ParseXSITypeName(this.Name);
+                    return t;
+                }
+                catch { return null; }
             }
             set
             {

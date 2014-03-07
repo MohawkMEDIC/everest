@@ -8,7 +8,7 @@ namespace MARC.Everest.Attributes
     /// <summary>
     /// Template attribute identifies a structure as being a template
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum, AllowMultiple = true)]
     public class TemplateAttribute : Attribute
     {
         /// <summary>

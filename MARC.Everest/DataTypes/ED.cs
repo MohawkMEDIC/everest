@@ -101,6 +101,7 @@ namespace MARC.Everest.DataTypes
     /// you are populating your ED to a string.
     /// </para>
     /// </remarks>
+    [TypeMap(Name = "SD")]
     [Structure(Name = "ED", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("ED", Namespace = "urn:hl7-org:v3")]
 #if !WINDOWS_PHONE

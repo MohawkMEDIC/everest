@@ -61,12 +61,13 @@
       original = original.Trim();
       string retVal = "";
       foreach (string s in original.Split(' ', '/'))
+      {
           if (s.Length > 1)
               retVal += s.ToUpper().Substring(0, 1) + s.Substring(1);
           else
               retVal += s.ToUpper() + "_";
-
-      return MakeFriendly(original);
+     }
+      return MakeFriendly(retVal);
     }
     
     public String MakeFriendly(String original)

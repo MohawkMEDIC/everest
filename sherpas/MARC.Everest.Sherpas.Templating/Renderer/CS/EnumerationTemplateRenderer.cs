@@ -49,22 +49,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             foreach (var id in tpl.Id)
                 retVal.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(TemplateAttribute)), new CodeAttributeArgument("TemplateId", new CodePrimitiveExpression(id))));
 
-            // Documentation
-            if (tpl.Documentation != null)
-            {
-                retVal.Comments.Add(new CodeCommentStatement(new CodeComment(String.Format("<summary>{0} value set</summary>", tpl.Name), true)));
-                retVal.Comments.Add(new CodeCommentStatement(new CodeComment("<remarks>", true)));
-                foreach (var doc in tpl.Documentation)
-                    retVal.Comments.Add(new CodeCommentStatement(new CodeComment(doc.OuterXml, true)));
-                retVal.Comments.Add(new CodeCommentStatement(new CodeComment("</remarks>", true)));
-            }
-            if (tpl.Example != null)
-            {
-                retVal.Comments.Add(new CodeCommentStatement(new CodeComment("<example><code lang=\"xml\"><![CDATA[", true)));
-                foreach (var ex in tpl.Example)
-                    retVal.Comments.Add(new CodeCommentStatement(new CodeComment(ex.OuterXml, true)));
-                retVal.Comments.Add(new CodeCommentStatement(new CodeComment("]]></code></example>", true)));
-            }
+            retVal.Comments.AddRange(RenderUtils.RenderComments(tpl, String.Format("{0} value set", tpl.Name)));
 
             // Emit the members
             foreach (var value in tpl.Literal)
