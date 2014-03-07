@@ -601,6 +601,7 @@ namespace MARC.Everest.DataTypes
                 return false;
             else if (this.Part == otherAd.Part)
                 return true;
+
             else
             {
                 foreach (var part in this.Part)
