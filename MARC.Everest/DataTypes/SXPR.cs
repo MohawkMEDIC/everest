@@ -44,16 +44,16 @@ namespace MARC.Everest.DataTypes
     /// </summary>
     /// <remarks>
     /// <para>The set expression data type is a concept defined in Data Types R1. In order to maintain compatibility
-    /// between data types versions, R2 concepts based on <see cref="T:QSET{T}"/> are permitted for use in an SXPR and
+    /// between data types versions, R2 concepts based on <see cref="T:MARC.Everest.DataTypes.QSET`1"/> are permitted for use in an SXPR and
     /// will be represented appropriately when formatting using an R1 formatter</para>
     /// <para>
-    /// However, because of the nature of SXPR and <see cref="T:SXCM{T}"/> R2 formatters will not render SXPR or SXCM 
+    /// However, because of the nature of SXPR and <see cref="T:MARC.Everest.DataTypes.SXCM`1"/> R2 formatters will not render SXPR or SXCM 
     /// components appropriately and will ignore their content (throwing warnings). This is important because although
     /// it is possible to represent R2's QSET constructs using SXPR, it is very difficult to represent R1 SXPR concepts
     /// as R2 QSETs.
     /// </para>
     /// <para>
-    /// The rules for mapping concepts based on <see cref="T:QSET{T}"/> are as follows:
+    /// The rules for mapping concepts based on <see cref="T:MARC.Everest.DataTypes.QSET`1"/> are as follows:
     /// </para>
     /// <list type="table">
     ///     <listheader><term>R2 Type</term>
@@ -80,12 +80,12 @@ namespace MARC.Everest.DataTypes
     ///     </item>
     /// </list>
     /// <para>
-    /// Of course, these rules mean that if the developer creates an SXPR using <see cref="T:QSET{T}"/> classes and parses the
+    /// Of course, these rules mean that if the developer creates an SXPR using <see cref="T:MARC.Everest.DataTypes.QSET`1"/> classes and parses the
     /// instance back in, the resulting structure will be an equivalent to the original structure (substituting SXCM and SXPR for QSET, QSI, QSD, etc...)
     /// </para>
     /// </remarks>
-    /// <seealso cref="T:MARC.Everest.DataTypes.QSET{T}"/>
-    /// <seealso cref="T:MARC.Everest.DataTypes.SET{T}"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSET`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.SET`1"/>
     [Structure(Name = "SXPR", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(IVL<TS>))]
 #if !WINDOWS_PHONE
     [Serializable]

@@ -81,6 +81,7 @@ namespace MARC.Everest.DataTypes
     /// <para>
     /// When creating a new SET without a comparator, the default comparator is used
     /// <code lang="cs" title="Default Comparator">
+    /// <![CDATA[
     /// delegate(T a, T b)
     /// {
     ///     if (a is ISemanticEquatable<T>)
@@ -92,7 +93,7 @@ namespace MARC.Everest.DataTypes
     ///     else
     ///         return 1;
     /// }
-    /// 
+    /// ]]>
     /// </code>
     /// 
     /// </para>

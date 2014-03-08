@@ -31,17 +31,17 @@ using MARC.Everest.Connectors;
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
-    /// Represents a <see cref="T:QSET{T}"/> that has been specialized as a union of other sets.
+    /// Represents a <see cref="T:MARC.Everest.DataTypes.QSET`1"/> that has been specialized as a union of other sets.
     /// </summary>
-    /// <seealso cref="T:QSET{T}"/>
-    /// <seealso cref="T:QSD{T}"/>
-    /// <seealso cref="T:QSI{T}"/>
-    /// <seealso cref="T:QSP{T}"/>
-    /// <seealso cref="T:QSS{T}"/>
-    /// <seealso cref="T:QSU{T}"/>
-    /// <seealso cref="T:SXPR{T}"/>
-    /// <seealso cref="T:SXCM{T}"/>
-    /// <seealso cref="T:GTS"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSET`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSD`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSI`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSP`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSS`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSU`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.SXPR`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.SXCM`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.GTS"/>
     [Structure(Name = "QSU", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QSU", Namespace = "urn:hl7-org:v3")]
 #if !WINDOWS_PHONE

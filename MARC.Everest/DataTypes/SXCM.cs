@@ -88,7 +88,7 @@ namespace MARC.Everest.DataTypes
     }
 
     /// <summary>
-    /// Set component: An individual component belonging to a set. See <see cref="T:MARC.Everest.DataTypes.IVL"/> for an example of a specific type of set.
+    /// Set component: An individual component belonging to a set. See <see cref="T:MARC.Everest.DataTypes.IVL`1"/> for an example of a specific type of set.
     /// </summary>
     /// <remarks>
     /// <para>

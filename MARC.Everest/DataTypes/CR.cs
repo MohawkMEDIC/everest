@@ -46,7 +46,7 @@ namespace MARC.Everest.DataTypes
     /// be defined by the coding system of the CD containing the concept qualifier.
     /// </remarks>
     /// <example>
-    /// An example of the use of CR can be seen in the <see cref="T:MARC.Everest.DataTypes.CD{}"/> datatype
+    /// An example of the use of CR can be seen in the <see cref="T:MARC.Everest.DataTypes.CD`1"/> datatype
     /// </example>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
     [Structure(Name = "CR", StructureType = StructureAttribute.StructureAttributeType.DataType, DefaultTemplateType = typeof(String))]

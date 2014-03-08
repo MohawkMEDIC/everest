@@ -29,7 +29,7 @@ namespace MARC.Everest.Exceptions
     /// </summary>
     /// <remarks>
     /// This exception is thrown whenever an attempt is made to add a duplicate item. This exception exists
-    /// to enforce a conformance rule on <see cref="T:MARC.Everest.DataTypes.SET{T}"/> and is only fired if:
+    /// to enforce a conformance rule on <see cref="T:MARC.Everest.DataTypes.SET`1"/> and is only fired if:
     /// <list type="bullet">
     ///     <item>The result of the comparator is 0 (ie: the data within the items are identical), or</item>
     ///     <item>The default comparator is 0 (ie: the object reference is the same)</item>

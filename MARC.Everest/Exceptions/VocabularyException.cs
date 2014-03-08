@@ -29,7 +29,7 @@ namespace MARC.Everest.Exceptions
     /// Signifies a vocabulary exception
     /// </summary>
     /// <remarks>
-    /// This exception occurs when Everest attempts to parse a vocabulary structure such as <see cref="T:MARC.Everest.DataTypes.CD"/> and 
+    /// This exception occurs when Everest attempts to parse a vocabulary structure such as <see cref="T:MARC.Everest.DataTypes.CD`1"/> and 
     /// fails to interpret the meaning of the Code. The main cause of this exception is a code that does not fall within a bound code system
     /// where no alternative code system is provided.
     /// </remarks>

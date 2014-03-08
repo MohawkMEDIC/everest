@@ -71,7 +71,7 @@ namespace MARC.Everest.DataTypes
     /// <remarks>
     /// Represents a concept descriptor that is not bound to a particular value set. Equivalent to CD{String}
     /// </remarks>
-    /// <seealso cref="T:MARC.Everest.DataType.CD{}"/>
+    /// <seealso cref="T:MARC.Everest.DataType.CD`1"/>
     //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance"), Serializable]
     //[XmlType("CD", Namespace = "urn:hl7-org:v3")]
     //[Obsolete("CD is obsolete, consider using CD<String>", true)]
@@ -469,9 +469,9 @@ namespace MARC.Everest.DataTypes
 
 
         /// <summary>
-        /// Converts a <see cref="CD"/> to a <typeparamref name="T"/>
+        /// Converts a <see cref="T:MARC.Everest.DataTypes.CD`1"/> to a <typeparamref name="T"/>
         /// </summary>
-        /// <param name="o">CD`1 to convert</param>
+        /// <param name="o"><see cref="T:MARC.Everest.DataTypes.CD`1"/> to convert</param>
         /// <returns>Converted T</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o")]
         public static implicit operator T(CD<T> o)
@@ -480,10 +480,10 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
-        /// Converts a <typeparamref name="T"/> to a <see cref="CD"/>
+        /// Converts a <typeparamref name="T"/> to a <see cref="T:MARC.Everest.DataTypes.CD`1"/>
         /// </summary>
         /// <param name="o">T to convert</param>
-        /// <returns>Converted CD`1</returns>
+        /// <returns>Converted <see cref="T:MARC.Everest.DataTypes.CD`1"/></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o")]
         public static implicit operator CD<T>(T o)
         {

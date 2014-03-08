@@ -32,7 +32,7 @@ namespace MARC.Everest.DataTypes
     /// system . Used to show alternative representation for a physical quantity. The coded value represents 
     /// the unit (usually in some other coding system other than UCCUM)
     /// </summary>
-    /// <seealso cref="T:MARC.Everest.DataTypes.CD"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.CD`1"/>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "PQR"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1501:AvoidExcessiveInheritance")]
     [Structure(Name = "PQR", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("PQR", Namespace = "urn:hl7-org:v3")]

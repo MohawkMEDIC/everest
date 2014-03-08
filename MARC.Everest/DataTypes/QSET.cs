@@ -34,8 +34,8 @@ namespace MARC.Everest.DataTypes
     /// <remarks>
     /// <para>QSET and its derivatives are concepts defined in HL7v3 data types R2, and as such
     /// should only be used when targeting R2 systems. QSET instances can be used in R1 instances within
-    /// <see cref="T:GTS"/> and <see cref="T:SXPR{T}"/> however when formatted using an R1 formatter, the concepts
-    /// are mapped to the equivalent R1 <see cref="T:SXCM{T}"/> concepts.</para>
+    /// <see cref="T:MARC.Everest.DataTypes.GTS"/> and <see cref="T:MARC.Everest.DataTypes.SXPR`1"/> however when formatted using an R1 formatter, the concepts
+    /// are mapped to the equivalent R1 <see cref="T:MARC.Everest.DataTypes.SXCM`1"/> concepts.</para>
     /// <example>
     /// <code lang="cs" title="Formatting R2 QSET with R1 Formatter">
     /// <![CDATA[
@@ -111,15 +111,15 @@ namespace MARC.Everest.DataTypes
     /// structures based on QSET.
     /// </para>
     /// </remarks>
-    /// <seealso cref="T:QSET{T}"/>
-    /// <seealso cref="T:QSD{T}"/>
-    /// <seealso cref="T:QSI{T}"/>
-    /// <seealso cref="T:QSP{T}"/>
-    /// <seealso cref="T:QSS{T}"/>
-    /// <seealso cref="T:QSU{T}"/>
-    /// <seealso cref="T:SXPR{T}"/>
-    /// <seealso cref="T:SXCM{T}"/>
-    /// <seealso cref="T:GTS"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSET`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSD`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSI`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSP`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSS`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.QSU`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.SXPR`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.SXCM`1"/>
+    /// <seealso cref="T:MARC.Everest.DataTypes.GTS"/>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "QSET")]
     [Structure(Name = "QSET", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("QSET", Namespace = "urn:hl7-org:v3")]

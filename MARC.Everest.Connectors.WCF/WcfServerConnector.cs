@@ -577,10 +577,10 @@ namespace MARC.Everest.Connectors.WCF
         /// <remarks>
         // <list type="table">
         /// <listheader><term>Key</term><description>Description</description></listheader>
-        /// <item><term>ServiceName</term>The name of the service to use</item>
-        /// <item><term>EndpointAddress</term>The address of the listener</item>
-        /// <item><term>BindingType</term>The type of binding</item>
-        /// <item><term>BindingContract</term>The binding contract</item>
+        /// <item><term>ServiceName</term><description>The name of the service to use</description></item>
+        /// <item><term>EndpointAddress</term><description>The address of the listener</description></item>
+        /// <item><term>BindingType</term><description>The type of binding</description></item>
+        /// <item><term>BindingContract</term><description>The binding contract</description></item>
         /// </list>
         /// </remarks>
         public string ConnectionString { get; set; }

@@ -246,7 +246,6 @@ namespace MARC.Everest.DataTypes
         /// var pivl = new PIVL&lt;TS>();
         /// pivl.Frequency = new RTO&lt;INT, PQ>(1, new PQ(5, "d"));
         /// </code>
-        /// </para>
         /// </example>
         /// <example>Repeat twice per day:
         /// <code lang="cs" title="Preferred">
@@ -411,10 +410,10 @@ namespace MARC.Everest.DataTypes
         ///         <description>When the <see cref="P:NullFlavor"/> property is populated, neither <see cref="P:Period"/>, <see cref="P:Frequency"/> nor <see cref="P:Phase"/> are populated</description>
         ///     </item>
         ///     <item>
-        ///         <description>When <see cref="P:NullFlavor"/> is not populated <see cref="P:Frequency"/> or <see cref="P:Period"/> must be set
+        ///         <description>When <see cref="P:NullFlavor"/> is not populated <see cref="P:Frequency"/> or <see cref="P:Period"/> must be set</description>
         ///     </item>
         ///     <item>
-        ///         <description>When <see cref="P:Frequency"/> is set <see cref="P:Period"/> must not be set
+        ///         <description>When <see cref="P:Frequency"/> is set <see cref="P:Period"/> must not be set</description>
         ///     </item>
         ///     <item>
         ///         <description>When <see cref="P:Period"/> is set <see cref="P:Frequency"/> must not be set</description>

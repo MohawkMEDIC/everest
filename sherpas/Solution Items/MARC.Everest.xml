@@ -377,7 +377,22 @@
             Override of base equals
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:MARC.Everest.DataTypes.ANY.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)" -->
+        <member name="M:MARC.Everest.DataTypes.ANY.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
+            <summary>
+            Compares this instance of ANY with another
+            </summary>
+            <param name="other">The other <see cref="T:MARC.Everest.Datatypes.ANY"/> to comapre</param>
+            <returns>True if this instance and <paramref name="other"/> are semantically equal</returns>
+            <remarks>Since the semantic equals method uses the native boolean type for its implementation, the following alterations have been made
+            to the equality rules:
+            <list type="number">
+            <item><description>If <paramref name="other"/> is null the result is null</description></item>
+            <item><description>If <paramref name="other"/> has a nullFlavor or this instance has a nullflavor the result is a BL with a nullFlavor of NA (as per 7.1.4 of reference guide) or the most common null flavor between the two. </description></item>
+            <item><description>If <paramref name="other"/>'s data type does not equal this instance's data type the result is false</description></item>
+            <item><description>If <paramref name="other"/> and this instance have a null flavor, the common anscestor </description></item>
+            </list>
+            </remarks>
+        </member>
         <member name="M:MARC.Everest.DataTypes.ANY.Validate">
             <summary>
             Validate the ANY
@@ -2217,7 +2232,32 @@
             <typeparamref name="T"/> does not implement <see cref="T:MARC.Everest.DataTypes.Interfaces.IDistanceable{T}"/></exception>
             <exception cref="T:System.InvalidOperationException">When the <see cref="P:Phase"/> property is not populated</exception>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:MARC.Everest.DataTypes.PIVL`1.ValidateEx" -->
+        <member name="M:MARC.Everest.DataTypes.PIVL`1.ValidateEx">
+            <summary>
+            Extended validation routine which returns the detected issues with the
+            validated data type
+            </summary>
+            <remarks>
+            An instance of PIVL is considered valid when :
+            <list type="number">
+                <item>
+                    <description>When the <see cref="P:NullFlavor"/> property is populated, neither <see cref="P:Period"/>, <see cref="P:Frequency"/> nor <see cref="P:Phase"/> are populated</description>
+                </item>
+                <item>
+                    <description>When <see cref="P:NullFlavor"/> is not populated <see cref="P:Frequency"/> or <see cref="P:Period"/> must be set</description>
+                </item>
+                <item>
+                    <description>When <see cref="P:Frequency"/> is set <see cref="P:Period"/> must not be set</description>
+                </item>
+                <item>
+                    <description>When <see cref="P:Period"/> is set <see cref="P:Frequency"/> must not be set</description>
+                </item>
+                <item>
+                    <description>If <see cref="P:Phase"/> is set and the <see cref="P:IVL.Width"/> property of <see cref="P:Phase"/> is populated, then it must be less than or equal to to value of the <see cref="P:Period"/> property</description>
+                </item>
+            </list>
+            </remarks>
+        </member>
         <member name="M:MARC.Everest.DataTypes.PIVL`1.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
             <summary>
             Determine semantic equality between this and <paramref name="other"/>
@@ -2261,7 +2301,38 @@
             Indicates the maximum number of times the interval can occur. Must be a valid INT.POS
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:MARC.Everest.DataTypes.PIVL`1.Frequency" -->
+        <member name="P:MARC.Everest.DataTypes.PIVL`1.Frequency">
+            <summary>
+            Indicates the frequency that the period repeats. 
+            </summary>
+            <remarks>Only <see cref="P:Frequency"/> OR <see cref="P:Period"/> should be specified
+            <para>
+            <see cref="P:Period"/> should be used in cases where it is easier for humans to read.</para>
+            <example>Repeat every 5 days:
+            <code lang="cs" title="Preferred">
+            var pivl = new PIVL&lt;TS>();
+            pivl.Period = new PQ(5, "d");
+            </code>
+            instead of :
+            <code lang="cs" title="Correct, but not preferable">
+            var pivl = new PIVL&lt;TS>();
+            pivl.Frequency = new RTO&lt;INT, PQ>(1, new PQ(5, "d"));
+            </code>
+            </example>
+            <example>Repeat twice per day:
+            <code lang="cs" title="Preferred">
+            var pivl = new PIVL&lt;TS>();
+            pivl.Frequency = new RTO&lt;INT, PQ>(2, new PQ(1, "d"));
+            </code>
+            instead of :
+            <code lang="cs" title="Correct, but not preferable">
+            var pivl = new PIVL&lt;TS>();
+            pivl.Period = new PQ(0.5, "d");
+            </code>
+            </example>
+            </remarks>
+            
+        </member>
         <member name="P:MARC.Everest.DataTypes.PIVL`1.OriginalText">
             <summary>
             Gets or sets the reason why the specified interval was supplied
@@ -3928,7 +3999,54 @@
             <para>From : http://en.wikipedia.org/wiki/SPQR</para>
             </remarks>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:MARC.Everest.DataTypes.SET`1" -->
+        <member name="T:MARC.Everest.DataTypes.SET`1">
+            <summary>
+            A collection that contains other distinct and discrete values where the sequence of items has meaning
+            </summary>
+            <example>
+            <code title="Creating a new SET" lang="cs">
+            <![CDATA[
+            // Create sets using two different constructors
+               SET<II> set1 = new SET<II>(new II("1.1.1.1", "1234"), II.Comparator);
+               SET<II> set2 = new SET<II>(new II[]{new II("1.1.1.1", "12345"), 
+                                                       new II("1.1.1.2", "23456")} , II.Comparator);
+               SET<II> set3 = set1.Union(set2); // set3 has two items
+            ]]>
+            </code>
+            </example>
+            <remarks>
+            When creating a set, it is recommended that you use a comparator as the business rules surrounding a set are that
+            not items can be duplicated. Since it is impossible to determine if an item will equal another without a comparator
+            this rule cannot be enforced without this comparator parameter.
+            <para>
+            When creating a new SET without a comparator, the default comparator is used
+            <code lang="cs" title="Default Comparator">
+            <![CDATA[
+            delegate(T a, T b)
+            {
+                if (a is ISemanticEquatable<T>)
+                    return (a as ISemanticEquatable<T>).SemanticEquals(b) ? 0 : 1;
+                if (a != null && a.Equals(b) ||
+                    b != null && b.Equals(a) ||
+                    a == null && b == null)
+                    return 0;
+                else
+                    return 1;
+            }
+            ]]>
+            </code>
+            
+            </para>
+            <para>
+            The option to use custom comparators has been made to support the following scenarios:
+            <list type="bullet">
+                <item>Creating SET instances with types that do not implement IEquatable</item>
+                <item>Creating SET instances with types where only portions of the members are considered duplicate (ie: an II is considered the same if only the Root and Extension are the same, no matter what the rest of the 
+                instance's content is)</item>
+            </list>
+            </para>
+            </remarks>
+        </member>
         <member name="T:MARC.Everest.DataTypes.COLL`1">
             <summary>
             An abstract type intended to collect common functionality related to collections
@@ -5565,10 +5683,16 @@
             <summary>
             Converts a <see cref="T:MARC.Everest.Datatypes.CE`1"/> to a <typeparamref name="T"/>
             </summary>
-            <param name="o">CE`1 to convert</param>
+            <param name="o">CE to convert</param>
             <returns>Converted T</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:MARC.Everest.DataTypes.CE`1.op_Implicit(`0)~MARC.Everest.DataTypes.CE{`0}" -->
+        <member name="M:MARC.Everest.DataTypes.CE`1.op_Implicit(`0)~MARC.Everest.DataTypes.CE{`0}">
+            <summary>
+            Converts a <typeparamref name="T"/> to a <see cref="T:MARC.Everest.Datatypes.CE`1"/>
+            </summary>
+            <param name="o">T to convert</param>
+            <returns>Converted CE</returns>
+        </member>
         <member name="M:MARC.Everest.DataTypes.CE`1.Parse(MARC.Everest.DataTypes.CE{System.String})">
             <summary>
             Converts a CE to a strongly typed CE

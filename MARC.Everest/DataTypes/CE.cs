@@ -209,7 +209,7 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// Converts a <see cref="T:MARC.Everest.Datatypes.CE`1"/> to a <typeparamref name="T"/>
         /// </summary>
-        /// <param name="o">CE`1 to convert</param>
+        /// <param name="o">CE to convert</param>
         /// <returns>Converted T</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o")]
         public static implicit operator T(CE<T> o)
@@ -218,10 +218,10 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
-        /// Converts a <typeparamref name="T"/> to a <see cref="T:<MARC.Everest.Datatypes.CE`1"/>
+        /// Converts a <typeparamref name="T"/> to a <see cref="T:MARC.Everest.Datatypes.CE`1"/>
         /// </summary>
         /// <param name="o">T to convert</param>
-        /// <returns>Converted CE`1</returns>
+        /// <returns>Converted CE</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2225:OperatorOverloadsHaveNamedAlternates"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "o")]
         public static implicit operator CE<T>(T o)
         {

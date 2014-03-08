@@ -188,7 +188,7 @@ namespace MARC.Everest.DataTypes
         /// <item><description>If <paramref name="other"/>'s data type does not equal this instance's data type the result is false</description></item>
         /// <item><description>If <paramref name="other"/> and this instance have a null flavor, the common anscestor </description></item>
         /// </list>
-        /// </para></remarks>
+        /// </remarks>
         public virtual BL SemanticEquals(IAny other)
         {
             if (other == null)
