@@ -31,6 +31,8 @@ using MARC.Everest.Interfaces;
 using MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV;
 using MARC.Everest.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MARC.Everest.RMIM.UV.CDAr2.Vocabulary;
+using System.Linq;
 
 namespace MARC.Everest.Test.Instances
 {
@@ -168,6 +170,38 @@ namespace MARC.Everest.Test.Instances
             XmlIsEquivalentAndDeserializable(expectedXml, document);
         }
 
+        [TestMethod]
+        public void ClinicalDocumentInheritanceWithCustomTypeConstraintLegacyTest()
+        {
+
+            var document = new ClinicalDocument
+            {
+                Component = new Component2(ActRelationshipHasComponent.HasComponent, true, new StructuredBodyWithConformance())
+            };
+
+            XmlIts1Formatter fmtr = new XmlIts1Formatter();
+            fmtr.Settings = SettingsType.DefaultLegacy | SettingsType.AlwaysCheckForOverrides;
+            fmtr.GraphAides.Add(new ClinicalDocumentDatatypeFormatter());
+            var result = fmtr.Graph(new MemoryStream(), document);
+            Assert.AreEqual(2, result.Details.Count(o => o.Message.StartsWith("CONF")));
+
+        }
+        [TestMethod]
+        public void ClinicalDocumentInheritanceWithCustomTypeConstraintUniprocessorTest()
+        {
+
+            var document = new ClinicalDocument
+            {
+                Component = new Component2(ActRelationshipHasComponent.HasComponent, true, new StructuredBodyWithConformance())
+            };
+
+            XmlIts1Formatter fmtr = new XmlIts1Formatter();
+            fmtr.Settings = SettingsType.DefaultUniprocessor | SettingsType.AlwaysCheckForOverrides;
+            fmtr.GraphAides.Add(new ClinicalDocumentDatatypeFormatter());
+            var result = fmtr.Graph(new MemoryStream(), document);
+            Assert.AreEqual(2, result.Details.Count(o => o.Message.StartsWith("CONF")));
+        }
+
         [Structure(Name = "Patient", NamespaceUri = CustomNamespace)]
         [Serializable]
         public class RecordTarget : RMIM.UV.CDAr2.POCD_MT000040UV.RecordTarget
@@ -189,6 +223,30 @@ namespace MARC.Everest.Test.Instances
             {
                 get;
                 set;
+            }
+        }
+
+        [FormalConstraint("CONF-1: You must have a doo-hickey on this thingamabob!", "IsElementPopulated")]
+        [Structure(Name = "StructuredBody", NamespaceUri = CustomNamespace)]
+        [Serializable]
+        public class StructuredBodyWithConformance : RMIM.UV.CDAr2.POCD_MT000040UV.StructuredBody
+        {
+            [FormalConstraint("CONF-2: Doo-hickey must be true", "IsElementPopulatedTrue")]
+            [Property(Name = "element", NamespaceUri = CustomNamespace, Conformance = PropertyAttribute.AttributeConformanceType.Optional, DefaultUpdateMode = UpdateMode.Unknown, PropertyType = PropertyAttribute.AttributeAttributeType.Traversable)]
+            public BL Element
+            {
+                get;
+                set;
+            }
+
+            public static bool IsElementPopulatedTrue(BL instance)
+            {
+                return instance != null && instance == true;
+            }
+
+            public static bool IsElementPopulated(StructuredBodyWithConformance instance)
+            {
+                return instance.Element != null;
             }
         }
 

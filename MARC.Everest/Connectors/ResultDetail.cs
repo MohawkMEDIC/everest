@@ -238,6 +238,11 @@ namespace MARC.Everest.Connectors
         /// Result detail
         /// </summary>
         public InsufficientRepetitionsResultDetail(string message) : base(message) { }
+
+        public InsufficientRepetitionsResultDetail(ResultDetailType type, String propertyName, int minOccurs, int maxOccurs, int actual, String location) :
+            base(type, String.Format("Invalid number of repetitions on property {3}, allowed multiplicity is {0}..{1}, actual count was {2}", minOccurs, maxOccurs == int.MaxValue ? "*" : maxOccurs.ToString(), actual, propertyName), location, null)
+        {
+        }
     }
 
     /// <summary>

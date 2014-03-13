@@ -14,13 +14,9 @@ namespace MARC.Everest.Sherpas.Interface
     {
 
         /// <summary>
-        /// Validate the instance
-        /// </summary>
-        IEnumerable<IResultDetail> ValidateEx();
-
-        /// <summary>
         /// Initializes the instance with the default data
         /// </summary>
         void InitializeInstance();
+
     }
 }

@@ -433,6 +433,17 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             if (o == null)
                 return dtls;
 
+            // Check constraints
+            object[] checkConstraints = o.GetType().GetCustomAttributes(typeof(FormalConstraintAttribute), true);
+            foreach (FormalConstraintAttribute ca in checkConstraints)
+            {
+                MethodInfo mi = o.GetType().GetMethod(ca.CheckConstraintMethod, new Type[] { o.GetType() });
+                if (mi == null)
+                    dtls.Add(new ResultDetail(ResultDetailType.Warning, String.Format("Could not check formal constraint as method {0} could not be found", ca.CheckConstraintMethod), location, null));
+                else if (!(bool)mi.Invoke(null, new object[] { o }))
+                    dtls.Add(new FormalConstraintViolationResultDetail(ResultDetailType.Error, ca.Description, location, null));
+            }
+
             PropertyInfo nullFlavorAttrib = o.GetType().GetProperty("NullFlavor");
             if (nullFlavorAttrib != null && nullFlavorAttrib.GetValue(o, null) != null)
                 return dtls;
@@ -469,7 +480,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         isValid &= Host.CreateRequiredElements;
                         dtls.Add(new RequiredElementMissingResultDetail(isValid ? ResultDetailType.Warning : ResultDetailType.Error, String.Format("Property {0} in {1} is marked 'populated' and isn't assigned (you must at minimum, assign a nullFlavor for this attribute)!", pi.Name, o.GetType().FullName), location));
                     }
-                    else if (pa.MinOccurs != 0)
+                    else if (pa.MinOccurs != 0 || ((pa.MaxOccurs != -1 && pa.MaxOccurs != 1)))
                     {
                         int minOccurs = pa.MinOccurs, 
                             maxOccurs = pa.MaxOccurs < 0 ? Int32.MaxValue : pa.MaxOccurs;
@@ -477,9 +488,20 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         if(piCollection != null && (piCollection.Count > maxOccurs || piCollection.Count < minOccurs))
                         { 
                             isValid = false; 
-                            dtls.Add(new InsufficientRepetitionsResultDetail(ResultDetailType.Error, String.Format("Property {0} in {2} does not have enough elements in the list, need between {1} and {3} elements!", pi.Name, minOccurs, o.GetType().FullName, maxOccurs), location));
+                            dtls.Add(new InsufficientRepetitionsResultDetail(ResultDetailType.Error, pa.Name, pa.MinOccurs, maxOccurs, piCollection.Count, location));
                         }
                     }
+                }
+
+                // Check constraints
+                checkConstraints = pi.GetCustomAttributes(typeof(FormalConstraintAttribute), false);
+                foreach (FormalConstraintAttribute ca in checkConstraints)
+                {
+                    MethodInfo mi = o.GetType().GetMethod(ca.CheckConstraintMethod, new Type[] { pi.PropertyType });
+                    if (mi == null)
+                        dtls.Add(new ResultDetail(ResultDetailType.Warning, String.Format("Could not check formal constraint as method {0} could not be found", ca.CheckConstraintMethod), location, null));
+                    else if (!(bool)mi.Invoke(null, new object[] { piValue }))
+                        dtls.Add(new FormalConstraintViolationResultDetail(ResultDetailType.Error, ca.Description, location, null));
                 }
             }
 

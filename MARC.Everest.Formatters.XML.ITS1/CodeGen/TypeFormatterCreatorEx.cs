@@ -34,6 +34,11 @@ using MARC.Everest.DataTypes;
 namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 {
     /// <summary>
+    /// Delegate for the create type formatter
+    /// </summary>
+    public delegate void CreateTypeFormatterCompletedDelegate(CodeTypeDeclaration declaration);
+
+    /// <summary>
     /// Represents a utility class that can create a code dom formatter
     /// </summary>
     public class TypeFormatterCreatorEx
@@ -333,6 +338,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             retVal.Parameters.Add(new CodeParameterDeclarationExpression(s_iGraphable, "o"));
             retVal.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(String)), "location"));
 
+            var _location = new CodeVariableReferenceExpression("location");
+
             // Cast the object to a strong typed instance
             retVal.Statements.Add(new CodeVariableDeclarationStatement(new CodeTypeReference(forType), "instance", s_null));
             // Now construct a return value
@@ -350,13 +357,117 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             if (forType.GetProperty("NullFlavor") != null) // Ooops... Only emit nullFlavor check if the type has the NullFlavor property
                 retVal.Statements.Add(new CodeConditionStatement(nullFlavorCheck, new CodeMethodReturnStatement(s_retVal)));
 
+            // Formal constraints on the type
+            foreach (FormalConstraintAttribute fca in forType.GetCustomAttributes(typeof(FormalConstraintAttribute), true))
+                if(forType.GetMethod(fca.CheckConstraintMethod, new Type[] { forType }) != null)
+                    retVal.Statements.Add(new CodeConditionStatement(
+                        new CodeBinaryOperatorExpression(new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(forType), fca.CheckConstraintMethod, s_instance), CodeBinaryOperatorType.IdentityInequality, s_true),
+                        new CodeExpressionStatement(new CodeMethodInvokeExpression(s_retVal, "Add", this.CreateResultDetailExpression(typeof(FormalConstraintViolationResultDetail), s_resultDetailError, new CodePrimitiveExpression(fca.Description), _location, new CodePrimitiveExpression(null))))));
+
             // Add the validation statements
             //retVal.Statements.AddRange(validateStatements);
-            
+            // Determine if the instance has a null flavor
+            // Now loop through properties and add validation statements
+            foreach (var bp in buildProperties)
+            {
+                PropertyAttribute pa = bp.PropertyAttributes.First();
+                var cpre = new CodePropertyReferenceExpression(s_instance, bp.PropertyInfo.Name);
+
+                if (pa.Conformance == PropertyAttribute.AttributeConformanceType.Mandatory && bp.PropertyInfo.PropertyType.GetProperty("NullFlavor") != null)
+                    retVal.Statements.Add(
+                        new CodeConditionStatement(
+                            new CodeBinaryOperatorExpression(
+                                new CodeBinaryOperatorExpression(cpre, CodeBinaryOperatorType.IdentityEquality, s_null),
+                                CodeBinaryOperatorType.BooleanOr,
+                                new CodeBinaryOperatorExpression(new CodePropertyReferenceExpression(cpre, "NullFlavor"), CodeBinaryOperatorType.IdentityInequality, s_null)
+                            ),
+                            new CodeExpressionStatement(new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(s_retVal, "Add"), this.CreateResultDetailExpression(typeof(MandatoryElementMissingResultDetail), s_resultDetailError, new CodePrimitiveExpression(String.Format("Property {0} in {1} is marked mandatory and is either not assigned, or is assigned a null flavor. This is not permitted", bp.PropertyInfo.Name, forType.FullName)), _location)))
+                        )
+                    );
+                else if(pa.Conformance == PropertyAttribute.AttributeConformanceType.Populated)
+                    retVal.Statements.Add(
+                        new CodeConditionStatement(
+                            new CodeBinaryOperatorExpression(cpre, CodeBinaryOperatorType.IdentityEquality, s_null),
+                            new CodeVariableDeclarationStatement(typeof(ResultDetailType), "level", s_resultDetailError),
+                            new CodeConditionStatement(new CodeBinaryOperatorExpression(new CodePropertyReferenceExpression(s_host, "CreateRequiredElements"), CodeBinaryOperatorType.IdentityEquality, s_true),
+                                new CodeAssignStatement(new CodeVariableReferenceExpression("level"), s_resultDetailWarning)
+                            ),
+                            new CodeExpressionStatement(new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(s_retVal, "Add"), this.CreateResultDetailExpression(typeof(RequiredElementMissingResultDetail), new CodeVariableReferenceExpression("level"), new CodePrimitiveExpression(String.Format("Property {0} in {1} is marked 'populated' and is not assigned (you must at minimum, assign a NullFlavor for this attribute)", bp.PropertyInfo.Name, forType.FullName)), _location)))
+                        )
+                    );
+                if(pa.MinOccurs != 0 || (pa.MaxOccurs != -1 && pa.MaxOccurs != 1) && bp.PropertyInfo.PropertyType.GetInterface(typeof(IList<>).FullName) != null)
+                {
+                    CodePropertyReferenceExpression count = new CodePropertyReferenceExpression(cpre, "Count");
+                    int maxOccurs = pa.MaxOccurs < 0 ? Int32.MaxValue : pa.MaxOccurs;
+                    retVal.Statements.Add(
+                        new CodeConditionStatement(
+                            new CodeBinaryOperatorExpression(
+                                new CodeBinaryOperatorExpression(cpre, CodeBinaryOperatorType.IdentityInequality, s_null), 
+                                CodeBinaryOperatorType.BooleanAnd,
+                                new CodeBinaryOperatorExpression(
+                                    new CodeBinaryOperatorExpression(count, CodeBinaryOperatorType.GreaterThan, new CodePrimitiveExpression(maxOccurs)), 
+                                    CodeBinaryOperatorType.BooleanOr,
+                                    new CodeBinaryOperatorExpression(count, CodeBinaryOperatorType.LessThan, new CodePrimitiveExpression(pa.MinOccurs))
+                                )
+                            ),
+                            new CodeExpressionStatement(new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(s_retVal, "Add"), this.CreateResultDetailExpression(typeof(InsufficientRepetitionsResultDetail), s_resultDetailError, new CodePrimitiveExpression(cpre.PropertyName), new CodePrimitiveExpression(pa.MinOccurs), new CodePrimitiveExpression(maxOccurs), count, _location)))
+                        )
+                    );
+                }
+
+
+                // Formal constraints on the type
+                foreach (FormalConstraintAttribute fca in bp.PropertyInfo.GetCustomAttributes(typeof(FormalConstraintAttribute), false))
+                    if(forType.GetMethod(fca.CheckConstraintMethod, new Type[] { bp.PropertyInfo.PropertyType }) != null)
+                        retVal.Statements.Add(new CodeConditionStatement(
+                            new CodeBinaryOperatorExpression(new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(forType), fca.CheckConstraintMethod, cpre), CodeBinaryOperatorType.IdentityInequality, s_true),
+                            new CodeExpressionStatement(new CodeMethodInvokeExpression(s_retVal, "Add", this.CreateResultDetailExpression(typeof(FormalConstraintViolationResultDetail), s_resultDetailError, new CodePrimitiveExpression(fca.Description), _location, new CodePrimitiveExpression(null))))));
+
+            }
             // Return the result array
             retVal.Statements.Add(new CodeMethodReturnStatement(s_retVal));
 
             return retVal;
+        }
+
+        // Determine if something is null
+        private bool IsStatementNull(CodeObject obj)
+        {
+            if(obj == null)
+                return true;
+
+            bool hasNull = false;
+
+            if (obj is CodeConditionStatement)
+            {
+                hasNull |= IsStatementNull((obj as CodeConditionStatement).Condition);
+                if((obj as CodeConditionStatement).TrueStatements != null)
+                    foreach (CodeObject stmt in (obj as CodeConditionStatement).TrueStatements)
+                        hasNull |= IsStatementNull(stmt);
+                if((obj as CodeConditionStatement).FalseStatements != null)
+                    foreach (CodeObject stmt in (obj as CodeConditionStatement).FalseStatements)
+                        hasNull |= IsStatementNull(stmt);
+            }
+            else if (obj is CodeIterationStatement)
+            {
+                hasNull |= IsStatementNull((obj as CodeIterationStatement).TestExpression);
+                foreach (CodeObject stmt in (obj as CodeIterationStatement).Statements)
+                    hasNull |= IsStatementNull(stmt);
+            }
+            else if (obj is CodeBinaryOperatorExpression)
+            {
+                hasNull |= IsStatementNull((obj as CodeBinaryOperatorExpression).Right);
+                hasNull |= IsStatementNull((obj as CodeBinaryOperatorExpression).Left);
+            }
+            else if (obj is CodeTryCatchFinallyStatement)
+            {
+                foreach(CodeObject stmt in (obj as CodeTryCatchFinallyStatement).TryStatements)
+                    hasNull |= IsStatementNull(stmt);
+            }
+            else if (obj is CodeMemberMethod)
+                foreach (CodeObject stmt in (obj as CodeMemberMethod).Statements)
+                    hasNull |= IsStatementNull(stmt); 
+            return hasNull;
         }
 
         /// <summary>
@@ -522,6 +633,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
             retVal.Statements.Add(elementReadLoop);
 
+            if (IsStatementNull(retVal))
+                System.Diagnostics.Debugger.Break();
+
             retVal.Statements.Add(new CodeMethodReturnStatement(s_instance));
             return retVal;
         }
@@ -583,10 +697,6 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                 new CodeExpressionStatement(this.CreateSimpleMethodCallExpression(s_writer, "WriteAttributeString", "xmlns", "xsi", null, XmlIts1Formatter.NS_XSI))
             ));
 
-            // Shall we validate?
-            retVal.Statements.Add(new CodeConditionStatement(new CodePropertyReferenceExpression(s_host, "ValidateConformance"),
-                new CodeExpressionStatement(new CodeMethodInvokeExpression(s_host, "ValidateHelper", s_writer, s_instance, s_this, s_resultContext))));
-
             CodeExpression isInstanceNullCondition = new CodeBinaryOperatorExpression(s_instanceNullFlavor, CodeBinaryOperatorType.IdentityInequality, s_null),
                notIsInstanceNullCondition = new CodeBinaryOperatorExpression(s_instanceNullFlavor, CodeBinaryOperatorType.IdentityEquality, s_null),
                isSuppressNullCondition = new CodeBinaryOperatorExpression(new CodeBinaryOperatorExpression(s_hostSettings, CodeBinaryOperatorType.BitwiseAnd, new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(SettingsType)), "SuppressNullEnforcement")), CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(0)),
@@ -623,6 +733,11 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             isFlavorImposingCondition = new CodeVariableReferenceExpression("flavorImposing");
             isUpdateModeImposingCondition = new CodeVariableReferenceExpression("updateModeImposing");
             isVocabularyImposingCondition = new CodeVariableReferenceExpression("vocabularyImposing");
+
+            // Shall we validate?
+            retVal.Statements.Add(new CodeConditionStatement(new CodePropertyReferenceExpression(s_host, "ValidateConformance"),
+                new CodeExpressionStatement(new CodeMethodInvokeExpression(s_host, "ValidateHelper", s_writer, s_instance, s_this, s_resultContext))));
+
 
             // Now emit the graph statements
             foreach (BuildProperty buildProperty in buildProperties)
@@ -806,6 +921,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                 }
             }
 
+
             // Close
             retVal.Statements.Add(new CodeConditionStatement(
                 new CodeVariableReferenceExpression("isEntryPoint"), 
@@ -921,9 +1037,18 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
                 
             }
-            currentStatement.FalseStatements.Clear();
-            currentStatement.FalseStatements.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedElementResultDetail), s_resultDetailInformation, new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(String)), "Format", new CodePrimitiveExpression("@{0}"), s_readerLocalName), s_readerNamespace, s_readerToString, s_null))); 
 
+            if (currentStatement.Condition == null)
+            {
+                ignoreAttributesConditionStatement.FalseStatements.Remove(currentStatement);
+                ignoreAttributesConditionStatement.FalseStatements.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedElementResultDetail), s_resultDetailInformation, new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(String)), "Format", new CodePrimitiveExpression("@{0}"), s_readerLocalName), s_readerNamespace, s_readerToString, s_null)));
+            }
+            else
+            {
+                currentStatement.FalseStatements.Clear();
+                currentStatement.FalseStatements.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedElementResultDetail), s_resultDetailInformation, new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(String)), "Format", new CodePrimitiveExpression("@{0}"), s_readerLocalName), s_readerNamespace, s_readerToString, s_null)));
+            }
+            
             //ignoreAttributesConditionStatement.FalseStatements.AddRange(setStatements);
             attributeLoop.Statements.Add(ignoreAttributesConditionStatement);
 
@@ -949,6 +1074,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
             // Read content
             retVal.Statements.Add(new CodeMethodReturnStatement(new CodeMethodInvokeExpression(s_host, "ParseElementContent", s_reader, s_instance, s_readerLocalName, new CodePropertyReferenceExpression(s_reader, "Depth"), s_interactionType, s_resultContext)));
+
+            if (IsStatementNull(retVal))
+                System.Diagnostics.Debugger.Break();
 
             return retVal;
         }

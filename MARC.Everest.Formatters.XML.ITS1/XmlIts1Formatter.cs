@@ -1456,7 +1456,6 @@ namespace MARC.Everest.Formatters.XML.ITS1
             
             // Graph using helper
             formatter.Graph(s, o, context, resultContext);
-
         }
 
         /// <summary>
