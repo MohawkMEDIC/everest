@@ -161,7 +161,9 @@ namespace MARC.Everest.DataTypes
     public class CV<T> : CS<T>, ICodedValue, IEquatable<CV<T>>
     {
 
-        
+        // Backing field for all codified dat
+        internal CodifiedValueDefinition<T> m_codeData = new CodifiedValueDefinition<T>();
+
         /// <summary>
         /// Create a new instance of CV
         /// </summary>
@@ -238,51 +240,12 @@ namespace MARC.Everest.DataTypes
         {
             get
             {
-                return base.Code;
+                return this.m_codeData.Code;
             }
             set
             {
-                // Set the code system if one is not set  
-                if (CodeSystem == null && value != null && !value.IsAlternateCodeSpecified && typeof(T).IsEnum) // Set the code system to the value's code system
-                    this.CodeSystem = GetCodeSystem(value);
-                if (DisplayName == null && value != null && !value.IsAlternateCodeSpecified && typeof(T).IsEnum)
-                    this.DisplayName = GetDisplayName(value);
-                base.Code = value;
+                this.m_codeData.Code = value;
             }
-        }
-
-        /// <summary>
-        /// Get the display name for the enumeration
-        /// </summary>
-        private ST GetDisplayName(CodeValue<T> value)
-        {
-            if (value == null || !typeof(T).IsEnum) return null;
-
-#if !WINDOWS_PHONE
-            object[] ea = typeof(T).GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-            if (ea.Length != 0 && !string.IsNullOrEmpty((ea[0] as DescriptionAttribute).Description))
-                return (ea[0] as DescriptionAttribute).Description;
-#endif
-            return null;
-        }
-
-        /// <summary>
-        /// Get code system for the specified value
-        /// </summary>
-        private string GetCodeSystem(CodeValue<T> value)
-        {
-
-            if (value == null || !typeof(T).IsEnum) return null;
-
-            object[] ea = typeof(T).GetField(value.ToString()).GetCustomAttributes(typeof(EnumerationAttribute), false),
-                                    oa = typeof(T).GetCustomAttributes(typeof(StructureAttribute), false);
-
-            if (ea.Length != 0 && !string.IsNullOrEmpty((ea[0] as EnumerationAttribute).SupplierDomain))
-                return (ea[0] as EnumerationAttribute).SupplierDomain;
-            if (String.IsNullOrEmpty(this.CodeSystem) && oa.Length != 0)
-                return (oa[0] as StructureAttribute).CodeSystem;
-            return null;
         }
 
         /// <summary>
@@ -297,28 +260,28 @@ namespace MARC.Everest.DataTypes
         /// </remarks>
         [Property(Name = "codeSystem", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         [XmlAttribute("codeSystem")]
-        public string CodeSystem { get; set; }
+        public string CodeSystem { get { return this.m_codeData.CodeSystem; } set { this.m_codeData.CodeSystem = value; } }
 
         /// <summary>
         /// The name of the code system
         /// </summary>
         [Property(Name = "codeSystemName", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         [XmlAttribute("codeSystemName")]
-        public string CodeSystemName { get; set; }
+        public string CodeSystemName { get { return this.m_codeData.CodeSystemName; } set { this.m_codeData.CodeSystemName = value; } }
 
         /// <summary>
         /// The code system version
         /// </summary>
         [Property(Name = "codeSystemVersion", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         [XmlAttribute("codeSystemVersion")]
-        public string CodeSystemVersion { get; set; }
+        public string CodeSystemVersion { get { return this.m_codeData.CodeSystemVersion; } set { this.m_codeData.CodeSystemVersion = value; } }
 
         /// <summary>
         /// Gets or sets the name or title for the code
         /// </summary>
         [Property(Name = "displayName", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         [XmlElement("displayName")]
-        public ST DisplayName { get; set; }
+        public ST DisplayName { get { return this.m_codeData.DisplayName; } set { this.m_codeData.DisplayName = value; } }
 
         /// <summary>
         /// Gets or sets the text as seen and or selected by the user who entered the data
@@ -329,7 +292,7 @@ namespace MARC.Everest.DataTypes
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
         #endif
-        public ED OriginalText { get; set; }
+        public ED OriginalText { get { return this.m_codeData.OriginalText; } set { this.m_codeData.OriginalText = value; } }
 
         /// <summary>
         /// Gets or sets addtional groups of logically related qualifiers
@@ -349,21 +312,21 @@ namespace MARC.Everest.DataTypes
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Editor(typeof(NewInstanceTypeEditor), typeof(UITypeEditor))]
         #endif
-        public SET<CodingRationale> CodingRationale { get; set; }
+        public SET<CodingRationale> CodingRationale { get { return this.m_codeData.CodingRationale; } set { this.m_codeData.CodingRationale = value; } }
 
         /// <summary>
         /// Identifies the value set that was applicable at the time of coding
         /// </summary>
         [Property(Name = "valueSet", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         [XmlAttribute("valueSet")]
-        public String ValueSet { get; set; }
+        public String ValueSet { get { return this.m_codeData.ValueSet; } set { this.m_codeData.ValueSet = value; } }
 
         /// <summary>
         /// Identifies the version of the value set that was applicable at the time of coding
         /// </summary>
         [Property(Name = "valueSetVersion", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         [XmlAttribute("valueSetVersion")]
-        public String ValueSetVersion { get; set; }
+        public String ValueSetVersion { get { return this.m_codeData.ValueSetVersion; } set { this.m_codeData.ValueSetVersion = value; } }
 
         /// <summary>
         /// Validate the code is in the proper format
@@ -469,6 +432,17 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
+        /// Cast a CV to CD 
+        /// </summary>
+        /// <remarks>I know, you're probably asking why this is possible? Well, because in the HL7v3 DT spec CE is a CD that restricts (we can't do this in C# so this is hackish way to do it)</remarks>
+        internal static CD<T> UpCast(CV<T> o)
+        {
+            CD<T> retVal = new CD<T>();
+            retVal.m_codeData = o.m_codeData;
+            return retVal;
+        }
+
+        /// <summary>
         /// Converts a <typeparamref name="T"/> to a <see cref="CV"/>
         /// </summary>
         /// <param name="o">T to convert</param>
@@ -549,7 +523,7 @@ namespace MARC.Everest.DataTypes
                     (other.CodingRationale != null ? other.CodingRationale.Equals(this.CodingRationale) : this.CodingRationale == null) &&
                     (other.DisplayName == null ? this.DisplayName == null : other.DisplayName.Equals(this.DisplayName)) &&
                     (other.OriginalText != null ? other.OriginalText.Equals(this.OriginalText) : this.OriginalText == null) &&
-                    (this.CodeSystem ?? GetCodeSystem(Code)) == (other.CodeSystem ?? GetCodeSystem(other.Code)) &&
+                    (this.CodeSystem ?? m_codeData.GetCodeSystem(Code)) == (other.CodeSystem ?? m_codeData.GetCodeSystem(other.Code)) &&
                     this.CodeSystemName == other.CodeSystemName &&
                     this.CodeSystemVersion == other.CodeSystemVersion &&
                     this.ValueSet == other.ValueSet &&

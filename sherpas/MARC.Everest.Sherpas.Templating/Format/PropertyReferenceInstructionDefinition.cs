@@ -43,16 +43,22 @@ namespace MARC.Everest.Sherpas.Templating.Format
 
             CodeExpression scope = new CodeThisReferenceExpression();
             if (this.VariableName != null)
+            {
                 scope = new CodeVariableReferenceExpression(this.VariableName);
+            }
             else while (scopeStack.Count > 0)
                 {
                     var tpl = scopeStack.Pop();
                     scope = new CodePropertyReferenceExpression(scope, tpl.Name);
                     if (ctorStatements != null && !tpl.Property.PropertyType.IsAbstract)
                     {
+
+                        // Do we want a conversion or just a assignment?
+                        var currentObjectGen = context.Artifact as ClassTemplateDefinition;
                         var trueStatements = new CodeStatementCollection() {
-                            new CodeAssignStatement(scope, new CodeObjectCreateExpression(new CodeTypeReference(tpl.Property.PropertyType)))
+                            new CodeAssignStatement(scope, new CodeObjectCreateExpression(new CodeTypeReference(tpl.Type != null ? tpl.Type.Type : tpl.Property.PropertyType)))
                         };
+
                         var ifNullStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(scope, CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(null)));
                         if (tpl.Property.PropertyType.GetInterface(typeof(IList<>).FullName) != null)
                         {
@@ -66,7 +72,7 @@ namespace MARC.Everest.Sherpas.Templating.Format
                     else if (conditionalStatements != null)
                     {
                         conditionalStatements.Add(new CodeBinaryOperatorExpression(scope, CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(null)));
-                        
+
                     }
                 }
             if (this.PropertyName != null)

@@ -34,6 +34,7 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// </summary>
         [XmlElement("classTemplate", typeof(ClassTemplateDefinition))]
         [XmlElement("enumerationTemplate", typeof(EnumerationTemplateDefinition))]
+        [XmlElement("nullTemplate", typeof(NullArtifactTemplate))]
         public List<ArtifactTemplateBase> Templates { get; set; }
 
         /// <summary>

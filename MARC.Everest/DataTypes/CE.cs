@@ -156,7 +156,7 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures"), Property(Name = "translation", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
         [XmlElement("translation")]
-        public SET<CD<T>> Translation { get; set; }
+        public SET<CD<T>> Translation { get { return this.m_codeData.Translation; } set { this.m_codeData.Translation = value; } }
 
         /// <summary>
         /// Determines if the CE is valid.
@@ -215,6 +215,17 @@ namespace MARC.Everest.DataTypes
         public static implicit operator T(CE<T> o)
         {
             return o.Code;
+        }
+
+        /// <summary>
+        /// Cast a CE to CD 
+        /// </summary>
+        /// <remarks>I know, you're probably asking why this is possible? Well, because in the HL7v3 DT spec CE is a CD that restricts (we can't do this in C# so this is hackish way to do it)</remarks>
+        internal static CD<T> UpCast(CE<T> o)
+        {
+            CD<T> retVal = new CD<T>();
+            retVal.m_codeData = o.m_codeData;
+            return retVal;
         }
 
         /// <summary>

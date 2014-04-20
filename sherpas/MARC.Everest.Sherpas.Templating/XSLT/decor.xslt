@@ -45,10 +45,15 @@
     </marc:enumerationTemplate>
   </xsl:template>
 
+  <xsl:template match="element[contains(@name,'[')]">
+    <xsl:comment>
+      Cannot represent <xsl:value-of select="@name"/>
+    </xsl:comment>
+  </xsl:template>
   <!-- Class Template -->
-  <xsl:template match="element">
+  <xsl:template match="element[not(contains(@name,'['))]">
 
-    <marc:propertyTemplate traversalName="{marc:CleanElementName(@name)}"  >
+    <marc:propertyTemplate traversalName="{marc:CleanElementName(@name)}" >
       <xsl:if test="@minimumMultiplicity">
         <xsl:attribute name="minOccurs">
           <xsl:value-of select="@minimumMultiplicity"/>
@@ -78,19 +83,23 @@
         
         <xsl:choose>
           <xsl:when test="count($ref/element) != 1 or element[1]/@datatype">
+            <xsl:attribute name="contains">
+              <xsl:value-of select="marc:PascalCaseName($ref/@name)"/>
+            </xsl:attribute>
             <!-- Inline processing for contains -->
             <xsl:comment>
               From <xsl:value-of select="$refName"/>
             </xsl:comment>
-            <xsl:apply-templates select="$ref/element"/>
+            <!--<xsl:apply-templates select="$ref/element"/>-->
           </xsl:when>
           <xsl:otherwise>
             <xsl:attribute name="contains">
               <xsl:value-of select="marc:PascalCaseName($ref/@name)"/>
             </xsl:attribute>
-            <xsl:if test="not(local-name(parent::node()) = 'choice') and @minimumMultiplicity= 1">
+            <!--z<xsl:if test="not(local-name(parent::node()) = 'choice') and @minimumMultiplicity= 1">
               <marc:validationInstruction>
-                <marc:where operator="NCONT" valueRef="{marc:PascalCaseName(marc:CleanElementName(@contains))}">
+                <marc:where operator="NOT">
+                  <marc:where operator="IS" propertyName="{marc:PascalCaseName(marc:CleanElementName(parent::node()/@name))}"  valueRef="{marc:PascalCaseName(marc:CleanElementName(@contains))}"/>
                   <marc:call variableName="retVal" method="Add">
                     <marc:param>
                       <marc:construct type="MARC.Everest.Sherpas.ResultDetail.TemplateMissingContentResultDetail">
@@ -102,7 +111,7 @@
                   </marc:call>                  
                 </marc:where>
               </marc:validationInstruction>
-            </xsl:if>
+            </xsl:if>-->
           </xsl:otherwise>
         </xsl:choose>
        
@@ -128,8 +137,9 @@
         </xsl:choose>
 
       </xsl:if>
+      
       <xsl:apply-templates />
-
+     
     </marc:propertyTemplate>
 
   </xsl:template>
@@ -176,33 +186,10 @@
         </marc:propertyTemplate>
       </xsl:when>
       <xsl:when test="@name and @prohibited = 'true'">
-        <marc:validationInstruction>
-          <marc:where propertyName="{@name}" operator="NE" valueRef="null">
-            <marc:call variableName="retVal" method="Add">
-              <marc:param>
-                <marc:construct variableName="retVal" type="MARC.Everest.Sherpas.ResultDetail.TemplatePopulatedProhibitedElementResultDetail">
-                  <marc:set propertyName="Type" valueRef="MARC.Everest.Connectors.ResultDetailType.Warning"/>
-                  <marc:set propertyName="Property" value="{@name}"/>
-                </marc:construct>
-              </marc:param>
-            </marc:call>
-
-          </marc:where>
-        </marc:validationInstruction>
-      </xsl:when>
-      <xsl:when test="@name and @isOptional = 'false'">
-        <marc:validationInstruction>
+        <marc:formalConstraint message="Property {marc:PascalCaseName(marc:CleanElementName(../@name))}.{marc:PascalCaseName(@name)} is prohibited">
           <marc:where propertyName="{@name}" operator="EQ" valueRef="null">
-            <marc:call variableName="retVal" method="Add">
-              <marc:param>
-                <marc:construct variableName="retVal" type="MARC.Everest.Sherpas.ResultDetail.TemplateRequiredElementMissingResultDetail">
-                  <marc:set propertyName="Type" valueRef="MARC.Everest.Connectors.ResultDetailType.Warning"/>
-                  <marc:set propertyName="Property" value="{@name}"/>
-                </marc:construct>
-              </marc:param>
-            </marc:call>
           </marc:where>
-        </marc:validationInstruction>
+        </marc:formalConstraint>
       </xsl:when>
       <!-- Setting -->
       <xsl:otherwise>
@@ -228,40 +215,17 @@
           <xsl:choose>
             <xsl:when test="local-name() = 'isOptional' or local-name() = 'prohibited' or local-name() = 'datatype'"></xsl:when>
             <xsl:when test="local-name() = 'name' and ../@value">
-              <marc:validationInstruction>
-
-                <marc:where propertyName="{.}" operator="NE" value="{../@value}">
-                  <marc:call variableName="retVal" method="Add">
-                    <marc:param>
-                      <marc:construct type="MARC.Everest.Sherpas.ResultDetail.TemplateFixedValueMisMatchResultDetail">
-                        <marc:set propertyName="Type" valueRef="MARC.Everest.Connectors.ResultDetailType.Warning"/>
-                        <marc:set propertyName="Property" value="{marc:PascalCaseName(.)}"/>
-                        <marc:set propertyName="Expected" value="{../@value}"/>
-                        <!--<marc:set propertyName="Actual" valueRef="{marc:PascalCaseName(.)}"/>-->
-                        <marc:set propertyName="IsIgnored" valueRef="true"/>
-                      </marc:construct>
-                    </marc:param>
-                  </marc:call>
+              <marc:formalConstraint message="Property {marc:PascalCaseName(marc:CleanElementName(../../@name))}.{marc:PascalCaseName(.)} must carry value {../@value}">
+                <marc:where propertyName="{.}" operator="EQ" value="{../@value}">
                 </marc:where>
-              </marc:validationInstruction>
+              </marc:formalConstraint>
             </xsl:when>
             <xsl:when test="local-name() = 'name' or (local-name() = 'value' and (../../vocabulary or ../@name)) " ></xsl:when>
             <xsl:otherwise>
-              <marc:validationInstruction>
-                <marc:where propertyName="{marc:CleanElementName(local-name())}" operator="NE" value="{.}">
-                  <marc:call variableName="retVal" method="Add">
-                    <marc:param>
-                      <marc:construct type="MARC.Everest.Sherpas.ResultDetail.TemplateFixedValueMisMatchResultDetail">
-                        <marc:set propertyName="Type" valueRef="MARC.Everest.Connectors.ResultDetailType.Warning"/>
-                        <marc:set propertyName="Property" value="{marc:PascalCaseName(local-name())}"/>
-                        <marc:set propertyName="Expected" value="{.}"/>
-                        <!--<marc:set propertyName="Actual" valueRef="{marc:PascalCaseName(local-name())}"/>-->
-                        <marc:set propertyName="IsIgnored" valueRef="true"/>
-                      </marc:construct>
-                    </marc:param>
-                  </marc:call>
+              <marc:formalConstraint message="Property {marc:PascalCaseName(marc:CleanElementName(../../@name))}.{marc:PascalCaseName(local-name())} must carry value {.}">
+                <marc:where propertyName="{marc:CleanElementName(local-name())}" operator="EQ" value="{.}">
                 </marc:where>
-              </marc:validationInstruction>
+              </marc:formalConstraint>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:for-each>
@@ -271,62 +235,51 @@
 
   <!-- Vocabulary Entry (attribute = initialization) -->
   <xsl:template match="vocabulary[not(@valueSet) and not(@domain)]">
-    
-    <marc:initialize>
-      <!--
+
+    <xsl:if test="count(../vocabulary) = 1">
+      <marc:initialize>
+        <!--
           propertyName="{marc:PascalCaseName(marc:CleanElementName(../@name))}">-->
-      <xsl:for-each select="@*">
-        <xsl:variable name="name" select="local-name()"/>
+        <xsl:for-each select="@*">
+          <xsl:variable name="name" select="local-name()"/>
 
-        <xsl:if test="not(../../attribute[@name = $name])">
-          <marc:set propertyName="{$name}" value="{.}"/>
-        </xsl:if>
-      </xsl:for-each>
-    </marc:initialize>
-
+          <xsl:if test="not(../../attribute[@name = $name])">
+            <marc:set propertyName="{$name}" value="{.}"/>
+          </xsl:if>
+        </xsl:for-each>
+      </marc:initialize>
+    </xsl:if>
     <xsl:for-each select="@*">
       <xsl:variable name="name" select="local-name()"/>
 
       <xsl:if test="not(../../attribute[@name = $name])">
-        <marc:validationInstruction>
-          <marc:where propertyName="{marc:CleanElementName(local-name())}" operator="NE" value="{.}">
-            <marc:call variableName="retVal" method="Add">
-              <marc:param>
-                <marc:construct type="MARC.Everest.Sherpas.ResultDetail.TemplateFixedValueMisMatchResultDetail">
-                  <marc:set propertyName="Type" valueRef="MARC.Everest.Connectors.ResultDetailType.Warning"/>
-                  <marc:set propertyName="Property" value="{marc:PascalCaseName(local-name())}"/>
-                  <marc:set propertyName="Expected" value="{.}"/>
-                  <!--<marc:set propertyName="Actual" valueRef="{marc:PascalCaseName(local-name())}"/>-->
-                  <marc:set propertyName="IsIgnored" valueRef="true"/>
-                </marc:construct>
-              </marc:param>
-            </marc:call>
+        <marc:formalConstraint message="Property {marc:PascalCaseName(marc:CleanElementName(../../@name))}.{marc:PascalCaseName(local-name())} must carry value {.}">
+          <marc:where propertyName="{marc:CleanElementName(local-name())}" operator="EQ" value="{.}">
           </marc:where>
-        </marc:validationInstruction>
+        </marc:formalConstraint>
       </xsl:if>
     </xsl:for-each>
-
   </xsl:template>
 
   <!-- Equivalent to setting a temporary variable -->
   <xsl:template match="let">
-    <marc:validationInstruction>
+    <!--<marc:validationInstruction>
       <marc:call variableName="ValidationContext" method="SetXPathVariable">
         <marc:param value="{@name}"/>
         <marc:param value="{@value}"/>
       </marc:call>
-    </marc:validationInstruction>
+    </marc:validationInstruction>-->
   </xsl:template>
 
   <!-- An Assertion = Validation Instruction -->
   <xsl:template match="assert">
-    <marc:validationInstruction>
+    <!--<marc:validationInstruction>
       <marc:call variableName="ValidationContext" method="EvaluateXPathTest">
         <marc:param value="{@test}"/>
         <marc:return valueRef="x"/>
       </marc:call>
       <marc:where variableName="x" operator="EQ" valueRef="true">
-        <marc:call method="retVal.Add">
+        <marc:call variableName="retVal" method="Add">
           <marc:param>
             <marc:construct type="MARC.Everest.Sherpas.ResultDetail.TemplateFormalConstraintViolationResultDetail">
               <xsl:choose>
@@ -345,15 +298,25 @@
           </marc:param>
         </marc:call>
       </marc:where>
-    </marc:validationInstruction>
+    </marc:validationInstruction>-->
   </xsl:template>
 
   <!-- Root Class Template -->
   <xsl:template match="template">
     <xsl:variable name="name" select="@name"/>
     <xsl:variable name="id" select="@id"/>
-    <xsl:if test="count(element) = 1 and not(element[1]/@datatype) and count(//*[@ref=$name or @contains = $name or @ref=$id or @contains = $id]) > 0">
-      <marc:classTemplate name="{marc:PascalCaseName(@name)}" traversalName="{marc:CleanElementName(./element/@name)}">
+    <xsl:comment>
+      <xsl:value-of select="@name"/>
+      Has 
+      <xsl:value-of select="count(//*[(@ref=$name or @contains = $name or @ref=$id or @contains = $id)])"/>
+    </xsl:comment>
+    <xsl:if test="count(//*[(@ref=$name or @contains = $name or @ref=$id or @contains = $id)]) > 0">
+      <marc:classTemplate name="{marc:PascalCaseName(@name)}">
+        <xsl:if test="count(element) = 1">
+          <xsl:attribute name="traversalName">
+            <xsl:value-of select="marc:CleanElementName(./element/@name)"/>
+          </xsl:attribute>
+        </xsl:if>
         <xsl:for-each select=".//element[marc:CleanElementName(@name) = 'templateId' and attribute/@root]">
           <marc:id>
             <xsl:value-of select="attribute/@root"/>
@@ -361,45 +324,60 @@
         </xsl:for-each>
         <marc:baseClass name="{marc:GetBaseClass(./classification/@type)}"/>
         <xsl:apply-templates select="*[local-name() != 'element']"/>
-        <xsl:for-each select="element">
-          <xsl:apply-templates />
-        </xsl:for-each>
+        <xsl:choose>
+          <xsl:when test="count(element) = 1">
+            <xsl:for-each select="element">
+              <xsl:apply-templates />
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates select="*[local-name() = 'element']"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </marc:classTemplate>
     </xsl:if>
   </xsl:template>
 
 
+  <xsl:template match="choice" priority="-1">
+    <xsl:comment>
+      Choice was removed because no choice elements actually exist
+    </xsl:comment>
+  </xsl:template>
+  
   <!-- Choice = Restrict the allowed choices -->
-  <xsl:template match="choice">
+  <xsl:template match="choice[count(./element[not(contains(@name,'['))])>0]">
 
-    <xsl:apply-templates />
-    <marc:validationInstruction>
-      <marc:where operation="XOR">
-        <xsl:for-each select="element">
-          <marc:where propertyName="{marc:CleanElementName(@name)}" operator="IS" valueRef="{@contains}"/>
-        </xsl:for-each>
-        <xsl:for-each select="include">
-          <xsl:variable name="refName" select="@ref"/>
-          <xsl:variable name="ref" select="//template[@name = $refName]"/>
-          <marc:where propertyName="{marc:CleanElementName($ref/element[1]/@name)}" operator="IS" valueRef="{@ref}"/>
-        </xsl:for-each>
-        <marc:call variableName="retVal" method="Add">
-          <marc:param>
-            <marc:construct type="MARC.Everest.Sherpas.ResultDetail.TemplateNotSupportedChoiceResultDetail">
-              <marc:set propertyName="Type" valueRef="MARC.Everest.Connectors.ResultDetailType.Warning"/>
-              <xsl:for-each select="element">
-                <marc:set propertyName="AllowedChoice" value="{marc:CleanElementName(@name)} of {@contains}"/>
-              </xsl:for-each>
-              <xsl:for-each select="element">
-                <xsl:variable name="refName" select="@ref"/>
-                <xsl:variable name="ref" select="//template[@name = $refName]"/>
-                <marc:set propertyName="AllowedChoice" value="{marc:CleanElementName($ref/element[1]/@name)} of {@ref}"/>
-              </xsl:for-each>
-            </marc:construct>
-          </marc:param>
-        </marc:call>
-      </marc:where>
-    </marc:validationInstruction>
+    <marc:propertyChoiceTemplate minOccurs="{@minimumMultiplicity}" maxOccurs="{@maximumMultiplicity}">
+      <xsl:apply-templates />
+      <!--<marc:validationInstruction>
+        <marc:where operator="NXOR">
+          <xsl:for-each select="element[@contains]">
+            <marc:where propertyName="{marc:CleanElementName(@name)}" operator="IS" valueRef="{@contains}"/>
+          </xsl:for-each>
+          <xsl:for-each select="include">
+            <xsl:variable name="refName" select="@ref"/>
+            <xsl:variable name="ref" select="//template[@name = $refName]"/>
+            <marc:where propertyName="{marc:CleanElementName($ref/element[1]/@name)}" operator="IS" valueRef="{@ref}"/>
+          </xsl:for-each>
+          <marc:call variableName="retVal" method="Add">
+            <marc:param>
+              <marc:construct type="MARC.Everest.Sherpas.ResultDetail.TemplateNotSupportedChoiceResultDetail">
+                <marc:set propertyName="Type" valueRef="MARC.Everest.Connectors.ResultDetailType.Warning"/>
+                <xsl:for-each select="element">
+                  <marc:set propertyName="AllowedChoice" value="{marc:CleanElementName(@name)} of {@contains}"/>
+                </xsl:for-each>
+                <xsl:for-each select="element">
+                  <xsl:variable name="refName" select="@ref"/>
+                  <xsl:variable name="ref" select="//template[@name = $refName]"/>
+                  <marc:set propertyName="AllowedChoice" value="{marc:CleanElementName($ref/element[1]/@name)} of {@ref}"/>
+                </xsl:for-each>
+              </marc:construct>
+            </marc:param>
+          </marc:call>
+        </marc:where>
+      </marc:validationInstruction>-->
+    </marc:propertyChoiceTemplate>
   </xsl:template>
 
   <!-- Concept -->

@@ -37,6 +37,22 @@ namespace MARC.Everest.Sherpas.Templating.Binder
             if (classTemplate.BaseClass != null)
                 try
                 {
+                    if (classTemplate.BaseClass.Type == null) // kick the can down the road
+                    {
+                        if (context.Project.Templates.Exists(t => t is NullArtifactTemplate && (t as NullArtifactTemplate).ReplacementFor == context.Artifact.Name))
+                        {
+                            context.Project.Templates[context.Project.Templates.IndexOf(context.Artifact)] = new NullArtifactTemplate() { ReplacementFor = context.Artifact.Name };
+                            Trace.TraceWarning("Will ignore this template item as it appears nobody referenced it!");
+                            return;
+                        }
+                        else
+                        {
+                            Trace.TraceInformation("Will process this later as it seems nothing has used it!");
+                            context.Project.Templates[context.Project.Templates.IndexOf(context.Artifact)] = new NullArtifactTemplate() { ReplacementFor = context.Artifact.Name };
+                            context.Project.Templates.Add(context.Artifact);
+                            return;
+                        }
+                    }
                     Trace.TraceInformation("Class is based on '{0}'", classTemplate.BaseClass.Type.FullName);
                 }
                 catch { 
@@ -60,12 +76,16 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                     binder.Bind(childContext);
             }
 
+           
+
             // Move validation and initialization down
             foreach (var mi in classTemplate.Initialize)
-                PropertyTemplateBinder.UpdateMethodToPath(mi, classTemplate.BaseClass.Type, null);
+                PropertyTemplateBinder.BindStatement(mi, classTemplate);
             foreach (var mi in classTemplate.Validation)
-                PropertyTemplateBinder.UpdateMethodToPath(mi, classTemplate.BaseClass.Type, null);
-
+                PropertyTemplateBinder.BindStatement(mi, classTemplate);
+            foreach(var mi in classTemplate.FormalConstraint)
+                PropertyTemplateBinder.BindStatement(mi, classTemplate);
+           
             // trace finish
             Trace.TraceInformation("Finished binding '{0}'", classTemplate.Name);
         }

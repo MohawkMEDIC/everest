@@ -204,12 +204,12 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             Encoding textEncoding = System.Text.Encoding.UTF8;
             // Parse the innerData string into something meaningful
-            if(innerData.Length > 0)
+            if (innerData.Length > 0)
                 if (retVal.Representation == EncapsulatedDataRepresentation.B64)
                     retVal.Data = Convert.FromBase64String(innerData.ToString());
                 else
                     retVal.Data = textEncoding.GetBytes(innerData.ToString());
-
+            
             // Finally, the hash, this will validate the data
 #if !WINDOWS_PHONE
             if(!retVal.ValidateIntegrityCheck())

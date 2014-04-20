@@ -11,6 +11,7 @@ using System.Reflection;
 using MARC.Everest.Attributes;
 using System.Diagnostics;
 using System.CodeDom.Compiler;
+using MARC.Everest.Threading;
 
 namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 {
@@ -39,7 +40,6 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             renderUnit.ReferencedAssemblies.Add(typeof(II).Assembly.Location);
             renderUnit.ReferencedAssemblies.Add(typeof(TemplateAttribute).Assembly.Location);
             renderUnit.ReferencedAssemblies.Add("System.dll");
-
             // Assembly info
             renderUnit.AssemblyCustomAttributes.AddRange(
                 new CodeAttributeDeclaration[] {
@@ -50,19 +50,34 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 }
             );
 
-
+            object synclock = new object();
             var nsRoot = new CodeNamespace(Path.GetFileNameWithoutExtension(outputFile));
-            // Start rendering the project
-            foreach (var itm in project.Templates)
-            {
-                RenderContext context = new RenderContext(itm, project, nsRoot);
-                var renderer = context.GetRenderer();
-                if (renderer == null)
-                    Trace.TraceError("Cannot find a valid Renderer for template of type '{0}'", itm.GetType().Name);
-                else
-                    foreach (var ctm in renderer.Render(context))
-                        nsRoot.Types.Add(ctm as CodeTypeDeclaration);
+            nsRoot.Imports.Add(new CodeNamespaceImport("System.Linq"));
 
+            // Start rendering the project
+            using (WaitThreadPool wtp = new WaitThreadPool())
+            {
+                foreach (var itm in project.Templates)
+                {
+                    RenderContext context = new RenderContext(itm, project, nsRoot);
+
+                    wtp.QueueUserWorkItem((o) =>
+                    {
+
+
+                        var renderer = (o as RenderContext).GetRenderer();
+                        if (renderer == null)
+                            Trace.TraceError("Cannot find a valid Renderer for template of type '{0}'", itm.GetType().Name);
+                        else
+                        {
+                            foreach (var ctm in renderer.Render((o as RenderContext)))
+                                lock (synclock)
+                                    nsRoot.Types.Add(ctm as CodeTypeDeclaration);
+                        }
+                    }, context);
+                }
+
+                wtp.WaitOne();
             }
 
             renderUnit.Namespaces.Add(nsRoot);

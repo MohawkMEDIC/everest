@@ -77,6 +77,7 @@ namespace MARC.Everest.Test.DataTypes
         //
         #endregion
 
+
         /// <summary>
         /// Ensure that validation succeeds (return TRUE)
         /// When the following values are being populated:

@@ -317,7 +317,7 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures"), Property(Name = "qualifier", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Required)]
         [XmlElement("qualifier")]
-        public LIST<CR<T>> Qualifier { get; set; }
+        public LIST<CR<T>> Qualifier { get { return this.m_codeData.Qualifier; } set { this.m_codeData.Qualifier = value; } }
 
         /// <summary>
         /// Validate
@@ -491,6 +491,8 @@ namespace MARC.Everest.DataTypes
             retVal.Code = o;
             return retVal;
         }
+
+      
         #endregion
 
         #region IConceptDescriptor Members

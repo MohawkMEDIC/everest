@@ -56,5 +56,45 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// </summary>
         [XmlIgnore]
         public PropertyInfo Property { get; set; }
+
+        /// <summary>
+        /// Get the property attribute
+        /// </summary>
+        public PropertyAttribute GetPropertyAttribute()
+        {
+            if (this.Property == null || this.TraversalName == null) return null;
+            PropertyAttribute travName = null;
+            foreach (PropertyAttribute pa in this.Property.GetCustomAttributes(typeof(PropertyAttribute), false))
+                if (pa.Name == this.TraversalName)
+                    return pa;
+                else
+                    travName = pa;
+            return travName;
+        }
+
+        /// <summary>
+        /// Merge two templates together
+        /// </summary>
+        internal void Merge(PropertyTemplateDefinition propertyTemplateContainer)
+        {
+            if(propertyTemplateContainer.Name != this.Name && propertyTemplateContainer.TraversalName != this.TraversalName)
+                throw new ArgumentException("Cannot merge unless properties match in name");
+
+            foreach (var itm in propertyTemplateContainer.Templates)
+            {
+                var ptc = itm as PropertyTemplateDefinition;
+                if (ptc == null || String.IsNullOrEmpty(ptc.Contains)) continue;
+                
+                // Containment
+                ptc.MinOccurs = propertyTemplateContainer.MinOccurs;
+                ptc.MaxOccurs = propertyTemplateContainer.MaxOccurs;
+                // Validation routines
+                this.Validation.AddRange(ptc.Validation);
+                this.Initialize.AddRange(ptc.Validation);
+                this.Templates.Add(itm);
+            }
+        }
+
+
     }
 }

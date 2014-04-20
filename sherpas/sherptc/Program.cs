@@ -12,6 +12,7 @@ using MARC.Everest.Sherpas.Templating.Binder;
 using System.Xml.Serialization;
 using System.CodeDom;
 using MARC.Everest.Sherpas.Templating.Renderer.CS;
+using MARC.Everest.Threading;
 
 namespace sherptc
 {
@@ -57,10 +58,12 @@ namespace sherptc
 
                 // Now compile or normalize the template ... I.e. bind them
                 Console.Out.WriteLineIf(parameters.Verbose, "Binding template project to assembly '{0}'...", asm.GetName().Name);
-                for(int i = 0; i < compileTemplate.Templates.Count; i++) 
+                for (int i = 0; i < compileTemplate.Templates.Count; i++)
                 {
                     var tpl = compileTemplate.Templates[i];
-                    BindingContext ctx = new BindingContext(asm, tpl, compileTemplate);
+                    Console.Out.WriteLineIf(parameters.Verbose, "\t[{1} %] Binding template '{0}' ", tpl.Name, (int)(((float)i / compileTemplate.Templates.Count) * 100));
+
+                    var ctx = new BindingContext(asm, tpl, compileTemplate);
                     var binder = ctx.GetBinder();
                     if (binder == null)
                         Console.Error.WriteLineIf(parameters.Verbose, "Cannot find a valid Binder for template of type '{0}'", tpl.GetType().Name);
@@ -69,13 +72,18 @@ namespace sherptc
                 }
 
                 // Save bound template?
+
                 if (!String.IsNullOrEmpty(parameters.SaveTpl))
+                {
+                    Console.Out.WriteLineIf(parameters.Verbose, "Saving bound template to '{0}'...", parameters.SaveTpl);
                     compileTemplate.Save(parameters.SaveTpl);
+                }
 
                 // Render
                 if (String.IsNullOrEmpty(parameters.OutputFile))
                     parameters.OutputFile = Path.GetFileNameWithoutExtension(parameters.Template[0]) + ".cs";
 
+                Console.Out.WriteLineIf(parameters.Verbose, "Generating code to '{0}'...", parameters.OutputFile);
                 CodeDomRenderer renderer = new CodeDomRenderer();
                 renderer.Render(compileTemplate, parameters.OutputFile);
             }
@@ -92,6 +100,7 @@ namespace sherptc
             finally
             {
 #if DEBUG
+                Console.WriteLine("Press any key to exit...");
                 Console.ReadKey();
 #endif
             }

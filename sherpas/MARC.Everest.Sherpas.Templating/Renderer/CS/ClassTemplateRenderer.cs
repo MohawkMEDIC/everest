@@ -48,7 +48,8 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 new CodeAttributeArgument("Name", new CodePrimitiveExpression(structureAttribute.Name)),
                 new CodeAttributeArgument("StructureType", new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(MARC.Everest.Attributes.StructureAttribute.StructureAttributeType)), "MessageType")),
                 new CodeAttributeArgument("Model", new CodePrimitiveExpression(structureAttribute.Model)),
-                new CodeAttributeArgument("Publisher", new CodePrimitiveExpression(structureAttribute.Publisher))
+                new CodeAttributeArgument("Publisher", new CodePrimitiveExpression(structureAttribute.Publisher)),
+                new CodeAttributeArgument("IsEntryPoint", new CodePrimitiveExpression(structureAttribute.IsEntryPoint))
             ));
 
             if(tpl.Id != null)
@@ -65,7 +66,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             {
                 Name = "InitializeInstance",
                 ReturnType = new CodeTypeReference(typeof(void)),
-                Attributes = MemberAttributes.Public
+                Attributes = MemberAttributes.Family
             },
             validateMethod = new CodeMemberMethod()
             {
@@ -82,7 +83,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             // Initialize method setup
             foreach (var itm in tpl.Initialize)
                 initializeInstanceMethod.Statements.AddRange(itm.ToCodeDomStatement(context));
-
+           
             retVal.Members.Add(initializeInstanceMethod);
             retVal.Members.Add(validateMethod);
 
@@ -95,13 +96,41 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                     Trace.TraceError("Could not find renderer for type '{0}'...", itm.GetType().Name);
                 else
                     retVal.Members.AddRange(renderer.Render(childContext));
+
             }
 
+            // Constructor to initialize instance
+            var ctor = new CodeConstructor()
+            {
+                Attributes = MemberAttributes.Public
+            };
+            ctor.Comments.Add(new CodeCommentStatement(String.Format("<summary>Constructs a new instance of {0}</summary>", retVal.Name), true));
+            ctor.Statements.Add(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "InitializeInstance"));
+
             validateMethod.Statements.Add(new CodeMethodReturnStatement(new CodeVariableReferenceExpression("retVal")));
+
+            retVal.Members.Insert(0, ctor);
+
+            // Add the formal constraints
+            foreach (var fc in tpl.FormalConstraint)
+            {
+                if (fc.Instruction.Count == 0)
+                    continue;
+
+                CodeMemberMethod method = RenderUtils.RenderFormalConstraintValidator(fc, String.Format("{0}Constraint{1}", retVal.Name, tpl.FormalConstraint.IndexOf(fc)), new CodeTypeReference(retVal.Name), context);
+                
+                // Add the attribute 
+                retVal.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(FormalConstraintAttribute)),
+                    new CodeAttributeArgument("Description", new CodePrimitiveExpression(fc.Message)),
+                    new CodeAttributeArgument("CheckConstraintMethod", new CodePrimitiveExpression(method.Name))
+                ));
+                retVal.Members.Add(method);
+            }
 
             // Add the interface for the IMessageTypeTemplate interface
             retVal.BaseTypes.Add(new CodeTypeReference(typeof(IMessageTypeTemplate)));
 
+            // Add conditions to initialize properties
             return new CodeTypeMemberCollection(new CodeTypeMember[] { retVal });
         }
 

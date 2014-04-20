@@ -13,10 +13,5 @@ namespace MARC.Everest.Sherpas.Interface
     public interface IMessageTypeTemplate : IGraphable
     {
 
-        /// <summary>
-        /// Initializes the instance with the default data
-        /// </summary>
-        void InitializeInstance();
-
     }
 }

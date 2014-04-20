@@ -14,6 +14,13 @@ namespace MARC.Everest.Sherpas.Templating.Format
     public abstract class ArtifactTemplateBase
     {
 
+
+        /// <summary>
+        /// Tag for the method
+        /// </summary>
+        [XmlIgnore]
+        public String Tag { get; set; }
+
         /// <summary>
         /// Gets or sets basic documentation which describes the template
         /// </summary>
@@ -37,5 +44,13 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// </summary>
         [XmlAttribute("name")]
         public String Name { get; set; }
+
+        /// <summary>
+        /// Clone this object
+        /// </summary>
+        public Object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

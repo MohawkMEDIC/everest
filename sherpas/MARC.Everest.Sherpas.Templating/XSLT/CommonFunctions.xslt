@@ -10,8 +10,8 @@
     <msxsl:using namespace="System.Collections.Generic"/>
     <msxsl:using namespace="System.Collections"/>
 
-    <msxsl:using namespace="System.Linq"/>
-    <msxsl:assembly name="System.Linq"/>
+    <!--<msxsl:using namespace="System.Linq"/>-->
+    <!--<msxsl:assembly name="System.Linq"/>-->
     <![CDATA[
     
     public bool matches(String text, String regex)
@@ -44,9 +44,7 @@
         case "cdadocumentlevel":
           return "POCD_MT000040UV.ClinicalDocument";
          case "cdasectionlevel":
-          return "POCD_MT000040UV.Section";
          case "cdaentrylevel":
-          return "POCD_MT000040UV.clinicalStatement";
          case "cdaheaderlevel":
           return "MARC.Everest.Interfaces.IGraphable";
          default:

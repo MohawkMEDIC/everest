@@ -20,5 +20,26 @@ namespace MARC.Everest.Sherpas.Templating.Format
         [XmlElement("enum", typeof(BasicTypeReference))]
         public List<BasicTypeReference> TemplateParameter { get; set; }
 
+        /// <summary>
+        /// Override to set the template parameter
+        /// </summary>
+        [XmlIgnore]
+        public override Type Type
+        {
+            get
+            {
+                return base.Type;
+            }
+            set
+            {
+                base.Type = value;
+                if (value.IsGenericType)
+                {
+                    this.TemplateParameter = new List<BasicTypeReference>();
+                    foreach (var t in value.GetGenericArguments())
+                        this.TemplateParameter.Add(new BasicTypeReference() { Type = t });
+                }
+            }
+        }
     }
 }

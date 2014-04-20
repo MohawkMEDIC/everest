@@ -7,6 +7,7 @@ using MARC.Everest.Connectors;
 using MARC.Everest.DataTypes;
 using MARC.Everest.Sherpas.Formatter.XML.ITS1;
 using MARC.Everest.Interfaces;
+using MARC.Everest.Formatters.XML.Datatypes.R1;
 
 namespace MARC.Everest.Sherpas.Templating.Format
 {
@@ -20,7 +21,12 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// Formatter
         /// </summary>
         private static ClinicalDocumentFormatter s_formatter = new ClinicalDocumentFormatter();
-        
+
+        private static ClinicalDocumentDatatypeFormatter s_dtformatter = new ClinicalDocumentDatatypeFormatter();
+
+
+        private Type m_typeCache = null;
+
         /// <summary>
         /// Gets or sets the name of the referenced system
         /// </summary>
@@ -33,30 +39,42 @@ namespace MARC.Everest.Sherpas.Templating.Format
         [XmlAttribute("flavor")]
         public String Flavor { get; set; }
 
+
         /// <summary>
         /// Gets or sets the hard linked type
         /// </summary>
         [XmlIgnore]
-        public Type Type
+        public virtual Type Type
         {
             get
             {
+                if (this.m_typeCache != null)
+                    return this.m_typeCache;
+
                 if (this.Name == null || this.Name == "IGraphable")
                     return typeof(IGraphable);
 
-                Type t = typeof(object);
-                try
-                {
-                    t = Util.ParseXSITypeName(this.Name);
-                }
-                catch { }
-                try
-                {
-                    if (t == typeof(object))
-                        t = s_formatter.ParseXSITypeName(this.Name);
-                    return t;
-                }
-                catch { return null; }
+                String r1Name = this.Name;
+                if (r1Name == "SD")
+                    r1Name = "ED";
+                if (this.Name.Contains("_"))
+                    r1Name = r1Name.Substring(0, r1Name.IndexOf("_"));
+
+                if (s_dtformatter.HandleStructure.Contains(r1Name))
+                    try
+                    {
+                        this.m_typeCache = Util.ParseXSITypeName(this.Name);
+                    }
+                    catch { }
+                
+                if(this.m_typeCache == null)
+                    try
+                    {
+                        this.m_typeCache = s_formatter.ParseXSITypeName(this.Name);
+                    }
+                    catch { }
+
+                return this.m_typeCache;
             }
             set
             {
@@ -66,6 +84,9 @@ namespace MARC.Everest.Sherpas.Templating.Format
                     this.Name = Util.CreateXSITypeName(value);
                 else
                     this.Name = s_formatter.CreateXSITypeName(value);
+
+                // Bound?
+                this.m_typeCache = value;
             }
         }
     }

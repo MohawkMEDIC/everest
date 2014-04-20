@@ -22,6 +22,14 @@ namespace MARC.Everest.Attributes
         /// <summary>
         /// Creates a new conformance statement
         /// </summary>
+        public FormalConstraintAttribute()
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new conformance statement
+        /// </summary>
         public FormalConstraintAttribute(String description, String methodName)
         {
             this.Description = description;

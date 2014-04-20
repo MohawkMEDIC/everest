@@ -9,26 +9,43 @@ namespace MARC.Everest.Sherpas.Templating.Format
     /// <summary>
     /// Operator type
     /// </summary>
+    [Flags]
     [XmlType("OperatorType", Namespace = "urn:marc-hi:everest/sherpas/template")]
-    public enum OperatorType
+    public enum OperatorType : int
     {
+        [XmlEnum("?")]
+        Unknown = 0,
+        [XmlEnum("NOT")]
+        Not = 1,
         [XmlEnum("AND")]
-        And,
+        And = 2,
         [XmlEnum("OR")]
-        Or,
+        Or = 4,
         [XmlEnum("XOR")]
-        Xor,
+        Xor = 8,
         [XmlEnum("EQ")]
-        Equals,
-        [XmlEnum("NE")]
-        NotEquals,
+        Equals = 16,
         [XmlEnum("LT")]
-        LessThan,
+        LessThan = 32,
         [XmlEnum("GT")]
-        GreaterThan,
-        [XmlEnum("NCONT")]
-        NotContains,
+        GreaterThan = 64,
         [XmlEnum("IS")]
-        Is
+        Is = 128,
+        [XmlEnum("CONT")]
+        Contains = 256,
+        [XmlEnum("NE")]
+        NotEquals = Not | Equals,
+        [XmlEnum("NCONT")]
+        NotContains = Not | Contains,
+        [XmlEnum("NAND")]
+        NotAnd = Not | And,
+        [XmlEnum("NOR")]
+        NotOr = Not | Or,
+        [XmlEnum("NXOR")]
+        NotXor = Not | Xor,
+        [XmlEnum("GTE")]
+        GreaterThanEqualTo = GreaterThan | OperatorType.Equals,
+        [XmlEnum("LTE")]
+        LessThanEqualTo = LessThan | OperatorType.Equals
     }
 }

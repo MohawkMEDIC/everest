@@ -12,7 +12,7 @@ namespace MARC.Everest.Sherpas.Templating.Format
     /// Represents a base class which defines a series of instructions for use in a method (initialization or validation)
     /// </summary>
     [XmlType("MethodDefinitionBase", Namespace = "urn:marc-hi:everest/sherpas/template")]
-    public class MethodDefinitionBase : IMethodInstruction
+    public class MethodDefinitionBase : ArtifactTemplateBase, IMethodInstruction
     {
         /// <summary>
         /// Ctor
@@ -30,6 +30,8 @@ namespace MARC.Everest.Sherpas.Templating.Format
         [XmlElement("call", typeof(MethodInvokationStatementDefinition))]
         [XmlElement("where", typeof(ConditionalStatementDefinition))]
         [XmlElement("construct", typeof(ConstructorInvokationStatementDefinition))]
+        [XmlElement("foreach", typeof(IterationStatementDefinition))]
+        [XmlElement("block", typeof(MethodDefinitionBase))]
         public virtual List<Object> Instruction { get; set; }
 
         /// <summary>

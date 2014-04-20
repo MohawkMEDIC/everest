@@ -27,7 +27,6 @@ namespace MARC.Everest.Sherpas.Templating.Format
         [XmlElement("param")]
         public List<AssignmentStatementDefinition> Params { get; set; }
 
-
         /// <summary>
         /// Represent as a code statement collection
         /// </summary>

@@ -89,7 +89,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                         foreach (var qlf in part.Qualifier)
                             qualifiers.Add(qlf.Clone() as CS<EntityNamePartQualifier>);
 
-                    // Title part type?
+                    // Title part type?c
                     if (pt == EntityNamePartType.Title)
                     {
                         part.Qualifier.Add(new CS<EntityNamePartQualifier>() 

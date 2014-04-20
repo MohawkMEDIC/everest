@@ -74,7 +74,17 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                 }
 
             }
-            
+            else
+            {
+                // Enumeration literals... these can get messy... We want to remove any duplicate mnemonics
+                List<Object> trashBin = new List<object>();
+                foreach (var itm in enumTemplate.Literal)
+                    if(!trashBin.Contains(itm))
+                        foreach (var dup in enumTemplate.Literal.FindAll(l => l.Code == itm.Code && l.Literal == itm.Literal && enumTemplate.Literal.IndexOf(l) > enumTemplate.Literal.IndexOf(itm)))
+                            trashBin.Add(dup);
+                enumTemplate.Literal.RemoveAll(l => trashBin.Contains(l));
+
+            }
             // Emit finish
             Trace.TraceInformation("Finished binding '{0}'", enumTemplate.Name);
 

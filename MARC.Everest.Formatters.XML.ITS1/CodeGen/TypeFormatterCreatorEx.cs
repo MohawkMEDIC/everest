@@ -395,7 +395,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                             new CodeExpressionStatement(new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(s_retVal, "Add"), this.CreateResultDetailExpression(typeof(RequiredElementMissingResultDetail), new CodeVariableReferenceExpression("level"), new CodePrimitiveExpression(String.Format("Property {0} in {1} is marked 'populated' and is not assigned (you must at minimum, assign a NullFlavor for this attribute)", bp.PropertyInfo.Name, forType.FullName)), _location)))
                         )
                     );
-                if(pa.MinOccurs != 0 || (pa.MaxOccurs != -1 && pa.MaxOccurs != 1) && bp.PropertyInfo.PropertyType.GetInterface(typeof(IList<>).FullName) != null)
+                if((pa.MinOccurs != 0 || (pa.MaxOccurs != -1 && pa.MaxOccurs != 1)) && bp.PropertyInfo.PropertyType.GetInterface(typeof(IList<>).FullName) != null)
                 {
                     CodePropertyReferenceExpression count = new CodePropertyReferenceExpression(cpre, "Count");
                     int maxOccurs = pa.MaxOccurs < 0 ? Int32.MaxValue : pa.MaxOccurs;
@@ -421,7 +421,24 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                     if(forType.GetMethod(fca.CheckConstraintMethod, new Type[] { bp.PropertyInfo.PropertyType }) != null)
                         retVal.Statements.Add(new CodeConditionStatement(
                             new CodeBinaryOperatorExpression(new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(forType), fca.CheckConstraintMethod, cpre), CodeBinaryOperatorType.IdentityInequality, s_true),
-                            new CodeExpressionStatement(new CodeMethodInvokeExpression(s_retVal, "Add", this.CreateResultDetailExpression(typeof(FormalConstraintViolationResultDetail), s_resultDetailError, new CodePrimitiveExpression(fca.Description), _location, new CodePrimitiveExpression(null))))));
+                            new CodeExpressionStatement(new CodeMethodInvokeExpression(s_retVal, "Add", this.CreateResultDetailExpression(typeof(FormalConstraintViolationResultDetail), s_resultDetailError, new CodePrimitiveExpression(fca.Description), _location, s_null)))));
+                    else if (bp.PropertyInfo.PropertyType.GetInterface(typeof(IList<>).FullName) != null && forType.GetMethod(fca.CheckConstraintMethod, new Type[] { bp.PropertyInfo.PropertyType.GetGenericArguments()[0] }) != null)
+                    {
+                        retVal.Statements.Add(new CodeConditionStatement(
+                            new CodeBinaryOperatorExpression(cpre, CodeBinaryOperatorType.IdentityInequality, s_null), 
+                            new CodeIterationStatement(
+                                new CodeVariableDeclarationStatement(typeof(int), "i", new CodePrimitiveExpression(0)), 
+                                new CodeBinaryOperatorExpression(new CodeVariableReferenceExpression("i"), CodeBinaryOperatorType.LessThan, new CodePropertyReferenceExpression(cpre, "Count")), 
+                                new CodeSnippetStatement("i++"), 
+                                new CodeConditionStatement(
+                                    new CodeBinaryOperatorExpression(
+                                        new CodeMethodInvokeExpression(
+                                            new CodeTypeReferenceExpression(forType), fca.CheckConstraintMethod, new CodeIndexerExpression(cpre, new CodeVariableReferenceExpression("i"))), 
+                                            CodeBinaryOperatorType.IdentityInequality, 
+                                            s_true),
+                                    new CodeExpressionStatement(new CodeMethodInvokeExpression(s_retVal, "Add", this.CreateResultDetailExpression(typeof(FormalConstraintViolationResultDetail), s_resultDetailError, new CodePrimitiveExpression(fca.Description), _location, s_null)))))
+                                    ));
+                    }
 
             }
             // Return the result array
@@ -600,6 +617,11 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                     else
                         currentStatement.TrueStatements.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedResultDetail), s_resultDetailError, new CodePrimitiveExpression(String.Format("Property {0} is readonly, cannot set value", bp.PropertyInfo.Name)), s_readerToString)));
 
+                    // TODO: Test this actually works
+                    if(pa.FixedValue != null)
+                        currentStatement.TrueStatements.Add(new CodeConditionStatement(
+                            new CodeBinaryOperatorExpression(s_readerValue, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(pa.FixedValue)), 
+                            new CodeExpressionStatement(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(FixedValueMisMatchedResultDetail), s_readerValue, new CodePrimitiveExpression(pa.FixedValue), new CodeBinaryOperatorExpression(new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(Util)), "ToWireFormat", _propertyReference), CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(pa.FixedValue)), s_readerToString)))));
                     // Need to switch or re-evaluate our instance?
                     var ma = bp.PropertyInfo.GetCustomAttributes(typeof(MarkerAttribute), true);
                     if (ma.Length > 0)

@@ -19,6 +19,8 @@ namespace MARC.Everest.Sherpas.Templating.Format
         {
             this.Templates = new List<PropertyTemplateContainer>();
             this.Validation = new List<MethodDefinitionBase>();
+            this.FormalConstraint = new List<FormalConstraintDefinition>();
+
             this.Initialize = new List<MethodDefinitionBase>();
         }
 
@@ -34,6 +36,12 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// </summary>
         [XmlElement("validationInstruction")]
         public List<MethodDefinitionBase> Validation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the validation rules
+        /// </summary>
+        [XmlElement("formalConstraint")]
+        public List<FormalConstraintDefinition> FormalConstraint { get; set; }
 
         /// <summary>
         /// Traversal name of the attribute 

@@ -12,7 +12,6 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
  * License for the specific language governing permissions and limitations under 
  * the License.
-
  * 
  * User: Justin Fyfe
  * Date: 07-26-2011
@@ -497,9 +496,24 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 checkConstraints = pi.GetCustomAttributes(typeof(FormalConstraintAttribute), false);
                 foreach (FormalConstraintAttribute ca in checkConstraints)
                 {
+
+                    
                     MethodInfo mi = o.GetType().GetMethod(ca.CheckConstraintMethod, new Type[] { pi.PropertyType });
                     if (mi == null)
-                        dtls.Add(new ResultDetail(ResultDetailType.Warning, String.Format("Could not check formal constraint as method {0} could not be found", ca.CheckConstraintMethod), location, null));
+                    {
+                        if (pi.PropertyType.GetInterface(typeof(IList<>).FullName) != null)
+                        {
+                            mi = o.GetType().GetMethod(ca.CheckConstraintMethod, new Type[] { pi.PropertyType.GetGenericArguments()[0] });
+                            if(mi == null)
+                                dtls.Add(new ResultDetail(ResultDetailType.Warning, String.Format("Could not check formal constraint as method {0} could not be found", ca.CheckConstraintMethod), location, null));
+                            else
+                                foreach(var i in piValue as IEnumerable)
+                                    if (!(bool)mi.Invoke(null, new object[] { i }))
+                                        dtls.Add(new FormalConstraintViolationResultDetail(ResultDetailType.Error, ca.Description, location, null));
+                        }
+                        else
+                            dtls.Add(new ResultDetail(ResultDetailType.Warning, String.Format("Could not check formal constraint as method {0} could not be found", ca.CheckConstraintMethod), location, null));
+                    }
                     else if (!(bool)mi.Invoke(null, new object[] { piValue }))
                         dtls.Add(new FormalConstraintViolationResultDetail(ResultDetailType.Error, ca.Description, location, null));
                 }

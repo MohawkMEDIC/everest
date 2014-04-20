@@ -830,6 +830,33 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
                 sw.Write("\t\tpublic ");
 
+                // Property name
+                // IF the property name is equal to the generic parameter, we don't pascal case it
+                // IF the property name is equal to the containing class name, we use the name of the datatype it references as the property name
+                string pName = CreatePascalCasedName(choice);
+
+                string modifier = "virtual";
+
+                if (choice.Container != null && choice.Container is Class)
+                {
+                    var containerClassRef = (choice.Container as Class).BaseClass;
+                    while (containerClassRef != null && containerClassRef.Class != null)
+                    {
+                        foreach (var content in containerClassRef.Class.Content)
+                        {
+                            if (content.ToString() == choice.ToString())
+                                modifier = "override";
+                            else if (content is Property && CreatePascalCasedName(content as Property) == pName ||
+                                content is Choice && CreatePascalCasedName(content as Choice) == pName)
+                                modifier = "new virtual";
+
+                        }
+                        containerClassRef = containerClassRef.Class.BaseClass;
+                    }
+
+                }
+                sw.Write("{0} ", modifier);
+
                 // Is it a list?
                 if (cc.MaxOccurs != "1" &&
                     (!Datatypes.IsCollectionType(tr)))
@@ -837,10 +864,6 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
                 else
                     sw.Write(dt);
 
-                // Property name
-                // IF the property name is equal to the generic parameter, we don't pascal case it
-                // IF the property name is equal to the containing class name, we use the name of the datatype it references as the property name
-                string pName = CreatePascalCasedName(choice);
 
                 sw.WriteLine(" {0} {{ get; set; }}", pName);
 

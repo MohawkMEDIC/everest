@@ -11,6 +11,11 @@ namespace MARC.Everest.Attributes
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum, AllowMultiple = true)]
     public class TemplateAttribute : Attribute
     {
+
+        public TemplateAttribute()
+        {
+        }
+
         /// <summary>
         /// Creates a new template attribute with templateId 
         /// </summary>

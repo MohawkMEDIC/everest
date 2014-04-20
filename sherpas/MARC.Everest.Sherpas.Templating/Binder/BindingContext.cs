@@ -86,5 +86,6 @@ namespace MARC.Everest.Sherpas.Templating.Binder
         /// Identifies the project to which the item belongs
         /// </summary>
         public TemplateProjectDefinition Project { get; private set; }
+
     }
 }

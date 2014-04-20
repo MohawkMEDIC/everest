@@ -14,7 +14,7 @@ namespace sherptc
         /// <summary>
         /// Write line if the condition is true
         /// </summary>
-        public static void WriteLineIf(this TextWriter me, bool condition, String format, params String[] values)
+        public static void WriteLineIf(this TextWriter me, bool condition, String format, params Object[] values)
         {
             if (condition)
                 Console.WriteLine(format, values);

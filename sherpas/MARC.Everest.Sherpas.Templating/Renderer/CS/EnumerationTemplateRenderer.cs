@@ -54,7 +54,11 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             // Emit the members
             foreach (var value in tpl.Literal)
             {
-                CodeMemberField literal = new CodeMemberField(new CodeTypeReference(tpl.Name), value.Literal);
+                // Are we generating just the literal or the literal code 
+                string name = value.Literal;
+                if (tpl.Literal.Count(l => l.Literal == name) > 1)
+                    name = String.Format("{0}{1}", value.Literal, RenderUtils.MakeFriendlyName(value.Code));
+                CodeMemberField literal = new CodeMemberField(new CodeTypeReference(tpl.Name), name);
                 if (value.DisplayName != null)
                     literal.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(DescriptionAttribute)), new CodeAttributeArgument(new CodePrimitiveExpression(value.DisplayName))));
                 literal.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(EnumerationAttribute)),

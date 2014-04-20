@@ -16,30 +16,6 @@ using MARC.Everest.Sherpas.Formatter.XML.ITS1;
 namespace MARC.Everest.Test.Sherpas.Templates
 {
 
-    [Template("2.16.840.1.113883.3.1937.99.61.3.10.394")]
-    [Structure(Name = "II", StructureType = StructureAttribute.StructureAttributeType.DataType, IsEntryPoint = false, Publisher = "Copyright (C)2011, Health Level Seven")]
-    public sealed class EKGImpressionSectionTypeId : II, IMessageTypeTemplate
-    {
-
-        /// <summary>
-        /// Extra documentation ... see if this works!
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Property(Name = "use", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.Structural)]
-        public new IdentifierUse? Use
-        {
-            get { return base.Use; }
-            set { base.Use = value; }
-        }
-
-        public void InitializeInstance()
-        {
-            this.Root = "1.2.3.4.5.6.7.8.9.10";
-            this.Extension = "FAST";
-        }
-
-    }
-
     [Template("2.16.840.1.113883.3.1937.99.61.3.10.3001")]
     [Structure(Name = "Section", StructureType = StructureAttribute.StructureAttributeType.MessageType, IsEntryPoint = false, Model = "POCD_MT000040UV", Publisher = "Copyright (C)2011, Health Level Seven")]
     public sealed class EKGImpressionSection : Section, IMessageTypeTemplate

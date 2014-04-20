@@ -85,6 +85,14 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
+        /// Determine if the current collection conains an item which matches the given predicate
+        /// </summary>
+        public bool Exists(Predicate<T> match)
+        {
+            return this.Items.Exists(match);
+        }
+
+        /// <summary>
         /// Find all items that match the given predicate
         /// </summary>
         public T Find(Predicate<T> match)

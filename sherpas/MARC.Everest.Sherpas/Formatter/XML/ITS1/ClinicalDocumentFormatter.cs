@@ -14,6 +14,7 @@ using MARC.Everest.Sherpas.Exception;
 using System.Reflection;
 using MARC.Everest.Sherpas.ResultDetail;
 using MARC.Everest.Sherpas.Interface;
+using System.Xml;
 
 namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
 {
@@ -89,7 +90,7 @@ namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
         /// <summary>
         /// Write element util in a way that xsi:type is suppressed for templated classes
         /// </summary>
-        public override void WriteElementUtil(System.Xml.XmlWriter s, string elementName, Interfaces.IGraphable g, Type propType, Interfaces.IGraphable context, XmlIts1FormatterGraphResult resultContext)
+        public override void WriteElementUtil(System.Xml.XmlWriter s, string namespaceUri, string elementName, Interfaces.IGraphable g, Type propType, Interfaces.IGraphable context, XmlIts1FormatterGraphResult resultContext)
         {
             base.ThrowIfDisposed();
             
@@ -100,11 +101,11 @@ namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
             // Normalize
             if (g is INormalizable)
                 g = (g as INormalizable).Normalize();
-            else if (g is IMessageTypeTemplate)
-                (g as IMessageTypeTemplate).InitializeInstance();
+            //if (g is IMessageTypeTemplate)
+            //    (g as IMessageTypeTemplate).InitializeInstance();
 
             // Write start of element
-            s.WriteStartElement(elementName, "urn:hl7-org:v3");
+            s.WriteStartElement(elementName, namespaceUri);
 
             // JF: Output XSI:Type as long as we're not writing out a template
             object[] templateAttributes = g.GetType().GetCustomAttributes(typeof(TemplateAttribute), false);
@@ -123,37 +124,35 @@ namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
             }
             else if (!g.GetType().Equals(propType))
             {
-                // TODO: This may cause issue when assigning a QSET to an R1 or
-                //       SXPR to R2 instance as the XSI:TYPE will be inappropriately
-                //       assigned.
-                string xsiType = s.LookupPrefix("urn:hl7-org:v3");
-                if (!String.IsNullOrEmpty(xsiType))
-                    xsiType += ":";
-
+                string xsiType = String.Empty;
                 if (typeof(ANY).IsAssignableFrom(g.GetType()))
+                {
+                    xsiType += s.LookupPrefix("urn:hl7-org:v3");
+                    if (!String.IsNullOrEmpty(xsiType))
+                        xsiType += ":";
                     xsiType += Util.CreateXSITypeName(g.GetType());
+                }
                 else if (propType != null && g.GetType().Assembly.FullName != propType.Assembly.FullName)
                 {
-                    var typeName = base.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null);
+                    string typeName = this.CreateXSITypeName(g.GetType(), context != null ? context.GetType() : null, s as IXmlNamespaceResolver);
 
-                    lock (this.m_syncRoot)
-                        if (!this.s_typeNameMaps.ContainsKey(typeName))
-                            this.RegisterXSITypeName(typeName, g.GetType());
-                    xsiType += typeName;
+                    // If there is no different then don't output
+                    if (typeName != this.CreateXSITypeName(propType, context == null ? null : context.GetType(), s as IXmlNamespaceResolver))
+                    {
+                        xsiType = typeName;
+                        lock (this.m_syncRoot)
+                            if (!this.s_typeNameMaps.ContainsKey(typeName))
+                                this.RegisterXSITypeName(typeName, g.GetType());
+                    }
+
                 }
-                if (!String.IsNullOrEmpty(xsiType))
+                if (!String.IsNullOrEmpty(xsiType) && !xsiType.EndsWith(":"))
                     s.WriteAttributeString("xsi", "type", XmlIts1Formatter.NS_XSI, xsiType);
 
-                //string xsdTypeName = String.Empty;
-                //object[] sa = g.GetType().GetCustomAttributes(typeof(StructureAttribute), false);
-                //if (sa.Length > 0 && (sa[0] as StructureAttribute).StructureType == StructureAttribute.StructureAttributeType.DataType)
-                //    s.WriteAttributeString("xsi", "type", null, (sa[0] as StructureAttribute).Name);
             }
 
-            // Validate the object
-            
             // Graph the object
-            GraphObject(s, g, g.GetType(), context, resultContext);
+            base.GraphObject(s, g, g.GetType(), context, resultContext);
             s.WriteEndElement();
         }
 
@@ -168,19 +167,10 @@ namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
             // TODO: How to do this?? Perhaps we might have to write an overridable hook?
             var baseParseResult = base.ParseObject(r, useType, interactionContext, resultContext);
             var imt = baseParseResult as IMessageTypeTemplate;
-            if (imt != null)
-                foreach (var itm in imt.ValidateEx())
-                {
-                    itm.Location = originalLocation;
-                    resultContext.AddResultDetail(itm);
-                }
-            else
-            {
-                // Couldn't determine template?
-                var iit = baseParseResult as IImplementsTemplateId;
-                if (iit != null && iit.TemplateId != null && !iit.TemplateId.IsEmpty && imt == null)
-                    resultContext.AddResultDetail(new UnknownTemplateResultDetail(ResultDetailType.Warning, iit, originalLocation));
-            }
+            // Couldn't determine template?
+            var iit = baseParseResult as IImplementsTemplateId;
+            if (iit != null && iit.TemplateId != null && !iit.TemplateId.IsEmpty && imt == null)
+                resultContext.AddResultDetail(new UnknownTemplateResultDetail(ResultDetailType.Warning, iit, originalLocation));
 
             return baseParseResult;
 
