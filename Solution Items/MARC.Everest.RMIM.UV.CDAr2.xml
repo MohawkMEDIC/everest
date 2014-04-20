@@ -312,10 +312,10 @@
         <member name="M:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalStatement.Clone">
             <summary>Makes a shallow clone of this object</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalStatement.Subject">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalStatement.Specimen">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalStatement.Specimen">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalStatement.Subject">
             <summary>(Optional) Documentation was not found</summary>
         </member>
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalStatement.Performer">
@@ -514,10 +514,10 @@
             
             </summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Act.Subject">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Act.Specimen">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Act.Specimen">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Act.Subject">
             <summary>(Optional) Documentation was not found</summary>
         </member>
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Act.Performer">
@@ -2812,10 +2812,10 @@
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Encounter.PriorityCode">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Encounter.Subject">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Encounter.Specimen">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Encounter.Specimen">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Encounter.Subject">
             <summary>(Optional) Documentation was not found</summary>
         </member>
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Encounter.Performer">
@@ -5352,10 +5352,10 @@
             <div><p> Most observation target sites are implied by the observation definition and Act.code, or Observation.value. For example, "heart murmur" always has the heart as target. This attribute is used only when the observation target site needs to be refined, to distinguish right from left, etc. If the subject of the Observation is something other than a human patient or animal, the attribute is used analogously to specify a structural landmark of the thing where the act focuses. For example, if the subject is a lake, the site could be inflow and outflow, etc. If the subject is a lymphatic node, "hilus," "periphery," or other node sites would be valid target sites.</p></div>
             </example>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Observation.Subject">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Observation.Specimen">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Observation.Specimen">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Observation.Subject">
             <summary>(Optional) Documentation was not found</summary>
         </member>
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Observation.Performer">
@@ -5457,10 +5457,10 @@
             <div><p>The appropriate data type of the Observation.value varies with the kind of Observation and can generally be described in Observation definitions or in a simple relation that pairs Act.codes to value data types.</p><p>The following guidelines govern the choice of the appropriate value data type.</p><p>(1) Quantitative measurements use the data type Physical Quantity (PQ) in general. A PQ is essentially a real number with a unit. This is the general preference for all numeric values, subject to a few exceptions listed below. </p><p>Numeric values MUST NOT be communicated as character strings (ST). </p><p>(2) Titer (e.g., 1:64) and very few other ratios use the data type Ratio (RTO). For titers, the ratio would be a ratio of two integer numbers (e.g., 1:128). Other ratios may relate different quantitative data types, such as a "price" specified in Physical Quantity over Monetary Amount.</p><p>Sometimes by local conventions titers are reported as just the denominator (e.g., 32 instead of 1/32). Such conventions are confusing and SHOULD be converted into correct ratios in HL7 messages. </p><p>(3) Index values (a number without unit) uses the Real Number (REAL) data type. When a quantity does not have a proper unit, one can just send the number as a real number. Alternatively one can use a PQ with a dimensionless unit (e.g., 1 or %). An integer number should only be sent when the measurement is by definition an integer, which is an extremely rare case and then is most likely an ordinal (see below).</p><p>(4) Ranges (e.g., &amp;lt;3; 12-20) must be expressed as Interval of Physical Quantity (IVL&amp;lt;PQ&amp;gt;) or intervals of other quantity data types.</p><p>Sometimes, such intervals are used to report the uncertainty of measurement value. For uncertainty, there are dedicated data type extensions available. </p><p>(5) Ordinals (e.g., +, ++, +++; or I, IIa, IIb, III, IV) use the Coded Ordinal (CO) data type. </p><p>(6) Nominal results ("taxons," e.g., organism type) use any of the coded data types (CD, CE) that specify at least a code and a coding system, and optionally original text, translations to other coding systems, and qualifiers. </p><p>(7) Imaging results use the Encapsulated Data (ED) type. The encapsulated data type allows one to send an image (e.g., chest X-ray) or a movie (e.g., coronary angiography, cardiac echo) as alternatively inline binary data or as a reference to an external address where the data can be downloaded on demand. .</p><p>(8) Waveforms can be sent using the Correlated Observation Sequences templates that provide all the data in an HL7 framework. In addition one can use the Encapsulated Data (ED) data type to send waveforms in other than HL7 formats or to refer to waveform data for on-demand download. </p><p>(9) The character string data type may exceptionally be used to convey formalized expressions that do not fit in any of the existing data types. However, the string data type SHALL NOT be used if the meaning can be represented by one of the existing data types. </p><p>(10) Timestamps SHOULD NOT be sent in Observations if there are more appropriate places to send them, e.g., usually as Act.effectiveTime of some act. (E.g., "specimen received in lab" is in the effectiveTime of an Act describing the specimen transport to the lab, not in an Observation. .</p><p>(11) Sets of values of any data type, enumerated sets as well as intervals, are often used for Observation criteria (event-criterion mood) to specify "normal ranges" or "decision ranges" (for alerts). </p><p>(12) For sequences of observations (repeated measurements of the same property during a relatively short time) a Sequence (LIST) data type is used. Refer to the Correlated Observation Sequences specification for more detail.</p><p>(13) Uncertainty of values is specified using the Probability and Probability Distribution data type extensions (UVP, PPD). If a statistical sample is reported with absolute frequencies of categories a Bag collection (BAG) can be used efficiently.</p></div>
             </example>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ObservationMedia.Subject">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ObservationMedia.Specimen">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ObservationMedia.Specimen">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ObservationMedia.Subject">
             <summary>(Optional) Documentation was not found</summary>
         </member>
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ObservationMedia.Performer">
@@ -5983,10 +5983,10 @@
             <div><p>The effectiveTime is also known as the "primary" time (Arden Syntax) or the "biologically relevant time" (HL7 v2.x). This attribute is distinguished from activityTime.</p><p>For observations, the time of the observation activity may be much later than the time of the observed feature. For instance, in a Blood Gas Analysis (BGA), a result will not be available for several minutes after the specimen was taken, meanwhile the patient's physiological state may have changed significantly. </p><p>For essentially physical activities (surgical procedures, transportations, etc.), the effective time is the time of interest for the Act's intention, i.e., since the intention of a transportation is to deliver a payload from location A to B, the effectiveTime is the time this payload is underway from A to B. However, the Act usually also includes accidental work which is necessary to perform the intention of the Act, but is not relevant for the Act's purpose. </p><p>For example, the time a driver needs to go to the pick-up location A and then return from drop-off location B to some home base, is included in the physical activity (as activityTime), but it does not matter from the perspective of the payload's transportation and is excluded from effectiveTime. Another example: a person's work hours (effectiveTime) may be from 8 AM to 5 PM, no matter whether that person needs 10 minutes for the commute or 2 hours. The commute is necessary to be at work, but it is not part of the working time.</p></div>
             </example>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organizer.Subject">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organizer.Specimen">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organizer.Specimen">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organizer.Subject">
             <summary>(Optional) Documentation was not found</summary>
         </member>
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organizer.Performer">
@@ -7137,10 +7137,10 @@
             <div><p>If the subject of the Act is something other than a human patient or animal, the attribute is used analogously to specify a structural landmark of the thing where the act focuses.</p><p>Some target sites can also be "pre-coordinated" in the Act definition, so that there is never an option to select different body sites. The same information structure can handle both the pre-coordinated and the post-coordinated approach.</p></div>
             </example>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Procedure.Subject">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Procedure.Specimen">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Procedure.Specimen">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Procedure.Subject">
             <summary>(Optional) Documentation was not found</summary>
         </member>
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Procedure.Performer">
@@ -7528,10 +7528,10 @@
             <div><p>The appropriate data type of the Observation.value varies with the kind of Observation and can generally be described in Observation definitions or in a simple relation that pairs Act.codes to value data types.</p><p>The following guidelines govern the choice of the appropriate value data type.</p><p>(1) Quantitative measurements use the data type Physical Quantity (PQ) in general. A PQ is essentially a real number with a unit. This is the general preference for all numeric values, subject to a few exceptions listed below. </p><p>Numeric values MUST NOT be communicated as character strings (ST). </p><p>(2) Titer (e.g., 1:64) and very few other ratios use the data type Ratio (RTO). For titers, the ratio would be a ratio of two integer numbers (e.g., 1:128). Other ratios may relate different quantitative data types, such as a "price" specified in Physical Quantity over Monetary Amount.</p><p>Sometimes by local conventions titers are reported as just the denominator (e.g., 32 instead of 1/32). Such conventions are confusing and SHOULD be converted into correct ratios in HL7 messages. </p><p>(3) Index values (a number without unit) uses the Real Number (REAL) data type. When a quantity does not have a proper unit, one can just send the number as a real number. Alternatively one can use a PQ with a dimensionless unit (e.g., 1 or %). An integer number should only be sent when the measurement is by definition an integer, which is an extremely rare case and then is most likely an ordinal (see below).</p><p>(4) Ranges (e.g., &amp;lt;3; 12-20) must be expressed as Interval of Physical Quantity (IVL&amp;lt;PQ&amp;gt;) or intervals of other quantity data types.</p><p>Sometimes, such intervals are used to report the uncertainty of measurement value. For uncertainty, there are dedicated data type extensions available. </p><p>(5) Ordinals (e.g., +, ++, +++; or I, IIa, IIb, III, IV) use the Coded Ordinal (CO) data type. </p><p>(6) Nominal results ("taxons," e.g., organism type) use any of the coded data types (CD, CE) that specify at least a code and a coding system, and optionally original text, translations to other coding systems, and qualifiers. </p><p>(7) Imaging results use the Encapsulated Data (ED) type. The encapsulated data type allows one to send an image (e.g., chest X-ray) or a movie (e.g., coronary angiography, cardiac echo) as alternatively inline binary data or as a reference to an external address where the data can be downloaded on demand. .</p><p>(8) Waveforms can be sent using the Correlated Observation Sequences templates that provide all the data in an HL7 framework. In addition one can use the Encapsulated Data (ED) data type to send waveforms in other than HL7 formats or to refer to waveform data for on-demand download. </p><p>(9) The character string data type may exceptionally be used to convey formalized expressions that do not fit in any of the existing data types. However, the string data type SHALL NOT be used if the meaning can be represented by one of the existing data types. </p><p>(10) Timestamps SHOULD NOT be sent in Observations if there are more appropriate places to send them, e.g., usually as Act.effectiveTime of some act. (E.g., "specimen received in lab" is in the effectiveTime of an Act describing the specimen transport to the lab, not in an Observation. .</p><p>(11) Sets of values of any data type, enumerated sets as well as intervals, are often used for Observation criteria (event-criterion mood) to specify "normal ranges" or "decision ranges" (for alerts). </p><p>(12) For sequences of observations (repeated measurements of the same property during a relatively short time) a Sequence (LIST) data type is used. Refer to the Correlated Observation Sequences specification for more detail.</p><p>(13) Uncertainty of values is specified using the Probability and Probability Distribution data type extensions (UVP, PPD). If a statistical sample is reported with absolute frequencies of categories a Bag collection (BAG) can be used efficiently.</p></div>
             </example>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RegionOfInterest.Subject">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RegionOfInterest.Specimen">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RegionOfInterest.Specimen">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RegionOfInterest.Subject">
             <summary>(Optional) Documentation was not found</summary>
         </member>
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RegionOfInterest.Performer">
@@ -8583,10 +8583,10 @@
             
             </remarks>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.SubstanceAdministration.Subject">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.SubstanceAdministration.Specimen">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.SubstanceAdministration.Specimen">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.SubstanceAdministration.Subject">
             <summary>(Optional) Documentation was not found</summary>
         </member>
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.SubstanceAdministration.Consumable">
@@ -8734,10 +8734,10 @@
             <div><p>In some situations, this attribute MAY be used instead of Supply.quantity to identify the amount supplied by how long it is expected to last, rather than the physical quantity issued, e.g., 90 days supply of medication (based on an ordered dosage), 10 hours of jet fuel, etc. When possible, it is always better to specify Supply.quantity, as this tends to be more precise. Supply.expectedUseTime will always be an estimate that can be influenced by external factors.</p></div>
             </example>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Supply.Subject">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Supply.Specimen">
             <summary>(Optional) Documentation was not found</summary>
         </member>
-        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Supply.Specimen">
+        <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Supply.Subject">
             <summary>(Optional) Documentation was not found</summary>
         </member>
         <member name="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Supply.Product">
