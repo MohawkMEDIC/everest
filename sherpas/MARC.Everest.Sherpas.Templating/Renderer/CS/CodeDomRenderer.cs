@@ -40,6 +40,14 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             renderUnit.ReferencedAssemblies.Add(typeof(II).Assembly.Location);
             renderUnit.ReferencedAssemblies.Add(typeof(TemplateAttribute).Assembly.Location);
             renderUnit.ReferencedAssemblies.Add("System.dll");
+            renderUnit.ReferencedAssemblies.Add("System.Linq.dll");
+            renderUnit.ReferencedAssemblies.Add("System.Core.dll");
+            renderUnit.ReferencedAssemblies.Add("System.Data.dll");
+            renderUnit.ReferencedAssemblies.Add("System.Xml.dll");
+            renderUnit.ReferencedAssemblies.Add("System.Xml.Linq.dll");
+            renderUnit.ReferencedAssemblies.Add("Microsoft.CSharp.dll");
+            renderUnit.ReferencedAssemblies.Add("System.Data.dll");
+            renderUnit.ReferencedAssemblies.Add("System.Data.DataSetExtensions.dll");
             // Assembly info
             renderUnit.AssemblyCustomAttributes.AddRange(
                 new CodeAttributeDeclaration[] {
@@ -108,7 +116,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 foreach (CompilerError rs in result.Errors)
                 {
                     Trace.TraceError(rs.ToString());
-                    if (File.Exists(rs.FileName))
+                    if (!File.Exists(rs.FileName))
                         File.Copy(rs.FileName, Path.ChangeExtension(outputFile, ".cs"), true);
                 }
                 Trace.TraceInformation("Compile finished with {0} errors", result.Errors.Count);

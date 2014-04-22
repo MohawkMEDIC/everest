@@ -597,6 +597,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                         currentStatement.TrueStatements.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedElementResultDetail), s_resultDetailWarning, s_readerLocalName, s_readerLocalName, s_readerToString, s_null)));
                     // Simple deserialization if PA type has IGraphable or PI type has IGraphable and PA type not specified
                     else if (bp.PropertyInfo.GetSetMethod() != null &&
+                        bp.PropertyInfo.PropertyType.GetInterface(typeof(IGraphable).FullName) != null && 
                         (pa.Type != null && pa.Type.GetInterface(typeof(IGraphable).FullName, false) != null) ||
                         (pa.Type == null && bp.PropertyInfo.PropertyType.GetInterface(typeof(IGraphable).FullName, false) != null))
                         currentStatement.TrueStatements.Add(new CodeAssignStatement(
@@ -605,7 +606,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                 new CodeMethodInvokeExpression(s_host, "ParseObject", s_reader, new CodeTypeOfExpression(pa.Type ?? bp.PropertyInfo.PropertyType), s_interactionType, s_resultContext))));
                     // Call an Add method on a collection type
                     else if (bp.PropertyInfo.PropertyType.GetMethod("Add") != null) // Collection type
-                        currentStatement.TrueStatements.Add(new CodeMethodInvokeExpression(_propertyReference, "Add", this.CreateUtilConvertMethodInvoke(bp.PropertyInfo.PropertyType.GetGenericArguments()[0], 
+                        currentStatement.TrueStatements.Add(new CodeMethodInvokeExpression(_propertyReference, "Add", this.CreateUtilConvertMethodInvoke(bp.PropertyInfo.PropertyType.GetGenericArguments()[0],
                                 new CodeMethodInvokeExpression(s_host, "ParseObject", s_reader, new CodeTypeOfExpression(bp.PropertyInfo.PropertyType.GetGenericArguments()[0]), s_interactionType, s_resultContext))));
                     // Call the ParseXML custom function on object
                     else if (bp.PropertyInfo.GetSetMethod() != null && bp.PropertyInfo.PropertyType.GetMethod("ParseXml", BindingFlags.Public | BindingFlags.Static) != null)
@@ -768,7 +769,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                 var propertyInfo = buildProperty.PropertyInfo;
                 Type piType = buildProperty.PropertyInfo.PropertyType;
                 List<Type> piTypeInterfaces = new List<Type>(piType.GetInterfaces());
-                var _propertyReference = new CodePropertyReferenceExpression(s_instance, propertyInfo.Name);
+                CodeExpression _propertyReference = new CodePropertyReferenceExpression(s_instance, propertyInfo.Name);
 
                     var propertyAttribute = buildProperty.PropertyAttributes.First();
 
@@ -812,6 +813,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                 CodeBinaryOperatorType.BooleanOr,
                                 notIsInstanceNullCondition)
                                 );
+
                     else
                     {
                         retVal.Statements.Add(new CodeConditionStatement(
@@ -826,17 +828,42 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                     {
 
                         var graphObjectContentsConditionStatement = new CodeConditionStatement(graphObjectContentsCondition);
-                        retVal.Statements.Add(graphObjectContentsConditionStatement);
 
-                        // A choice
+                        // Don't account for lists as a list is not in the PA Type
+                        var conditionType = propertyInfo.PropertyType;
+                        if (conditionType.GetInterface(typeof(IList<>).FullName) != null &&
+                            !typeof(ANY).IsAssignableFrom(conditionType))
+                        {
+                            string indexVar = String.Format("n{0:n}", Guid.NewGuid());
+                            conditionType = conditionType.GetGenericArguments()[0];
+                            piTypeInterfaces = new List<Type>(conditionType.GetInterfaces());
+                            retVal.Statements.Add(graphObjectContentsConditionStatement);
+                            var graphNullCheck = graphObjectContentsConditionStatement;
+                            graphObjectContentsConditionStatement = new CodeConditionStatement(new CodeBinaryOperatorExpression(new CodeIndexerExpression(_propertyReference, new CodeVariableReferenceExpression(indexVar)), CodeBinaryOperatorType.IdentityInequality, s_null));
+
+                            graphNullCheck.TrueStatements.Add(new CodeIterationStatement(
+                                new CodeVariableDeclarationStatement(typeof(Int32), indexVar, new CodePrimitiveExpression(0)),
+                                new CodeBinaryOperatorExpression(new CodeVariableReferenceExpression(indexVar), CodeBinaryOperatorType.LessThan, new CodePropertyReferenceExpression(_propertyReference, "Count")),
+                                new CodeSnippetStatement(String.Format("{0}++", indexVar)),
+                                graphObjectContentsConditionStatement));
+                            // Change the property reference to an indexer
+                            _propertyReference = new CodeIndexerExpression(_propertyReference, new CodeVariableReferenceExpression(indexVar));
+
+                        }
+                        else
+                            retVal.Statements.Add(graphObjectContentsConditionStatement);
+
+
                         List<CodeConditionStatement> graphConditions = new List<CodeConditionStatement>();
                         foreach (PropertyAttribute pa in buildProperty.PropertyAttributes)
                         {
+                           
+
                             // Create the condition in the appropriate manner
                             // Conditions for graphing the particular property choice
-                            if (pa.Type != null && (pa.Type == propertyInfo.PropertyType || (pa.Type.IsSubclassOf(propertyInfo.PropertyType) && propertyInfo.PropertyType.IsAssignableFrom(pa.Type)) || propertyInfo.PropertyType == typeof(object)))
+                            if (pa.Type != null && (pa.Type == conditionType || (pa.Type.IsSubclassOf(conditionType) && conditionType.IsAssignableFrom(pa.Type)) || conditionType == typeof(object)))
                             {
-                                CodeBinaryOperatorExpression primaryCondition = new CodeBinaryOperatorExpression(new CodeMethodInvokeExpression(_propertyReference, "GetType"), CodeBinaryOperatorType.IdentityEquality, new CodeTypeOfExpression(pa.Type ?? propertyInfo.PropertyType)),
+                                CodeBinaryOperatorExpression primaryCondition = new CodeBinaryOperatorExpression(new CodeMethodInvokeExpression(_propertyReference, "GetType"), CodeBinaryOperatorType.IdentityEquality, new CodeTypeOfExpression(pa.Type ?? conditionType)),
                                     secondaryCondition = new CodeBinaryOperatorExpression(isAlwaysCheckOverridesCondition, CodeBinaryOperatorType.BooleanAnd, new CodeMethodInvokeExpression(new CodeTypeOfExpression(pa.Type), "IsAssignableFrom", new CodeMethodInvokeExpression(_propertyReference, "GetType")));
 
                                 // Is there a pa.InteractionOwner ? If so we need to check that as well
@@ -855,7 +882,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                 if (pa.Type.GetInterfaces().Contains(typeof(IGraphable))) // Non Graphable
                                 {
                                     currentGraphCondition.TrueStatements.Add(
-                                        new CodeMethodInvokeExpression(s_host, "WriteElementUtil", s_writer, new CodePrimitiveExpression(pa.NamespaceUri), new CodePrimitiveExpression(pa.Name), new CodeCastExpression(typeof(IGraphable), _propertyReference), new CodeTypeOfExpression(pa.Type), new CodeVariableReferenceExpression("context"), s_resultContext));
+                                        new CodeMethodInvokeExpression(s_host, "WriteElementUtil", s_writer, new CodePrimitiveExpression(pa.NamespaceUri), new CodePrimitiveExpression(pa.Name), new CodeCastExpression(typeof(IGraphable), _propertyReference), new CodeTypeOfExpression(conditionType), new CodeVariableReferenceExpression("context"), s_resultContext));
                                 }
                                 else if (pa.Type.GetInterface("System.Collections.IEnumerable") != null) // List
                                 {
@@ -878,7 +905,11 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                         if (graphConditions.Count == 0)
                         {
                             // Get the property attribute with no type
-                            PropertyAttribute pa = buildProperty.PropertyAttributes.First(o => o.Type == null);
+                            PropertyAttribute pa = buildProperty.PropertyAttributes.FirstOrDefault(o => o.Type == null);
+                            if (pa == null && buildProperty.PropertyAttributes.Count() == 1)
+                                pa = buildProperty.PropertyAttributes.First();
+                            if (pa == null)
+                                throw new InvalidOperationException("Cannot find a default traversal!");
 
                             // UpdateMode imposition
                             if (pa != null && pa.DefaultUpdateMode != MARC.Everest.DataTypes.UpdateMode.Unknown && piType.GetProperty("UpdateMode") != null)
@@ -906,15 +937,15 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                             if (pa != null && pa.PropertyType == PropertyAttribute.AttributeAttributeType.Structural)
                                 graphObjectContentsConditionStatement.TrueStatements.Add(new CodeMethodInvokeExpression(s_writer, "WriteAttributeString", new CodePrimitiveExpression(pa.Name), new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(Util)), "ToWireFormat", _propertyReference)));
                             else if (pa != null && piTypeInterfaces.Contains(typeof(IGraphable)))
-                                graphObjectContentsConditionStatement.TrueStatements.Add(new CodeMethodInvokeExpression(s_host, "WriteElementUtil", s_writer, new CodePrimitiveExpression(pa.NamespaceUri), new CodePrimitiveExpression(pa.Name), new CodeCastExpression(typeof(IGraphable), _propertyReference), new CodeTypeOfExpression(piType), new CodeVariableReferenceExpression("context"), s_resultContext));
-                            else if (pa != null && piTypeInterfaces.Contains(typeof(ICollection)))
-                            {
-                                Type lType = piType;
-                                if (lType.GetGenericArguments().Length > 0)
-                                    lType = piType.GetGenericArguments()[0];
-                                graphObjectContentsConditionStatement.TrueStatements.Add(new CodeIterationStatement(new CodeVariableDeclarationStatement(typeof(Int32), "i", new CodePrimitiveExpression(0)), new CodeBinaryOperatorExpression(new CodeVariableReferenceExpression("i"), CodeBinaryOperatorType.LessThan, new CodePropertyReferenceExpression(_propertyReference, "Count")), new CodeSnippetStatement("i++"),
-                                    new CodeExpressionStatement(new CodeMethodInvokeExpression(s_host, "WriteElementUtil", s_writer, new CodePrimitiveExpression(pa.NamespaceUri), new CodePrimitiveExpression(pa.Name), new CodeCastExpression(typeof(IGraphable), new CodeIndexerExpression(_propertyReference, new CodeVariableReferenceExpression("i"))), new CodeTypeOfExpression(lType), new CodeVariableReferenceExpression("context"), s_resultContext))));
-                            }
+                                graphObjectContentsConditionStatement.TrueStatements.Add(new CodeMethodInvokeExpression(s_host, "WriteElementUtil", s_writer, new CodePrimitiveExpression(pa.NamespaceUri), new CodePrimitiveExpression(pa.Name), new CodeCastExpression(typeof(IGraphable), _propertyReference), new CodeTypeOfExpression(conditionType), new CodeVariableReferenceExpression("context"), s_resultContext));
+                            //else if (pa != null && piTypeInterfaces.Contains(typeof(ICollection)))
+                            //{
+                            //    Type lType = piType;
+                            //    if (lType.GetGenericArguments().Length > 0)
+                            //        lType = piType.GetGenericArguments()[0];
+                            //    graphObjectContentsConditionStatement.TrueStatements.Add(new CodeIterationStatement(new CodeVariableDeclarationStatement(typeof(Int32), "i", new CodePrimitiveExpression(0)), new CodeBinaryOperatorExpression(new CodeVariableReferenceExpression("i"), CodeBinaryOperatorType.LessThan, new CodePropertyReferenceExpression(_propertyReference, "Count")), new CodeSnippetStatement("i++"),
+                            //        new CodeExpressionStatement(new CodeMethodInvokeExpression(s_host, "WriteElementUtil", s_writer, new CodePrimitiveExpression(pa.NamespaceUri), new CodePrimitiveExpression(pa.Name), new CodeCastExpression(typeof(IGraphable), new CodeIndexerExpression(_propertyReference, new CodeVariableReferenceExpression("i"))), new CodeTypeOfExpression(lType), new CodeVariableReferenceExpression("context"), s_resultContext))));
+                            //}
                             else // Not recognized
                                 graphObjectContentsConditionStatement.TrueStatements.Add(new CodeMethodInvokeExpression(s_writer, "WriteElementString", new CodePrimitiveExpression(pa.Name), new CodePrimitiveExpression(pa.NamespaceUri), new CodeMethodInvokeExpression(_propertyReference, "ToString")));
 
@@ -940,7 +971,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                 }
                             }
                         }
-                }
+                } // null check
             }
 
 
@@ -1053,7 +1084,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
 
                 // SET method
                 if (bp.PropertyInfo.GetSetMethod() != null)
+                {
                     currentStatement.TrueStatements.Add(new CodeAssignStatement(new CodePropertyReferenceExpression(s_instance, bp.PropertyInfo.Name), this.CreateUtilConvertMethodInvoke(bp.PropertyInfo.PropertyType, s_readerValue)));
+                }
                 else
                     currentStatement.TrueStatements.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedResultDetail), s_resultDetailError, new CodePrimitiveExpression(String.Format("Property {0} is readonly, cannot set value", bp.PropertyInfo.Name)), s_readerToString)));
 

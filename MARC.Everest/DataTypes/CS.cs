@@ -293,6 +293,26 @@ namespace MARC.Everest.DataTypes
         }
 
         /// <summary>
+        /// Converts a strongly typed CV to a generic CV
+        /// </summary>
+        internal static CS<String> DownParse(CS<T> cd)
+        {
+            CS<String> retVal = new CS<String>();
+            // Parse from wire format into this format
+            retVal.Code = new CodeValue<string>(Util.ToWireFormat(cd.Code));
+            // Code System
+            retVal.ControlActExt = cd.ControlActExt;
+            retVal.ControlActRoot = cd.ControlActRoot;
+            retVal.UpdateMode = cd.UpdateMode == null ? null : cd.UpdateMode.Clone() as CS<UpdateMode>;
+            retVal.NullFlavor = cd.NullFlavor == null ? null : cd.NullFlavor.Clone() as CS<NullFlavor>;
+            retVal.ValidTimeHigh = cd.ValidTimeHigh;
+            retVal.ValidTimeLow = cd.ValidTimeLow;
+            //retVal.Group = cd.Group != null ? cd.Group.Clone() as LIST<CDGroup> : null;
+            retVal.UpdateMode = cd.UpdateMode;
+            retVal.Flavor = cd.Flavor;
+            return retVal;
+        }
+        /// <summary>
         /// Get the code value as a generic object
         /// </summary>
         /// <remarks>

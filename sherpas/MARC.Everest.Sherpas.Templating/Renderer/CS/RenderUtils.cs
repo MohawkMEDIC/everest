@@ -20,7 +20,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
         /// <summary>
         /// Enumerable class name
         /// </summary>
-        private static readonly List<String> EnumerableClassNames = new List<string>()
+        public static readonly List<String> EnumerableClassNames = new List<string>()
         {
             typeof(SET<>).FullName,
             typeof(COLL<>).FullName,
@@ -87,7 +87,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                         if (t.Name != null || t.Type != null)
                         {
                             var crt = CreateTypeReference(t, "1", project);
-                            if(project.Templates.Exists(p=>p.Name == crt.BaseType) && crt.BaseType != null && crt.BaseType != typeof(void).ToString())
+                            if((t.Type != null || project.Templates.Exists(p=>p.Name == crt.BaseType)) && crt.BaseType != null && crt.BaseType != typeof(void).ToString())
                                 tplParms.Add(CreateTypeReference(t, "1", project));
                         }
 

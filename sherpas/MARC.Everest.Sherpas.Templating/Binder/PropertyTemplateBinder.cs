@@ -193,7 +193,7 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                 String name = String.Format("{0}_{1}", classTemplate.Name, propertyTemplate.Name);
                 // Originally contained something? Add it to the name
                 if (!String.IsNullOrEmpty(originalContains))
-                    name = originalContains + "Container";
+                    name = String.Format("{0}{1}", originalContains, propertyTemplate.Name);
 
                 
                 // TODO: More intelligent generation of these
@@ -228,7 +228,7 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                         propertyTemplate.Contains = childTemplate.Name;
                     
                     // Add to the repo
-                    context.Project.Templates.Add(childTemplate);
+                    context.Project.Templates.Insert(context.Project.Templates.IndexOf(classTemplate) + 2, childTemplate);
                     foreach (NullArtifactTemplate nat in context.Project.Templates.FindAll(o => o is NullArtifactTemplate))
                         nat.ReplacementFor = null;
                     propertyTemplate.Templates.Clear(); // remove templates as we've cascaded them

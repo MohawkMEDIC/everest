@@ -37,7 +37,7 @@ namespace MARC.Everest.Sherpas.Templating.Format
                 {
                     this.TemplateParameter = new List<BasicTypeReference>();
                     foreach (var t in value.GetGenericArguments())
-                        this.TemplateParameter.Add(new BasicTypeReference() { Type = t });
+                        this.TemplateParameter.Add(new TypeDefinition() { Type = t });
                 }
             }
         }

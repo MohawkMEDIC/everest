@@ -44,6 +44,7 @@
         case "cdadocumentlevel":
           return "POCD_MT000040UV.ClinicalDocument";
          case "cdasectionlevel":
+          return "POCD_MT000040UV.Section";
          case "cdaentrylevel":
          case "cdaheaderlevel":
           return "MARC.Everest.Interfaces.IGraphable";

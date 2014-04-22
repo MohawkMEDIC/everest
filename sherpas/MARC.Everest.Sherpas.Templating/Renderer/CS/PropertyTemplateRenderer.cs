@@ -155,19 +155,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                                 propertyCode.Type = new CodeTypeReference(propertyTemplate.Property.PropertyType);
                                 propertyCode.GetStatements.Add(new CodeMethodReturnStatement(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name)));
                                 propertyCode.SetStatements.Add(new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), new CodeVariableReferenceExpression("value")));
-                                var addUtil = new CodeMemberMethod()
-                                {
-                                    Name = String.Format("Add{0}", boundTypeName),
-                                    ReturnType = new CodeTypeReference(typeof(void)),
-                                    Attributes = MemberAttributes.Public
-
-                                };
                                 
-                                addUtil.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(boundTypeName), "value"));
-                                addUtil.Statements.Add(new CodeConditionStatement(new CodeBinaryOperatorExpression(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(null)),
-                                    new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), new CodeObjectCreateExpression(propertyCode.Type))));
-                                addUtil.Statements.Add(new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), "Add"), new CodeVariableReferenceExpression("value")));
-                                retVal.Add(addUtil);
                             }
 
                         }
@@ -200,7 +188,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                                 mpa.Type = propertyTemplate.Type.Type;
 
                             // First we need to create the type
-                            propertyCode.Type = propertyTemplate.Type == null ? new CodeTypeReference(propertyTemplate.Property.PropertyType) : RenderUtils.CreateTypeReference(propertyTemplate.Type, propertyTemplate.MaxOccurs, context.Project);
+                            propertyCode.Type = RenderUtils.CreateTypeReference(propertyTemplate.Type, propertyTemplate.MaxOccurs, context.Project);
                             propertyCode.GetStatements.Add(new CodeMethodReturnStatement(
                                 new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(typeof(Util)), "Convert", propertyCode.Type), new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name))
                             )); // Call Util.Convert<> 
@@ -225,24 +213,59 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 } // need to add the property
                 else // don't need to add, however it looks like a duplicate
                 {
-                    // Looks like a relationship to a list with contains
-                    if (propertyCode.Type.BaseType == typeof(List<>).FullName && propertyTemplate.Contains != null)
+                   
+                    // Are the types compatible ?
+                    if ((propertyTemplate.TemplateReference ?? propertyTemplate.Contains) != null &&
+                        (propertyTemplate.TemplateReference ?? propertyTemplate.Contains) != propertyCode.Type.BaseType) // Change ... Back to the base
                     {
-                        var addUtil = new CodeMemberMethod()
+                        propertyCode.Type = new CodeTypeReference(propertyTemplate.Property.PropertyType);
+                        propertyCode.GetStatements.Clear();
+                        propertyCode.GetStatements.Add(new CodeMethodReturnStatement(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name)));
+                        propertyCode.SetStatements.Clear();
+                        propertyCode.SetStatements.Add(new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), new CodeVariableReferenceExpression("value")));
+                    }
+
+                }
+
+
+                // Looks like a relationship to a list with contains
+                if ((propertyTemplate.TemplateReference ?? propertyTemplate.Contains) != null )
+                {
+                    CodeMemberMethod helperMethod = null;
+                    if (propertyCode.Type.BaseType == typeof(List<>).FullName)
+                    {
+                        helperMethod = new CodeMemberMethod()
                         {
-                            Name = String.Format("Add{0}", propertyTemplate.Contains),
+                            Name = String.Format("Add{0}", (propertyTemplate.TemplateReference ?? propertyTemplate.Contains)),
                             ReturnType = new CodeTypeReference(typeof(void)),
                             Attributes = MemberAttributes.Public
 
                         };
-                        addUtil.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(propertyTemplate.Contains), "value"));
-                        addUtil.Statements.Add(new CodeConditionStatement(new CodeBinaryOperatorExpression(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(null)),
+                        helperMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference((propertyTemplate.TemplateReference ?? propertyTemplate.Contains)), "value"));
+                        helperMethod.Statements.Add(new CodeConditionStatement(new CodeBinaryOperatorExpression(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(null)),
                             new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), new CodeObjectCreateExpression(propertyCode.Type))));
-                        addUtil.Statements.Add(new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), "Add"), new CodeVariableReferenceExpression("value")));
-                        retVal.Add(addUtil);
+                        helperMethod.Statements.Add(new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), "Add"), new CodeVariableReferenceExpression("value")));
 
                     }
+                    else if ((propertyTemplate.TemplateReference ?? propertyTemplate.Contains) != null) // Set
+                    {
+                        helperMethod = new CodeMemberMethod()
+                        {
+                            Name = String.Format("Set{0}", (propertyTemplate.TemplateReference ?? propertyTemplate.Contains)),
+                            ReturnType = new CodeTypeReference(typeof(void)),
+                            Attributes = MemberAttributes.Public
+
+                        };
+                        helperMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference((propertyTemplate.TemplateReference ?? propertyTemplate.Contains)), "value"));
+                        helperMethod.Statements.Add(new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), propertyTemplate.Name), new CodeVariableReferenceExpression("value")));
+                    }
+
+                    // If the helper method doesn't exist then add it
+                    if(helperMethod != null && (context.ContainerObject as CodeTypeDeclaration).Members.OfType<CodeMemberMethod>().Count(m=>m.Name == helperMethod.Name && m.Parameters.Count > 0 && m.Parameters[0].Type.BaseType == helperMethod.Parameters[0].Type.BaseType) == 0)
+                        retVal.Add(helperMethod);
+
                 }
+
 
                 // Fix supplier domain?
                 if (propertyTemplate.Type != null &&
@@ -264,10 +287,9 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 propertyCode.Comments.AddRange(RenderUtils.RenderComments(propertyTemplate, null)); // string.Format("Template for property <see cref=\"P:{0}.{1}\"/>", classTemplate.BaseClass.Type.FullName, propertyTemplate.Name)));
 
                 // Add custom attribute
-                var typeArgument = new CodeAttributeArgument("Type", mpa.Type == null ?
-                                propertyTemplate.TemplateReference != null ?
-                                    new CodeTypeOfExpression(new CodeTypeReference(propertyTemplate.TemplateReference)) :
-                                (CodeExpression)new CodePrimitiveExpression(null) :
+                var typeArgument = new CodeAttributeArgument("Type", (propertyTemplate.TemplateReference ?? propertyTemplate.Contains) != null ?
+                                    new CodeTypeOfExpression(new CodeTypeReference(propertyTemplate.TemplateReference ?? propertyTemplate.Contains)) :
+                                mpa.Type == null ? (CodeExpression)new CodePrimitiveExpression(null) :
                             new CodeTypeOfExpression(new CodeTypeReference(mpa.Type)));
                 var propAttDecl = new CodeAttributeDeclaration(new CodeTypeReference(typeof(PropertyAttribute)),
                         new CodeAttributeArgument("Name", new CodePrimitiveExpression(mpa.Name)),
@@ -278,12 +300,22 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                         new CodeAttributeArgument("ImposeFlavorId", new CodePrimitiveExpression(mpa.ImposeFlavorId)),
                         new CodeAttributeArgument("InteractionOwner", new CodePrimitiveExpression(mpa.InteractionOwner)),
                         new CodeAttributeArgument("SortKey", new CodePrimitiveExpression(mpa.SortKey)),
-                        typeArgument,
                         new CodeAttributeArgument("FixedValue", new CodePrimitiveExpression(null)),
                         new CodeAttributeArgument("SupplierDomain", new CodePrimitiveExpression(mpa.SupplierDomain))
                     );
+                
+                // Add type argument
+                //string propTypeName = propertyCode.Type.BaseType;
+                //if (typeof(List<>).FullName == propTypeName)
+                //    propTypeName = propertyCode.Type.TypeArguments[0].BaseType;
 
-                if (propertyCode.CustomAttributes.OfType<CodeAttributeDeclaration>().Count(pa => pa.Arguments.OfType<CodeAttributeArgument>().Count(arg => arg.Name == "Name" && arg.Name == mpa.Name) == 0 && pa.Arguments.OfType<CodeAttributeArgument>().Count(arg => arg.Name == "Type" && arg.Value.Equals(typeArgument.Value)) == 0) == 0)
+                //// Was the traversal null in the base model, is there only this one property attribute?
+                //if (typeArgument.Value is CodeTypeOfExpression && 
+                //    !propTypeName.Equals((typeArgument.Value as CodeTypeOfExpression).Type.BaseType))
+                propAttDecl.Arguments.Add(typeArgument);
+
+                
+                if (propertyCode.CustomAttributes.OfType<CodeAttributeDeclaration>().Count(pa => pa.Arguments.OfType<CodeAttributeArgument>().Count(arg => arg.Name == "Name" && (arg.Value as CodePrimitiveExpression).Value.ToString() == mpa.Name) > 0 && pa.Arguments.OfType<CodeAttributeArgument>().Count(arg => arg.Name == "Type" && arg.Value.Equals(typeArgument.Value)) > 1) == 0)
                     propertyCode.CustomAttributes.Add(propAttDecl);
                 // Contains?
                 if (propertyTemplate.Contains != null)
@@ -319,7 +351,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                                     new ConditionalStatementDefinition() {
                                         VariableName = "count",
                                         Operator = OperatorType.LessThanEqualTo,
-                                        ValueRef = mpa.MaxOccurs.ToString(),
+                                        ValueRef = mpa.MaxOccurs == -1 ? Int32.MaxValue.ToString() : mpa.MaxOccurs.ToString(),
                                         SuppressAutoConvert = true
                                     }
                                 }
@@ -345,7 +377,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                         new CodeAttributeArgument("Description", new CodePrimitiveExpression(constraint.Message)),
                         new CodeAttributeArgument("CheckConstraintMethod", new CodePrimitiveExpression(method.Name))
                     ));
-                    parent.Members.Add(method);
+                    retVal.Add(method);
                 }
 
                 // Formal constraint enforcements
@@ -398,51 +430,55 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                         constraints.Add(fc.Message);
 
                     }
-                    fca.Message = fca.Message.Substring(2);
 
-                    // Code member method for constraint
-                    CodeMemberMethod method = RenderUtils.RenderFormalConstraintValidator(fca, propertyTemplate.Name, propertyCode.Type, context);
+                    if (fca.Instruction.Count > 0)
+                    {
+                        fca.Message = fca.Message.Substring(2);
 
-                    // Add the attribute 
-                    propertyCode.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(FormalConstraintAttribute)),
-                        new CodeAttributeArgument("Description", new CodePrimitiveExpression(fca.Message)),
-                        new CodeAttributeArgument("CheckConstraintMethod", new CodePrimitiveExpression(method.Name))
-                    ));
+                        // Code member method for constraint
+                        CodeMemberMethod method = RenderUtils.RenderFormalConstraintValidator(fca, propertyTemplate.Name, propertyCode.Type, context);
 
-                    // Add constraints to the documentation
-                    var termRemarksComment = propertyCode.Comments.OfType<CodeCommentStatement>().LastOrDefault(o=>o.Comment.Text.Contains("</remarks>"));
+                        // Add the attribute 
+                        propertyCode.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(FormalConstraintAttribute)),
+                            new CodeAttributeArgument("Description", new CodePrimitiveExpression(fca.Message)),
+                            new CodeAttributeArgument("CheckConstraintMethod", new CodePrimitiveExpression(method.Name))
+                        ));
 
-                    CodeCommentStatementCollection formalConstraints = new CodeCommentStatementCollection()
+                        // Add constraints to the documentation
+                        var termRemarksComment = propertyCode.Comments.OfType<CodeCommentStatement>().LastOrDefault(o => o.Comment.Text.Contains("</remarks>"));
+
+                        CodeCommentStatementCollection formalConstraints = new CodeCommentStatementCollection()
                     {
                         new CodeCommentStatement("<h4>Constraints</h4>", true),
                         new CodeCommentStatement("<list type=\"table\">", true),
                         new CodeCommentStatement("<listheader><term>Check #</term><description>Statement</description></listheader>", true)
                     };
-                    foreach(var con in constraints)
-                    {
-                        String confNumber = con.StartsWith("CONF") ? con.Substring(0, con.IndexOf(":")) : constraints.IndexOf(con).ToString();
-                        String confDescription = con.StartsWith("CONF") ? con.Substring(con.IndexOf(":") + 1) : con;
+                        foreach (var con in constraints)
+                        {
+                            String confNumber = con.StartsWith("CONF") ? con.Substring(0, con.IndexOf(":")) : constraints.IndexOf(con).ToString();
+                            String confDescription = con.StartsWith("CONF") ? con.Substring(con.IndexOf(":") + 1) : con;
 
-                        formalConstraints.Add(new CodeCommentStatement(String.Format("<item><term>{0}</term><description>{1}</description></item>", confNumber, confDescription), true));
+                            formalConstraints.Add(new CodeCommentStatement(String.Format("<item><term>{0}</term><description>{1}</description></item>", confNumber, confDescription), true));
+                        }
+                        formalConstraints.Add(new CodeCommentStatement("</list>", true));
+
+                        if (termRemarksComment == null)
+                        {
+                            propertyCode.Comments.Add(new CodeCommentStatement("<remarks>", true));
+                            propertyCode.Comments.AddRange(formalConstraints);
+                            propertyCode.Comments.Add(new CodeCommentStatement("</remarks>", true));
+                        }
+                        else
+                        {
+                            var insertIdx = propertyCode.Comments.IndexOf(termRemarksComment);
+                            for (int i = formalConstraints.Count - 1; i >= 0; i--)
+                                propertyCode.Comments.Insert(insertIdx, formalConstraints[i]);
+                        }
+
+
+                        // Add the method
+                        retVal.Add(method);
                     }
-                    formalConstraints.Add(new CodeCommentStatement("</list>", true));
-
-                    if (termRemarksComment == null)
-                    {
-                        propertyCode.Comments.Add(new CodeCommentStatement("<remarks>", true));
-                        propertyCode.Comments.AddRange(formalConstraints);
-                        propertyCode.Comments.Add(new CodeCommentStatement("</remarks>", true));
-                    }
-                    else
-                    {
-                        var insertIdx = propertyCode.Comments.IndexOf(termRemarksComment);
-                        for (int i = formalConstraints.Count - 1; i >= 0; i--)
-                            propertyCode.Comments.Insert(insertIdx, formalConstraints[i]);
-                    }
-
-
-                    // Add the method
-                    (context.ContainerObject as CodeTypeDeclaration).Members.Add(method);
                 }
 
             }

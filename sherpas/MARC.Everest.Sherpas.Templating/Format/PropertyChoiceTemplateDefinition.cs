@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using System.Reflection;
 
 namespace MARC.Everest.Sherpas.Templating.Format
 {
@@ -13,5 +14,11 @@ namespace MARC.Everest.Sherpas.Templating.Format
     [XmlType("PropertyChoiceTemplateDefinition", Namespace = "urn:marc-hi:everest/sherpas/template")]
     public class PropertyChoiceTemplateDefinition : PropertyTemplateContainer
     {
+
+        /// <summary>
+        /// Gets or sets the property this definition is bound to
+        /// </summary>
+        [XmlIgnore]
+        public PropertyInfo Property { get; set; }
     }
 }

@@ -513,5 +513,25 @@ namespace MARC.Everest.DataTypes
         {
             return new IVL<T>(MARC.Everest.Connectors.Util.Convert<T>(s));
         }
+
+        /// <summary>
+        /// Casts a T from a value
+        /// </summary>
+        internal static IVL<T> FromSimpleValue(T val) 
+        {
+            return new IVL<T>(val);
+        }
+
+        /// <summary>
+        /// Casts a T from a value
+        /// </summary>
+        internal static T ToSimpleValue(IVL<T> val)
+        {
+            if (val.Value != null || val.Center == null && val.Width == null && val.High == null && val.Low == null)
+                return val.Value;
+            else
+                throw new InvalidOperationException("In order to convert IVL<T> to T the IVL<T> must only carry Value");
+        }
+
     }
 }

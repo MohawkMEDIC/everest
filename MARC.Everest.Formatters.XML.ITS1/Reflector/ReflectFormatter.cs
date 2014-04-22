@@ -97,156 +97,174 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             {
 
                 object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), false);
-                object instance = pi.GetValue(o, null);
+                object rawInstance = pi.GetValue(o, null);
 
-                if (propertyAttributes.Length == 1) // Not a choice
+                // list?
+                ArrayList instances = new ArrayList();
+                var realType = pi.PropertyType;
+
+                if (pi.PropertyType.GetInterface(typeof(IList<>).FullName) != null && !typeof(ANY).IsAssignableFrom(pi.PropertyType))
                 {
-                    PropertyAttribute pa = propertyAttributes[0] as PropertyAttribute;
-
-                    // Validation Rule Change: We'll require the user to perform this
-                    // Is this a required attribute that is null? We'll set a null flavor 
-                    if ((pa.Conformance == PropertyAttribute.AttributeConformanceType.Required || pa.Conformance == PropertyAttribute.AttributeConformanceType.Populated) &&
-                        pa.PropertyType != PropertyAttribute.AttributeAttributeType.Structural &&
-                        pi.PropertyType.GetProperty("NullFlavor") != null &&
-                        !pi.PropertyType.IsAbstract &&
-                        pi.CanWrite)
-                    {
-                        var nullFlavorProperty = pi.PropertyType.GetProperty("NullFlavor");
-                        // Locate the default property 
-                        if (instance == null && Host.CreateRequiredElements && nullFlavorProperty != null)
-                        {
-                            ConstructorInfo ci = pi.PropertyType.GetConstructor(Type.EmptyTypes);
-                            instance = ci.Invoke(null);
-                            nullFlavorProperty.SetValue(instance, Util.FromWireFormat("NI", nullFlavorProperty.PropertyType), null);
-                        }
-                    }
-
-
-                    // Property type
-                    switch (pa.PropertyType)
-                    {
-                        case PropertyAttribute.AttributeAttributeType.Structural:
-                            if ((Host.Settings & SettingsType.SuppressNullEnforcement) == 0)
-                            {
-                                if (instance != null && !isInstanceNull)
-                                    s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
-                                else if (isInstanceNull && pi.Name == "NullFlavor")
-                                    Host.WriteNullFlavorUtil(s, (IGraphable)instance);
-                            }
-                            else if (instance != null)
-                            {
-                                if (instance != null && pi.Name == "NullFlavor")
-                                    Host.WriteNullFlavorUtil(s, (IGraphable)instance);
-                                else if (instance != null)
-                                    s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
-                            }
-
-                            break;
-                        default:
-
-                            // Instance is null
-                            if (instance == null)
-                                continue;
-                            else if (isInstanceNull && (Host.Settings & (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil)) != 0)
-                                resultContext.AddResultDetail(new FormalConstraintViolationResultDetail(ResultDetailType.Information, "The context is null however SuppressNullEnforcement and SuppressXsiNil are set, therefore elements will be graphed. This is not necessarily HL7v3 compliant", s.ToString(), null));
-                            else if (isInstanceNull)
-                                continue;
-
-                            // Impose flavors or code?
-                            if (pa.DefaultUpdateMode != MARC.Everest.DataTypes.UpdateMode.Unknown &&
-                                pi.PropertyType.GetProperty("UpdateMode") != null &&
-                                pi.PropertyType.GetProperty("UpdateMode").GetValue(instance, null) == null &&
-                                (this.Host.Settings & SettingsType.AllowUpdateModeImposing) == SettingsType.AllowUpdateModeImposing)
-                                pi.PropertyType.GetProperty("UpdateMode").SetValue(instance, Util.FromWireFormat(pa.DefaultUpdateMode, pi.PropertyType.GetProperty("UpdateMode").PropertyType), null);
-                            if (pa.ImposeFlavorId != null &&
-                                instance is IAny &&
-                                (Host.Settings & SettingsType.AllowFlavorImposing) == SettingsType.AllowFlavorImposing)
-                                (instance as IAny).Flavor = pa.ImposeFlavorId;
-                            if (pa.SupplierDomain != null &&
-                                instance is ICodedValue &&
-                                (instance as ICodedSimple).CodeValue != null &&
-                                (instance as ICodedValue).CodeSystem == null &&
-                                (instance as IImplementsNullFlavor).NullFlavor == null &&
-                                (Host.Settings & SettingsType.AllowSupplierDomainImposing) == SettingsType.AllowSupplierDomainImposing)
-                                (instance as ICodedValue).CodeSystem = pa.SupplierDomain;
-
-                            // Instance is graphable
-                            if (instance is IGraphable)
-                            {
-                                // Ensure the data is not empty
-                                if (instance is IColl && (instance as IColl).IsEmpty && (instance as IImplementsNullFlavor).NullFlavor == null)
-                                    continue;
-                                Host.WriteElementUtil(s, pa.NamespaceUri, pa.Name, instance as IGraphable, pi.PropertyType, context, resultContext);
-                            }
-                            else if (instance is ICollection)
-                            {
-                                Type genType = pi.PropertyType.GetGenericArguments()[0];
-                                foreach (object itm in (instance as ICollection))
-                                    Host.WriteElementUtil(s, pa.NamespaceUri, pa.Name, itm as IGraphable, genType, context, resultContext);
-                            }
-                            else
-                                s.WriteElementString(pa.Name, instance.ToString());
-                            break;
-                    }
+                    realType = realType.GetGenericArguments()[0];
+                    instances.AddRange(rawInstance as ICollection);
                 }
-                else if(propertyAttributes.Length > 1) // Choice
+                else
+                    instances.Add(rawInstance);
+
+                for(int iter = 0; iter < instances.Count; iter++)
                 {
-                    // Instance is null
-                    if (instance == null)
-                        continue;
-                    else if (isInstanceNull && (Host.Settings & (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil)) != 0)
-                        resultContext.AddResultDetail(new FormalConstraintViolationResultDetail(ResultDetailType.Information, "The context is null however SuppressNullEnforcement and SuppressXsiNil are set, therefore elements will be graphed. This is not necessarily HL7v3 compliant", s.ToString(), null));
-                    else if (isInstanceNull)
-                        continue;
-#if WINDOWS_PHONE
-                    PropertyAttribute formatAs = propertyAttributes.Find(cpa => (cpa as PropertyAttribute).Type == null) as PropertyAttribute;
-#else
-                    PropertyAttribute formatAs = Array.Find(propertyAttributes, cpa => (cpa as PropertyAttribute).Type == null) as PropertyAttribute;
-#endif
-                    // Search by type and interaction
-                    foreach (PropertyAttribute pa in propertyAttributes)
+                    var instance = instances[iter];
+
+                    if (propertyAttributes.Length == 1) // Not a choice
                     {
-                        if (pa.Type != null && instance.GetType() == pa.Type && (context != null && context.GetType() == pa.InteractionOwner || (pa.InteractionOwner == null && formatAs == null)))
+                        PropertyAttribute pa = propertyAttributes[0] as PropertyAttribute;
+
+                        // Validation Rule Change: We'll require the user to perform this
+                        // Is this a required attribute that is null? We'll set a null flavor 
+                        if ((pa.Conformance == PropertyAttribute.AttributeConformanceType.Required || pa.Conformance == PropertyAttribute.AttributeConformanceType.Populated) &&
+                            pa.PropertyType != PropertyAttribute.AttributeAttributeType.Structural &&
+                            pi.PropertyType.GetProperty("NullFlavor") != null &&
+                            !pi.PropertyType.IsAbstract &&
+                            pi.CanWrite)
                         {
-                            formatAs = pa;
-                            if(context == null || context.GetType() == formatAs.InteractionOwner) 
+                            var nullFlavorProperty = pi.PropertyType.GetProperty("NullFlavor");
+                            // Locate the default property 
+                            if (instance == null && Host.CreateRequiredElements && nullFlavorProperty != null)
+                            {
+                                ConstructorInfo ci = pi.PropertyType.GetConstructor(Type.EmptyTypes);
+                                instance = ci.Invoke(null);
+                                nullFlavorProperty.SetValue(instance, Util.FromWireFormat("NI", nullFlavorProperty.PropertyType), null);
+                            }
+                        }
+
+
+                        // Property type
+                        switch (pa.PropertyType)
+                        {
+                            case PropertyAttribute.AttributeAttributeType.Structural:
+                                if ((Host.Settings & SettingsType.SuppressNullEnforcement) == 0)
+                                {
+                                    if (instance != null && !isInstanceNull)
+                                        s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
+                                    else if (isInstanceNull && pi.Name == "NullFlavor")
+                                        Host.WriteNullFlavorUtil(s, (IGraphable)instance);
+                                }
+                                else if (instance != null)
+                                {
+                                    if (instance != null && pi.Name == "NullFlavor")
+                                        Host.WriteNullFlavorUtil(s, (IGraphable)instance);
+                                    else if (instance != null)
+                                        s.WriteAttributeString(pa.Name, Util.ToWireFormat(instance));
+                                }
+
+                                break;
+                            default:
+
+                                // Instance is null
+                                if (instance == null)
+                                    continue;
+                                else if (isInstanceNull && (Host.Settings & (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil)) != 0)
+                                    resultContext.AddResultDetail(new FormalConstraintViolationResultDetail(ResultDetailType.Information, "The context is null however SuppressNullEnforcement and SuppressXsiNil are set, therefore elements will be graphed. This is not necessarily HL7v3 compliant", s.ToString(), null));
+                                else if (isInstanceNull)
+                                    continue;
+
+                                // Impose flavors or code?
+                                if (pa.DefaultUpdateMode != MARC.Everest.DataTypes.UpdateMode.Unknown &&
+                                    pi.PropertyType.GetProperty("UpdateMode") != null &&
+                                    pi.PropertyType.GetProperty("UpdateMode").GetValue(instance, null) == null &&
+                                    (this.Host.Settings & SettingsType.AllowUpdateModeImposing) == SettingsType.AllowUpdateModeImposing)
+                                    pi.PropertyType.GetProperty("UpdateMode").SetValue(instance, Util.FromWireFormat(pa.DefaultUpdateMode, pi.PropertyType.GetProperty("UpdateMode").PropertyType), null);
+                                if (pa.ImposeFlavorId != null &&
+                                    instance is IAny &&
+                                    (Host.Settings & SettingsType.AllowFlavorImposing) == SettingsType.AllowFlavorImposing)
+                                    (instance as IAny).Flavor = pa.ImposeFlavorId;
+                                if (pa.SupplierDomain != null &&
+                                    instance is ICodedValue &&
+                                    (instance as ICodedSimple).CodeValue != null &&
+                                    (instance as ICodedValue).CodeSystem == null &&
+                                    (instance as IImplementsNullFlavor).NullFlavor == null &&
+                                    (Host.Settings & SettingsType.AllowSupplierDomainImposing) == SettingsType.AllowSupplierDomainImposing)
+                                    (instance as ICodedValue).CodeSystem = pa.SupplierDomain;
+
+                                
+                                // Instance is graphable
+                                if (instance is IGraphable)
+                                {
+                                    // Ensure the data is not empty
+                                    if (instance is IColl && (instance as IColl).IsEmpty && (instance as IImplementsNullFlavor).NullFlavor == null)
+                                        continue;
+                                    Host.WriteElementUtil(s, pa.NamespaceUri, pa.Name, instance as IGraphable, realType, context, resultContext);
+                                }
+                                else if (instance is ICollection)
+                                {
+                                    Type genType = pi.PropertyType.GetGenericArguments()[0];
+                                    foreach (object itm in (instance as ICollection))
+                                        Host.WriteElementUtil(s, pa.NamespaceUri, pa.Name, itm as IGraphable, genType, context, resultContext);
+                                }
+                                else
+                                    s.WriteElementString(pa.Name, instance.ToString());
                                 break;
                         }
                     }
-
-                    // Slow check
-                    if (formatAs == null && (this.Host.Settings & SettingsType.AlwaysCheckForOverrides) != 0)
+                    else if (propertyAttributes.Length > 1) // Choice
                     {
+                        // Instance is null
+                        if (instance == null)
+                            continue;
+                        else if (isInstanceNull && (Host.Settings & (SettingsType.SuppressNullEnforcement | SettingsType.SuppressXsiNil)) != 0)
+                            resultContext.AddResultDetail(new FormalConstraintViolationResultDetail(ResultDetailType.Information, "The context is null however SuppressNullEnforcement and SuppressXsiNil are set, therefore elements will be graphed. This is not necessarily HL7v3 compliant", s.ToString(), null));
+                        else if (isInstanceNull)
+                            continue;
+#if WINDOWS_PHONE
+                    PropertyAttribute formatAs = propertyAttributes.Find(cpa => (cpa as PropertyAttribute).Type == null) as PropertyAttribute;
+#else
+                        PropertyAttribute formatAs = Array.Find(propertyAttributes, cpa => (cpa as PropertyAttribute).Type == null) as PropertyAttribute;
+#endif
+                        // Search by type and interaction
                         foreach (PropertyAttribute pa in propertyAttributes)
                         {
-                            if (pa.Type != null && pa.Type.IsAssignableFrom(instance.GetType()) && (context != null && context.GetType() == pa.InteractionOwner || (pa.InteractionOwner == null && formatAs == null)))
+                            if (pa.Type != null && instance.GetType() == pa.Type && (context != null && context.GetType() == pa.InteractionOwner || (pa.InteractionOwner == null && formatAs == null)))
                             {
                                 formatAs = pa;
                                 if (context == null || context.GetType() == formatAs.InteractionOwner)
                                     break;
                             }
                         }
+
+                        // Slow check
+                        if (formatAs == null && (this.Host.Settings & SettingsType.AlwaysCheckForOverrides) != 0)
+                        {
+                            foreach (PropertyAttribute pa in propertyAttributes)
+                            {
+                                if (pa.Type != null && pa.Type.IsAssignableFrom(instance.GetType()) && (context != null && context.GetType() == pa.InteractionOwner || (pa.InteractionOwner == null && formatAs == null)))
+                                {
+                                    formatAs = pa;
+                                    if (context == null || context.GetType() == formatAs.InteractionOwner)
+                                        break;
+                                }
+                            }
+                        }
+
+                        //if(formatAs == null) // try to find a regular choice
+                        //    foreach(PropertyAttribute pa in propertyAttributes)
+                        //        if (pa.Type != null && instance.GetType() == pa.Type)
+                        //        {
+                        //            formatAs = pa;
+                        //            break;
+                        //        }
+
+
+                        // Format
+                        if (formatAs == null)
+                            resultContext.AddResultDetail(new NotSupportedChoiceResultDetail(ResultDetailType.Error, String.Format("Type {0} is not a valid choice according to available choice elements and won't be formatted", instance.GetType()), s.ToString(), null));
+                        else if (instance.GetType().GetInterface("MARC.Everest.Interfaces.IGraphable", false) != null) // Non Graphable
+                            Host.WriteElementUtil(s, formatAs.NamespaceUri, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.Type, context, resultContext);
+                        else if (instance.GetType().GetInterface("System.Collections.IEnumerable", false) != null) // List
+                            foreach (MARC.Everest.Interfaces.IGraphable ig in instance as IEnumerable) { Host.WriteElementUtil(s, formatAs.NamespaceUri, formatAs.Name, ig, instance.GetType(), context, resultContext); }
+                        else // Not recognized
+                            s.WriteElementString(formatAs.Name, formatAs.NamespaceUri, instance.ToString());
+
                     }
-
-                    //if(formatAs == null) // try to find a regular choice
-                    //    foreach(PropertyAttribute pa in propertyAttributes)
-                    //        if (pa.Type != null && instance.GetType() == pa.Type)
-                    //        {
-                    //            formatAs = pa;
-                    //            break;
-                    //        }
-
-
-                    // Format
-                    if (formatAs == null)
-                        resultContext.AddResultDetail(new NotSupportedChoiceResultDetail(ResultDetailType.Error, String.Format("Type {0} is not a valid choice according to available choice elements and won't be formatted", instance.GetType()), s.ToString(), null));
-                    else if (instance.GetType().GetInterface("MARC.Everest.Interfaces.IGraphable", false) != null) // Non Graphable
-                        Host.WriteElementUtil(s, formatAs.NamespaceUri, formatAs.Name, (MARC.Everest.Interfaces.IGraphable)instance, formatAs.Type, context, resultContext);
-                    else if (instance.GetType().GetInterface("System.Collections.IEnumerable", false) != null) // List
-                        foreach (MARC.Everest.Interfaces.IGraphable ig in instance as IEnumerable) { Host.WriteElementUtil(s, formatAs.NamespaceUri, formatAs.Name, ig, instance.GetType(), context, resultContext); }
-                    else // Not recognized
-                        s.WriteElementString(formatAs.Name, formatAs.NamespaceUri, instance.ToString());
-
                 }
             }
 
@@ -594,6 +612,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, pi.Name, "urn:hl7-org:v3", s.ToString(), null));
                     // Simple deserialization if PA type has IGraphable or PI type has IGraphable and PA type not specified
                     else if (pi.GetSetMethod() != null &&
+                        pi.PropertyType.GetInterface(typeof(IGraphable).FullName) != null && 
                         (pa.Type != null && pa.Type.GetInterface(typeof(IGraphable).FullName, false) != null) ||
                         (pa.Type == null && pi.PropertyType.GetInterface(typeof(IGraphable).FullName, false) != null))
                     {

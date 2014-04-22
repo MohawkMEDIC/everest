@@ -106,10 +106,48 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             };
             ctor.Comments.Add(new CodeCommentStatement(String.Format("<summary>Constructs a new instance of {0}</summary>", retVal.Name), true));
             ctor.Statements.Add(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "InitializeInstance"));
+            retVal.Members.Insert(0, ctor);
+
+            // Generate a ctor for all mandatory elements
+            var propNames = tpl.Templates.FindAll(o => o is PropertyTemplateDefinition && (o as PropertyTemplateDefinition).MinOccurs != "0");
+
+            // Prop names for a ctor?
+            if (propNames.Count > 0)
+            {
+                ctor = new CodeConstructor()
+                {
+                    Attributes = MemberAttributes.Public
+                };
+                
+                ctor.Statements.Add(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "InitializeInstance"));
+                foreach (PropertyTemplateDefinition pn in propNames)
+                {
+                    //var prop = retVal.Members.OfType<CodeMemberProperty>().First(p => p.Name == pn.Name);
+
+                    // Ensure that this already doesn't exist in initialize
+                    var backingProp = retVal.Members.OfType<CodeMemberProperty>().FirstOrDefault(p => p.Name == pn.Name);
+                    if (pn.Initialize.Count == 0 && pn.Property != null && backingProp != null && ctor.Parameters.OfType<CodeParameterDeclarationExpression>().Count(p=>p.Name == pn.TraversalName) == 0)
+                    {
+                        var codeTypeReference = backingProp.Type;
+                        if (RenderUtils.EnumerableClassNames.Contains(codeTypeReference.BaseType))
+                            codeTypeReference = backingProp.Type.TypeArguments[0];
+
+                        ctor.Parameters.Add(new CodeParameterDeclarationExpression(codeTypeReference, pn.TraversalName));
+                        if (codeTypeReference == backingProp.Type)
+                            ctor.Statements.Add(new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), backingProp.Name), new CodeVariableReferenceExpression(pn.TraversalName)));
+                        else
+                        {
+                            ctor.Statements.Add(new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), backingProp.Name), new CodeObjectCreateExpression(backingProp.Type)));
+                            ctor.Statements.Add(new CodeMethodInvokeExpression(new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), backingProp.Name), "Add", new CodeVariableReferenceExpression(pn.TraversalName)));
+                        }
+                    }
+                }
+                if(ctor.Parameters.Count > 0)
+                    retVal.Members.Insert(1, ctor);
+            }
 
             validateMethod.Statements.Add(new CodeMethodReturnStatement(new CodeVariableReferenceExpression("retVal")));
 
-            retVal.Members.Insert(0, ctor);
 
             // Add the formal constraints
             foreach (var fc in tpl.FormalConstraint)
