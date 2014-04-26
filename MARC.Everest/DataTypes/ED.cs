@@ -30,6 +30,7 @@ using System.Security.Cryptography;
 using MARC.Everest.Exceptions;
 using System.Xml.Serialization;
 using MARC.Everest.Connectors;
+using System.Linq;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -138,6 +139,27 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         /// <param name="reference">The reference to the real data</param>
         public ED(TEL reference) : this() { this.Reference = reference; }
+        /// <summary>
+        /// Construct this ED from a string
+        /// </summary>
+        public ED(ST data) : this((String)data) { }
+        /// <summary>
+        /// Create an ED from the SD
+        /// </summary>
+        public ED(SD data)
+        {
+            this.MediaType = data.MediaType;
+            this.Representation = EncapsulatedDataRepresentation.XML;
+            this.Language = data.Language;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (XmlWriter xw = XmlWriter.Create(ms, new XmlWriterSettings() { ConformanceLevel = ConformanceLevel.Fragment }))
+                    foreach (var d in data.Content)
+                        d.WriteXml(xw);
+                this.Data = ms.GetBuffer().Take((int)ms.Length).ToArray();
+            }
+        }
 
         /// <summary>
         /// Get or set the data that is encapsulated by this object. 

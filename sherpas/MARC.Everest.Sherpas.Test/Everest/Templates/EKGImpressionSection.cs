@@ -45,7 +45,7 @@ namespace MARC.Everest.Test.Sherpas.Templates
         /// Text
         /// </summary>
         [Property(Name = "text", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Mandatory, SortKey = 5, DefaultUpdateMode = UpdateMode.Unknown)]
-        public override ED Text { get; set; }
+        public override SD Text { get; set; }
 
         /// <summary>
         /// Initialize the tempalte instance with defaults, no need to call this if you're using the factory
@@ -110,7 +110,7 @@ namespace MARC.Everest.Test.Sherpas.Templates
         /// <summary>
         /// Factory method
         /// </summary>
-        public static EKGImpressionSection CreateEKGImpressionSection(ST title, ED text)
+        public static EKGImpressionSection CreateEKGImpressionSection(ST title, SD text)
         {
             var retVal = new EKGImpressionSection();
             retVal.Title = title;

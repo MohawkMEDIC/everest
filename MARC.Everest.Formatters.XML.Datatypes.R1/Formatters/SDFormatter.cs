@@ -77,7 +77,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 {
                     var node = new MARC.Everest.DataTypes.StructDoc.StructDocElementNode();
                     node.ReadXml(s);
-                    retVal.Content.AddRange(node.Children.OfType<MARC.Everest.DataTypes.StructDoc.StructDocElementNode>());
+                    retVal.Content.AddRange(node.Children);
                 }
             }
 

@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
 using MARC.Everest.Connectors;
+using MARC.Everest.DataTypes.StructDoc;
 
 namespace MARC.Everest.DataTypes
 {
@@ -23,32 +24,51 @@ namespace MARC.Everest.DataTypes
     {
 
         /// <summary>
-        /// Internal serializable object
-        /// </summary>
-        private MARC.Everest.DataTypes.StructDoc.StructDocElementNode m_serializableObject;
-
-        /// <summary>
         /// Default constructor for SD
         /// </summary>
         public SD()
         {
             this.MediaType = "text/x-hl7-title+xml";
-            this.Content = new List<StructDoc.StructDocElementNode>();
+            this.Content = new List<StructDoc.StructDocNode>();
         }
 
         /// <summary>
         /// Creates the SD instance with the specified data
         /// </summary>
         /// <param name="data">The data being specified</param>
-        public SD(params StructDoc.StructDocElementNode[] documentContent) : this()
+        public SD(params StructDoc.StructDocNode[] documentContent) : this()
         {
-            this.Content = new List<StructDoc.StructDocElementNode>(documentContent);
+            this.Content = new List<StructDoc.StructDocNode>(documentContent);
         }
 
         /// <summary>
         /// Structured document element node
         /// </summary>
-        public List<StructDoc.StructDocElementNode> Content { get; set; }
+        public List<StructDoc.StructDocNode> Content { get; set; }
+
+        /// <summary>
+        /// Creates a text node
+        /// </summary>
+        public static StructDocTextNode CreateText(String text)
+        {
+            return new StructDocTextNode(text);
+        }
+
+        /// <summary>
+        /// Creates an element node
+        /// </summary>
+        public static StructDocElementNode CreateElement(String elementName, String value = null, String namespaceUri = null)
+        {
+            return new StructDocElementNode(elementName, value) { NamespaceUri = namespaceUri };
+        }
+
+        /// <summary>
+        /// Creates an attribute node
+        /// </summary>
+        public static StructDocAttributeNode CreateAttribute(String attributeName, String value)
+        {
+            return new StructDocAttributeNode(attributeName, value);
+        }
 
         /// <summary>
         /// The human language of the content. Valid codes are taken from the IETF. 
@@ -130,5 +150,14 @@ namespace MARC.Everest.DataTypes
             return base.Validate() && (this.IsNull ^ (this.Content.Count > 0)) &&
                 this.MediaType == "text/x-hl7-title+xml";
         }
+
+        /// <summary>
+        /// Cast a string to an SD instance
+        /// </summary>
+        public static implicit operator SD(String text)
+        {
+            return new SD(new MARC.Everest.DataTypes.StructDoc.StructDocTextNode(text));
+        }
+
     }
 }

@@ -44,11 +44,12 @@ namespace MARC.Everest.DataTypes.StructDoc
         /// Add a comment
         /// </summary>
         /// <param name="commentText">The text of the comment</param>
-        /// <returns>A pointer to "this" for chaining calls</returns>
-        public StructDocElementNode AddComment(String commentText)
+        /// <returns>A pointer to the new comment for chaining calls</returns>
+        public StructDocCommentNode AddComment(String commentText)
         {
-            this.Children.Add(new StructDocCommentNode(commentText));
-            return this;
+            var retVal = new StructDocCommentNode(commentText);
+            this.Children.Add(retVal);
+            return retVal;
         }
 
         /// <summary>
@@ -56,11 +57,12 @@ namespace MARC.Everest.DataTypes.StructDoc
         /// </summary>
         /// <param name="name">The name of the attribute</param>
         /// <param name="value">The value of the attribute</param>
-        /// <returns>A pointer to "this" for chaining calls</returns>
-        public StructDocElementNode AddAttribute(String name, String value)
+        /// <returns>A pointer to the new attribute for chaining calls</returns>
+        public StructDocAttributeNode AddAttribute(String name, String value)
         {
-            this.Children.Add(new StructDocAttributeNode(name, value));
-            return this;
+            var retVal = new StructDocAttributeNode(name, value);
+            this.Children.Add(retVal);
+            return retVal;
         }
 
         /// <summary>
@@ -70,9 +72,9 @@ namespace MARC.Everest.DataTypes.StructDoc
         /// <returns>A pointer to the new element for chaining calls</returns>
         public StructDocElementNode AddElement(String name)
         {
-            var retVal = new StructDocElementNode(name);
+            var retVal = new StructDocElementNode(name) { NamespaceUri = this.NamespaceUri };
             this.Children.Add(retVal);
-            return this;
+            return retVal;
         }
 
         /// <summary>
@@ -83,9 +85,9 @@ namespace MARC.Everest.DataTypes.StructDoc
         /// <returns>A pointer to the new element for chaining calls</returns>
         public StructDocElementNode AddElement(String name, String value)
         {
-            var retVal = new StructDocElementNode(name, value);
+            var retVal = new StructDocElementNode(name, value) { NamespaceUri = this.NamespaceUri };
             this.Children.Add(retVal);
-            return this;
+            return retVal;
         }
 
         /// <summary>
@@ -96,21 +98,23 @@ namespace MARC.Everest.DataTypes.StructDoc
         /// <returns>A pointer to the new element for chaining calls</returns>
         public StructDocElementNode AddElement(String name, params StructDocNode[] children)
         {
-            var sde = new StructDocElementNode(name);
+            var sde = new StructDocElementNode(name) { NamespaceUri = this.NamespaceUri };
             foreach (var c in children)
-                sde.Children.Add(sde);
-            return this;
+                sde.Children.Add(c);
+            this.Children.Add(sde);
+            return sde;
         }
 
         /// <summary>
         /// Add text node
         /// </summary>
         /// <param name="text">The text</param>
-        /// <returns>A pointer to "this" for chaining calls</returns>
-        public StructDocElementNode AddText(String text)
+        /// <returns>A pointer to the new text node for chaining calls</returns>
+        public StructDocTextNode AddText(String text)
         {
-            this.Children.Add(new StructDocTextNode(text));
-            return this;
+            var retVal = new StructDocTextNode(text);
+            this.Children.Add(retVal);
+            return retVal;
         }
 
         /// <summary>

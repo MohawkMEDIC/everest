@@ -55,8 +55,6 @@ namespace MARC.Everest.Sherpas.Templating.Format
                     return typeof(IGraphable);
 
                 String r1Name = this.Name;
-                if (r1Name == "SD")
-                    r1Name = "ED";
                 if (this.Name.Contains("_"))
                     r1Name = r1Name.Substring(0, r1Name.IndexOf("_"));
 

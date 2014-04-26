@@ -8,6 +8,7 @@ using MARC.Everest.Test.Sherpas.Templates;
 using MARC.Everest.Sherpas.Formatter.XML.ITS1;
 using System.IO;
 using System.Xml;
+using MARC.Everest.DataTypes.StructDoc;
 
 namespace MARC.Everest.Test.Sherpas
 {
