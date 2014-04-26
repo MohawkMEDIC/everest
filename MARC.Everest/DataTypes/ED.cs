@@ -101,7 +101,6 @@ namespace MARC.Everest.DataTypes
     /// you are populating your ED to a string.
     /// </para>
     /// </remarks>
-    [TypeMap(Name = "SD")]
     [Structure(Name = "ED", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("ED", Namespace = "urn:hl7-org:v3")]
 #if !WINDOWS_PHONE
@@ -144,7 +143,7 @@ namespace MARC.Everest.DataTypes
         /// Get or set the data that is encapsulated by this object. 
         /// </summary>
         /// <remarks>Not included in formatted output</remarks>
-        public byte[] Data { get; set; }
+        public virtual byte[] Data { get; set; }
 
         /// <summary>
         /// Identifies how data should be compressed
@@ -159,7 +158,7 @@ namespace MARC.Everest.DataTypes
         /// </para>
         /// </remarks>
         [Property(Name = "compression", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
-        public EncapsulatedDataCompression? Compression { get; set; }
+        public virtual EncapsulatedDataCompression? Compression { get; set; }
 
         /// <summary>
         /// Compress the data in this object according to the set parameters
@@ -190,7 +189,7 @@ namespace MARC.Everest.DataTypes
         /// </code>
         /// </example>
         /// <exception cref="T:System.InvalidOperationException">When <paramref name="compressionMethod"/> is not supported by this function</exception>
-        public ED Compress(EncapsulatedDataCompression compressionMethod)
+        public virtual ED Compress(EncapsulatedDataCompression compressionMethod)
         {
             #if WINDOWS_PHONE
             throw new NotSupportedException("Compression is not supported by the Windows Phone Version of Everest");
@@ -216,7 +215,7 @@ namespace MARC.Everest.DataTypes
         /// </remarks>
         /// <returns>A new ED instance containing uncompressed data.</returns>
         /// <exception cref="T:System.InvalidOperationException">When the compression algorithm for the instance is not supported by this method</exception>
-        public ED UnCompress()
+        public virtual ED UnCompress()
         {
             #if WINDOWS_PHONE
             throw new NotSupportedException("De-Compression is not supported by the Windows Phone Version of Everest");
@@ -238,7 +237,7 @@ namespace MARC.Everest.DataTypes
         /// not suitable for rendering the media
         /// </summary>
         [Property(Name = "description", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)] 
-        public ST Description { get; set; }
+        public virtual ST Description { get; set; }
 
         // Encapsulated data representation
         private EncapsulatedDataRepresentation _representation = EncapsulatedDataRepresentation.TXT;
@@ -288,7 +287,7 @@ namespace MARC.Everest.DataTypes
         /// </code>        
         /// </example>
         [Property(Name = "representation", PropertyType = PropertyAttribute.AttributeAttributeType.Structural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
-        public EncapsulatedDataRepresentation Representation 
+        public virtual EncapsulatedDataRepresentation Representation 
         {
             get
             {
@@ -305,21 +304,21 @@ namespace MARC.Everest.DataTypes
         /// The human language of the content. Valid codes are taken from the IETF. 
         /// </summary>
         [Property(Name = "language", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.Structural)]
-        public string Language { get; set; }
+        public virtual string Language { get; set; }
 
         /// <summary>
         /// Alternative renditions of the same content translated into a different language
         /// </summary>
         /// <remarks>Included to help assist with DataTypes R2 implementation. Note that this property will not appear in datatypes r1</remarks>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly"), Property(Name = "translation", PropertyType = PropertyAttribute.AttributeAttributeType.NonStructural, Conformance = PropertyAttribute.AttributeConformanceType.Optional)]
-        public SET<ED> Translation { get; set; }
+        public virtual SET<ED> Translation { get; set; }
 
         /// <summary>
         /// Identifies the type of encapsulated data and identifies a method to interpret or render the content. 
         /// The IANA defined domain of media types is established by the IETF RFC 2045 and 2046
         /// </summary>
         [Property(Name = "mediaType", Conformance = PropertyAttribute.AttributeConformanceType.Optional, PropertyType = PropertyAttribute.AttributeAttributeType.Structural)]
-        public string MediaType { get; set; }
+        public virtual string MediaType { get; set; }
 
 #if !WINDOWS_PHONE
         /// <summary>
