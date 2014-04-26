@@ -100,13 +100,13 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 object rawInstance = pi.GetValue(o, null);
 
                 // list?
-                ArrayList instances = new ArrayList();
+                List<Object> instances = new List<Object>();
                 var realType = pi.PropertyType;
 
-                if (pi.PropertyType.GetInterface(typeof(IList<>).FullName) != null && !typeof(ANY).IsAssignableFrom(pi.PropertyType))
+                if (pi.PropertyType.GetInterface(typeof(IList<>).FullName, false) != null && !typeof(ANY).IsAssignableFrom(pi.PropertyType))
                 {
                     realType = realType.GetGenericArguments()[0];
-                    instances.AddRange(rawInstance as ICollection);
+                    instances.AddRange((rawInstance as ICollection).Cast<Object>());
                 }
                 else
                     instances.Add(rawInstance);
@@ -519,7 +519,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     MethodInfo mi = o.GetType().GetMethod(ca.CheckConstraintMethod, new Type[] { pi.PropertyType });
                     if (mi == null)
                     {
-                        if (pi.PropertyType.GetInterface(typeof(IList<>).FullName) != null)
+                        if (pi.PropertyType.GetInterface(typeof(IList<>).FullName, false) != null)
                         {
                             mi = o.GetType().GetMethod(ca.CheckConstraintMethod, new Type[] { pi.PropertyType.GetGenericArguments()[0] });
                             if(mi == null)
@@ -612,7 +612,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, pi.Name, "urn:hl7-org:v3", s.ToString(), null));
                     // Simple deserialization if PA type has IGraphable or PI type has IGraphable and PA type not specified
                     else if (pi.GetSetMethod() != null &&
-                        pi.PropertyType.GetInterface(typeof(IGraphable).FullName) != null && 
+                        pi.PropertyType.GetInterface(typeof(IGraphable).FullName, false) != null && 
                         (pa.Type != null && pa.Type.GetInterface(typeof(IGraphable).FullName, false) != null) ||
                         (pa.Type == null && pi.PropertyType.GetInterface(typeof(IGraphable).FullName, false) != null))
                     {

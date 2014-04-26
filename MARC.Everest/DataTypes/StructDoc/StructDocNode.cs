@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+#if WINDOWS_PHONE
+using MARC.Everest.Phone;
+#endif 
 
 namespace MARC.Everest.DataTypes.StructDoc
 {

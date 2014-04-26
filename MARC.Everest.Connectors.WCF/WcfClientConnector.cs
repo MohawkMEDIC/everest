@@ -801,12 +801,15 @@ namespace MARC.Everest.Connectors.WCF
             foreach (KeyValuePair<string, List<string>> parm in parameters)
                 switch (parm.Key)
                 {
+                        
+#if !WINDOWS_PHONE
                     case "binding":
                         bindingClass = parm.Value[0];
                         break;
                     case "bindingConfiguration":
                         bindingConfiguration = parm.Value[0];
                         break;
+#endif
                     case "endpointname":
                         endpointName = parm.Value[0];
                         break;
@@ -815,6 +818,7 @@ namespace MARC.Everest.Connectors.WCF
                         break;
                 }
 
+#if !WINDOWS_PHONE
             if (bindingClass != null)
             { 
                 Binding binding = null;
@@ -840,8 +844,11 @@ namespace MARC.Everest.Connectors.WCF
                 else
                     wcfClient = new ConnectorServiceClient(binding, new EndpointAddress(endpointAddress));
             }
+
             // Create the client
-            else if (endpointName == null)
+            else 
+#endif 
+            if (endpointName == null)
                 throw new InvalidOperationException("The connection string must include the 'endpointName' attribute!");
             else if (endpointAddress == null)
                 wcfClient = new ConnectorServiceClient(endpointName);

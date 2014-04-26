@@ -41,7 +41,7 @@ namespace FormatterUtil
                     return;
                 }
                 // Generate formatter utility
-                MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreator creator = new MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreator();
+                MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreatorEx creator = new MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreatorEx();
 
                 // Create code namespace
                 CodeNamespace ns = new CodeNamespace(arguments.TargetNs);
@@ -91,7 +91,7 @@ namespace FormatterUtil
                         StructureAttribute sta = t.GetCustomAttributes(typeof(StructureAttribute), false)[0] as StructureAttribute;
 
                         // Type formatter creator
-                        TypeFormatterCreator crtr = new TypeFormatterCreator();
+                        TypeFormatterCreatorEx crtr = new TypeFormatterCreatorEx();
 
                         // Reset event
                         crtr.CodeTypeDeclarationCompleted += new CreateTypeFormatterCompletedDelegate(delegate(CodeTypeDeclaration result)
