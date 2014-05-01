@@ -116,50 +116,60 @@ namespace MARC.Everest.Sherpas.Templating.Binder
             if (propertyTemplate.Contains != null)
             {
                 ClassTemplateDefinition containedClassTemplate = context.Project.Templates.Find(o => o.Name == propertyTemplate.Contains) as ClassTemplateDefinition;
-
-                if (containedClassTemplate != null)
+                if (containedClassTemplate == null)
                 {
-                    var baseType = ResolvePropertyTraversalType(containedClassTemplate.TraversalName ?? propertyTemplate.TraversalName, propertyTemplate.Property);
-
-                    var pi = ResolvePropertyInfo(containedClassTemplate.TraversalName, contextType);
-                    if (pi == null) // Couldn't find at this level so go down one level
+                    containedClassTemplate = new ClassTemplateDefinition()
                     {
-                        // Todo : Is there a property within this type that can be used?
-                        pi = ResolvePropertyInfo(containedClassTemplate.TraversalName, baseType);
-                        if (pi != null)
-                        {
+                        Name = propertyTemplate.Contains,
+                        TraversalName = propertyTemplate.TraversalName,
+                        BaseClass = new BasicTypeReference(),
+                        Templates = new List<PropertyTemplateContainer>(propertyTemplate.Templates),
+                        FormalConstraint = new List<FormalConstraintDefinition>(propertyTemplate.FormalConstraint)
 
-                            baseType = ResolvePropertyTraversalType(containedClassTemplate.TraversalName, pi);
+                    };
+                    context.Project.Templates.Add(containedClassTemplate);
+                }
 
-                            containedClassTemplate = ResolveContainedClassConflicts(containedClassTemplate, baseType, context);
-                            propertyTemplate.Contains = containedClassTemplate.Name;
-                            containedClassTemplate.BaseClass.Type = baseType;
+                var baseType = ResolvePropertyTraversalType(containedClassTemplate.TraversalName ?? propertyTemplate.TraversalName, propertyTemplate.Property);
 
-                            // Propogate down
-                            propertyTemplate.Templates.Add(new PropertyTemplateDefinition()
-                            {
-                                Name = pi.Name,
-                                TraversalName = containedClassTemplate.TraversalName,
-                                Property = pi,
-                                Type = new TypeDefinition() { Type = pi.PropertyType },
-                                TemplateReference = propertyTemplate.TemplateReference,
-                                Contains = propertyTemplate.Contains
-                            });
-                            propertyTemplate.TemplateReference = propertyTemplate.Contains = null;
-                        }
-                        else
-                        {
-                            containedClassTemplate = ResolveContainedClassConflicts(containedClassTemplate, baseType, context);
-                            propertyTemplate.Contains = containedClassTemplate.Name;
-                            containedClassTemplate.BaseClass.Type = baseType;
-                        }
+                var pi = ResolvePropertyInfo(containedClassTemplate.TraversalName, contextType);
+                if (pi == null) // Couldn't find at this level so go down one level
+                {
+                    // Todo : Is there a property within this type that can be used?
+                    pi = ResolvePropertyInfo(containedClassTemplate.TraversalName, baseType);
+                    if (pi != null)
+                    {
 
-                    }
-                    else
+                        baseType = ResolvePropertyTraversalType(containedClassTemplate.TraversalName, pi);
+
+                        containedClassTemplate = ResolveContainedClassConflicts(containedClassTemplate, baseType, context);
+                        propertyTemplate.Contains = containedClassTemplate.Name;
                         containedClassTemplate.BaseClass.Type = baseType;
 
+                        // Propogate down
+                        propertyTemplate.Templates.Add(new PropertyTemplateDefinition()
+                        {
+                            Name = pi.Name,
+                            TraversalName = containedClassTemplate.TraversalName,
+                            Property = pi,
+                            Type = new TypeDefinition() { Type = pi.PropertyType },
+                            TemplateReference = propertyTemplate.TemplateReference,
+                            Contains = propertyTemplate.Contains
+                        });
+                        propertyTemplate.TemplateReference = propertyTemplate.Contains = null;
+                    }
+                    else
+                    {
+                        containedClassTemplate = ResolveContainedClassConflicts(containedClassTemplate, baseType, context);
+                        propertyTemplate.Contains = containedClassTemplate.Name;
+                        containedClassTemplate.BaseClass.Type = baseType;
+                    }
 
                 }
+                else
+                    containedClassTemplate.BaseClass.Type = baseType;
+
+
             }
             else if (propertyTemplate.TemplateReference != null) // a simple reference
             {

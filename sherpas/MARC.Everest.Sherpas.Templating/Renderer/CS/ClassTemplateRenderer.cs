@@ -168,6 +168,39 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             // Add the interface for the IMessageTypeTemplate interface
             retVal.BaseTypes.Add(new CodeTypeReference(typeof(IMessageTypeTemplate)));
 
+
+            // Formal constraints documentation
+            // Add constraints to the documentation
+            var termRemarksComment = retVal.Comments.OfType<CodeCommentStatement>().LastOrDefault(o => o.Comment.Text.Contains("</remarks>"));
+
+            CodeCommentStatementCollection formalConstraints = new CodeCommentStatementCollection()
+                    {
+                        new CodeCommentStatement("<h4>Constraints</h4>", true),
+                        new CodeCommentStatement("<list type=\"table\">", true),
+                        new CodeCommentStatement("<listheader><term>Check #</term><description>Statement</description></listheader>", true)
+                    };
+            foreach (var con in tpl.FormalConstraint)
+            {
+                String confNumber = con.Message.StartsWith("CONF") ? con.Message.Substring(0, con.Message.IndexOf(":")) : tpl.FormalConstraint.IndexOf(con).ToString();
+                String confDescription = con.Message.StartsWith("CONF") ? con.Message.Substring(con.Message.IndexOf(":") + 1) : con.Message;
+                formalConstraints.Add(new CodeCommentStatement(String.Format("<item><term>{0}</term><description>{1}</description></item>", confNumber, confDescription), true));
+            }
+            formalConstraints.Add(new CodeCommentStatement("</list>", true));
+
+            if (termRemarksComment == null)
+            {
+                retVal.Comments.Add(new CodeCommentStatement("<remarks>", true));
+                retVal.Comments.AddRange(formalConstraints);
+                retVal.Comments.Add(new CodeCommentStatement("</remarks>", true));
+            }
+            else
+            {
+                var insertIdx = retVal.Comments.IndexOf(termRemarksComment);
+                for (int i = formalConstraints.Count - 1; i >= 0; i--)
+                    retVal.Comments.Insert(insertIdx, formalConstraints[i]);
+            }
+
+
             // Add conditions to initialize properties
             return new CodeTypeMemberCollection(new CodeTypeMember[] { retVal });
         }

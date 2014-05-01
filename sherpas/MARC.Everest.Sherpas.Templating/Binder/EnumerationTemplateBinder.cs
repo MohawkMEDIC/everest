@@ -85,6 +85,8 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                 enumTemplate.Literal.RemoveAll(l => trashBin.Contains(l));
 
             }
+
+            
             // Emit finish
             Trace.TraceInformation("Finished binding '{0}'", enumTemplate.Name);
 

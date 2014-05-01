@@ -52,42 +52,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                     tFakeClass.Members.AddRange(renderer.Render(childContext));
 
 
-                if (subProperty.Contains != null)
-                {
-                    // GetXAsY method
-                    var getMethod = new CodeMemberMethod()
-                    {
-                        Name = String.Format("Get{0}As{1}", choiceTemplate.Name, subProperty.Contains),
-                        Attributes = MemberAttributes.Public,
-                        ReturnType = new CodeTypeReference(subProperty.Contains)
-                    };
-
-                    // Get the property
-                    var property = tFakeClass.Members.OfType<CodeMemberProperty>().FirstOrDefault(p => p.Name == choiceTemplate.Name);
-                    CodeExpression referenceExpression = new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), choiceTemplate.Name);
-
-                    // List add indexing
-                    if (typeof(List<>).FullName == property.Type.BaseType)
-                    {
-                        getMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(int)), "i"));
-                        referenceExpression = new CodeIndexerExpression(referenceExpression, new CodeVariableReferenceExpression("i"));
-                    }
-
-                    // Parameter type
-                    getMethod.Statements.Add(
-                        new CodeTryCatchFinallyStatement(
-                            new CodeStatement[] {
-                                new CodeMethodReturnStatement(new CodeCastExpression(getMethod.ReturnType, referenceExpression))
-                            },
-                            new CodeCatchClause[] {
-                                new CodeCatchClause("e", new CodeTypeReference(typeof(System.Exception)), 
-                                new CodeMethodReturnStatement(new CodePrimitiveExpression(null)))
-                            }
-                        )) ;
-
-                    tFakeClass.Members.Add(getMethod);
-
-                }
+            
             }
 
             // Clean up the contains relationship stuff

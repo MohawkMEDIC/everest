@@ -12,6 +12,7 @@ using MARC.Everest.Attributes;
 using System.Diagnostics;
 using System.CodeDom.Compiler;
 using MARC.Everest.Threading;
+using System.Xml;
 
 namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 {
@@ -60,14 +61,18 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 
             object synclock = new object();
             var nsRoot = new CodeNamespace(Path.GetFileNameWithoutExtension(outputFile));
+            var nsVocab = new CodeNamespace(String.Format("{0}.Vocabulary", Path.GetFileNameWithoutExtension(outputFile)));
+
             nsRoot.Imports.Add(new CodeNamespaceImport("System.Linq"));
+            nsVocab.Imports.Add(new CodeNamespaceImport("System.Linq"));
+            CodeTypeDeclarationCollection collection = new CodeTypeDeclarationCollection();
 
             // Start rendering the project
             using (WaitThreadPool wtp = new WaitThreadPool())
             {
                 foreach (var itm in project.Templates)
                 {
-                    RenderContext context = new RenderContext(itm, project, nsRoot);
+                    RenderContext context = new RenderContext(itm, project, collection);
 
                     wtp.QueueUserWorkItem((o) =>
                     {
@@ -78,9 +83,15 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                             Trace.TraceError("Cannot find a valid Renderer for template of type '{0}'", itm.GetType().Name);
                         else
                         {
-                            foreach (var ctm in renderer.Render((o as RenderContext)))
+                            foreach (CodeTypeDeclaration ctm in renderer.Render((o as RenderContext)))
                                 lock (synclock)
-                                    nsRoot.Types.Add(ctm as CodeTypeDeclaration);
+                                {
+                                    collection.Add(ctm);
+                                    if (ctm.IsEnum)
+                                        nsVocab.Types.Add(ctm);
+                                    else
+                                        nsRoot.Types.Add(ctm);
+                                }
                         }
                     }, context);
                 }
@@ -88,6 +99,9 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 wtp.WaitOne();
             }
 
+            nsRoot.Types.Add(RenderUtils.RenderNamespaceDoc(project, "Classes"));
+            nsVocab.Types.Add(RenderUtils.RenderNamespaceDoc(project, "Vocabulary"));
+            renderUnit.Namespaces.Add(nsVocab);
             renderUnit.Namespaces.Add(nsRoot);
 
             // Generate the C# file or DLL
@@ -106,6 +120,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             else if (Path.GetExtension(outputFile) == ".dll")
             {
                 CompilerParameters parameters = new CompilerParameters();
+                parameters.CompilerOptions = String.Format("/doc:{0}", Path.ChangeExtension(outputFile, "xml"));
                 parameters.GenerateInMemory = false;
                 parameters.IncludeDebugInformation = false;
                 parameters.OutputAssembly = outputFile;
@@ -113,13 +128,37 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 parameters.WarningLevel = 4;
 
                 var result = csharpCodeProvider.CompileAssemblyFromDom(parameters, renderUnit);
-                foreach (CompilerError rs in result.Errors)
+                if (result.Errors.HasErrors)
                 {
-                    Trace.TraceError(rs.ToString());
-                    if (!File.Exists(rs.FileName))
-                        File.Copy(rs.FileName, Path.ChangeExtension(outputFile, ".cs"), true);
+                    File.Copy(result.Errors[0].FileName, Path.ChangeExtension(outputFile, ".cs"), true);
+
+                    foreach (CompilerError rs in result.Errors)
+                            Console.WriteLine(rs.ToString());
                 }
-                Trace.TraceInformation("Compile finished with {0} errors", result.Errors.Count);
+
+
+                Console.WriteLine("Verifying documentation links...");
+                // Now post-process comments to clean them up
+                XmlDocument xd = new XmlDocument();
+                xd.Load(Path.ChangeExtension(outputFile, "xml"));
+                foreach (XmlNode xel in xd.SelectNodes("//see"))
+                {
+                    var cref = xel.Attributes["cref"];
+                    // Clean up the reference
+                    if (xd.SelectSingleNode(String.Format("//member[@name = '{0}']", cref.Value)) != null)
+                        continue; // already resolves
+                    // Try to resolve
+                    string newCref = cref.Value;
+                    if (cref.Value.StartsWith("T:")) // type
+                        newCref = String.Format("T:{0}.{1}", Path.GetFileNameWithoutExtension(outputFile), cref.Value.Substring(2));
+                    else if (cref.Value.StartsWith("P:")) // property
+                        newCref = String.Format("P:{0}.{1}", Path.GetFileNameWithoutExtension(outputFile), cref.Value.Substring(2));
+                    if (xd.SelectSingleNode(String.Format("//member[@name = '{0}']", newCref)) != null)
+                        cref.Value = newCref;
+                }
+                xd.Save(Path.ChangeExtension(outputFile, "xml"));
+
+                Console.WriteLine("Compile finished with {0} errors", result.Errors.Count);
             }
 
         }

@@ -37,6 +37,12 @@ namespace sherptc
                 // Parse parameters
                 var parameters = parser.Parse(args);
 
+                if (parameters.Help)
+                {
+                    parser.WriteHelp(Console.Out);
+                    return;
+                }
+
                 // First, load the specified loader
                 XsltBasedLoader loader = new XsltBasedLoader();
                 loader.Locale = parameters.Locale ?? CultureInfo.CurrentCulture.Name;

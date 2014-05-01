@@ -8,6 +8,9 @@ using System.Text.RegularExpressions;
 using MARC.Everest.Attributes;
 using System.ComponentModel;
 using MARC.Everest.DataTypes;
+using MARC.Everest.DataTypes.Interfaces;
+using System.Xml;
+using System.IO;
 
 namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 {
@@ -52,16 +55,23 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             if (tpl.Documentation != null)
             {
                 retVal.Add(new CodeCommentStatement(new CodeComment("<remarks>", true)));
+
                 foreach (var doc in tpl.Documentation)
                     retVal.Add(new CodeCommentStatement(new CodeComment(doc.OuterXml, true)));
                 retVal.Add(new CodeCommentStatement(new CodeComment("</remarks>", true)));
             }
             if (tpl.Example != null)
             {
-                retVal.Add(new CodeCommentStatement(new CodeComment("<example><code lang=\"xml\"><![CDATA[", true)));
                 foreach (var ex in tpl.Example)
-                    retVal.Add(new CodeCommentStatement(new CodeComment(ex.OuterXml, true)));
-                retVal.Add(new CodeCommentStatement(new CodeComment("]]></code></example>", true)));
+                    using (StringWriter sw = new StringWriter())
+                    {
+                        using (XmlWriter xw = XmlWriter.Create(sw, new XmlWriterSettings() { Indent = true }))
+                            ex.WriteTo(xw);
+                        retVal.Add(new CodeCommentStatement(new CodeComment("<example><code lang=\"xml\"><![CDATA[", true)));
+                        foreach (var lin in sw.ToString().Split('\n'))
+                            retVal.Add(new CodeCommentStatement(new CodeComment(lin.Replace("\r",""), true)));
+                        retVal.Add(new CodeCommentStatement(new CodeComment("]]></code></example>", true)));
+                    }
             }
 
             return retVal;
@@ -87,8 +97,13 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                         if (t.Name != null || t.Type != null)
                         {
                             var crt = CreateTypeReference(t, "1", project);
-                            if((t.Type != null || project.Templates.Exists(p=>p.Name == crt.BaseType)) && crt.BaseType != null && crt.BaseType != typeof(void).ToString())
-                                tplParms.Add(CreateTypeReference(t, "1", project));
+                            if ((t.Type != null || project.Templates.Exists(p => p.Name == crt.BaseType)) && crt.BaseType != null && crt.BaseType != typeof(void).ToString())
+                            {
+                                var tr = CreateTypeReference(t, "1", project);
+                                if(templateType.Type.GetInterface(typeof(ICodedSimple).FullName) != null && t.Type == null)
+                                    tr.BaseType = "Vocabulary." + tr.BaseType;
+                                tplParms.Add(tr);
+                            }
                         }
 
 
@@ -184,7 +199,20 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             {
                 Regex validChars = new Regex("[A-Za-z0-9_]");
                 if (!validChars.IsMatch(c.ToString()))
-                    retVal = retVal.Replace(c.ToString(), "_");
+                {
+                    switch (c)
+                    {
+                        case '*':
+                            retVal = retVal.Replace(c.ToString(), "Star");
+                            break;
+                        case '^':
+                            retVal = retVal.Replace(c.ToString(), "Caret");
+                            break;
+                        default:
+                            retVal = retVal.Replace(c.ToString(), "_");
+                            break;
+                    }
+                }
             }
 
             // Remove non-code chars
@@ -244,6 +272,37 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             method.Statements.AddRange(fcd.ToCodeDomStatement(context));
             method.Comments.Add(new CodeCommentStatement(String.Format("<summary>Checks formal constraint '{0}'</summary>", fcd.Message), true));
             return method;
+        }
+
+        /// <summary>
+        /// Render root namespace documentation
+        /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><description>Foo</description></item>
+        /// </list></remarks>
+        internal static CodeTypeDeclaration RenderNamespaceDoc(TemplateProjectDefinition project, String type)
+        {
+
+            CodeTypeDeclaration namespaceDoc = new CodeTypeDeclaration()
+            {
+                Name = "NamespaceDoc",
+                IsClass = true,
+                Attributes = MemberAttributes.Public
+            };
+
+            namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment(String.Format("<summary>Sherpas Generated {2} for {0} version {1}</summary>", project.ProjectInfo.Name, project.ProjectInfo.Version, type), true)));
+            namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment("<remarks>", true)));
+            namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment("<para>Copyright:</para>", true)));
+            foreach (var itm in project.ProjectInfo.Copyright)
+                namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment(itm.OuterXml, true)));
+            namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment("<para>Template Authors:</para><list type=\"bullet\">", true)));
+            foreach (var aut in project.ProjectInfo.OriginalAuthor) 
+                namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment(String.Format("<item><description>{0}</description></item>" , aut), true)));
+            namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment("</list>", true)));
+            namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment("</remarks>", true)));
+
+            return namespaceDoc;
         }
     }
 }

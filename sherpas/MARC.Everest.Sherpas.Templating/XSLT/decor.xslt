@@ -79,12 +79,18 @@
         <xsl:variable name="refName" select="@contains"/>
         
         <xsl:variable name="ref" select="//template[@name = $refName or @id = $refName]"/>
-
         
         <xsl:choose>
           <xsl:when test="count($ref/element) != 1 or element[1]/@datatype">
             <xsl:attribute name="contains">
-              <xsl:value-of select="marc:PascalCaseName($ref/@name)"/>
+              <xsl:choose>
+                <xsl:when test="$ref">
+                  <xsl:value-of select="marc:PascalCaseName($ref/@name)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="marc:PascalCaseName($refName)"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:attribute>
             <!-- Inline processing for contains -->
             <xsl:comment>
@@ -92,9 +98,14 @@
             </xsl:comment>
             <!--<xsl:apply-templates select="$ref/element"/>-->
           </xsl:when>
-          <xsl:otherwise>
+          <xsl:when test="$ref">
             <xsl:attribute name="contains">
               <xsl:value-of select="marc:PascalCaseName($ref/@name)"/>
+            </xsl:attribute>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:attribute name="contains">
+              <xsl:value-of select="marc:PascalCaseName($refName)"/>
             </xsl:attribute>
             <!--z<xsl:if test="not(local-name(parent::node()) = 'choice') and @minimumMultiplicity= 1">
               <marc:validationInstruction>

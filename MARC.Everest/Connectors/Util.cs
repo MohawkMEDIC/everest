@@ -472,10 +472,23 @@ namespace MARC.Everest.Connectors
                 result = null;
                 return true;
             }
-            else if (m_destType.IsGenericType && !value.GetType().IsEnum)
+            else if (m_destType.IsGenericType && !value.GetType().IsEnum) // Dest type is a generic
             {
                 m_destType = m_destType.GetGenericArguments()[0];
                 requiresExplicitCastCall = true;
+            }
+
+            // Are they both code types where only the coding system is different?
+            // If so then we want to convert the value to a X<String>
+            if (value is ICodedSimple && destType.GetInterface(typeof(ICodedSimple).FullName) != null &&
+                value.GetType().IsGenericType && destType.IsGenericType &&
+                value.GetType().GetGenericTypeDefinition().Equals(destType.GetGenericTypeDefinition()) &&
+                value.GetType().GetGenericArguments()[0] != typeof(String) &&
+                destType.GetGenericArguments()[0] != typeof(String))
+            {
+                // Convert to X<String> 
+                Type xStringType = destType.GetGenericTypeDefinition().MakeGenericType(typeof(String));
+                value = Util.FromWireFormat(value, xStringType);
             }
 
             // Is there a cast?

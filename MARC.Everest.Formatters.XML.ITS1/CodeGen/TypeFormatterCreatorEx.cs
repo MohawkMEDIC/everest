@@ -105,7 +105,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
         /// </summary>
         private bool IsTraversable(PropertyInfo pi)
         {
-            object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), false);
+            object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0);
             if (propertyAttributes.Length > 0)
                 return (propertyAttributes[0] as PropertyAttribute).PropertyType == PropertyAttribute.AttributeAttributeType.Traversable;
             else
@@ -117,7 +117,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
         /// </summary>
         private bool IsNonStructural(PropertyInfo pi)
         {
-            object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), false);
+            object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0);
             if (propertyAttributes.Length > 0)
                 return (propertyAttributes[0] as PropertyAttribute).PropertyType == PropertyAttribute.AttributeAttributeType.NonStructural;
             else
@@ -143,7 +143,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             while (cType != typeof(System.Object))
             {
                 PropertyInfo[] typeTypes = cType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-                typeTypes = Array.FindAll(typeTypes, o => o.GetCustomAttributes(typeof(PropertyAttribute), false).Length > 0);
+                typeTypes = Array.FindAll(typeTypes, o => o.GetCustomAttributes(typeof(PropertyAttribute), o.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0).Length > 0);
                 PropertyInfo[] nonTraversable = Array.FindAll(typeTypes, o => !IsTraversable(o) && !IsNonStructural(o) && !buildProperties.Exists(f => f.Name == o.Name)),
                     traversable = Array.FindAll(typeTypes, o => IsTraversable(o) && !buildProperties.Exists(f => f.Name == o.Name)),
                     nonStructural = Array.FindAll(typeTypes, o => IsNonStructural(o) && !buildProperties.Exists(f => f.Name == o.Name));
@@ -163,7 +163,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                 retVal.Add(new BuildProperty()
                 {
                     PropertyInfo = pi,
-                    PropertyAttributes = new List<PropertyAttribute>(pi.GetCustomAttributes(typeof(PropertyAttribute), false).OfType<PropertyAttribute>())
+                    PropertyAttributes = new List<PropertyAttribute>(pi.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0).OfType<PropertyAttribute>())
                 });
             return retVal;
         }

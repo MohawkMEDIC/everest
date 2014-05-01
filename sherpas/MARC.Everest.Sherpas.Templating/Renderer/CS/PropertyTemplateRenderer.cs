@@ -14,6 +14,7 @@ using System.Collections;
 
 namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 {
+    
     /// <summary>
     /// Represents a template renderer that can render a property
     /// </summary>
@@ -46,6 +47,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
         /// <summary>
         /// Render the object on the specified context
         /// </summary>
+
         public System.CodeDom.CodeTypeMemberCollection Render(RenderContext context)
         {
 
@@ -75,6 +77,8 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 throw new InvalidOperationException("PropertyTemplateDefinition must be contained within a ClassTemplateDefinition");
             var classTemplate = classContext.Artifact as ClassTemplateDefinition;
 
+            string propertyDocReference = String.Format("{0}.{1}", classTemplate.BaseClass.Type.FullName, propertyTemplate.Name);
+            
             // Return value
             CodeTypeMemberCollection retVal = new CodeTypeMemberCollection();
 
@@ -91,7 +95,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                         Name = propertyTemplate.TraversalName
                     };
                 mpa.MinOccurs = String.IsNullOrEmpty(propertyTemplate.MinOccurs) ? 0 : Int32.Parse(propertyTemplate.MinOccurs);
-                mpa.MaxOccurs = propertyTemplate.MaxOccurs == "*" ? -1 : String.IsNullOrEmpty(propertyTemplate.MaxOccurs) ? 1 : Int32.Parse(propertyTemplate.MaxOccurs);
+                mpa.MaxOccurs = mpa.MaxOccurs == -1 || propertyTemplate.MaxOccurs == "*" ? -1 : String.IsNullOrEmpty(propertyTemplate.MaxOccurs) ? 1 : Int32.Parse(propertyTemplate.MaxOccurs);
                 mpa.Conformance = propertyTemplate.Conformance;
 
                 // Container type
@@ -104,6 +108,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                     propertyCode.HasGet = true;
                     propertyCode.HasSet = true;
                     propertyCode.Attributes = MemberAttributes.Public;
+                    propertyCode.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(InheritPropertyAttributesAttribute))));
 
                     var originalCheckType = propertyTemplate.Property.PropertyType;
                     if (originalCheckType.GetInterface(typeof(IList<>).FullName) != null)
@@ -227,42 +232,86 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 
                 }
 
+                string loosePropertyDocName = String.Format("{0}.{1}", classTemplate.Name, propertyCode.Name);
 
                 // Looks like a relationship to a list with contains
                 if ((propertyTemplate.TemplateReference ?? propertyTemplate.Contains) != null )
                 {
-                    CodeMemberMethod helperMethod = null;
+                    CodeMemberMethod setMethod = null, 
+                        getMethod = null;
+
+                    // List so add a Add method
                     if (propertyCode.Type.BaseType == typeof(List<>).FullName)
                     {
-                        helperMethod = new CodeMemberMethod()
+                        setMethod = new CodeMemberMethod()
                         {
-                            Name = String.Format("Add{0}", (propertyTemplate.TemplateReference ?? propertyTemplate.Contains)),
+                            Name = String.Format("Add{0}", propertyCode.Name),
                             ReturnType = new CodeTypeReference(typeof(void)),
                             Attributes = MemberAttributes.Public
-
+                            
                         };
-                        helperMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference((propertyTemplate.TemplateReference ?? propertyTemplate.Contains)), "value"));
-                        helperMethod.Statements.Add(new CodeConditionStatement(new CodeBinaryOperatorExpression(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(null)),
+                        setMethod.Comments.Add(new CodeCommentStatement(String.Format("<summary>Adds an instance of <see cref=\"T:{0}\"/> to <see cref=\"P:{1}\"/></summary>", propertyTemplate.TemplateReference ?? propertyTemplate.Contains, loosePropertyDocName), true));
+                        setMethod.Comments.Add(new CodeCommentStatement(String.Format("<param name=\"value\">The instance of <see cref=\"T:{0}\"/> to be added to the collection</param>", propertyTemplate.TemplateReference ?? propertyTemplate.Contains), true));
+                        setMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference((propertyTemplate.TemplateReference ?? propertyTemplate.Contains)), "value"));
+                        setMethod.Statements.Add(new CodeConditionStatement(new CodeBinaryOperatorExpression(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), CodeBinaryOperatorType.IdentityEquality, new CodePrimitiveExpression(null)),
                             new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), new CodeObjectCreateExpression(propertyCode.Type))));
-                        helperMethod.Statements.Add(new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), "Add"), new CodeVariableReferenceExpression("value")));
+                        setMethod.Statements.Add(new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), propertyTemplate.Name), "Add"), new CodeVariableReferenceExpression("value")));
 
                     }
-                    else if ((propertyTemplate.TemplateReference ?? propertyTemplate.Contains) != null) // Set
+                        // Not repeating so add a Set method
+                    else 
                     {
-                        helperMethod = new CodeMemberMethod()
+                        setMethod = new CodeMemberMethod()
                         {
-                            Name = String.Format("Set{0}", (propertyTemplate.TemplateReference ?? propertyTemplate.Contains)),
+                            Name = String.Format("Set{0}", propertyCode.Name),
                             ReturnType = new CodeTypeReference(typeof(void)),
                             Attributes = MemberAttributes.Public
 
                         };
-                        helperMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference((propertyTemplate.TemplateReference ?? propertyTemplate.Contains)), "value"));
-                        helperMethod.Statements.Add(new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), propertyTemplate.Name), new CodeVariableReferenceExpression("value")));
+                        setMethod.Comments.Add(new CodeCommentStatement(String.Format("<summary>Sets <see cref=\"P:{1}\"/> to an instance of <see cref=\"T:{0}\"/></summary>", propertyTemplate.TemplateReference ?? propertyTemplate.Contains, loosePropertyDocName), true));
+                        setMethod.Comments.Add(new CodeCommentStatement(String.Format("<param name=\"value\">The instance of <see cref=\"T:{0}\"/> to set the property</param>", propertyTemplate.TemplateReference ?? propertyTemplate.Contains), true));
+                        setMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference((propertyTemplate.TemplateReference ?? propertyTemplate.Contains)), "value"));
+                        setMethod.Statements.Add(new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), propertyTemplate.Name), new CodeVariableReferenceExpression("value")));
                     }
+
+                    // GetXAsY method
+                    getMethod = new CodeMemberMethod()
+                    {
+                        Name = String.Format("Get{0}As{1}", propertyCode.Name, (propertyTemplate.TemplateReference ?? propertyTemplate.Contains)),
+                        Attributes = MemberAttributes.Public,
+                        ReturnType = new CodeTypeReference((propertyTemplate.TemplateReference ?? propertyTemplate.Contains))
+                    };
+                    getMethod.Comments.Add(new CodeCommentStatement(String.Format("<summary>Gets <see cref=\"P:{1}\"/> as an instance of <see cref=\"T:{0}\"/></summary>", propertyTemplate.TemplateReference ?? propertyTemplate.Contains, loosePropertyDocName), true));
+                    getMethod.Comments.Add(new CodeCommentStatement(String.Format("<returns>The value of <see cref=\"P:{1}\"/> cast as an instance of <see cref=\"T:{0}\"/>, null if <see cref=\"P:{1}\"/> is not an instance of <see cref=\"T:{0}\"/></returns>", propertyTemplate.TemplateReference ?? propertyTemplate.Contains, loosePropertyDocName), true));
+
+                    // Get the property
+                    CodeExpression referenceExpression = new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), propertyCode.Name);
+
+                    // List add indexing
+                    if (typeof(List<>).FullName == propertyCode.Type.BaseType)
+                    {
+                        getMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(typeof(int)), "i"));
+                        referenceExpression = new CodeIndexerExpression(referenceExpression, new CodeVariableReferenceExpression("i"));
+                    }
+
+                    // Parameter type
+                    getMethod.Statements.Add(
+                        new CodeTryCatchFinallyStatement(
+                            new CodeStatement[] {
+                            new CodeMethodReturnStatement(new CodeCastExpression(getMethod.ReturnType, referenceExpression))
+                        },
+                            new CodeCatchClause[] {
+                            new CodeCatchClause("e", new CodeTypeReference(typeof(System.Exception)), 
+                            new CodeMethodReturnStatement(new CodePrimitiveExpression(null)))
+                        }
+                        ));
+
+                    if ((context.ContainerObject as CodeTypeDeclaration).Members.OfType<CodeMemberMethod>().Count(m => m.Name == getMethod.Name && m.ReturnType.BaseType == getMethod.ReturnType.BaseType) == 0)
+                        retVal.Add(getMethod);
 
                     // If the helper method doesn't exist then add it
-                    if(helperMethod != null && (context.ContainerObject as CodeTypeDeclaration).Members.OfType<CodeMemberMethod>().Count(m=>m.Name == helperMethod.Name && m.Parameters.Count > 0 && m.Parameters[0].Type.BaseType == helperMethod.Parameters[0].Type.BaseType) == 0)
-                        retVal.Add(helperMethod);
+                    if(setMethod != null && (context.ContainerObject as CodeTypeDeclaration).Members.OfType<CodeMemberMethod>().Count(m=>m.Name == setMethod.Name && m.Parameters.Count > 0 && m.Parameters[0].Type.BaseType == setMethod.Parameters[0].Type.BaseType) == 0)
+                        retVal.Add(setMethod);
 
                 }
 
@@ -284,7 +333,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                         mpa.SupplierDomain = vocab.Id[0];
                 }
 
-                propertyCode.Comments.AddRange(RenderUtils.RenderComments(propertyTemplate, null)); // string.Format("Template for property <see cref=\"P:{0}.{1}\"/>", classTemplate.BaseClass.Type.FullName, propertyTemplate.Name)));
+                propertyCode.Comments.AddRange(RenderUtils.RenderComments(propertyTemplate, string.Format("Template for property <see cref=\"P:{0}\"/>", propertyDocReference)));
 
                 // Add custom attribute
                 var typeArgument = new CodeAttributeArgument("Type", (propertyTemplate.TemplateReference ?? propertyTemplate.Contains) != null ?
@@ -345,13 +394,13 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                                     new ConditionalStatementDefinition() {
                                         VariableName = "count",
                                         Operator = OperatorType.GreaterThanEqualTo,
-                                        ValueRef = mpa.MinOccurs.ToString(),
+                                        ValueRef = propertyTemplate.MinOccurs,
                                         SuppressAutoConvert = true
                                     },
                                     new ConditionalStatementDefinition() {
                                         VariableName = "count",
                                         Operator = OperatorType.LessThanEqualTo,
-                                        ValueRef = mpa.MaxOccurs == -1 ? Int32.MaxValue.ToString() : mpa.MaxOccurs.ToString(),
+                                        ValueRef = propertyTemplate.MaxOccurs == "*" ? Int32.MaxValue.ToString() : propertyTemplate.MaxOccurs,
                                         SuppressAutoConvert = true
                                     }
                                 }
@@ -372,6 +421,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 
                     var parent = context.ContainerObject as CodeTypeDeclaration;
                     var method = RenderUtils.RenderFormalConstraintValidator(constraint, String.Format("Has{0}", propertyTemplate.Contains), new CodeTypeReference(parent.Name), context.Parent);
+                    
                     // Add the attribute 
                     parent.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(FormalConstraintAttribute)),
                         new CodeAttributeArgument("Description", new CodePrimitiveExpression(constraint.Message)),

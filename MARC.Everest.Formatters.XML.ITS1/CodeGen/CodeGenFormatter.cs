@@ -271,8 +271,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             compilerParms.WarningLevel = 1;
             compilerParms.TempFiles.KeepFiles = generateDeep;
             compilerParms.IncludeDebugInformation = false;
-            using (StreamWriter sw = new StreamWriter("C:\\temp\\csgen.cs"))
-                csharpCodeProvider.GenerateCodeFromCompileUnit(compileUnit, sw, null);
+            //using (StreamWriter sw = new StreamWriter("C:\\temp\\csgen.cs"))
+            //    csharpCodeProvider.GenerateCodeFromCompileUnit(compileUnit, sw, null);
 
             // Compile code dom
             // To see the generated code, set a breakpoint on the next line.

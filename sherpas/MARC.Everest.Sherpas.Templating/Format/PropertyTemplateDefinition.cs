@@ -90,7 +90,9 @@ namespace MARC.Everest.Sherpas.Templating.Format
                 ptc.MaxOccurs = propertyTemplateContainer.MaxOccurs;
                 // Validation routines
                 this.Validation.AddRange(ptc.Validation);
-                this.Initialize.AddRange(ptc.Validation);
+                this.Initialize.AddRange(ptc.Initialize);
+                this.FormalConstraint.AddRange(ptc.FormalConstraint);
+
                 this.Templates.Add(itm);
             }
         }

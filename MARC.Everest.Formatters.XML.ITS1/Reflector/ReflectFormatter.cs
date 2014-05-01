@@ -96,7 +96,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             foreach (var pi in buildProperties)
             {
 
-                object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), false);
+                object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0);
                 object rawInstance = pi.GetValue(o, null);
 
                 // list?
@@ -290,14 +290,14 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
 
 #if WINDOWS_PHONE
                 PropertyInfo[] typeTypes = cType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-                typeTypes = typeTypes.FindAll(o => o.GetCustomAttributes(typeof(PropertyAttribute), false).Length > 0);
+                typeTypes = typeTypes.FindAll(o => o.GetCustomAttributes(typeof(PropertyAttribute), o.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0).Length > 0);
                 PropertyInfo[] nonTraversable = typeTypes.FindAll(o => !IsTraversable(o) && !IsNonStructural(o) && !buildProperties.Exists(f => f.Name == o.Name)),
                     traversable = typeTypes.FindAll(o => IsTraversable(o) && !buildProperties.Exists(f => f.Name == o.Name)),
                nonStructural = typeTypes.FindAll(o => IsNonStructural(o) && !buildProperties.Exists(f => f.Name == o.Name));
-                //Array.Sort<PropertyInfo>(traversable, (a, b) => (a.GetCustomAttributes(typeof(PropertyAttribute), false)[0] as PropertyAttribute).SortKey.CompareTo((b.GetCustomAttributes(typeof(PropertyAttribute), false)[0] as PropertyAttribute).SortKey));
+                //Array.Sort<PropertyInfo>(traversable, (a, b) => (a.GetCustomAttributes(typeof(PropertyAttribute), a.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0)[0] as PropertyAttribute).SortKey.CompareTo((b.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0)[0] as PropertyAttribute).SortKey));
 #else
                 PropertyInfo[] typeTypes = cType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-                typeTypes = Array.FindAll(typeTypes, o => o.GetCustomAttributes(typeof(PropertyAttribute), false).Length > 0);
+                typeTypes = Array.FindAll(typeTypes, o => o.GetCustomAttributes(typeof(PropertyAttribute), o.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0).Length > 0);
                 PropertyInfo[] nonTraversable = Array.FindAll(typeTypes, o => !IsTraversable(o) && !IsNonStructural(o) && !buildProperties.Exists(f => f.Name == o.Name)),
                     traversable = Array.FindAll(typeTypes, o => IsTraversable(o) && !buildProperties.Exists(f => f.Name == o.Name)),
                nonStructural = Array.FindAll(typeTypes, o=> IsNonStructural(o) && !buildProperties.Exists(f=>f.Name == o.Name));
@@ -319,7 +319,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
         /// </summary>
         public bool IsTraversable(PropertyInfo pi)
         {
-            object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), false);
+            object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0);
             if (propertyAttributes.Length > 0)
                 return (propertyAttributes[0] as PropertyAttribute).PropertyType == PropertyAttribute.AttributeAttributeType.Traversable;
             else
@@ -331,7 +331,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
         /// </summary>
         public bool IsNonStructural(PropertyInfo pi)
         {
-            object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), false);
+            object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0);
             if (propertyAttributes.Length > 0)
                 return (propertyAttributes[0] as PropertyAttribute).PropertyType == PropertyAttribute.AttributeAttributeType.NonStructural;
             else
@@ -386,7 +386,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         continue;
                     }
 
-                    var paList = pi.GetCustomAttributes(typeof(PropertyAttribute), true); // property attributes
+                    var paList = pi.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0); // property attributes
                     
                     // VAlidate list of PA
                     if(paList == null || paList.Length != 1)
@@ -480,7 +480,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                 }
 
                 object piValue = pi.GetValue(o, null);
-                object[] propAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), true);
+                object[] propAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0);
                 
                 if (propAttributes.Length > 0)
                 {

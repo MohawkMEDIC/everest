@@ -68,5 +68,13 @@ namespace sherptc
         [Parameter("save")]
         [Description("Identifies a file name to save the bound template file")]
         public String SaveTpl { get; set; }
+
+        /// <summary>
+        /// Show the help screen
+        /// </summary>
+        [Parameter("?")]
+        [Parameter("help")]
+        [Description("Shows the help screen")]
+        public bool Help { get; set; }
     }
 }
