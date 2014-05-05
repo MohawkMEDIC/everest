@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.CodeDom.Compiler;
 using MARC.Everest.Threading;
 using System.Xml;
+using MARC.Everest.Formatters.XML.ITS1;
 
 namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 {
@@ -40,6 +41,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             renderUnit.ReferencedAssemblies.Add(AppDomain.CurrentDomain.GetAssemblies().First(a=>a.FullName == project.ProjectInfo.AssemblyRef).Location);
             renderUnit.ReferencedAssemblies.Add(typeof(II).Assembly.Location);
             renderUnit.ReferencedAssemblies.Add(typeof(TemplateAttribute).Assembly.Location);
+            renderUnit.ReferencedAssemblies.Add(typeof(XmlIts1Formatter).Assembly.Location);
             renderUnit.ReferencedAssemblies.Add("System.dll");
             renderUnit.ReferencedAssemblies.Add("System.Linq.dll");
             renderUnit.ReferencedAssemblies.Add("System.Core.dll");
@@ -101,6 +103,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 
             nsRoot.Types.Add(RenderUtils.RenderNamespaceDoc(project, "Classes"));
             nsVocab.Types.Add(RenderUtils.RenderNamespaceDoc(project, "Vocabulary"));
+            nsRoot.Types.Add(RenderUtils.GenerateRegisterTemplatesMethod(project, nsRoot));
             renderUnit.Namespaces.Add(nsVocab);
             renderUnit.Namespaces.Add(nsRoot);
 
@@ -141,24 +144,40 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 // Now post-process comments to clean them up
                 XmlDocument xd = new XmlDocument();
                 xd.Load(Path.ChangeExtension(outputFile, "xml"));
-                foreach (XmlNode xel in xd.SelectNodes("//see"))
+                var seeNodes = xd.SelectNodes("//see");
+                List<String> nameCache = new List<string>();
+
+                int i = 0;
+                foreach (XmlNode xel in seeNodes)
                 {
+                    i++;
+                    if(i % 10 == 0)
+                        Console.Write("{0:##}% Complete ({1} of {2})", (i / (float)seeNodes.Count) * 100.0, i, seeNodes.Count);
+
+                    Console.CursorLeft = 0;
                     var cref = xel.Attributes["cref"];
+                    
                     // Clean up the reference
-                    if (xd.SelectSingleNode(String.Format("//member[@name = '{0}']", cref.Value)) != null)
+                    if (nameCache.Contains(cref.Value) || xd.SelectSingleNode(String.Format("//member[@name = '{0}']", cref.Value)) != null)
+                    {
+                        nameCache.Add(cref.Value);
                         continue; // already resolves
+                    }
                     // Try to resolve
                     string newCref = cref.Value;
                     if (cref.Value.StartsWith("T:")) // type
                         newCref = String.Format("T:{0}.{1}", Path.GetFileNameWithoutExtension(outputFile), cref.Value.Substring(2));
                     else if (cref.Value.StartsWith("P:")) // property
                         newCref = String.Format("P:{0}.{1}", Path.GetFileNameWithoutExtension(outputFile), cref.Value.Substring(2));
-                    if (xd.SelectSingleNode(String.Format("//member[@name = '{0}']", newCref)) != null)
+                    if (nameCache.Contains(newCref) || xd.SelectSingleNode(String.Format("//member[@name = '{0}']", newCref)) != null)
+                    {
+                        nameCache.Add(newCref);
                         cref.Value = newCref;
+                    }
                 }
                 xd.Save(Path.ChangeExtension(outputFile, "xml"));
 
-                Console.WriteLine("Compile finished with {0} errors", result.Errors.Count);
+                Console.WriteLine("Compile finished with {0} errors", result.Errors.OfType<CompilerError>().Count(o=>!o.IsWarning));
             }
 
         }

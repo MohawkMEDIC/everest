@@ -154,7 +154,8 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                             Property = pi,
                             Type = new TypeDefinition() { Type = pi.PropertyType },
                             TemplateReference = propertyTemplate.TemplateReference,
-                            Contains = propertyTemplate.Contains
+                            Contains = propertyTemplate.Contains,
+                            Tag = "ContFor:" + originalContains
                         });
                         propertyTemplate.TemplateReference = propertyTemplate.Contains = null;
                     }
@@ -205,7 +206,6 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                 if (!String.IsNullOrEmpty(originalContains))
                     name = String.Format("{0}{1}", originalContains, propertyTemplate.Name);
 
-                
                 // TODO: More intelligent generation of these
                 String uniqueName = name;
                 for (int i = 1; context.Project.Templates.Exists(o => o.Name == uniqueName); i++)
@@ -219,7 +219,6 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                     Initialize = new List<MethodDefinitionBase>(propertyTemplate.Initialize),
                     Templates = new List<PropertyTemplateContainer>(propertyTemplate.Templates)
                 };
-
 
                 Type baseClass = ResolvePropertyTraversalType(propertyTemplate.TraversalName, propertyTemplate.Property);
 
@@ -235,8 +234,11 @@ namespace MARC.Everest.Sherpas.Templating.Binder
                     if (String.IsNullOrEmpty(originalContains))
                         propertyTemplate.TemplateReference = childTemplate.Name;
                     else
+                    {
+                        //var containedType = childTemplate.Templates.OfType<PropertyTemplateDefinition>().Find(o => !String.IsNullOrEmpty(o.Contains));
+
                         propertyTemplate.Contains = childTemplate.Name;
-                    
+                    }
                     // Add to the repo
                     context.Project.Templates.Insert(context.Project.Templates.IndexOf(classTemplate) + 2, childTemplate);
                     foreach (NullArtifactTemplate nat in context.Project.Templates.FindAll(o => o is NullArtifactTemplate))

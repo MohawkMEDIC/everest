@@ -328,11 +328,9 @@
             <xsl:value-of select="marc:CleanElementName(./element/@name)"/>
           </xsl:attribute>
         </xsl:if>
-        <xsl:for-each select=".//element[marc:CleanElementName(@name) = 'templateId' and attribute/@root]">
-          <marc:id>
-            <xsl:value-of select="attribute/@root"/>
-          </marc:id>
-        </xsl:for-each>
+            <marc:id>
+              <xsl:value-of select="@id"/>
+            </marc:id>
         <marc:baseClass name="{marc:GetBaseClass(./classification/@type)}"/>
         <xsl:apply-templates select="*[local-name() != 'element']"/>
         <xsl:choose>

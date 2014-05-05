@@ -11,6 +11,7 @@ using MARC.Everest.DataTypes;
 using MARC.Everest.DataTypes.Interfaces;
 using System.Xml;
 using System.IO;
+using MARC.Everest.Sherpas.Formatter.XML.ITS1;
 
 namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 {
@@ -303,6 +304,63 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment("</remarks>", true)));
 
             return namespaceDoc;
+        }
+
+        /// <summary>
+        /// Generates the extension class that initializes a formatter
+        /// </summary>
+        internal static CodeTypeDeclaration GenerateRegisterTemplatesMethod(TemplateProjectDefinition project, CodeNamespace nsCode)
+        {
+            // extension class
+            CodeTypeDeclaration typeFormatterExtensions = new CodeTypeDeclaration()
+            {
+                Attributes = MemberAttributes.Public,
+                Name = "SherpasUtilities",
+                IsClass = true
+            };
+            typeFormatterExtensions.Comments.Add(new CodeCommentStatement(String.Format("<summary>Initializes formatter to handle templates from {0}</summary>", project.ProjectInfo.Name), true));
+            typeFormatterExtensions.StartDirectives.Add(
+                new CodeRegionDirective(CodeRegionMode.Start, "\nstatic"));
+            typeFormatterExtensions.EndDirectives.Add(
+                new CodeRegionDirective(CodeRegionMode.End, String.Empty));
+
+            // Extension method for Initialize 
+            CodeMemberMethod registerMethod = new CodeMemberMethod()
+            {
+                Attributes = MemberAttributes.Public | MemberAttributes.Static,
+                Name = "RegisterTemplates",
+                ReturnType = new CodeTypeReference(typeof(void))
+            };
+
+            var parmMe = new CodeParameterDeclarationExpression(String.Format("{0}", typeof(ClinicalDocumentFormatter).FullName), "me");
+            registerMethod.Parameters.Add(parmMe);
+
+            // Now register for the types
+            foreach (var itm in project.Templates.OfType<ClassTemplateDefinition>().Where(o => o.Id != null && o.Id.Count > 0))
+                registerMethod.Statements.Add(new CodeMethodInvokeExpression(new CodeVariableReferenceExpression("me"), "RegisterTemplate", new CodeTypeOfExpression(String.Format("{0}.{1}", nsCode.Name, itm.Name))));
+            // Register helper classes
+            foreach (var itm in project.Templates.OfType<ClassTemplateDefinition>().Where(o => o.Templates.Exists(t => t.Tag != null && t.Tag.StartsWith("ContFor:"))))
+                registerMethod.Statements.Add(new CodeMethodInvokeExpression(new CodeVariableReferenceExpression("me"), "RegisterContainer", new CodeTypeOfExpression(String.Format("{0}.{1}", nsCode.Name, itm.Name))));
+
+            typeFormatterExtensions.Members.Add(registerMethod);
+
+            // For each template type generate an extension method on the base which does a AsX
+            foreach (var tpl in project.Templates.OfType<ClassTemplateDefinition>())
+            {
+                // Extension method for Initialize 
+                CodeMemberMethod asMethod = new CodeMemberMethod()
+                {
+                    Attributes = MemberAttributes.Public | MemberAttributes.Static,
+                    Name = String.Format("As{0}", tpl.Name),
+                    ReturnType = new CodeTypeReference(tpl.Name)
+                };
+
+                // This method
+                asMethod.Parameters.Add(new CodeParameterDeclarationExpression(String.Format("this {0}", tpl.BaseClass.Type.FullName), "me"));
+                asMethod.Statements.Add(new CodeMethodReturnStatement(new CodeObjectCreateExpression(tpl.Name, new CodeVariableReferenceExpression("me"))));
+                typeFormatterExtensions.Members.Add(asMethod);
+            }
+            return typeFormatterExtensions;
         }
     }
 }

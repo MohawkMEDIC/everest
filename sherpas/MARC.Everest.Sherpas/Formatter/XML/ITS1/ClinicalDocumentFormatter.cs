@@ -15,6 +15,7 @@ using System.Reflection;
 using MARC.Everest.Sherpas.ResultDetail;
 using MARC.Everest.Sherpas.Interface;
 using System.Xml;
+using MARC.Everest.Sherpas;
 
 namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
 {
@@ -30,8 +31,11 @@ namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
     public class ClinicalDocumentFormatter : XmlIts1Formatter
     {
 
+
         // Template types that have been registered
         private Dictionary<String, Type> m_templateTypes = new Dictionary<string, Type>();
+        // Container types
+        private List<KeyValuePair<Type, TemplateContainerAttribute>> m_containerTypes = new List<KeyValuePair<Type, TemplateContainerAttribute>>();
 
         /// <summary>
         /// Register all templates in this formatter for use in the document
@@ -56,6 +60,17 @@ namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
                 lock (this.m_syncRoot)
                     this.m_templateTypes.Add(templateId.TemplateId, type);
             }
+        }
+
+        /// <summary>
+        /// Registers a type that is used to contain the specified type
+        /// </summary>
+        public void RegisterContainer(Type containerType)
+        {
+            // The type that would appear in the parse
+            var properties = containerType.GetCustomAttributes(typeof(TemplateContainerAttribute), false);
+            if(properties.Length > 0)
+                this.m_containerTypes.Add(new KeyValuePair<Type, TemplateContainerAttribute>(containerType, properties[0] as TemplateContainerAttribute));
         }
 
         /// <summary>
@@ -162,6 +177,7 @@ namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
         public override Interfaces.IGraphable ParseObject(System.Xml.XmlReader r, Type useType, Type interactionContext, XmlIts1FormatterParseResult resultContext)
         {
             
+            // Correct ClinicalDocument specialty to a generic CDA for now and then we'll convert it
             String originalLocation = r.ToString();
 
             // TODO: How to do this?? Perhaps we might have to write an overridable hook?
@@ -172,8 +188,30 @@ namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
             if (iit != null && iit.TemplateId != null && !iit.TemplateId.IsEmpty && imt == null)
                 resultContext.AddResultDetail(new UnknownTemplateResultDetail(ResultDetailType.Warning, iit, originalLocation));
 
-            return baseParseResult;
+            // Is there any substitution that can occur?
+            if (baseParseResult != null && !(baseParseResult is ANY) && !(baseParseResult is IMessageTypeTemplate))
+            {
+                // Container types
+                var subst = this.m_containerTypes.Where(o => o.Key.BaseType == baseParseResult.GetType());
+                foreach (var sub in subst)
+                {
+                    var pi = sub.Key.BaseType.GetProperty(sub.Value.PropertyName);
+                    if(pi == null) continue;
+                    var instance = pi.GetValue(baseParseResult, null);
+                    if (instance != null && sub.Value.TemplateType.IsAssignableFrom(instance.GetType()))
+                    {
+                        // Now construct
+                        var ci = sub.Key.GetConstructor(new Type[] { baseParseResult.GetType() });
+                        if (ci == null) continue;
+                        return ci.Invoke(new object[] { baseParseResult }) as IGraphable;
+                    }
+                }
+                // Correct instance?
+                
+            }
 
+            return baseParseResult; // this.CorrectInstance(baseParseResult) as IGraphable;
+            
         }
 
         /// <summary>
@@ -188,20 +226,30 @@ namespace MARC.Everest.Sherpas.Formatter.XML.ITS1
 
             // We need to determine the deserialization type
             var candidateType = this.GetTemplateType(templateId);
-            if (candidateType == null)
+            if (candidateType == null || candidateType == instance.GetType())
                 return instance;
-            
+
             // We need a default ctor!
-            var ci = candidateType.GetConstructor(Type.EmptyTypes);
-            if (ci == null)
-                return instance;
+            var ci = candidateType.GetConstructor(new Type[] { instance.GetType() });
+            if (ci != null)
+                return ci.Invoke(new object[] { instance });
+            else
+            {
+                ci = candidateType.GetConstructor(Type.EmptyTypes);
+                if (ci == null)
+                    return instance;
 
-            var correctInstance = ci.Invoke(null);
-            // Copy
-            foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-                pi.SetValue(correctInstance, Util.FromWireFormat(pi.GetValue(instance, null), pi.PropertyType), null);
-
-            return correctInstance as IGraphable;
+                var correctInstance = ci.Invoke(null);
+                // Copy
+                foreach (var pi in instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                {
+                    var destPi = correctInstance.GetType().GetProperty(pi.Name, BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                    if (destPi == null)
+                        destPi = correctInstance.GetType().GetProperty(pi.Name, BindingFlags.Public | BindingFlags.Instance);
+                    destPi.SetValue(correctInstance, Util.FromWireFormat(pi.GetValue(instance, null), destPi.PropertyType), null);
+                }
+                return correctInstance as IGraphable;
+            }
         }
     }
 }

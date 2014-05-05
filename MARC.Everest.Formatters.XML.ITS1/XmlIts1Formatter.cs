@@ -1222,7 +1222,10 @@ namespace MARC.Everest.Formatters.XML.ITS1
 
             // We may have switched types, let's try and get the most appropriate validation
             if (result != null && result.GetType() != useType)
+            {
                 formatter = GetFormatter(result.GetType());
+                formatter.Host = this;
+            }
 
             // Validate
             if (result == null)

@@ -97,7 +97,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 mpa.MinOccurs = String.IsNullOrEmpty(propertyTemplate.MinOccurs) ? 0 : Int32.Parse(propertyTemplate.MinOccurs);
                 mpa.MaxOccurs = mpa.MaxOccurs == -1 || propertyTemplate.MaxOccurs == "*" ? -1 : String.IsNullOrEmpty(propertyTemplate.MaxOccurs) ? 1 : Int32.Parse(propertyTemplate.MaxOccurs);
                 mpa.Conformance = propertyTemplate.Conformance;
-
+                
                 // Container type
                 if (context.ContainerObject != null)
                     propertyCode = (context.ContainerObject as CodeTypeDeclaration).Members.OfType<CodeTypeMember>().FirstOrDefault(m => m.Name == propertyTemplate.Name) as CodeMemberProperty;
@@ -347,6 +347,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                         new CodeAttributeArgument("Conformance", new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(PropertyAttribute.AttributeConformanceType)), mpa.Conformance.ToString())),
                         new CodeAttributeArgument("PropertyType", new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(PropertyAttribute.AttributeAttributeType)), mpa.PropertyType.ToString())),
                         new CodeAttributeArgument("ImposeFlavorId", new CodePrimitiveExpression(mpa.ImposeFlavorId)),
+                        new CodeAttributeArgument("DefaultUpdateMode", new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(UpdateMode)), mpa.DefaultUpdateMode.ToString())),
                         new CodeAttributeArgument("InteractionOwner", new CodePrimitiveExpression(mpa.InteractionOwner)),
                         new CodeAttributeArgument("SortKey", new CodePrimitiveExpression(mpa.SortKey)),
                         new CodeAttributeArgument("FixedValue", new CodePrimitiveExpression(null)),
@@ -363,9 +364,20 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 //    !propTypeName.Equals((typeArgument.Value as CodeTypeOfExpression).Type.BaseType))
                 propAttDecl.Arguments.Add(typeArgument);
 
+                // Remove type arguments if we have more than one traversal of the same name otherwise add
+                var existingTraversal = propertyCode.CustomAttributes.OfType<CodeAttributeDeclaration>().FirstOrDefault(pa => pa.Arguments.OfType<CodeAttributeArgument>().Count(arg => arg.Name == "Name" && (arg.Value as CodePrimitiveExpression).Value.ToString() == mpa.Name) > 0);
                 
-                if (propertyCode.CustomAttributes.OfType<CodeAttributeDeclaration>().Count(pa => pa.Arguments.OfType<CodeAttributeArgument>().Count(arg => arg.Name == "Name" && (arg.Value as CodePrimitiveExpression).Value.ToString() == mpa.Name) > 0 && pa.Arguments.OfType<CodeAttributeArgument>().Count(arg => arg.Name == "Type" && arg.Value.Equals(typeArgument.Value)) > 1) == 0)
+                if (existingTraversal != null)
+                {
+                    var existingTypeArg = existingTraversal.Arguments.OfType<CodeAttributeArgument>().FirstOrDefault(p => p.Name == typeArgument.Name);
+                    if(existingTypeArg != null)
+                        existingTraversal.Arguments.Remove(existingTypeArg);
+                }
+                else
                     propertyCode.CustomAttributes.Add(propAttDecl);
+
+                //if (propertyCode.CustomAttributes.OfType<CodeAttributeDeclaration>().Count(pa => pa.Arguments.OfType<CodeAttributeArgument>().Count(arg => arg.Name == "Name" && (arg.Value as CodePrimitiveExpression).Value.ToString() == mpa.Name) > 0 && pa.Arguments.OfType<CodeAttributeArgument>().Count(arg => arg.Name == "Type" && arg.Value.Equals(typeArgument.Value)) > 1) == 0)
+                //    propertyCode.CustomAttributes.Add(propAttDecl);
                 // Contains?
                 if (propertyTemplate.Contains != null)
                 {

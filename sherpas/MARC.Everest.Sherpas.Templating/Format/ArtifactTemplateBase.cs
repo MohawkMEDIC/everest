@@ -18,7 +18,7 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// <summary>
         /// Tag for the method
         /// </summary>
-        [XmlIgnore]
+        [XmlElement("tag")]
         public String Tag { get; set; }
 
         /// <summary>

@@ -9,6 +9,8 @@ using MARC.Everest.Attributes;
 using System.Diagnostics;
 using MARC.Everest.Sherpas.Interface;
 using MARC.Everest.Connectors;
+using MARC.Everest.DataTypes.Interfaces;
+using System.Reflection;
 
 namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 {
@@ -55,6 +57,12 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             if(tpl.Id != null)
                 foreach(var id in tpl.Id)
                     retVal.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(TemplateAttribute)), new CodeAttributeArgument("TemplateId", new CodePrimitiveExpression(id))));
+
+            var templateContainerProperty = tpl.Templates.OfType<PropertyTemplateDefinition>().FirstOrDefault(o => o.Tag != null && o.Tag.StartsWith("ContFor:"));
+            if (templateContainerProperty != null)
+                retVal.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(TemplateContainerAttribute)),
+                    new CodeAttributeArgument("PropertyName", new CodePrimitiveExpression(templateContainerProperty.Name)),
+                    new CodeAttributeArgument("TemplateType", new CodeTypeOfExpression(templateContainerProperty.Contains))));
 
             retVal.Comments.AddRange(RenderUtils.RenderComments(tpl, String.Format("{0} is a template for <see cref=\"T:{1}\"/>", tpl.Name, tpl.BaseClass.Type.FullName)));
 
@@ -165,41 +173,72 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                 retVal.Members.Add(method);
             }
 
+            // Copy constructor from base
+            CodeConstructor ctorCopy = new CodeConstructor()
+            {
+                Attributes = MemberAttributes.Public
+            };
+            ctorCopy.Comments.Add(new CodeCommentStatement("<summary>Copy constructor</summary>", true));
+            ctorCopy.Parameters.Add(new CodeParameterDeclarationExpression(retVal.BaseTypes[0], "value"));
+            foreach (var pi in tpl.BaseClass.Type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var codeProperty = retVal.Members.OfType<CodeMemberProperty>().FirstOrDefault(o => o.Name == pi.Name);
+                var assignStmt = new CodeAssignStatement(new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), pi.Name), new CodePropertyReferenceExpression(new CodeVariableReferenceExpression("value"), pi.Name));
+                ctorCopy.Statements.Add(
+                    new CodeConditionStatement(new CodeBinaryOperatorExpression(assignStmt.Right, CodeBinaryOperatorType.IdentityInequality, new CodePrimitiveExpression(null)), 
+                        assignStmt));
+
+                if (codeProperty == null) continue; // Not restricted so copy
+                else if (!RenderUtils.TypeReferenceEquals(codeProperty.Type, new CodeTypeReference(pi.PropertyType)))
+                {
+                    if (typeof(IAny).IsAssignableFrom(pi.PropertyType))
+                        assignStmt.Right = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(typeof(Util)), "Convert", codeProperty.Type), assignStmt.Right);
+                    else
+                    {
+                        var typeReference = codeProperty.Type;
+                        var propertyClassTemplate = context.Project.Templates.OfType<ClassTemplateDefinition>().FirstOrDefault(p => p.Name == typeReference.BaseType);
+                        assignStmt.Right = new CodeObjectCreateExpression(codeProperty.Type, new CodeCastExpression(new CodeTypeReference(propertyClassTemplate.BaseClass.Type), assignStmt.Right));
+                    }
+                }
+            }
+            retVal.Members.Insert(1, ctorCopy);
+
             // Add the interface for the IMessageTypeTemplate interface
             retVal.BaseTypes.Add(new CodeTypeReference(typeof(IMessageTypeTemplate)));
 
-
             // Formal constraints documentation
-            // Add constraints to the documentation
-            var termRemarksComment = retVal.Comments.OfType<CodeCommentStatement>().LastOrDefault(o => o.Comment.Text.Contains("</remarks>"));
+            if (tpl.FormalConstraint.Count > 0)
+            {
+                // Add constraints to the documentation
+                var termRemarksComment = retVal.Comments.OfType<CodeCommentStatement>().LastOrDefault(o => o.Comment.Text.Contains("</remarks>"));
 
-            CodeCommentStatementCollection formalConstraints = new CodeCommentStatementCollection()
+                CodeCommentStatementCollection formalConstraints = new CodeCommentStatementCollection()
                     {
                         new CodeCommentStatement("<h4>Constraints</h4>", true),
                         new CodeCommentStatement("<list type=\"table\">", true),
                         new CodeCommentStatement("<listheader><term>Check #</term><description>Statement</description></listheader>", true)
                     };
-            foreach (var con in tpl.FormalConstraint)
-            {
-                String confNumber = con.Message.StartsWith("CONF") ? con.Message.Substring(0, con.Message.IndexOf(":")) : tpl.FormalConstraint.IndexOf(con).ToString();
-                String confDescription = con.Message.StartsWith("CONF") ? con.Message.Substring(con.Message.IndexOf(":") + 1) : con.Message;
-                formalConstraints.Add(new CodeCommentStatement(String.Format("<item><term>{0}</term><description>{1}</description></item>", confNumber, confDescription), true));
-            }
-            formalConstraints.Add(new CodeCommentStatement("</list>", true));
+                foreach (var con in tpl.FormalConstraint)
+                {
+                    String confNumber = con.Message.StartsWith("CONF") ? con.Message.Substring(0, con.Message.IndexOf(":")) : tpl.FormalConstraint.IndexOf(con).ToString();
+                    String confDescription = con.Message.StartsWith("CONF") ? con.Message.Substring(con.Message.IndexOf(":") + 1) : con.Message;
+                    formalConstraints.Add(new CodeCommentStatement(String.Format("<item><term>{0}</term><description>{1}</description></item>", confNumber, confDescription), true));
+                }
+                formalConstraints.Add(new CodeCommentStatement("</list>", true));
 
-            if (termRemarksComment == null)
-            {
-                retVal.Comments.Add(new CodeCommentStatement("<remarks>", true));
-                retVal.Comments.AddRange(formalConstraints);
-                retVal.Comments.Add(new CodeCommentStatement("</remarks>", true));
+                if (termRemarksComment == null)
+                {
+                    retVal.Comments.Add(new CodeCommentStatement("<remarks>", true));
+                    retVal.Comments.AddRange(formalConstraints);
+                    retVal.Comments.Add(new CodeCommentStatement("</remarks>", true));
+                }
+                else
+                {
+                    var insertIdx = retVal.Comments.IndexOf(termRemarksComment);
+                    for (int i = formalConstraints.Count - 1; i >= 0; i--)
+                        retVal.Comments.Insert(insertIdx, formalConstraints[i]);
+                }
             }
-            else
-            {
-                var insertIdx = retVal.Comments.IndexOf(termRemarksComment);
-                for (int i = formalConstraints.Count - 1; i >= 0; i--)
-                    retVal.Comments.Insert(insertIdx, formalConstraints[i]);
-            }
-
 
             // Add conditions to initialize properties
             return new CodeTypeMemberCollection(new CodeTypeMember[] { retVal });
