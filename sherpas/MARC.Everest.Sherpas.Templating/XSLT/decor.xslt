@@ -19,7 +19,6 @@
       <marc:projectInfo>
         <xsl:apply-templates select="project"/>
       </marc:projectInfo>
-
       <xsl:apply-templates select="terminology/valueSet | rules/template"/>
     </marc:Template>
   </xsl:template>
@@ -29,6 +28,7 @@
     <marc:name>
       <xsl:value-of select="name[@language = $language]"/>
     </marc:name>
+    <xsl:apply-templates select="desc[@language = $language]"/>
     <xsl:apply-templates mode="project"/>
   </xsl:template>
 
@@ -131,7 +131,7 @@
       <xsl:if test="@datatype">
         <xsl:choose>
           <xsl:when test="contains(@datatype, '.')">
-            <marc:type name="{substring-before(@datatype, '.')}" flavor="{substring-after(@datatype, '.')}">
+            <marc:type name="{substring-before(@datatype, '.')}" flavor="{@datatype}">
               <xsl:if test="vocabulary[@valueSet or @domain]">
                 <marc:type name="{vocabulary/@valueSet | vocabulary/@domain}"/>
               </xsl:if>
@@ -413,18 +413,18 @@
 
   <xsl:template match="copyright" mode="project">
     <marc:copyrightHolder>
-      <xhtml:div>
-        <xhtml:p>
+      <div>
+        <p>
           <xsl:value-of select="@years"/>
           <xsl:value-of select="@by"/>
-        </xhtml:p>
-        <xhtml:p>
+        </p>
+        <p>
           <xsl:for-each select="./addrLine">
             <xsl:value-of select="text()"/>
-            <xhtml:br/>
+            <br/>
           </xsl:for-each>
-        </xhtml:p>
-      </xhtml:div>
+        </p>
+      </div>
     </marc:copyrightHolder>
   </xsl:template>
 

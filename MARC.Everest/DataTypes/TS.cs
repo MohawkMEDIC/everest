@@ -305,7 +305,7 @@ namespace MARC.Everest.DataTypes
             set
             {
                 
-                if (value != null && !DateValuePrecision.HasValue)
+                if (value != null && base.Flavor == null && (!DateValuePrecision.HasValue || DateValuePrecision.Value == DatePrecision.Full))
                 {
                     DatePrecision tdprec = DatePrecision.Full;
                     if (m_flavorPrecisions.TryGetValue(value, out tdprec))
@@ -428,7 +428,7 @@ namespace MARC.Everest.DataTypes
         [Flavor(Name = "TS.DATETIME.MIN")]
         public static bool IsValidDateTimeMinuteFlavor(TS ts)
         {
-            if (!ts.IsNull)
+            if (ts.IsNull)
                 return true;
             return ts.DateValuePrecision == DatePrecision.Minute || ts.DateValuePrecision == DatePrecision.MinuteNoTimezone;
         }

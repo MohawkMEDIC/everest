@@ -55,13 +55,20 @@ namespace MARC.Everest.Sherpas.Templating.Format
                 this.ProjectInfo = new ProjectInfoDefinition();
             if (this.ProjectInfo.Copyright == null)
                 this.ProjectInfo.Copyright = new XmlElement[0];
+            if (this.ProjectInfo.Documentation == null)
+                this.ProjectInfo.Documentation = new XmlNode[0];
 
             // Merge copyright
             List<XmlElement> copyright = new List<XmlElement>(this.ProjectInfo.Copyright);
+            List<XmlNode> node = new List<XmlNode>(this.ProjectInfo.Documentation);
             if(template.ProjectInfo.Copyright != null)
                 copyright.AddRange(template.ProjectInfo.Copyright);
-            this.ProjectInfo.Copyright = copyright.ToArray();
+            if (template.ProjectInfo.Documentation != null)
+                node.AddRange(template.ProjectInfo.Documentation);
 
+
+            this.ProjectInfo.Copyright = copyright.ToArray();
+            this.ProjectInfo.Documentation = node.ToArray();
             // Original Author
             if (this.ProjectInfo.OriginalAuthor == null)
                 this.ProjectInfo.OriginalAuthor = new List<string>();

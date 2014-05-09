@@ -46,5 +46,12 @@ namespace MARC.Everest.Sherpas.Templating.Format
         /// </summary>
         [XmlAttribute("assembly")]
         public String AssemblyRef { get; set; }
+
+        /// <summary>
+        /// Gets or sets basic documentation which describes the template
+        /// </summary>
+        [XmlElement("documentation")]
+        public XmlNode[] Documentation { get; set; }
+
     }
 }

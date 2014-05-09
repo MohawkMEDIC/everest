@@ -294,6 +294,9 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
 
             namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment(String.Format("<summary>Sherpas Generated {2} for {0} version {1}</summary>", project.ProjectInfo.Name, project.ProjectInfo.Version, type), true)));
             namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment("<remarks>", true)));
+            foreach (var doc in project.ProjectInfo.Documentation)
+                namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment(doc.OuterXml, true)));
+
             namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment("<para>Copyright:</para>", true)));
             foreach (var itm in project.ProjectInfo.Copyright)
                 namespaceDoc.Comments.Add(new CodeCommentStatement(new CodeComment(itm.OuterXml, true)));

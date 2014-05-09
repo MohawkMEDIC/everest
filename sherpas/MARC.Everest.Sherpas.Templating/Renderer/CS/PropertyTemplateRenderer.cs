@@ -346,7 +346,7 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
                         new CodeAttributeArgument("MaxOccurs", new CodePrimitiveExpression(mpa.MaxOccurs)),
                         new CodeAttributeArgument("Conformance", new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(PropertyAttribute.AttributeConformanceType)), mpa.Conformance.ToString())),
                         new CodeAttributeArgument("PropertyType", new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(PropertyAttribute.AttributeAttributeType)), mpa.PropertyType.ToString())),
-                        new CodeAttributeArgument("ImposeFlavorId", new CodePrimitiveExpression(mpa.ImposeFlavorId)),
+                        new CodeAttributeArgument("ImposeFlavorId", new CodePrimitiveExpression(propertyTemplate.Type.Flavor ?? mpa.ImposeFlavorId)),
                         new CodeAttributeArgument("DefaultUpdateMode", new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(UpdateMode)), mpa.DefaultUpdateMode.ToString())),
                         new CodeAttributeArgument("InteractionOwner", new CodePrimitiveExpression(mpa.InteractionOwner)),
                         new CodeAttributeArgument("SortKey", new CodePrimitiveExpression(mpa.SortKey)),
