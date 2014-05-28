@@ -54,19 +54,26 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
         public void Render(Format.TemplateProjectDefinition project, string outputFile)
         {
 
+            if (!Path.IsPathRooted(outputFile))
+                outputFile = Path.Combine(Environment.CurrentDirectory, outputFile);
+
             // Render unit
             CodeCompileUnit renderUnit = new CodeCompileUnit();
+            
             renderUnit.ReferencedAssemblies.Add(AppDomain.CurrentDomain.GetAssemblies().First(a=>a.FullName == project.ProjectInfo.AssemblyRef).Location);
             renderUnit.ReferencedAssemblies.Add(typeof(II).Assembly.Location);
             renderUnit.ReferencedAssemblies.Add(typeof(TemplateAttribute).Assembly.Location);
             renderUnit.ReferencedAssemblies.Add(typeof(XmlIts1Formatter).Assembly.Location);
             renderUnit.ReferencedAssemblies.Add("System.dll");
-            renderUnit.ReferencedAssemblies.Add("System.Linq.dll");
+            //renderUnit.ReferencedAssemblies.Add("System.Linq.dll");
             renderUnit.ReferencedAssemblies.Add("System.Core.dll");
             renderUnit.ReferencedAssemblies.Add("System.Data.dll");
             renderUnit.ReferencedAssemblies.Add("System.Xml.dll");
-            renderUnit.ReferencedAssemblies.Add("System.Xml.Linq.dll");
-            renderUnit.ReferencedAssemblies.Add("Microsoft.CSharp.dll");
+            //renderUnit.ReferencedAssemblies.Add("System.Xml.Linq.dll");
+            //renderUnit.ReferencedAssemblies.Add(typeof(System.Linq.Enumerable).Assembly.Location);
+            //renderUnit.ReferencedAssemblies.Add(typeof(System.Xml.Linq.Extensions).Assembly.Location);
+
+            //renderUnit.ReferencedAssemblies.Add(typeof(Microsoft.CSharp.CSharpCodeProvider).Assembly.Location);
             renderUnit.ReferencedAssemblies.Add("System.Data.dll");
             renderUnit.ReferencedAssemblies.Add("System.Data.DataSetExtensions.dll");
             // Assembly info
@@ -126,7 +133,11 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             renderUnit.Namespaces.Add(nsRoot);
 
             // Generate the C# file or DLL
-            CSharpCodeProvider csharpCodeProvider = new CSharpCodeProvider();
+            CSharpCodeProvider csharpCodeProvider = new CSharpCodeProvider(new Dictionary<String, String>()
+            {
+                { "CompilerVersion", "v3.5" }
+            });
+            
             if (Path.GetExtension(outputFile) == ".cs")
             {
                 using (TextWriter tw = new StreamWriter(File.Create(outputFile)))
@@ -141,20 +152,23 @@ namespace MARC.Everest.Sherpas.Templating.Renderer.CS
             else if (Path.GetExtension(outputFile) == ".dll")
             {
                 CompilerParameters parameters = new CompilerParameters();
-                parameters.CompilerOptions = String.Format("/doc:{0}", Path.ChangeExtension(outputFile, "xml"));
+                parameters.CompilerOptions = String.Format("/doc:\"{0}\"", Path.ChangeExtension(outputFile, "xml"));
                 parameters.GenerateInMemory = false;
                 parameters.IncludeDebugInformation = false;
                 parameters.OutputAssembly = outputFile;
                 parameters.TempFiles.KeepFiles = true;
+
                 parameters.WarningLevel = 4;
 
                 var result = csharpCodeProvider.CompileAssemblyFromDom(parameters, renderUnit);
                 if (result.Errors.HasErrors)
                 {
+                    foreach (CompilerError rs in result.Errors)
+                        Console.WriteLine(rs.ToString());
+
+                    Console.WriteLine("{0} -> {1}", result.Errors[0].FileName, Path.ChangeExtension(outputFile, ".cs"));
                     File.Copy(result.Errors[0].FileName, Path.ChangeExtension(outputFile, ".cs"), true);
 
-                    foreach (CompilerError rs in result.Errors)
-                            Console.WriteLine(rs.ToString());
                 }
 
 

@@ -22,7 +22,7 @@
     //HACK: What madness is this?
     public String CopyInnerXmlAsString(Object node)
     {
-      foreach(var nd in node as IEnumerable)
+      foreach(Object nd in node as IEnumerable)
         return nd.GetType().GetProperty("InnerXml").GetValue(nd, null).ToString();
        return String.Empty;
     }

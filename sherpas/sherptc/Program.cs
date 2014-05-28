@@ -67,6 +67,13 @@ namespace sherptc
 
                 if (String.IsNullOrEmpty(parameters.EverestAssembly) || !File.Exists(parameters.EverestAssembly))
                     throw new FileNotFoundException(String.Format("Couldn't find the specified Everest assembly file '{0}'...", parameters.EverestAssembly));
+
+                if (!Path.IsPathRooted(parameters.EverestAssembly))
+                {
+
+                    parameters.EverestAssembly = Path.Combine(Environment.CurrentDirectory, parameters.EverestAssembly);
+                    Console.WriteLine("Correct path to {0}", parameters.EverestAssembly);
+                }
                 var asm = Assembly.LoadFile(parameters.EverestAssembly);
 
                 // Now load
