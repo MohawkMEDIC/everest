@@ -32,8 +32,8 @@ DefaultGroupName=Mohawk College\Everest
 AllowNoIcons=true
 OutputDir=..\dist
 ;SetupIconFile=D:\work\appicon.ico
-;Compression=lzma/ultra
-Compression=none
+Compression=lzma/ultra
+;Compression=none
 SolidCompression=false
 AppCopyright=Copyright (C) 2008-2014, Mohawk College of Applied Arts and Technology
 WizardImageFile=install-logo.bmp
@@ -303,9 +303,10 @@ Name: developer\ne; Description: Universal Edition Development Environment
 Name: developer\necda; Description: Universal/CDA Development Environment
 Name: developer\ca; Description: Canadian Edition Development Environment
 Name: custom; Description: Custom Install; Flags: iscustom
+Name: Sherpas; Description: Sherpas Only
 
 [Components]
-Name: tools; Description: Tool Files; Types: full tooling
+Name: tools; Description: Tool Files; Types: full tooling sherpas
 Name: doc; Description: Documentation; Types: full
 #ifdef INCLUDE_SAMPLES
 Name: doc\samples; Description: Samples; Types: full developer developer\cda developer\ne developer\necda developer\ca
@@ -321,8 +322,8 @@ Name: api\vs\ne; Description: UV Documentation (NE2010/NE2008); Types: full deve
 Name: api\vs\ca; Description: CA Documentation (R02.04.01-R02.04.03); Types: full developer developer\ca
 Name: api\vs\doc10; Description: Install Help into Visual Studio 2010 Help Collection; 
 Name: api\vs\doc11; Description: Install Help into Visual Studio 2012+ Help Collection;
-Name: sherpas; Description: Everest Sherpas Framework; Types: full
-Name: sherpas\templates; Description: Everest Sherpas Templates; Types: full
+Name: sherpas; Description: Everest Sherpas Framework; Types: full sherpas tooling
+Name: sherpas\templates; Description: Everest Sherpas Templates; Types: full sherpas
 
 #ifdef INCLUDE_MIFS
 Name: spec; Description: Pan-Canadian Specifications; Types: full

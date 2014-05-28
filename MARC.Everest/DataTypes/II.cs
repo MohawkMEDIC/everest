@@ -133,12 +133,9 @@ namespace MARC.Everest.DataTypes
     /// <code title="Creating a new II" lang="cs">
     /// <![CDATA[
     ///     II instance = new II(new OID("1.1.1.2"), "123987");
-    ///     		instance.AssigningAuthorityName = "Dr. Acula";
+    ///     		instance.AssigningAuthorityName = "EMR_A";
     ///             instance.Use = IdentifierUse.Business;
     ///             instance.Scope = IdentifierScope.BusinessIdentifier;
-    ///             instance.Validate();
-    ///        		Console.WriteLine(instance.Root + instance.Extension);
-    ///     		Console.ReadKey();
     /// ]]>
     /// </code>
     /// </example>
