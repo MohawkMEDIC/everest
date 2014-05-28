@@ -63,7 +63,7 @@ namespace MARC.Everest.VisualStudio.Wizards
             try
             {
                 // Installation directory
-                RegistryKey rkSoftware = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{A0BA6EF4-24AC-47F8-AEFE-FFBA1904024C}_is1", false);
+                RegistryKey rkSoftware = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{A0BA6EF4-24AC-47F8-AEFE-FFBA191403C}_is1", false);
                 string installDir = String.Empty;
                 if (rkSoftware != null)
                 {

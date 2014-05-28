@@ -10,7 +10,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppID={{A0BA6EF4-24AC-47F8-AEFE-FFBA1904024C}
+AppID={{A0BA6EF4-24AC-47F8-AEFE-FFBA191403C}
 #ifdef TFSBuild
 AppName=MARC-HI Everest Framework
 AppVerName=MARC-HI Everest Framework (Nightly build {code:CurrentDate})
@@ -18,7 +18,7 @@ OutputBaseFilename=everest-nightly
 InfoBeforeFile=..\gpmr\Readme-nightly.txt
 #else
 AppName=MARC-HI Everest Framework
-AppVerName=Everest 1.2
+AppVerName=Everest 1.3
 OutputBaseFilename=everest-setup
 ;InfoBeforeFile=.\installsupp\release\AUG-CTP-2010.txt
 #endif
@@ -32,10 +32,10 @@ DefaultGroupName=Mohawk College\Everest
 AllowNoIcons=true
 OutputDir=..\dist
 ;SetupIconFile=D:\work\appicon.ico
-Compression=lzma/ultra
-;Compression=
+;Compression=lzma/ultra
+Compression=none
 SolidCompression=false
-AppCopyright=Copyright (C) 2008-2013, Mohawk College of Applied Arts and Technology
+AppCopyright=Copyright (C) 2008-2014, Mohawk College of Applied Arts and Technology
 WizardImageFile=install-logo.bmp
 WizardSmallImageFile=install-logo-small.bmp
 
@@ -69,6 +69,8 @@ Source: ..\Solution Items\MARC.Everest.RMIM.UV.NE2010.xml; DestDir: {app}\lib; F
 Source: ..\Solution Items\MARC.Everest.RMIM.UV.CDAr2.dll; StrongAssemblyName: MARC.Everest.RMIM.UV.CDAr2.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\cda
 ;Source: ..\Solution Items\MARC.Everest.Formatters.XML.ITS1.CDAr2.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api\cda
 Source: ..\Solution Items\MARC.Everest.RMIM.UV.CDAr2.xml; DestDir: {app}\lib; Flags: ignoreversion; Components: api\vs\cda
+
+; CCD
 
 #ifdef TFSBuild
 
@@ -154,8 +156,8 @@ Source: ..\gpmr\bin\Release\MohawkCollege.EHR.Util.SimpleXSD.dll; DestDir: {app}
 Source: ..\gpmr\bin\Release\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\gpmr\bin\Release\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\gpmr\bin\Release\MohawkCollege.EHR.HL7v3.MIF.MIF20.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
-Source: ..\gpmr\bin\Release\MohawkCollege.Util.Console.Parameters.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
-Source: ..\gpmr\bin\Release\MohawkCollege.Util.Console.Parameters.xml; DestDir: {app}; Flags: ignoreversion; Components: tools
+Source: ..\gpmr\bin\Release\MohawkCollege.Util.Console.Parameters.dll; DestDir: {app}; Flags: ignoreversion; Components: tools or sherpas
+Source: ..\gpmr\bin\Release\MohawkCollege.Util.Console.Parameters.xml; DestDir: {app}; Flags: ignoreversion; Components: tools or sherpas
 Source: ..\gpmr\bin\Release\MohawkCollege.Util.Console.Writer.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\MARC.Everest\bin\Release\MARC.Everest.dll; StrongAssemblyName: MARC.Everest; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\MARC.Everest\bin\Release\MARC.Everest.xml; DestDir: {app}; Flags: ignoreversion; Components: tools
@@ -168,6 +170,9 @@ Source: ..\MARC.Everest\bin\Release\MARC.Everest.xml; DestDir: {app}; Flags: ign
 ;Source: .\installsupp\help\HL7v3 Application Programming Interface.pdf; DestDir: {app}\help; Components: doc\guide
 Source: .\installsupp\help\Advanced Everest Guide - Preview.pdf; DestDir: {app}\help; Components: doc
 Source: .\installsupp\Help\MARC-HI Everest Framework.chm; DestDir: {app}\help; Components: doc
+Source: .\installsupp\Help\MARC-HI Everest Framework.mshc; DestDir: {app}\help; Components: doc and api\vs
+Source: .\installsupp\Help\MARC-HI Everest Framework.msha; DestDir: {app}\help; Components: doc and api\vs
+Source: .\installsupp\Help\HelpLibraryManagerLauncher.exe; DestDir: {app}\help; Components: doc and api\vs
 Source: .\installsupp\isxdl.dll; DestDir: {tmp}
 #ifdef INCLUDE_SRC
 Source: ..\*; DestDir: {app}\src; Flags: ignoreversion recursesubdirs; Excludes: *.vssscc, *.dump, *.xap, ApiExplorer, Samples,*.vspscc, MARC.Everest.Test*, MARC.Everest.Installer*, MARC.Everest.Connectors.MSMQ, MARC.Everest.VisualStudio.*,TFS Build - Nightly.txt,*.cache,*.resources,*.exe,*.exe.config,*.dll.config,*.pdb,MARC.*.xml,*.dll, *.iss, *.chm, TeamBuildTypes, TestResults, api.sln, *.xsd, *.*mif, Solution Items; Components: src
@@ -189,10 +194,37 @@ Source: "{#buildpath}\MARC.Everest.Installer\installsupp\help\Everest Visual Stu
 Source: "..\MARC.Everest.Installer\installsupp\help\Everest Visual Studio Templates.vsi"; DestDir: {app}; Components:api\vs
 #endif
 Source: ..\Solution Items\ICSharpCode.SharpZipLib.dll; DestDir: {tmp}; Components:api\vs
+Source: .\installsupp\sample\gpmrvarsall.bat; DestDir: {app}; Components:tools
+
+; SHERPAS
+Source: ..\Sherpas\MARC.Everest.Sherpas\Bin\Release\MARC.Everest.Sherpas.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: sherpas;
+Source: ..\Sherpas\MARC.Everest.Sherpas.Templating\Bin\Release\MARC.Everest.Sherpas.Templating.dll; Flags: ignoreversion; DestDir: {app}; Components: sherpas;
+Source: ..\Sherpas\Sherptc\bin\release\sherptc.exe; DestDir: {app}; Components: sherpas;
+
+; CCD
+Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.CCD.dll; DestDir: {app}\lib; Flags: ignoreversion; Components:sherpas\templates
+Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.CCD.xml; DestDir: {app}\lib; Flags: ignoreversion; Components:sherpas\templates
+Source: ..\Sherpas\installsupp\Help\CCD.msha; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and doc and api\vs
+Source: ..\Sherpas\installsupp\Help\CCD.mshc; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and doc and api\vs
+Source: ..\Sherpas\installsupp\Help\CCD.chm; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and doc
+; CCDA
+Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.CCDA.dll; DestDir: {app}\lib; Flags: ignoreversion; Components:sherpas\templates
+Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.CCDA.xml; DestDir: {app}\lib; Flags: ignoreversion; Components:sherpas\templates
+
+; Sandbox
+Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.Sandbox.dll; DestDir: {app}\lib; Flags: ignoreversion; Components:sherpas\templates
+Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.Sandbox.xml; DestDir: {app}\lib; Flags: ignoreversion; Components:sherpas\templates
+
+Source: ..\Sherpas\installsupp\Help\CCDA.msha; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and api\vs and doc
+Source: ..\Sherpas\installsupp\Help\CCDA.mshc; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and api\vs and doc
+Source: ..\Sherpas\installsupp\Help\CCDA.chm; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and doc
+Source: ..\Sherpas\installsupp\Help\Sandbox.msha; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and api\vs and doc
+Source: ..\Sherpas\installsupp\Help\Sandbox.mshc; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and api\vs and doc
+Source: ..\Sherpas\installsupp\Help\Sandbox.chm; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and doc
 
 
 [INI]
-FileName: "{app}\everest.version"; Section: "Everest"; Key: "Version"; String: "1.2";
+FileName: "{app}\everest.version"; Section: "Everest"; Key: "Version"; String: "1.3";
 
 [Icons]
 #ifdef INCLUDE_SRC
@@ -225,6 +257,8 @@ Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest
 Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Connectors.WCF.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.WCF"; Flags:runhidden
 Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Connectors.File.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.File"; Flags:runhidden
 Filename: "{dotnet20}\ngen.exe"; Parameters: "uninstall ""{app}\lib\MARC.Everest.Connectors.Msmq.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.MSMQ"; Flags:runhidden
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/uninstall /product VS /version 100 /silent /vendor ""Mohawk College of Applied Arts and Technology"" /productName ""MARC-HI Everest Framework"""; WorkingDir: {app}\help; Flags: runhidden 
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/viewerVersion 2.0 /catalogName VisualStudio11 /operation uninstall /vendor ""Mohawk College of Applied Arts and Technology"" /productName ""MARC-HI Everest Framework"""; Flags: runhidden 
 
 [Run]
 Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.RMIM.UV.NE2008.dll"" /nologo /silent" ; Components:api\ne; StatusMsg: "Generating Native Assembly : MARC.Everest.RMIM.UV.NE2008"; Flags:runhidden
@@ -241,6 +275,18 @@ Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.F
 Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Connectors.WCF.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.WCF"; Flags:runhidden
 Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Connectors.File.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.File"; Flags:runhidden
 Filename: "{dotnet20}\ngen.exe"; Parameters: "install ""{app}\lib\MARC.Everest.Connectors.Msmq.dll"" /nologo /silent" ; Components:api; StatusMsg: "Generating Native Assembly : MARC.Everest.Connectors.MSMQ"; Flags:runhidden
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/product VS /version 100 /sourceMedia ""{app}\help\MARC-HI Everest Framework.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2010 Help (Everest)"; Components:api\vs\doc10; Flags:runhidden runascurrentuser 
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/viewerVersion 2.0 /catalogName VisualStudio11 /operation install /sourceUri ""{app}\help\MARC-HI Everest Framework.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2012+ Help (Everest)"; Components:api\vs\doc11; Flags:runhidden runascurrentuser 
+
+; Sherpas
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/product VS /version 100 /sourceMedia ""{app}\help\CCD.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2010 Help (CCD)"; Components:api\vs\doc10 and sherpas\templates; Flags:runhidden runascurrentuser
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/viewerVersion 2.0 /catalogName VisualStudio11 /operation install /sourceUri ""{app}\help\CCD.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2012+ Help (CCD)"; Components:api\vs\doc11 and sherpas\templates; Flags:runhidden runascurrentuser 
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/product VS /version 100 /sourceMedia ""{app}\help\CCDA.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2010 Help (CCDA)"; Components:api\vs\doc10 and sherpas\templates; Flags:runhidden runascurrentuser
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/viewerVersion 2.0 /catalogName VisualStudio11 /operation install /sourceUri ""{app}\help\CCDA.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2012+ Help (CCDA)"; Components:api\vs\doc11 and sherpas\templates; Flags:runhidden runascurrentuser 
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/product VS /version 100 /sourceMedia ""{app}\help\Sandbox.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2010 Help (Sandbox)"; Components:api\vs\doc10 and sherpas\templates; Flags:runhidden runascurrentuser
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/viewerVersion 2.0 /catalogName VisualStudio11 /operation install /sourceUri ""{app}\help\Sandbox.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2012+ Help (Sandbox)"; Components:api\vs\doc11 and sherpas\templates; Flags:runhidden runascurrentuser 
+
+
 Filename: "{app}\Everest Visual Studio Templates.vsi"; WorkingDir: {app}; StatusMsg: "Installing Visual Studio Components"; Components:api\vs; Flags: shellexec waituntilterminated hidewizard
 #ifdef INCLUDE_SAMPLES
 FileName: {app}\index.hta; WorkingDir:{app}; Components:doc\samples; Flags: postinstall shellexec; Description: "Start the 'Getting Started' tool"
@@ -273,6 +319,11 @@ Name: api\vs; Description: Visual Studio Integration; Types: full developer deve
 Name: api\vs\cda; Description: CDA r2 Documentation; Types: full developer developer\cda developer\necda
 Name: api\vs\ne; Description: UV Documentation (NE2010/NE2008); Types: full developer developer\ne developer\necda
 Name: api\vs\ca; Description: CA Documentation (R02.04.01-R02.04.03); Types: full developer developer\ca
+Name: api\vs\doc10; Description: Install Help into Visual Studio 2010 Help Collection; 
+Name: api\vs\doc11; Description: Install Help into Visual Studio 2012+ Help Collection;
+Name: sherpas; Description: Everest Sherpas Framework; Types: full
+Name: sherpas\templates; Description: Everest Sherpas Templates; Types: full
+
 #ifdef INCLUDE_MIFS
 Name: spec; Description: Pan-Canadian Specifications; Types: full
 #endif
@@ -284,7 +335,7 @@ Name: src; Description: Source; Types: full
 [Code]
 var
   dotnetRedistPath: string;
-  downloadNeeded, needsUninstall, sept2009, nov2009, jan2010, rc1, v1: boolean;
+  downloadNeeded, needsUninstall, sept2009, nov2009, jan2010, rc1, v1, v12: boolean;
   dotNetNeeded: boolean;
   memoDependenciesNeeded: string;
   chkBox : TCheckBox;
@@ -329,7 +380,9 @@ begin
   rc1 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413080}_is1');
   // 1.0
   v1 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-B179-2B6674413081}_is1');
-  needsUninstall := sept2009 or nov2009 or jan2010 or rc1 or v1;
+  // 1.2 = {A0BA6EF4-24AC-47F8-AEFE-FFBA1904024C}
+  v12 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A0BA6EF4-24AC-47F8-AEFE-FFBA1904024C}_is1');
+  needsUninstall := sept2009 or nov2009 or jan2010 or rc1 or v1 or v12;
   // Check for required netfx installation
   //if (not GetUserDefaultLangID() = 'English') then begin
 
@@ -461,6 +514,25 @@ begin
               Result := 'Couldn''t launch the Everest uninstall';
             end;
          end;
+
+		 // 1.2 = {A0BA6EF4-24AC-47F8-AEFE-FFBA1904024C}
+		 needsUninstall := RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A0BA6EF4-24AC-47F8-AEFE-FFBA1904024C}_is1', 'UninstallString', uninstallString);
+  		if(needsUninstall) then begin
+            // Replace
+            while(Pos('"',uninstallString) > 0) do begin
+              Delete(uninstallString, Pos('"',uninstallString), 1);
+            end;
+
+           if(Exec(ExpandConstant(uninstallString), '/silent', '', SW_SHOW, ewWaitUntilTerminated, ResultCode)) then begin
+
+             if not (ResultCode = 0) then begin
+              Result := 'Couldn''t uninstall old version of MARC-HI Everest';
+             end;
+             end
+             else begin
+              Result := 'Couldn''t launch the Everest uninstall';
+            end;
+         end;
      end;
 
     if (Result = '') and (dotNetNeeded = true) then begin
@@ -497,6 +569,8 @@ begin
 			s := s + '       Uninstall Release Candidate 1 of MARC-HI Everest' + NewLine;
 		if(v1) then
 			s := s + '       Release 1.0 of MARC-HI Everest' + NewLine;
+		if(v12) then
+			s := s + '       Release 1.2 of MARC-HI Everest' + NewLine;
 	end;
 	
   s := s + MemoDirInfo + NewLine;

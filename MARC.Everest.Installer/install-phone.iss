@@ -10,9 +10,9 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppID={{0D451B1A-3116-4B86-88EB-881D172AD8B1}
+AppID={{0D451B1A-3116-4B86-88EB-881D172A55B1}
 AppName=MARC-HI Everest Compact Framework
-AppVerName=Everest Compact Framework 1.2
+AppVerName=Everest Compact Framework 1.3
 OutputBaseFilename=everest-compact
 LicenseFile=.\installsupp\release\phone.license.rtf
 AppPublisher=Mohawk College of Applied Arts and Technology
@@ -24,11 +24,11 @@ DefaultGroupName=Mohawk College\Everest Compact
 AllowNoIcons=true
 OutputDir=..\dist
 ;SetupIconFile=D:\work\appicon.ico
-Compression=lzma
-;Compression=
+;Compression=lzma
+Compression=none
 InfoBeforeFile=.\installsupp\release\phone.rtf
 SolidCompression=false
-AppCopyright=Copyright (C) 2012, Mohawk College of Applied Arts and Technology
+AppCopyright=Copyright (C) 2012 - 2014, Mohawk College of Applied Arts and Technology
 WizardImageFile=install-logo.bmp
 WizardSmallImageFile=install-logo-small.bmp
 
@@ -90,7 +90,7 @@ Source: ..\Samples\Phone\*; DestDir: {app}\samples; Flags: ignoreversion recurse
 Source: .\installsupp\sample\phone\*; Flags: ignoreversion recursesubdirs; DestDir: {app}; 
 
 [INI]
-FileName: "{app}\everest.version"; Section: "Everest"; Key: "Version"; String: "1.2";
+FileName: "{app}\everest.version"; Section: "Everest"; Key: "Version"; String: "1.3";
 
 [Icons]
 #ifdef INCLUDE_SAMPLES
@@ -106,7 +106,7 @@ FileName: {app}\index.hta; WorkingDir:{app}; Flags: postinstall shellexec; Descr
 [Code]
 var
   dotnetRedistPath: string;
-  downloadNeeded, needsUninstall, v1: boolean;
+  downloadNeeded, needsUninstall, v1, v12: boolean;
   dotNetNeeded: boolean;
   memoDependenciesNeeded: string;
 	lblSelectMode:	TLabel;
@@ -137,9 +137,9 @@ begin
  
   Result := true;
   dotNetNeeded := false;
-  // 1.0
-  //v1 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-8879-2B6674413081}_is1');
-  //needsUninstall := v1;
+  // 1.2
+  v12 := RegKeyExists(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{0D451B1A-3116-4B86-88EB-881D172AD8B1}_is1');
+  needsUninstall := v12;
   // Check for required netfx installation
   //if (not GetUserDefaultLangID() = 'English') then begin
 
@@ -180,8 +180,8 @@ begin
      
 		
 
-		 // 1.0         
- 		(*needsUninstall := RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{A21E1269-8CDE-43CD-8879-2B6674413081}_is1', 'UninstallString', uninstallString);
+		 // 1.2
+ 		needsUninstall := RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{0D451B1A-3116-4B86-88EB-881D172AD8B1}_is1', 'UninstallString', uninstallString);
   		if(needsUninstall) then begin
             // Replace
             while(Pos('"',uninstallString) > 0) do begin
@@ -197,7 +197,7 @@ begin
              else begin
               Result := 'Couldn''t launch the Everest uninstall';
             end;
-         end;*)
+         end;
      end;
 
     if (Result = '') and (dotNetNeeded = true) then begin
@@ -224,8 +224,8 @@ begin
   if(needsUninstall) then
     if(chkBox.Checked) then begin
 		s := s + 'Uninstall Old Frameworks' + NewLine;
-		//if(v1) then
-		//	s := s + '       Release 1.x of MARC-HI Everest' + NewLine;
+		if(v12) then
+			s := s + '       Release 1.2 of MARC-HI Everest Compact Edition' + NewLine;
 	end;
 	
   s := s + MemoDirInfo + NewLine;
