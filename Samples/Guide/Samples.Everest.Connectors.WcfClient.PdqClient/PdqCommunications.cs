@@ -166,15 +166,15 @@ namespace Samples.Everest.Connectors.WcfClient.PdqClient
                     if (subj.RegistrationEvent == null ||
                         subj.RegistrationEvent.Subject1 == null ||
                         subj.RegistrationEvent.Subject1.registeredRole == null ||
-                        subj.RegistrationEvent.Subject1.registeredRole.GetPatientEntityChoiceSubjectAsPRPA_MT201310UV02Person() == null ||
-                        subj.RegistrationEvent.Subject1.registeredRole.GetPatientEntityChoiceSubjectAsPRPA_MT201310UV02Person().Name == null ||
-                        subj.RegistrationEvent.Subject1.registeredRole.GetPatientEntityChoiceSubjectAsPRPA_MT201310UV02Person().Name.IsEmpty)
+                        subj.RegistrationEvent.Subject1.registeredRole.GetPatientEntityChoiceSubjectIfPatientPerson() == null ||
+                        subj.RegistrationEvent.Subject1.registeredRole.GetPatientEntityChoiceSubjectIfPatientPerson().Name == null ||
+                        subj.RegistrationEvent.Subject1.registeredRole.GetPatientEntityChoiceSubjectIfPatientPerson().Name.IsEmpty)
                         continue;
 
                     // Add the formatted name
-                    var legalName = subj.RegistrationEvent.Subject1.registeredRole.GetPatientEntityChoiceSubjectAsPRPA_MT201310UV02Person().Name.Find(o => o.Use != null && o.Use.Contains(EntityNameUse.Legal));
+                    var legalName = subj.RegistrationEvent.Subject1.registeredRole.GetPatientEntityChoiceSubjectIfPatientPerson().Name.Find(o => o.Use != null && o.Use.Contains(EntityNameUse.Legal));
                     if (legalName == null)
-                        legalName = subj.RegistrationEvent.Subject1.registeredRole.GetPatientEntityChoiceSubjectAsPRPA_MT201310UV02Person().Name[0];
+                        legalName = subj.RegistrationEvent.Subject1.registeredRole.GetPatientEntityChoiceSubjectIfPatientPerson().Name[0];
                     retVal.Add(String.Format("{0}@{1} - {2}",
                         subj.RegistrationEvent.Subject1.registeredRole.Id[0].Root,
                         subj.RegistrationEvent.Subject1.registeredRole.Id[0].Extension,

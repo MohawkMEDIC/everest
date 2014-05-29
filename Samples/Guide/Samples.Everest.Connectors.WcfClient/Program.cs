@@ -95,10 +95,10 @@ namespace Samples.Everest.Connectors.WcfClient
                 // many cases, the trigger event for an interaction is 
                 // fixed, and can be accessed using the .TRIGGER_EVENT
                 // constant
-                new MARC.Everest.RMIM.CA.R020401.MCAI_MT700211CA.RecordTarget(), // The record target identifies
+                new MARC.Everest.RMIM.CA.R020401.MCAI_MT700210CA.RecordTarget(), // The record target identifies
                 // the target of the event. In this case, it is the patient
                 // that we are recording the discharge for
-                new MARC.Everest.RMIM.CA.R020401.MCAI_MT700212CA.Author(), // The author identifies the person
+                new MARC.Everest.RMIM.CA.R020401.MCAI_MT700211CA.Author(), // The author identifies the person
                 // that is responsible for the act
                 new MARC.Everest.RMIM.CA.R020401.MCAI_MT700210CA.Subject2<MARC.Everest.RMIM.CA.R020401.REPC_MT220001CA.Document>()
                 // The subject is the actual data that is being created,

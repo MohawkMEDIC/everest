@@ -67,7 +67,7 @@ namespace HelloWorld
             FindCandidatesStructure.controlActEvent = PRPA_IN101103CA.CreateControlActEvent(
                 new II("2.16.840.1.113883.19.3.207.15.1.1", "0245285594892"),
                 triggerevent,
-                new MARC.Everest.RMIM.CA.R020401.MFMI_MT700751CA.Author(new TS(DateTime.Parse("2009-03-14 19:58:55.218"))),
+                new MARC.Everest.RMIM.CA.R020401.MFMI_MT700711CA.Author(new TS(DateTime.Parse("2009-03-14 19:58:55.218"))),
                 new MARC.Everest.RMIM.CA.R020401.MFMI_MT700746CA.QueryByParameter<MARC.Everest.RMIM.CA.R020401.PRPA_MT101103CA.ParameterList>(
                     II.CreateToken(Guid.NewGuid()),
                     new MARC.Everest.RMIM.CA.R020401.PRPA_MT101103CA.ParameterList()
@@ -123,7 +123,7 @@ namespace HelloWorld
             {
                 Console.WriteLine("Error trying to save structure PRPA_IN101103CA. Formatter response: {0}", Result.Code.ToString());
             }
-
+            
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
 

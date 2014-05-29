@@ -25,6 +25,7 @@ using System.IO;
 using MohawkCollege.EHR.gpmr.COR;
 using MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.HeuristicEngine;
 using System.Diagnostics;
+using System.Linq;
 
 namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 {
@@ -79,9 +80,9 @@ namespace MohawkCollege.EHR.gpmr.Pipeline.Renderer.RimbaCS.Renderer
 
             // This will check the literal count against bound vocab sets
             // if the enu is currently a concept domain
-            if (enu is ConceptDomain && (enu as ConceptDomain).ContextBinding != null && (enu as ConceptDomain).ContextBinding.Count == 1)
+            if (enu is ConceptDomain && (enu as ConceptDomain).ContextBinding != null && (enu as ConceptDomain).ContextBinding.Select(p=>String.Format("{0}.{1}", p.EnumerationType, p.Name)).Distinct().Count() == 1)
                 enu = (enu as ConceptDomain).ContextBinding[0];
-            else if (enu is ConceptDomain && (enu as ConceptDomain).ContextBinding != null && (enu as ConceptDomain).ContextBinding.Count > 1) // HACK: If there is more than one context binding create a new value set, clear the binding and then re-bind
+            else if (enu is ConceptDomain && (enu as ConceptDomain).ContextBinding != null && (enu as ConceptDomain).ContextBinding.Select(p => String.Format("{0}.{1}", p.EnumerationType, p.Name)).Distinct().Count() > 1) // HACK: If there is more than one context binding create a new value set, clear the binding and then re-bind
             {
                 // Create the VS
                 ValueSet vsNew = new ValueSet()

@@ -134,7 +134,7 @@ namespace Samples.Everest.ClinicalDocuments.CdaConstruction
                         new Section() {
                             Code = new CE<string>("10164-2", "2.16.840.1.113883.6.1"),
                             Title = "History of Present Illness",
-                            Text = new ED("<content styleCode=\"Bold\">This is bold</content>") { Representation = EncapsulatedDataRepresentation.XML } // In the CDA ED type, we can use content tags to style the content
+                            Text = new SD(SD.CreateElement("content","This is bold", null).AddAttribute("styleCode","Bold")) // In the CDA ED type, we can use content tags to style the content
                         }),
                     new Component3(ActRelationshipHasComponent.HasComponent, true,
                         new Section() {

@@ -156,8 +156,8 @@ Source: ..\gpmr\bin\Release\MohawkCollege.EHR.Util.SimpleXSD.dll; DestDir: {app}
 Source: ..\gpmr\bin\Release\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorCollapser.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\gpmr\bin\Release\MohawkCollege.EHR.gpmr.Pipeline.Triggers.CorDelta.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\gpmr\bin\Release\MohawkCollege.EHR.HL7v3.MIF.MIF20.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
-Source: ..\gpmr\bin\Release\MohawkCollege.Util.Console.Parameters.dll; DestDir: {app}; Flags: ignoreversion; Components: tools or sherpas
-Source: ..\gpmr\bin\Release\MohawkCollege.Util.Console.Parameters.xml; DestDir: {app}; Flags: ignoreversion; Components: tools or sherpas
+Source: ..\gpmr\bin\Release\MohawkCollege.Util.Console.Parameters.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
+Source: ..\gpmr\bin\Release\MohawkCollege.Util.Console.Parameters.xml; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\gpmr\bin\Release\MohawkCollege.Util.Console.Writer.dll; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\MARC.Everest\bin\Release\MARC.Everest.dll; StrongAssemblyName: MARC.Everest; DestDir: {app}; Flags: ignoreversion; Components: tools
 Source: ..\MARC.Everest\bin\Release\MARC.Everest.xml; DestDir: {app}; Flags: ignoreversion; Components: tools
@@ -197,9 +197,9 @@ Source: ..\Solution Items\ICSharpCode.SharpZipLib.dll; DestDir: {tmp}; Component
 Source: .\installsupp\sample\gpmrvarsall.bat; DestDir: {app}; Components:tools
 
 ; SHERPAS
-Source: ..\Sherpas\MARC.Everest.Sherpas\Bin\Release\MARC.Everest.Sherpas.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: sherpas;
-Source: ..\Sherpas\MARC.Everest.Sherpas.Templating\Bin\Release\MARC.Everest.Sherpas.Templating.dll; Flags: ignoreversion; DestDir: {app}; Components: sherpas;
-Source: ..\Sherpas\Sherptc\bin\release\sherptc.exe; DestDir: {app}; Components: sherpas;
+Source: ..\Sherpas\MARC.Everest.Sherpas\Bin\Release\MARC.Everest.Sherpas.dll; DestDir: {app}\lib; Flags: ignoreversion; Components: api;
+Source: ..\Sherpas\MARC.Everest.Sherpas.Templating\Bin\Release\MARC.Everest.Sherpas.Templating.dll; Flags: ignoreversion; DestDir: {app}; Components: tools;
+Source: ..\Sherpas\Sherptc\bin\release\sherptc.exe; DestDir: {app}; Components: tools;
 
 ; CCD
 Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.CCD.dll; DestDir: {app}\lib; Flags: ignoreversion; Components:sherpas\templates
@@ -212,15 +212,15 @@ Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.CCDA.dll; DestD
 Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.CCDA.xml; DestDir: {app}\lib; Flags: ignoreversion; Components:sherpas\templates
 
 ; Sandbox
-Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.Sandbox.dll; DestDir: {app}\lib; Flags: ignoreversion; Components:sherpas\templates
-Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.Sandbox.xml; DestDir: {app}\lib; Flags: ignoreversion; Components:sherpas\templates
+Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.Sandbox.dll; DestDir: {app}\lib; Flags: ignoreversion; Components:api
+Source: ..\Sherpas\Solution Items\MARC.Everest.Sherpas.Templates.Sandbox.xml; DestDir: {app}\lib; Flags: ignoreversion; Components:api
 
 Source: ..\Sherpas\installsupp\Help\CCDA.msha; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and api\vs and doc
 Source: ..\Sherpas\installsupp\Help\CCDA.mshc; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and api\vs and doc
 Source: ..\Sherpas\installsupp\Help\CCDA.chm; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and doc
-Source: ..\Sherpas\installsupp\Help\Sandbox.msha; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and api\vs and doc
-Source: ..\Sherpas\installsupp\Help\Sandbox.mshc; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and api\vs and doc
-Source: ..\Sherpas\installsupp\Help\Sandbox.chm; DestDir: {app}\help; Flags: ignoreversion; Components:sherpas\templates and doc
+Source: ..\Sherpas\installsupp\Help\Sandbox.msha; DestDir: {app}\help; Flags: ignoreversion; Components:api and api\vs and doc
+Source: ..\Sherpas\installsupp\Help\Sandbox.mshc; DestDir: {app}\help; Flags: ignoreversion; Components:api and api\vs and doc
+Source: ..\Sherpas\installsupp\Help\Sandbox.chm; DestDir: {app}\help; Flags: ignoreversion; Components:api and doc
 
 
 [INI]
@@ -283,8 +283,8 @@ Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/product VS 
 Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/viewerVersion 2.0 /catalogName VisualStudio11 /operation install /sourceUri ""{app}\help\CCD.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2012+ Help (CCD)"; Components:api\vs\doc11 and sherpas\templates; Flags:runhidden runascurrentuser 
 Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/product VS /version 100 /sourceMedia ""{app}\help\CCDA.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2010 Help (CCDA)"; Components:api\vs\doc10 and sherpas\templates; Flags:runhidden runascurrentuser
 Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/viewerVersion 2.0 /catalogName VisualStudio11 /operation install /sourceUri ""{app}\help\CCDA.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2012+ Help (CCDA)"; Components:api\vs\doc11 and sherpas\templates; Flags:runhidden runascurrentuser 
-Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/product VS /version 100 /sourceMedia ""{app}\help\Sandbox.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2010 Help (Sandbox)"; Components:api\vs\doc10 and sherpas\templates; Flags:runhidden runascurrentuser
-Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/viewerVersion 2.0 /catalogName VisualStudio11 /operation install /sourceUri ""{app}\help\Sandbox.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2012+ Help (Sandbox)"; Components:api\vs\doc11 and sherpas\templates; Flags:runhidden runascurrentuser 
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/product VS /version 100 /sourceMedia ""{app}\help\Sandbox.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2010 Help (Sandbox)"; Components:api\vs\doc10 and api; Flags:runhidden runascurrentuser
+Filename: "{app}\Help\HelpLibraryManagerLauncher.exe"; Parameters: "/viewerVersion 2.0 /catalogName VisualStudio11 /operation install /sourceUri ""{app}\help\Sandbox.msha"""; WorkingDir: {app}\help; StatusMsg: "Installing Visual Studio 2012+ Help (Sandbox)"; Components:api\vs\doc11 and api; Flags:runhidden runascurrentuser 
 
 
 Filename: "{app}\Everest Visual Studio Templates.vsi"; WorkingDir: {app}; StatusMsg: "Installing Visual Studio Components"; Components:api\vs; Flags: shellexec waituntilterminated hidewizard
@@ -303,10 +303,9 @@ Name: developer\ne; Description: Universal Edition Development Environment
 Name: developer\necda; Description: Universal/CDA Development Environment
 Name: developer\ca; Description: Canadian Edition Development Environment
 Name: custom; Description: Custom Install; Flags: iscustom
-Name: Sherpas; Description: Sherpas Only
 
 [Components]
-Name: tools; Description: Tool Files; Types: full tooling sherpas
+Name: tools; Description: Tool Files; Types: full tooling
 Name: doc; Description: Documentation; Types: full
 #ifdef INCLUDE_SAMPLES
 Name: doc\samples; Description: Samples; Types: full developer developer\cda developer\ne developer\necda developer\ca
@@ -322,8 +321,7 @@ Name: api\vs\ne; Description: UV Documentation (NE2010/NE2008); Types: full deve
 Name: api\vs\ca; Description: CA Documentation (R02.04.01-R02.04.03); Types: full developer developer\ca
 Name: api\vs\doc10; Description: Install Help into Visual Studio 2010 Help Collection; 
 Name: api\vs\doc11; Description: Install Help into Visual Studio 2012+ Help Collection;
-Name: sherpas; Description: Everest Sherpas Framework; Types: full sherpas tooling
-Name: sherpas\templates; Description: Everest Sherpas Templates; Types: full sherpas
+Name: sherpas\templates; Description: Everest Sherpas CCD and CCDA Templates; Types: full
 
 #ifdef INCLUDE_MIFS
 Name: spec; Description: Pan-Canadian Specifications; Types: full
