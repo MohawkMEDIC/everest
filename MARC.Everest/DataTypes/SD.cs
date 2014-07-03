@@ -13,7 +13,7 @@ using MARC.Everest.DataTypes.StructDoc;
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
-    /// Represents a structured document type
+    /// Represents a structured document text type
     /// </summary>
     [Structure(Name = "SD", StructureType = StructureAttribute.StructureAttributeType.DataType)]
     [XmlType("SD", Namespace = "urn:hl7-org:v3")]
@@ -28,7 +28,7 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         public SD()
         {
-            this.MediaType = "text/x-hl7-title+xml";
+            this.MediaType = "text/x-hl7-text+xml";
             this.Content = new List<StructDoc.StructDocNode>();
         }
 
@@ -130,12 +130,56 @@ namespace MARC.Everest.DataTypes
         #endregion
 
         /// <summary>
+        /// Return if the two instance equal one another
+        /// </summary>
+        /// <remarks>Two SD instances are semantically equal when they contain the same content 
+        /// have the same media type. An SD can be semantically equal to an ED if their 
+        /// mediaType and content match.</remarks>
+        public override BL SemanticEquals(Interfaces.IAny other)
+        {
+            var baseSem = base.SemanticEquals(other);
+            if (!(bool)baseSem)
+                return baseSem;
+
+            // Null-flavored
+            if (this.IsNull && other.IsNull)
+                return true;
+            else if (this.IsNull ^ other.IsNull)
+                return false;
+
+            ED otherEd = other as ED;
+            // Other is ST?
+            if (otherEd != null)
+            {
+                // Parse node from text
+                return SD.ParseED(otherEd).SemanticEquals(this);
+            }
+                    
+
+            // Get other as an ED
+            SD otherSd = other as SD;
+            if (otherSd == null)
+                return false;
+
+            // Compare content and media type
+            if (this.Content != null && otherSd.Content != null)
+            {
+                bool equals = true;
+                for (int i = 0; i < this.Content.Count; i++)
+                    equals &= this.Content[i].Equals(otherSd.Content[i]);
+                return equals && this.MediaType == otherSd.MediaType;
+            }
+            else
+                return false;
+        }
+
+        /// <summary>
         /// Validate this object
         /// </summary>
         public override IEnumerable<Connectors.IResultDetail> ValidateEx()
         {
             var retVal = base.ValidateEx() as List<IResultDetail>;
-            if (this.MediaType != "text/x-hl7-title+xml")
+            if (this.MediaType != "text/x-hl7-text+xml")
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Warning, "SD", String.Format(ValidationMessages.MSG_INVALID_VALUE, this.MediaType, "MediaType"), null));
             else if (!(this.IsNull ^ (this.Content.Count > 0)))
                 retVal.Add(new DatatypeValidationResultDetail(ResultDetailType.Error, "SD", ValidationMessages.MSG_NULLFLAVOR_WITH_VALUE, null));
@@ -148,7 +192,7 @@ namespace MARC.Everest.DataTypes
         public override bool Validate()
         {
             return base.Validate() && (this.IsNull ^ (this.Content.Count > 0)) &&
-                this.MediaType == "text/x-hl7-title+xml";
+                this.MediaType == "text/x-hl7-text+xml";
         }
 
         /// <summary>
@@ -159,5 +203,43 @@ namespace MARC.Everest.DataTypes
             return new SD(new MARC.Everest.DataTypes.StructDoc.StructDocTextNode(text));
         }
 
+        /// <summary>
+        /// Cast a string to an SD instance
+        /// </summary>
+        internal static SD ParseED(ED other)
+        {
+
+            SD retVal = new SD();
+            retVal.MediaType = other.MediaType;
+            retVal.Language = other.Language;
+
+            // Parse content
+            using(MemoryStream ms = new MemoryStream(other.Data))
+            using (XmlReader rdr = XmlReader.Create(ms))
+            {
+                while (rdr.NodeType != XmlNodeType.Element &&
+                    rdr.NodeType != XmlNodeType.Text &&
+                    rdr.NodeType != XmlNodeType.Comment)
+                    rdr.Read();
+                do
+                {
+                    switch (rdr.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            retVal.Content.Add(new StructDocElementNode());
+                            break;
+                        case XmlNodeType.Text:
+                            retVal.Content.Add(new StructDocTextNode());
+                            break;
+                        case XmlNodeType.Comment:
+                            retVal.Content.Add(new StructDocCommentNode());
+                            break;
+                    }
+                    retVal.Content.Last().ReadXml(rdr);
+                } while (rdr.Read());
+            }
+
+            return retVal;
+        }
     }
 }

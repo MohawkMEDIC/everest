@@ -130,7 +130,7 @@ namespace MARC.Everest.DataTypes.StructDoc
         public override void ReadXml(System.Xml.XmlReader reader)
         {
             if(reader.NodeType != System.Xml.XmlNodeType.Element)
-                throw new InvalidOperationException("Invalid state, must be in Comment");
+                throw new InvalidOperationException("Invalid state, must be in Element");
             this.Name = reader.LocalName;
             this.NamespaceUri = reader.NamespaceURI;
 
