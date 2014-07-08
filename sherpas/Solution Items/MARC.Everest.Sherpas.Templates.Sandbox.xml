@@ -89,10 +89,9 @@
     <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor.RepresentedOrganization">
       <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.AssignedAuthor.RepresentedOrganization" /></summary>
     </member>
-    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor">
-      <summary>CDAauthor is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Author" /></summary>
+    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component">
+      <summary>MinimalCDAdocument_Component is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component2" /></summary>
       <remarks>
-        <div>Author of the document</div>
         <h4>Constraints</h4>
         <list type="table">
           <listheader>
@@ -101,115 +100,43 @@
           </listheader>
           <item>
             <term>0</term>
-            <description>Property Author.TypeCode must carry value AUT</description>
-          </item>
-        </list>
-      </remarks>
-      <example>
-        <code lang="xml"><![CDATA[
-            <?xml version="1.0" encoding="utf-16"?>
-            <v3:author xmlns:v3="urn:hl7-org:v3">
-              <v3:time value="20131020" />
-              <v3:assignedAuthor>
-                <v3:id extension="HCP89567" root="2.16.840.1.113883.3.1937.99.3.1.997788" />
-                <v3:assignedPerson>
-                  <v3:name>
-                    <v3:given>Kai</v3:given>
-                    <v3:family>Heitmann</v3:family>
-                  </v3:name>
-                </v3:assignedPerson>
-                <v3:representedOrganization>
-                  <v3:name>The World's Best EKG Service Delivery Location</v3:name>
-                </v3:representedOrganization>
-              </v3:assignedAuthor>
-            </v3:author>
-            ]]></code>
-      </example>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.#ctor">
-      <summary>Constructs a new instance of CDAauthor</summary>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Author)">
-      <summary>Copy constructor</summary>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.GetAssignedAuthorAsCDAauthor_AssignedAuthor">
-      <summary>Gets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.AssignedAuthor" /> as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor" /></summary>
-      <returns>The value of <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.AssignedAuthor" /> cast as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor" />, null if <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.AssignedAuthor" /> is not an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor" /></returns>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.SetAssignedAuthor(MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor)">
-      <summary>Sets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.AssignedAuthor" /> to an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor" /></summary>
-      <param name="value">The instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor" /> to set the property</param>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.CDAauthorConstraint0Check(MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor)">
-      <summary>Checks formal constraint 'Property Author.TypeCode must carry value AUT'</summary>
-    </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.Time">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Author.Time" /></summary>
-    </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.AssignedAuthor">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Author.AssignedAuthor" /></summary>
-    </member>
-    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget">
-      <summary>CDArecordTarget is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RecordTarget" /></summary>
-      <remarks>
-        <div>The patient / client</div>
-        <h4>Constraints</h4>
-        <list type="table">
-          <listheader>
-            <term>Check #</term>
-            <description>Statement</description>
-          </listheader>
-          <item>
-            <term>0</term>
-            <description>Property RecordTarget.TypeCode must carry value RCT</description>
+            <description>Property Component.TypeCode must carry value COMP</description>
           </item>
           <item>
             <term>1</term>
-            <description>Property RecordTarget.ContextControlCode must carry value OP</description>
+            <description>Property Component.ContextConductionInd must carry value true</description>
           </item>
         </list>
       </remarks>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.#ctor">
+      <summary>Constructs a new instance of MinimalCDAdocument_Component</summary>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component2)">
+      <summary>Copy constructor</summary>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.GetBodyChoiceAsMinimalCDAdocument_Component_BodyChoice">
+      <summary>Gets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.BodyChoice" /> as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice" /></summary>
+      <returns>The value of <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.BodyChoice" /> cast as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice" />, null if <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.BodyChoice" /> is not an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice" /></returns>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.SetBodyChoice(MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice)">
+      <summary>Sets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.BodyChoice" /> to an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice" /></summary>
+      <param name="value">The instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice" /> to set the property</param>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.MinimalCDAdocument_ComponentConstraint0Check(MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component)">
+      <summary>Checks formal constraint 'Property Component.TypeCode must carry value COMP'</summary>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.MinimalCDAdocument_ComponentConstraint1Check(MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component)">
+      <summary>Checks formal constraint 'Property Component.ContextConductionInd must carry value true'</summary>
+    </member>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.BodyChoice">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component2.BodyChoice" /></summary>
       <example>
         <code lang="xml"><![CDATA[
             <?xml version="1.0" encoding="utf-16"?>
-            <v3:recordTarget xmlns:v3="urn:hl7-org:v3">
-              <v3:patientRole>
-                <v3:id root="2.16.840.1.113883.2.4.6.3" extension="100202020" />
-                <v3:patient>
-                  <v3:name>
-                    <v3:given>John</v3:given>
-                    <v3:family>Doedidoe</v3:family>
-                  </v3:name>
-                  <v3:administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1" />
-                  <v3:birthTime value="19620219" />
-                </v3:patient>
-              </v3:patientRole>
-            </v3:recordTarget>
+            <v3:structuredBody classCode="DOCBODY" moodCode="EVN" xmlns:v3="urn:hl7-org:v3" />
             ]]></code>
       </example>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.#ctor">
-      <summary>Constructs a new instance of CDArecordTarget</summary>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RecordTarget)">
-      <summary>Copy constructor</summary>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.GetPatientRoleAsCDArecordTarget_PatientRole">
-      <summary>Gets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.PatientRole" /> as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole" /></summary>
-      <returns>The value of <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.PatientRole" /> cast as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole" />, null if <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.PatientRole" /> is not an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole" /></returns>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.SetPatientRole(MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole)">
-      <summary>Sets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.PatientRole" /> to an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole" /></summary>
-      <param name="value">The instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole" /> to set the property</param>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.CDArecordTargetConstraint0Check(MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget)">
-      <summary>Checks formal constraint 'Property RecordTarget.TypeCode must carry value RCT'</summary>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.CDArecordTargetConstraint1Check(MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget)">
-      <summary>Checks formal constraint 'Property RecordTarget.ContextControlCode must carry value OP'</summary>
-    </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.PatientRole">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RecordTarget.PatientRole" /></summary>
     </member>
     <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole">
       <summary>CDArecordTarget_PatientRole is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.PatientRole" /></summary>
@@ -275,6 +202,78 @@
             </v3:patient>
             ]]></code>
       </example>
+    </member>
+    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice">
+      <summary>MinimalCDAdocument_Component_BodyChoice is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.StructuredBody" /></summary>
+      <remarks>
+        <h4>Constraints</h4>
+        <list type="table">
+          <listheader>
+            <term>Check #</term>
+            <description>Statement</description>
+          </listheader>
+          <item>
+            <term>0</term>
+            <description>Property StructuredBody.ClassCode must carry value DOCBODY</description>
+          </item>
+          <item>
+            <term>1</term>
+            <description>Property StructuredBody.MoodCode must carry value EVN</description>
+          </item>
+        </list>
+      </remarks>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.#ctor">
+      <summary>Constructs a new instance of MinimalCDAdocument_Component_BodyChoice</summary>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.StructuredBody)">
+      <summary>Copy constructor</summary>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.GetComponentAsEKGImpressionSectionComponent(System.Int32)">
+      <summary>Gets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent" /></summary>
+      <returns>The value of <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> cast as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent" />, null if <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> is not an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent" /></returns>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.AddComponent(MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent)">
+      <summary>Adds an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent" /> to <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /></summary>
+      <param name="value">The instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent" /> to be added to the collection</param>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.HasEKGImpressionSectionComponentCheck(MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice)">
+      <summary>Checks formal constraint 'Component must contain 1..1 of EKGImpressionSectionComponent'</summary>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.GetComponentAsAnotherSection(System.Int32)">
+      <summary>Gets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection" /></summary>
+      <returns>The value of <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> cast as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection" />, null if <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> is not an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection" /></returns>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.AddComponent(MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection)">
+      <summary>Adds an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection" /> to <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /></summary>
+      <param name="value">The instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection" /> to be added to the collection</param>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.HasAnotherSectionCheck(MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice)">
+      <summary>Checks formal constraint 'Component must contain 1..1 of AnotherSection'</summary>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.ComponentCheck(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component3)">
+      <summary>Checks formal constraint 'Property Component.TypeCode must carry value COMP; Property Component.ContextConductionInd must carry value true'</summary>
+    </member>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.StructuredBody.Component" /></summary>
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.StructuredBody.Component" /></summary>
+      <remarks>
+        <h4>Constraints</h4>
+        <list type="table">
+          <listheader>
+            <term>Check #</term>
+            <description>Statement</description>
+          </listheader>
+          <item>
+            <term>0</term>
+            <description>Property Component.TypeCode must carry value COMP</description>
+          </item>
+          <item>
+            <term>1</term>
+            <description>Property Component.ContextConductionInd must carry value true</description>
+          </item>
+        </list>
+      </remarks>
     </member>
     <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_AssignedAuthorChoice">
       <summary>CDAauthor_AssignedAuthor_AssignedAuthorChoice is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Person" /></summary>
@@ -374,77 +373,47 @@
     <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian.RepresentedCustodianOrganization">
       <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.AssignedCustodian.RepresentedCustodianOrganization" /></summary>
     </member>
-    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice">
-      <summary>MinimalCDAdocument_Component_BodyChoice is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.StructuredBody" /></summary>
-      <remarks>
-        <h4>Constraints</h4>
-        <list type="table">
-          <listheader>
-            <term>Check #</term>
-            <description>Statement</description>
-          </listheader>
-          <item>
-            <term>0</term>
-            <description>Property StructuredBody.ClassCode must carry value DOCBODY</description>
-          </item>
-          <item>
-            <term>1</term>
-            <description>Property StructuredBody.MoodCode must carry value EVN</description>
-          </item>
-        </list>
-      </remarks>
+    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization">
+      <summary>CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization" /></summary>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.#ctor">
-      <summary>Constructs a new instance of MinimalCDAdocument_Component_BodyChoice</summary>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.#ctor">
+      <summary>Constructs a new instance of CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization</summary>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.StructuredBody)">
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization)">
       <summary>Copy constructor</summary>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.GetComponentAsEKGImpressionSectionComponent(System.Int32)">
-      <summary>Gets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent" /></summary>
-      <returns>The value of <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> cast as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent" />, null if <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> is not an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent" /></returns>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.Id">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization.Id" /></summary>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.AddComponent(MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent)">
-      <summary>Adds an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent" /> to <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /></summary>
-      <param name="value">The instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent" /> to be added to the collection</param>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.Name">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization.Name" /></summary>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.HasEKGImpressionSectionComponentCheck(MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice)">
-      <summary>Checks formal constraint 'Component must contain 1..1 of EKGImpressionSectionComponent'</summary>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.Telecom">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization.Telecom" /></summary>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.GetComponentAsAnotherSection(System.Int32)">
-      <summary>Gets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection" /></summary>
-      <returns>The value of <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> cast as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection" />, null if <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /> is not an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection" /></returns>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.Addr">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization.Addr" /></summary>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.AddComponent(MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection)">
-      <summary>Adds an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection" /> to <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component" /></summary>
-      <param name="value">The instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection" /> to be added to the collection</param>
+    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization">
+      <summary>CDAauthor_AssignedAuthor_RepresentedOrganization is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization" /></summary>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.HasAnotherSectionCheck(MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice)">
-      <summary>Checks formal constraint 'Component must contain 1..1 of AnotherSection'</summary>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.#ctor">
+      <summary>Constructs a new instance of CDAauthor_AssignedAuthor_RepresentedOrganization</summary>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.ComponentCheck(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component3)">
-      <summary>Checks formal constraint 'Property Component.TypeCode must carry value COMP; Property Component.ContextConductionInd must carry value true'</summary>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization)">
+      <summary>Copy constructor</summary>
     </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice.Component">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.StructuredBody.Component" /></summary>
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.StructuredBody.Component" /></summary>
-      <remarks>
-        <h4>Constraints</h4>
-        <list type="table">
-          <listheader>
-            <term>Check #</term>
-            <description>Statement</description>
-          </listheader>
-          <item>
-            <term>0</term>
-            <description>Property Component.TypeCode must carry value COMP</description>
-          </item>
-          <item>
-            <term>1</term>
-            <description>Property Component.ContextConductionInd must carry value true</description>
-          </item>
-        </list>
-      </remarks>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.Id">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization.Id" /></summary>
+    </member>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.Name">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization.Name" /></summary>
+    </member>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.Telecom">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization.Telecom" /></summary>
+    </member>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.Addr">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization.Addr" /></summary>
     </member>
     <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection">
       <summary>AnotherSection is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component3" /></summary>
@@ -478,30 +447,10 @@
     <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection.AnotherSectionConstraint1Check(MARC.Everest.Sherpas.Templates.Sandbox.AnotherSection)">
       <summary>Checks formal constraint 'Property Component.ContextConductionInd must carry value true'</summary>
     </member>
-    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization">
-      <summary>CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization" /></summary>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.#ctor">
-      <summary>Constructs a new instance of CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization</summary>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization)">
-      <summary>Copy constructor</summary>
-    </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.Id">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization.Id" /></summary>
-    </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.Name">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization.Name" /></summary>
-    </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.Telecom">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization.Telecom" /></summary>
-    </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAcustodian_AssignedCustodian_RepresentedCustodianOrganization.Addr">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.CustodianOrganization.Addr" /></summary>
-    </member>
-    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component">
-      <summary>MinimalCDAdocument_Component is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component2" /></summary>
+    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget">
+      <summary>CDArecordTarget is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RecordTarget" /></summary>
       <remarks>
+        <div>The patient / client</div>
         <h4>Constraints</h4>
         <list type="table">
           <listheader>
@@ -510,43 +459,55 @@
           </listheader>
           <item>
             <term>0</term>
-            <description>Property Component.TypeCode must carry value COMP</description>
+            <description>Property RecordTarget.TypeCode must carry value RCT</description>
           </item>
           <item>
             <term>1</term>
-            <description>Property Component.ContextConductionInd must carry value true</description>
+            <description>Property RecordTarget.ContextControlCode must carry value OP</description>
           </item>
         </list>
       </remarks>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.#ctor">
-      <summary>Constructs a new instance of MinimalCDAdocument_Component</summary>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component2)">
-      <summary>Copy constructor</summary>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.GetBodyChoiceAsMinimalCDAdocument_Component_BodyChoice">
-      <summary>Gets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.BodyChoice" /> as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice" /></summary>
-      <returns>The value of <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.BodyChoice" /> cast as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice" />, null if <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.BodyChoice" /> is not an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice" /></returns>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.SetBodyChoice(MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice)">
-      <summary>Sets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.BodyChoice" /> to an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice" /></summary>
-      <param name="value">The instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component_BodyChoice" /> to set the property</param>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.MinimalCDAdocument_ComponentConstraint0Check(MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component)">
-      <summary>Checks formal constraint 'Property Component.TypeCode must carry value COMP'</summary>
-    </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.MinimalCDAdocument_ComponentConstraint1Check(MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component)">
-      <summary>Checks formal constraint 'Property Component.ContextConductionInd must carry value true'</summary>
-    </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.MinimalCDAdocument_Component.BodyChoice">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component2.BodyChoice" /></summary>
       <example>
         <code lang="xml"><![CDATA[
             <?xml version="1.0" encoding="utf-16"?>
-            <v3:structuredBody classCode="DOCBODY" moodCode="EVN" xmlns:v3="urn:hl7-org:v3" />
+            <v3:recordTarget xmlns:v3="urn:hl7-org:v3">
+              <v3:patientRole>
+                <v3:id root="2.16.840.1.113883.2.4.6.3" extension="100202020" />
+                <v3:patient>
+                  <v3:name>
+                    <v3:given>John</v3:given>
+                    <v3:family>Doedidoe</v3:family>
+                  </v3:name>
+                  <v3:administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1" />
+                  <v3:birthTime value="19620219" />
+                </v3:patient>
+              </v3:patientRole>
+            </v3:recordTarget>
             ]]></code>
       </example>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.#ctor">
+      <summary>Constructs a new instance of CDArecordTarget</summary>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RecordTarget)">
+      <summary>Copy constructor</summary>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.GetPatientRoleAsCDArecordTarget_PatientRole">
+      <summary>Gets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.PatientRole" /> as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole" /></summary>
+      <returns>The value of <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.PatientRole" /> cast as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole" />, null if <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.PatientRole" /> is not an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole" /></returns>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.SetPatientRole(MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole)">
+      <summary>Sets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.PatientRole" /> to an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole" /></summary>
+      <param name="value">The instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget_PatientRole" /> to set the property</param>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.CDArecordTargetConstraint0Check(MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget)">
+      <summary>Checks formal constraint 'Property RecordTarget.TypeCode must carry value RCT'</summary>
+    </member>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.CDArecordTargetConstraint1Check(MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget)">
+      <summary>Checks formal constraint 'Property RecordTarget.ContextControlCode must carry value OP'</summary>
+    </member>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDArecordTarget.PatientRole">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.RecordTarget.PatientRole" /></summary>
     </member>
     <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent">
       <summary>EKGImpressionSectionComponent is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component3" /></summary>
@@ -594,26 +555,65 @@
     <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSectionComponent.Section">
       <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Component3.Section" /></summary>
     </member>
-    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization">
-      <summary>CDAauthor_AssignedAuthor_RepresentedOrganization is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization" /></summary>
+    <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor">
+      <summary>CDAauthor is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Author" /></summary>
+      <remarks>
+        <div>Author of the document</div>
+        <h4>Constraints</h4>
+        <list type="table">
+          <listheader>
+            <term>Check #</term>
+            <description>Statement</description>
+          </listheader>
+          <item>
+            <term>0</term>
+            <description>Property Author.TypeCode must carry value AUT</description>
+          </item>
+        </list>
+      </remarks>
+      <example>
+        <code lang="xml"><![CDATA[
+            <?xml version="1.0" encoding="utf-16"?>
+            <v3:author xmlns:v3="urn:hl7-org:v3">
+              <v3:time value="20131020" />
+              <v3:assignedAuthor>
+                <v3:id extension="HCP89567" root="2.16.840.1.113883.3.1937.99.3.1.997788" />
+                <v3:assignedPerson>
+                  <v3:name>
+                    <v3:given>Kai</v3:given>
+                    <v3:family>Heitmann</v3:family>
+                  </v3:name>
+                </v3:assignedPerson>
+                <v3:representedOrganization>
+                  <v3:name>The World's Best EKG Service Delivery Location</v3:name>
+                </v3:representedOrganization>
+              </v3:assignedAuthor>
+            </v3:author>
+            ]]></code>
+      </example>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.#ctor">
-      <summary>Constructs a new instance of CDAauthor_AssignedAuthor_RepresentedOrganization</summary>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.#ctor">
+      <summary>Constructs a new instance of CDAauthor</summary>
     </member>
-    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization)">
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.#ctor(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Author)">
       <summary>Copy constructor</summary>
     </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.Id">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization.Id" /></summary>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.GetAssignedAuthorAsCDAauthor_AssignedAuthor">
+      <summary>Gets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.AssignedAuthor" /> as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor" /></summary>
+      <returns>The value of <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.AssignedAuthor" /> cast as an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor" />, null if <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.AssignedAuthor" /> is not an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor" /></returns>
     </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.Name">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization.Name" /></summary>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.SetAssignedAuthor(MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor)">
+      <summary>Sets <see cref="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.AssignedAuthor" /> to an instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor" /></summary>
+      <param name="value">The instance of <see cref="T:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor" /> to set the property</param>
     </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.Telecom">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization.Telecom" /></summary>
+    <member name="M:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.CDAauthorConstraint0Check(MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor)">
+      <summary>Checks formal constraint 'Property Author.TypeCode must carry value AUT'</summary>
     </member>
-    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor_AssignedAuthor_RepresentedOrganization.Addr">
-      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Organization.Addr" /></summary>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.Time">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Author.Time" /></summary>
+    </member>
+    <member name="P:MARC.Everest.Sherpas.Templates.Sandbox.CDAauthor.AssignedAuthor">
+      <summary>Template for property <see cref="P:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Author.AssignedAuthor" /></summary>
     </member>
     <member name="T:MARC.Everest.Sherpas.Templates.Sandbox.EKGImpressionSection">
       <summary>EKGImpressionSection is a template for <see cref="T:MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.Section" /></summary>

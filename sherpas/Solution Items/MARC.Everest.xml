@@ -4664,7 +4664,7 @@
         </member>
         <member name="T:MARC.Everest.DataTypes.SD">
             <summary>
-            Represents a structured document type
+            Represents a structured document text type
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.SD.#ctor">
@@ -4703,6 +4703,14 @@
             Determine equality
             </summary>
         </member>
+        <member name="M:MARC.Everest.DataTypes.SD.SemanticEquals(MARC.Everest.DataTypes.Interfaces.IAny)">
+            <summary>
+            Return if the two instance equal one another
+            </summary>
+            <remarks>Two SD instances are semantically equal when they contain the same content 
+            have the same media type. An SD can be semantically equal to an ED if their 
+            mediaType and content match.</remarks>
+        </member>
         <member name="M:MARC.Everest.DataTypes.SD.ValidateEx">
             <summary>
             Validate this object
@@ -4714,6 +4722,11 @@
             </summary>
         </member>
         <member name="M:MARC.Everest.DataTypes.SD.op_Implicit(System.String)~MARC.Everest.DataTypes.SD">
+            <summary>
+            Cast a string to an SD instance
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.DataTypes.SD.ParseED(MARC.Everest.DataTypes.ED)">
             <summary>
             Cast a string to an SD instance
             </summary>

@@ -5,7 +5,7 @@
 ; For example: If this script is in C:\test\install\ then the files should be extracted to C:\test\installsupp
 
 #define INCLUDE_TOOLS
-
+#define INCLUDE_SAMPLES
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
