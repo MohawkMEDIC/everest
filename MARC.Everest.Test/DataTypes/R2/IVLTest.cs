@@ -145,6 +145,7 @@ namespace MARC.Everest.Test.DataTypes.R2
                 OriginalText = "Test",
                 Flavor = null
             };
+            ivl.OriginalText.Language = "en-US";
 
             var expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" validTimeLow=""20080101"" validTimeHigh=""20080131"" lowClosed=""true"" highClosed=""true"" updateMode=""A"" ><originalText language=""en-US"" value=""Test"" /><low value=""10""/><high value=""100""/></test>";
             var actualXml = R2SerializationHelper.SerializeAsString(ivl);
@@ -599,6 +600,8 @@ namespace MARC.Everest.Test.DataTypes.R2
             ivl.HighClosed = true;
             ivl.Width = null;
             ivl.OriginalText = "Test";
+            ivl.OriginalText.Language = "en-US";
+
             ivl.NullFlavor = null;
 
             Assert.IsTrue(ivl.Validate());
@@ -641,6 +644,7 @@ namespace MARC.Everest.Test.DataTypes.R2
                 low, high
             );
 
+
             ivl.ValidTimeLow = new TS(new DateTime(2008, 01, 01), DatePrecision.Day);
             ivl.ValidTimeHigh = new TS(new DateTime(2008, 01, 31), DatePrecision.Day);
             ivl.UpdateMode = UpdateMode.Add;
@@ -649,6 +653,7 @@ namespace MARC.Everest.Test.DataTypes.R2
             ivl.HighClosed = true;
             ivl.NullFlavor = null;
             ivl.OriginalText = "Test";
+            ivl.OriginalText.Language = "en-US";
 
             Assert.IsTrue(ivl.Validate());
             var expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" lowClosed=""true"" highClosed=""true"" validTimeLow=""20080101"" validTimeHigh=""20080131"" updateMode=""A"" ><originalText language=""en-US"" value=""Test"" /><low value=""1"" unit=""s"" codingRationale=""Required""/><high value=""10"" unit=""s"" codingRationale=""Required""/></test>";

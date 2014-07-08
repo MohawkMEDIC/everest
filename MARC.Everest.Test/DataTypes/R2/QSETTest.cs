@@ -190,7 +190,7 @@ namespace MARC.Everest.Test.DataTypes.R2
             set.NullFlavor = null;
             set.UpdateMode = UpdateMode.Add;
             set.OriginalText = "Test";
-
+            set.OriginalText.Language = "en-US";
             set = set.Normalize() as QSI<INT>;
             var expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" validTimeLow=""20080101"" validTimeHigh=""20080131"" updateMode=""A""><originalText language=""en-US"" value=""Test"" /><term xsi:type=""IVL_INT""><low value=""1""/><high value=""3""/></term><term xsi:type=""IVL_INT""><low value=""2""/><high value=""7""/></term></test>";
             var actualXml = R2SerializationHelper.SerializeAsString(set);
@@ -651,7 +651,7 @@ namespace MARC.Everest.Test.DataTypes.R2
             set.NullFlavor = null;
             set.UpdateMode = UpdateMode.Add;
             set.OriginalText = "Test";
-
+            set.OriginalText.Language = "en-US";
             // normalize the set expression
             set = set.Normalize() as QSD<INT>;
             var expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" validTimeLow=""20080101000000-0500"" validTimeHigh=""20080131235959-0500"" updateMode=""A""><originalText language=""en-US"" value=""Test""/><minuend xsi:type=""IVL_INT"" lowClosed=""true"" highClosed=""true""><low value=""1""/><high value=""10""/></minuend><subtrahend xsi:type=""IVL_INT"" lowClosed=""true"" highClosed=""true""><low value=""5""/><high value=""8""/></subtrahend></test>";

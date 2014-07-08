@@ -86,6 +86,8 @@ namespace MARC.Everest.Test.DataTypes.R2
             {
                 DisplayName = "Pregnancy State, Incidental"
             };
+            pregnancy.Code.DisplayName.Language = "en-US";
+            pregnancy.Language = "en-US";
             string expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" value=""Patient is 6 months pregnant"" language=""en-US""><code code=""Z33.1"" codeSystem=""2.16.840.1.113883.6.90""><displayName value=""Pregnancy State, Incidental"" language=""en-US""/></code></test>";
             string actualXml = R2SerializationHelper.SerializeAsString(pregnancy);
             R2SerializationHelper.XmlIsEquivalent(expectedXml, actualXml);
@@ -163,8 +165,17 @@ namespace MARC.Everest.Test.DataTypes.R2
             laterality.Value.CodeSystem = "2.16.840.1.113883.6.96";
             laterality.Value.CodeSystemName = "SNOMED CT";
             laterality.Value.DisplayName = "Left";
-
-            string expectedXml = @"<test xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" value=""Burn"" language=""en-CA"" xmlns=""urn:hl7-org:v3""><translation value=""Quemar"" language=""es"" /><translation value=""Brûlure"" language=""fr"" /><code code=""284196006:{246112005=24484000,363698007=(113185004:272741003=7771000)}"" codeSystem=""2.16.840.1.113883.6.96"" codeSystemName=""SNOMED CT""><translation code=""15376812"" codeSystem=""2.16.840.1.113883.3.232.99.1"" codeSystemName=""3M HDD""><displayName value=""BurnOfSkinSCT"" language=""en-US"" /><translation code=""284196006"" codeSystem=""2.16.840.1.113883.6.96"" codeSystemName=""SNOMED CT""><displayName value=""Burn of skin"" language=""en-US"" /></translation></translation></code></test>";
+            crazySc.Language = "en-US";
+            laterality.Value.DisplayName.Language = "en-US";
+            findingsite.Value.DisplayName.Language = "en-US";
+            severity.Value.DisplayName.Language = "en-US";
+            laterality.Name.DisplayName.Language = "en-US";
+            findingsite.Name.DisplayName.Language = "en-US";
+            severity.Name.DisplayName.Language = "en-US";
+            crazySc.Code.DisplayName.Language = "en-US";
+            crazySc.Code.Translation[0].DisplayName.Language = "en-US";
+            crazySc.Code.Translation[0].Translation[0].DisplayName.Language = "en-US";
+            string expectedXml = @"<test xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" value=""Burn"" language=""en-US"" xmlns=""urn:hl7-org:v3""><translation value=""Quemar"" language=""es"" /><translation value=""Brûlure"" language=""fr"" /><code code=""284196006:{246112005=24484000,363698007=(113185004:272741003=7771000)}"" codeSystem=""2.16.840.1.113883.6.96"" codeSystemName=""SNOMED CT""><translation code=""15376812"" codeSystem=""2.16.840.1.113883.3.232.99.1"" codeSystemName=""3M HDD""><displayName value=""BurnOfSkinSCT"" language=""en-US"" /><translation code=""284196006"" codeSystem=""2.16.840.1.113883.6.96"" codeSystemName=""SNOMED CT""><displayName value=""Burn of skin"" language=""en-US"" /></translation></translation></code></test>";
             string actualXml = R2SerializationHelper.SerializeAsString(crazySc);
 
             R2SerializationHelper.XmlIsEquivalent(expectedXml, actualXml);

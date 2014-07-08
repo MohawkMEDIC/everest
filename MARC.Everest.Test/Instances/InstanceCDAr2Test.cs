@@ -97,6 +97,9 @@ namespace MARC.Everest.Test
 
         }
 
+        /// <summary>
+        /// Tests a very basic instance of the clinical document class with some default data provided. 
+        /// </summary>
         [TestMethod]
         public void InstanceCDAR2Test_XSD_ClinicalDocument()
         {
@@ -112,14 +115,18 @@ namespace MARC.Everest.Test
                 original.ComponentOf = TypeCreator.GetCreator(typeof(Component1)).CreateInstance() as Component1;
                 original.Component = new Component2();
                 original.Component.SetBodyChoice(TypeCreator.GetCreator(typeof(StructuredBody)).CreateInstance() as StructuredBody);
+                original.Custodian = new Custodian();
+                original.LanguageCode = "EN";
+                original.VersionNumber = 102;
+                original.Author.Add(new Author());
+                original.RecordTarget.Add(new RecordTarget());
                 XmlIts1Formatter fmtr = new XmlIts1Formatter();
                 fmtr.GraphAides.Add(new ClinicalDocumentDatatypeFormatter());
                 using (XmlWriter xw = XmlWriter.Create(stream, new XmlWriterSettings() { Indent = true }))
                     gresult = fmtr.Graph(xw, original);
                 stream.Seek(0, SeekOrigin.Begin);
                 //XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.UV.CDAr2.POCD_MT000040UV.ClinicalDocument), stream, out details);
-
-
+                
                 if (gresult.Details.Count() > 0)
                     foreach (var item in gresult.Details)
                         if (item.Type == ResultDetailType.Error)
@@ -144,6 +151,7 @@ namespace MARC.Everest.Test
             if (result.Count > 0)
             {
                 result.ForEach(item => Trace.WriteLine(item));
+                Trace.WriteLine(xml);
                 Assert.Fail("Validation failed");
             }
         }

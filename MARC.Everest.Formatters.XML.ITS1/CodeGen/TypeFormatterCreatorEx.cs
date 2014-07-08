@@ -813,8 +813,6 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             foreach (BuildProperty buildProperty in buildProperties)
             {
 
-                if (buildProperty.PropertyInfo.Name == "act")
-                    System.Diagnostics.Debugger.Break();
 
                 var propertyInfo = buildProperty.PropertyInfo;
                 Type piType = buildProperty.PropertyInfo.PropertyType;
@@ -932,13 +930,13 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                                 if (pa.Type.GetInterfaces().Contains(typeof(IGraphable))) // Non Graphable
                                 {
                                     currentGraphCondition.TrueStatements.Add(
-                                        new CodeMethodInvokeExpression(s_host, "WriteElementUtil", s_writer, new CodePrimitiveExpression(pa.NamespaceUri), new CodePrimitiveExpression(pa.Name), new CodeCastExpression(typeof(IGraphable), _propertyReference), new CodeTypeOfExpression(conditionType), new CodeVariableReferenceExpression("context"), s_resultContext));
+                                        new CodeMethodInvokeExpression(s_host, "WriteElementUtil", s_writer, new CodePrimitiveExpression(pa.NamespaceUri), new CodePrimitiveExpression(pa.Name), new CodeCastExpression(typeof(IGraphable), _propertyReference), new CodeTypeOfExpression(pa.Type ?? conditionType), new CodeVariableReferenceExpression("context"), s_resultContext));
                                 }
                                 else if (pa.Type.GetInterface("System.Collections.IEnumerable") != null) // List
                                 {
                                     currentGraphCondition.TrueStatements.Add(new CodeVariableDeclarationStatement(typeof(IEnumerator), "enumerator", new CodeMethodInvokeExpression(_propertyReference, "GetEnumerator")));
                                     currentGraphCondition.TrueStatements.Add(new CodeIterationStatement(new CodeSnippetStatement(), new CodeMethodInvokeExpression(new CodeVariableReferenceExpression("enumerator"), "MoveNext"), new CodeSnippetStatement()));
-                                    currentGraphCondition.TrueStatements.Add(new CodeMethodInvokeExpression(s_host, "WriteElementUtil", s_writer, new CodePrimitiveExpression(pa.NamespaceUri), new CodePrimitiveExpression(pa.Name), new CodeCastExpression(typeof(IGraphable), new CodePropertyReferenceExpression(new CodeVariableReferenceExpression("enumerator"), "Current")), new CodeTypeOfExpression(pa.Type), new CodeVariableReferenceExpression("context"), s_resultContext));
+                                    currentGraphCondition.TrueStatements.Add(new CodeMethodInvokeExpression(s_host, "WriteElementUtil", s_writer, new CodePrimitiveExpression(pa.NamespaceUri), new CodePrimitiveExpression(pa.Name), new CodeCastExpression(typeof(IGraphable), new CodePropertyReferenceExpression(new CodeVariableReferenceExpression("enumerator"), "Current")), new CodeTypeOfExpression(pa.Type ?? conditionType), new CodeVariableReferenceExpression("context"), s_resultContext));
                                 }
                                 else // Not recognized
                                     currentGraphCondition.TrueStatements.Add(new CodeMethodInvokeExpression(s_writer, "WriteElementString", new CodePrimitiveExpression(pa.Name), new CodePrimitiveExpression(pa.NamespaceUri), new CodeMethodInvokeExpression(_propertyReference, "ToString")));

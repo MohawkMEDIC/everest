@@ -161,6 +161,9 @@ namespace MARC.Everest.Test.DataTypes.R2
                     "this is translation 2"
                 }
             );
+            edInstance.Translation[0].Language = "en-US";
+            edInstance.Translation[1].Language = "en-US";
+
             String expectedXml = String.Format(@"<test xmlns=""urn:hl7-org:v3"" mediaType=""text/plain""><data>{0}</data><thumbnail mediaType=""text/plain"" compression=""GZ""><data>{1}</data></thumbnail><translation value=""this is translation 1"" language=""en-US""/><translation language=""en-US"" value=""this is translation 2""/></test>", Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes("this is a binary with thumbnail and translation")), edInstance.Thumbnail.Base64Data);
             String actualXml = R2SerializationHelper.SerializeAsString(edInstance);
             R2SerializationHelper.XmlIsEquivalent(expectedXml, actualXml);
@@ -181,6 +184,9 @@ namespace MARC.Everest.Test.DataTypes.R2
                     "this is translation 2"
                 }
             );
+            edInstance.Translation[0].Language = "en-US";
+            edInstance.Translation[1].Language = "en-US";
+
             String expectedXml = String.Format(@"<test xmlns=""urn:hl7-org:v3"" mediaType=""text/plain"" integrityCheckAlgorithm=""SHA-256""><data>{0}</data><integrityCheck>2sv8IRiWNYypBMLqJxAl79Yl2YJGBz3dtG3f3aNIIEg=</integrityCheck><thumbnail mediaType=""text/plain"" compression=""GZ""><data>{1}</data></thumbnail><translation value=""this is translation 1"" language=""en-US""/><translation language=""en-US"" value=""this is translation 2""/></test>", Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes("this is a binary with thumbnail and translation")), edInstance.Thumbnail.Base64Data);
             String actualXml = R2SerializationHelper.SerializeAsString(edInstance);
             R2SerializationHelper.XmlIsEquivalent(expectedXml, actualXml);

@@ -48,6 +48,7 @@ namespace MARC.Everest.Test
 
             var formatter = new MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter();
             formatter.ValidateConformance = false;
+            //formatter.Settings = Formatters.XML.ITS1.SettingsType.DefaultLegacy;
             // Testing pregen
             formatter.GraphAides.Add(new MARC.Everest.Formatters.XML.Datatypes.R1.DatatypeFormatter());
             //formatter.BuildCache(Assembly.Load("MARC.Everest.RMIM.CA.R020402").GetTypes());

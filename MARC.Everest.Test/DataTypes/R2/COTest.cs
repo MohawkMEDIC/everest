@@ -83,6 +83,8 @@ namespace MARC.Everest.Test.DataTypes.R2
         {
             CO poor = new CO(1, new CD<String>("1", "2.3.4.5.6.7"));
             poor.Code.DisplayName = "poor";
+            poor.Code.DisplayName.Language = "en-US";
+
             var expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" value=""1""><code code=""1"" codeSystem=""2.3.4.5.6.7""><displayName value=""poor"" language=""en-US""/></code></test>";
             var actualXml = R2SerializationHelper.SerializeAsString(poor);
             R2SerializationHelper.XmlIsEquivalent(expectedXml, actualXml);

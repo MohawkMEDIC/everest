@@ -95,8 +95,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             // Attributes first
             foreach (var pi in buildProperties)
             {
-                if (pi.Name == "act")
-                    System.Diagnostics.Debugger.Break();
+               
 
                 object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0);
                 object rawInstance = pi.GetValue(o, null);

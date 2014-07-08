@@ -165,6 +165,7 @@ namespace MARC.Everest.Test.DataTypes.R2
                     new PQ(-50, "min")  // high
                 )
                 );
+            
             eivl.Offset.HighClosed = true;
             eivl.Offset.LowClosed = true;
             eivl.ValidTimeLow = new TS(new DateTime(2012, 01, 01), DatePrecision.Day);
@@ -172,7 +173,7 @@ namespace MARC.Everest.Test.DataTypes.R2
             eivl.NullFlavor = null;
             eivl.UpdateMode = UpdateMode.Add;
             eivl.OriginalText = "One hour before breakfast for 10 minutes";
-
+            eivl.OriginalText.Language = "en-US";
             Assert.IsTrue(eivl.Validate());
 
             var expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" event=""CM"" validTimeHigh=""20121231"" validTimeLow=""20120101"" updateMode=""A"" ><originalText value=""One hour before breakfast for 10 minutes"" language=""en-US"" /><offset lowClosed=""true"" highClosed=""true""><low value=""-1"" unit=""h""/><high value=""-50"" unit=""min""/></offset></test>";

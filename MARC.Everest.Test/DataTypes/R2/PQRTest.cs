@@ -309,7 +309,7 @@ namespace MARC.Everest.Test.DataTypes.R2
             pqr.ValueSetVersion = "1.0";
             pqr.DisplayName = "Fake DN";
             pqr.OriginalText = null;
-
+            pqr.DisplayName.Language = "en-US";
             Console.WriteLine("Value: {0} | Code: {1} | Codesystem: {2}", pqr.Value, pqr.Code, pqr.CodeSystem);
             Assert.IsTrue(pqr.Validate());
 
@@ -350,6 +350,8 @@ namespace MARC.Everest.Test.DataTypes.R2
             pqr.ValueSetVersion = "1.0";
             pqr.DisplayName = "Fake DN";
             pqr.OriginalText = "3 Feet";
+            pqr.OriginalText.Language = "en-US";
+            pqr.DisplayName.Language = "en-US";
 
             Console.WriteLine("Value: {0} | Code: {1} | Codesystem: {2}", pqr.Value, pqr.Code, pqr.CodeSystem);
             Assert.IsTrue(pqr.Validate());

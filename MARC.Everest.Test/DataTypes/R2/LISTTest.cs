@@ -117,6 +117,9 @@ namespace MARC.Everest.Test.DataTypes.R2
                 LIST<INT>.CreateList(1, 1, 2),
                 BAG<ST>.CreateBAG("1", "2")
             );
+            ((BAG<ST>)inti.Items[2])[0].Language = "en-US";
+            ((BAG<ST>)inti.Items[2])[1].Language = "en-US";
+
             string expectedXml = @"<test xmlns=""urn:hl7-org:v3"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""><item xsi:type=""DSET_INT""><item value=""1""/><item value=""2""/><item value=""3""/></item><item xsi:type=""LIST_INT""><item value=""1""/><item value=""1""/><item value=""2""/></item><item xsi:type=""BAG_ST""><item value=""1"" language=""en-US""/><item value=""2"" language=""en-US""/></item></test>";
             string actualXml = R2SerializationHelper.SerializeAsString(inti);
             R2SerializationHelper.XmlIsEquivalent(expectedXml, actualXml);

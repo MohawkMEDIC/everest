@@ -472,6 +472,11 @@ namespace MARC.Everest.Connectors
                 result = null;
                 return true;
             }
+            else if(value.GetType() == destType)
+            {
+                result = value;
+                return true;
+            }
             else if (m_destType.IsGenericType && !value.GetType().IsEnum) // Dest type is a generic
             {
                 m_destType = m_destType.GetGenericArguments()[0];
