@@ -189,6 +189,7 @@ Source: "{#buildpath}\MARC.Everest.Installer\installsupp\help\Everest Visual Stu
 Source: "..\MARC.Everest.Installer\installsupp\help\Everest Visual Studio Templates.vsi"; DestDir: {app}; Components:api\vs
 #endif
 Source: ..\Solution Items\ICSharpCode.SharpZipLib.dll; DestDir: {tmp}; Components:api\vs
+Source: .\installsupp\sample\gpmrvarsall.bat; DestDir: {app}; Components:tools
 
 
 [INI]
