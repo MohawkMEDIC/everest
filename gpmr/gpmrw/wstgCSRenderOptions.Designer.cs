@@ -241,6 +241,7 @@
             this.Controls.Add(this.label1);
             this.Name = "wstgCSRenderOptions";
             this.Size = new System.Drawing.Size(442, 293);
+            this.Load += new System.EventHandler(this.wstgCSRenderOptions_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numMaxLiterals)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

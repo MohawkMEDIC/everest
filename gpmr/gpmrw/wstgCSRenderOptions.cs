@@ -134,5 +134,10 @@ namespace gpmrw
         {
             chkDllOnly.Enabled = chkCompile.Checked;
         }
+
+        private void wstgCSRenderOptions_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

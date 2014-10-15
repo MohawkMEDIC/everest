@@ -94,7 +94,10 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
     {
 
         // Cache of the formatters
-        private static Dictionary<string,Type> formatters = new Dictionary<string,Type>(20);
+        private static Dictionary<string,Type> structureFormatters = new Dictionary<string,Type>(100);
+        private static Dictionary<Type, Type> formatters = new Dictionary<Type, Type>(100);
+        private static Object s_lockObject = new Object();
+
         // Cache of the type names that formatters use
         private static List<string> formatterNames = new List<string>(20);
         // Unsupported types
@@ -132,18 +135,18 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
             DatatypeFormatter.FormatterCulture = CultureInfo.InvariantCulture;
             this.CompatibilityMode = DatatypeFormatterCompatibilityMode.Universal;
             this.ValidateConformance = true;
-            if (formatters.Count == 0)
+            if (structureFormatters.Count == 0)
             {
-                lock (formatters)
+                lock (structureFormatters)
                 {
-                    if (formatters.Count > 0) return; // check again once we have a lock
+                    if (structureFormatters.Count > 0) return; // check again once we have a lock
                     Assembly a = typeof(DatatypeFormatter).Assembly;
                     foreach (Type t in a.GetTypes()) // Get all types
                         if (t.GetInterface("MARC.Everest.Formatters.XML.Datatypes.R1.Formatters.IDatatypeFormatter", false) != null)
                         {
                             IDatatypeFormatter fmtr = (IDatatypeFormatter)a.CreateInstance(t.FullName);
-                            if (!formatters.ContainsKey(fmtr.HandlesType))
-                                formatters.Add(fmtr.HandlesType, t);
+                            if (!structureFormatters.ContainsKey(fmtr.HandlesType))
+                                structureFormatters.Add(fmtr.HandlesType, t);
                             if (!formatterNames.Contains(fmtr.HandlesType))
                                 formatterNames.Add(fmtr.HandlesType);
                         }
@@ -190,25 +193,37 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
             // Get the struct attribute
             IDatatypeFormatter formatter = null;
             Type cType = type;
+            Type formatterType = null;
 
-            // Find a structure attribute to format... 
-            while (formatter == null)
+            // Get a cached formatter (try to)
+            if (!formatters.TryGetValue(type, out formatterType))
             {
-                StructureAttribute sta = cType.GetCustomAttributes(typeof(StructureAttribute), true)[0] as StructureAttribute;
+                // Find a structure attribute to format... 
+                while (formatterType == null)
+                {
+                    StructureAttribute sta = cType.GetCustomAttributes(typeof(StructureAttribute), true)[0] as StructureAttribute;
 
-                // Find the object that we want to render
-                Type formatterType = null;
-                if (formatters.TryGetValue(sta.Name ?? "", out formatterType))
-                    formatter = (IDatatypeFormatter)formatterType.Assembly.CreateInstance(formatterType.FullName);
+                    formatterType = null;
+                    if (structureFormatters.TryGetValue(sta.Name ?? "", out formatterType))
+                        break;
 
-                // Swap cType
-                cType = cType.BaseType;
-                if (cType == null) return null; // Not available
+                    // Swap cType
+                    cType = cType.BaseType;
+                    if (cType == null) return null; // Not available
+                }
+            }
+
+            // Instantiate
+            if (formatterType != null)
+            {
+                formatter = (IDatatypeFormatter)formatterType.Assembly.CreateInstance(formatterType.FullName);
+                lock (s_lockObject) // Add to cache
+                    if (!formatters.ContainsKey(type))
+                        formatters.Add(type, formatterType);
             }
 
             // Populate the generic arguments
             formatter.GenericArguments = type.GetGenericArguments();
-
            
             return formatter;
         }

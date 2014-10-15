@@ -243,6 +243,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
         // Type name maps
         private Dictionary<string, Type> s_typeNameMaps = new Dictionary<string, Type>();
 
+
 #if !WINDOWS_PHONE
         // A shared wait thread pool for creating datatypes
         private static WaitThreadPool s_threadPool = new WaitThreadPool(1); //WaitThreadPool.Current;
@@ -259,6 +260,10 @@ namespace MARC.Everest.Formatters.XML.ITS1
 
         // Synchronization root
         private readonly object m_syncRoot = new object();
+
+        // Cached type name
+        private readonly Dictionary<Type, String> m_cachedTypeNames = new Dictionary<Type, string>();
+
         // True when build types is blocking
         private bool m_isBuildTypesBlocking = false;
 
@@ -1452,11 +1457,18 @@ namespace MARC.Everest.Formatters.XML.ITS1
             //CreateGraphAides();
 
             // Get the structure attribute and return the type name
-            object[] structureAttribute = useType.GetCustomAttributes(typeof(StructureAttribute), true);
             string typeName = useType.Name;
-            if (structureAttribute.Length > 0)
-                typeName = (structureAttribute[0] as StructureAttribute).Name;
-
+            if (!this.m_cachedTypeNames.TryGetValue(useType, out typeName))
+            {
+                object[] structureAttribute = useType.GetCustomAttributes(typeof(StructureAttribute), true);
+                if (structureAttribute.Length > 0)
+                    typeName = (structureAttribute[0] as StructureAttribute).Name;
+                
+                // Cache
+                lock (this.m_syncRoot)
+                    if (!this.m_cachedTypeNames.ContainsKey(useType))
+                        this.m_cachedTypeNames.Add(useType, typeName);
+            }
             return typeName;
         }
         #endregion
