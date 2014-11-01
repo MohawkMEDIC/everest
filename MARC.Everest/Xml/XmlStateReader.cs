@@ -65,9 +65,6 @@ namespace MARC.Everest.Xml
         {
             innerReader = xr;
 
-            if (!(xr is IXmlNamespaceResolver))
-                throw new ArgumentException("xr", "XmlReader must implement IXmlNamespaceResolver");
-
             nameStack = new Stack<XmlQualifiedName>(100);
             if (xr.ReadState != ReadState.Initial)
                 nameStack.Push(new XmlQualifiedName(xr.LocalName, xr.NamespaceURI));

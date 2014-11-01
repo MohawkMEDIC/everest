@@ -26,6 +26,7 @@ using MARC.Everest.Interfaces;
 using MARC.Everest.Connectors;
 using System.Reflection;
 using System.Diagnostics;
+using MARC.Everest.Formatters.XML.ITS1;
 
 namespace MARC.Everest.Test
 {
@@ -33,6 +34,20 @@ namespace MARC.Everest.Test
     {
 
         private const string instanceDir = "Instances";
+
+        private static readonly XmlIts1Formatter s_formatter; 
+
+        /// <summary>
+        /// Static ctor
+        /// </summary>
+        static XMLGenerator() {
+            s_formatter = new XmlIts1Formatter()
+            {
+                ValidateConformance = false,
+                Settings = SettingsType.DefaultMultiprocessor
+            };
+            s_formatter.GraphAides.Add(new MARC.Everest.Formatters.XML.Datatypes.R1.DatatypeFormatter());
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal static bool GenerateInstance(Type instanceType, Stream outputStream)
@@ -46,12 +61,7 @@ namespace MARC.Everest.Test
 
             string resourceName = String.Format(instanceType.FullName).Replace(".", "");
 
-            var formatter = new MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter();
-            formatter.Settings = MARC.Everest.Formatters.XML.ITS1.SettingsType.DefaultUniprocessor;
-            formatter.ValidateConformance = false;
-            // Testing pregen
-            formatter.GraphAides.Add(new MARC.Everest.Formatters.XML.Datatypes.R1.DatatypeFormatter());
-            formatter.BuildCache(Assembly.Load("MARC.Everest.RMIM.CA.R020402").GetTypes());
+            var formatter = s_formatter;
 
             IGraphable result = TypeCreator.GetCreator(instanceType).CreateInstance() as IGraphable;
 
