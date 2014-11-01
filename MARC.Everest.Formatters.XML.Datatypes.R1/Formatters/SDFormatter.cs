@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MARC.Everest.DataTypes;
 using MARC.Everest.Xml;
+using MARC.Everest.DataTypes.StructDoc;
 
 namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 {
@@ -77,7 +78,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
                 {
                     var node = new MARC.Everest.DataTypes.StructDoc.StructDocElementNode();
                     node.ReadXml(s);
-                    retVal.Content.AddRange(node.Children);
+                    retVal.Content.AddRange(node.Children.Where(o=>!(o is StructDocAttributeNode)));
                 }
             }
 
