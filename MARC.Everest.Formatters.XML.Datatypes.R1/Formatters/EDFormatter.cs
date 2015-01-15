@@ -55,7 +55,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1.Formatters
 
             // Attributes
             string rep = Util.ToWireFormat(instance_ed.Representation);
-            if(!String.IsNullOrEmpty(rep))
+            if(!String.IsNullOrEmpty(rep) && result.CompatibilityMode != DatatypeFormatterCompatibilityMode.ClinicalDocumentArchitecture )
                 s.WriteAttributeString("representation", rep);
             if (instance_ed.MediaType != null)
                 s.WriteAttributeString("mediaType", instance_ed.MediaType);
