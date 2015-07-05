@@ -133,7 +133,7 @@ namespace MARC.Everest.Test.Regressions
 
             XmlIts1Formatter fmtr = new XmlIts1Formatter();
             fmtr.GraphAides.Add(new DatatypeFormatter());
-
+            fmtr.Settings = SettingsType.DefaultUniprocessor;
             var sw = new StringWriter();
             XmlStateWriter writer = new XmlStateWriter(XmlWriter.Create(sw));
             fmtr.Graph(writer, test);
