@@ -547,7 +547,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             elementParseCondition.TrueStatements.Add(new CodeVariableDeclarationStatement(new CodeTypeReference(typeof(String)), "elementName", new CodeBinaryOperatorExpression(s_readerNamespace, CodeBinaryOperatorType.Add, s_readerLocalName)));
             CodeStatementCollection switchCaseStatement = new CodeStatementCollection();
             switchCaseStatement.Add(new CodeSnippetStatement("switch(elementName) {"));
-            
+            Dictionary<String, CodeStatementCollection> caseStatements = new Dictionary<string, CodeStatementCollection>();
+
 
             // Ensure we don't duplicate properties
             List<String> generatedProperties = new List<string>(buildProperties.Count());
@@ -576,8 +577,25 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                         (bp.PropertyInfo.PropertyType == typeof(object)) || bp.PropertyAttributes.Count() == 1 || pa.Type == null || pa.Type != null && pa.Type.IsSubclassOf(bp.PropertyInfo.PropertyType) && bp.PropertyInfo.PropertyType.IsAssignableFrom(pa.Type)))
                         continue;
 
-                    // Build the current statment condition
-                    switchCaseStatement.Add(new CodeSnippetStatement(String.Format("case \"{0}{1}\": {{", pa.NamespaceUri, pa.Name)));
+                    // Build the current statment case body
+                    CodeStatementCollection caseBody = null;
+                    String caseLabel = String.Format("{0}{1}", pa.NamespaceUri, pa.Name);
+                    if (!caseStatements.TryGetValue(caseLabel, out caseBody))
+                    {
+                        caseBody = new CodeStatementCollection();
+                        caseStatements.Add(caseLabel, caseBody);
+                    }
+
+                    bool needsBreak = false;
+                    // If there is an interaction owner then we encapsulate in an if statement
+                    if(pa.InteractionOwner != null && 
+                        propertyAttributes.Count(o=>o.NamespaceUri + o.Name == caseLabel) > 1)
+                    {
+                        needsBreak = true;
+                        var interactionOwnerCheck = new CodeConditionStatement(new CodeBinaryOperatorExpression(s_interactionType, CodeBinaryOperatorType.IdentityEquality, new CodeTypeOfExpression(pa.InteractionOwner)));
+                        caseBody.Add(interactionOwnerCheck);
+                        caseBody = interactionOwnerCheck.TrueStatements;
+                    }
 
                     // TODO: Test this actually works
                     if (pa.FixedValue != null)
@@ -586,12 +604,12 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                         var _classCodeValue = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(s_reader, "GetAttribute"), new CodePrimitiveExpression("classCode"));
                         var _typeCodeValue = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(s_reader, "GetAttribute"), new CodePrimitiveExpression("typeCode"));
 
-                        switchCaseStatement.Add(new CodeVariableDeclarationStatement(new CodeTypeReference(typeof(String)), "classifierValue", _classCodeValue));
+                        caseBody.Add(new CodeVariableDeclarationStatement(new CodeTypeReference(typeof(String)), "classifierValue", _classCodeValue));
                         var _actualValue = new CodeVariableReferenceExpression("classifierValue");
                         var _isActualValueEmpty = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(typeof(String)), "IsNullOrEmpty"), _actualValue);
-                        switchCaseStatement.Add(new CodeConditionStatement(new CodeBinaryOperatorExpression(_isActualValueEmpty, CodeBinaryOperatorType.IdentityEquality, s_true), new CodeAssignStatement(_actualValue, _typeCodeValue)));
+                        caseBody.Add(new CodeConditionStatement(new CodeBinaryOperatorExpression(_isActualValueEmpty, CodeBinaryOperatorType.IdentityEquality, s_true), new CodeAssignStatement(_actualValue, _typeCodeValue)));
 
-                        switchCaseStatement.Add(new CodeConditionStatement(
+                        caseBody.Add(new CodeConditionStatement(
                                 new CodeBinaryOperatorExpression(
                                     new CodeBinaryOperatorExpression(_isActualValueEmpty, CodeBinaryOperatorType.IdentityEquality, s_false),
                                     CodeBinaryOperatorType.BooleanAnd,
@@ -604,30 +622,30 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                     // Cannot deserialize this
                     if (pa.Type == null && bp.PropertyInfo.PropertyType == typeof(System.Object))
                         // Add not implemented element if we can't write
-                        switchCaseStatement.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedElementResultDetail), s_resultDetailWarning, s_readerLocalName, s_readerLocalName, s_readerToString, s_null)));
+                        caseBody.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedElementResultDetail), s_resultDetailWarning, s_readerLocalName, s_readerLocalName, s_readerToString, s_null)));
                     // Simple deserialization if PA type has IGraphable or PI type has IGraphable and PA type not specified
                     else if (bp.PropertyInfo.GetSetMethod() != null &&
                         (pa.Type != null && pa.Type.GetInterface(typeof(IGraphable).FullName, false) != null) ||
                         (pa.Type == null && bp.PropertyInfo.PropertyType.GetInterface(typeof(IGraphable).FullName, false) != null))
                     {
-                        switchCaseStatement.Add(new CodeAssignStatement(
+                        caseBody.Add(new CodeAssignStatement(
                             _propertyReference,
                             this.CreateUtilConvertMethodInvoke(pa.Type ?? bp.PropertyInfo.PropertyType,
                                 new CodeMethodInvokeExpression(s_host, "ParseObject", s_reader, new CodeTypeOfExpression(pa.Type ?? bp.PropertyInfo.PropertyType), s_interactionType, s_resultContext))));
                     }
                     // Call an Add method on a collection type
                     else if (bp.PropertyInfo.PropertyType.GetMethod("Add") != null) // Collection type
-                        switchCaseStatement.Add(new CodeMethodInvokeExpression(_propertyReference, "Add", this.CreateUtilConvertMethodInvoke(bp.PropertyInfo.PropertyType.GetGenericArguments()[0],
+                        caseBody.Add(new CodeMethodInvokeExpression(_propertyReference, "Add", this.CreateUtilConvertMethodInvoke(bp.PropertyInfo.PropertyType.GetGenericArguments()[0],
                                 new CodeMethodInvokeExpression(s_host, "ParseObject", s_reader, new CodeTypeOfExpression(bp.PropertyInfo.PropertyType.GetGenericArguments()[0]), s_interactionType, s_resultContext))));
                     // Call the ParseXML custom function on object
                     else if (bp.PropertyInfo.GetSetMethod() != null && bp.PropertyInfo.PropertyType.GetMethod("ParseXml", BindingFlags.Public | BindingFlags.Static) != null)
-                        switchCaseStatement.Add(new CodeAssignStatement(_propertyReference, new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(bp.PropertyInfo.PropertyType), "ParseXml", s_reader)));
+                        caseBody.Add(new CodeAssignStatement(_propertyReference, new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(bp.PropertyInfo.PropertyType), "ParseXml", s_reader)));
                     // Property type is a simple string
                     else if (bp.PropertyInfo.GetSetMethod() != null && bp.PropertyInfo.PropertyType == typeof(string)) // Read content... 
-                        switchCaseStatement.Add(new CodeAssignStatement(_propertyReference, new CodeMethodInvokeExpression(s_reader, "ReaderInnerXml")));
+                        caseBody.Add(new CodeAssignStatement(_propertyReference, new CodeMethodInvokeExpression(s_reader, "ReaderInnerXml")));
                     // No Set method is used, fixed value?
                     else
-                        switchCaseStatement.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedResultDetail), s_resultDetailError, new CodePrimitiveExpression(String.Format("Property {0} is readonly, cannot set value", bp.PropertyInfo.Name)), s_readerToString)));
+                        caseBody.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedResultDetail), s_resultDetailError, new CodePrimitiveExpression(String.Format("Property {0} is readonly, cannot set value", bp.PropertyInfo.Name)), s_readerToString)));
 
                     // Need to switch or re-evaluate our instance?
                     var ma = bp.PropertyInfo.GetCustomAttributes(typeof(MarkerAttribute), true);
@@ -636,20 +654,31 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
                         {
                             case MarkerAttribute.MarkerAttributeType.TemplateId:
                             case MarkerAttribute.MarkerAttributeType.TypeId:
-                                switchCaseStatement.Add(new CodeVariableDeclarationStatement(typeof(Object), "newInstance", new CodeMethodInvokeExpression(s_host, "CorrectInstance", s_instance)));
-                                switchCaseStatement.Add(new CodeConditionStatement(new CodeBinaryOperatorExpression(this.CreateSimpleMethodCallExpression(new CodeVariableReferenceExpression("newInstance"), "GetType"), CodeBinaryOperatorType.IdentityInequality, this.CreateSimpleMethodCallExpression(s_instance, "GetType")),
+                                caseBody.Add(new CodeVariableDeclarationStatement(typeof(Object), "newInstance", new CodeMethodInvokeExpression(s_host, "CorrectInstance", s_instance)));
+                                caseBody.Add(new CodeConditionStatement(new CodeBinaryOperatorExpression(this.CreateSimpleMethodCallExpression(new CodeVariableReferenceExpression("newInstance"), "GetType"), CodeBinaryOperatorType.IdentityInequality, this.CreateSimpleMethodCallExpression(s_instance, "GetType")),
                                     new CodeMethodReturnStatement(new CodeMethodInvokeExpression(s_host, "ParseElementContent", s_reader, new CodeVariableReferenceExpression("newInstance"), new CodeVariableReferenceExpression("terminationElement"), new CodePropertyReferenceExpression(s_reader, "Depth"), s_interactionType, s_resultContext))));
                                 break;
                             default:
                                 break;
                         }
 
-                    switchCaseStatement.Add(new CodeSnippetExpression("break; }"));
+                    // Was an IF statement used?
+                    if(needsBreak)
+                        caseBody.Add(new CodeSnippetStatement("break;"));
 
                 }
             }
 
             
+            // Add the case structure
+            foreach(var caseElement in caseStatements)
+            {
+                switchCaseStatement.Add(new CodeSnippetStatement(String.Format("case \"{0}\": {{", caseElement.Key)));
+                switchCaseStatement.AddRange(caseElement.Value);
+                switchCaseStatement.Add(new CodeSnippetStatement("break;"));
+                switchCaseStatement.Add(new CodeSnippetStatement("}"));
+            }
+            // Add default case
             switchCaseStatement.Add(new CodeSnippetStatement("default:"));
             switchCaseStatement.Add(new CodeMethodInvokeExpression(s_resultContextAddResultDetailMethod, this.CreateResultDetailExpression(typeof(NotImplementedElementResultDetail), s_resultDetailError, s_readerLocalName, s_readerNamespace, s_readerToString, s_null)));
             switchCaseStatement.Add(new CodeSnippetExpression("break; "));
