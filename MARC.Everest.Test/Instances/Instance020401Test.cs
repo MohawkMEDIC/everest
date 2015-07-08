@@ -42525,7 +42525,8 @@ namespace MARC.Everest.Test
             ms.Seek(0, SeekOrigin.Begin);
 
             // Parse
-            MARC.Everest.RMIM.CA.R020401.Interactions.REPC_IN000041CA parsed = (MARC.Everest.RMIM.CA.R020401.Interactions.REPC_IN000041CA)fmtr.Parse(ms, original.GetType().Assembly).Structure;
+            var parseResult = fmtr.Parse(ms, original.GetType().Assembly);
+            MARC.Everest.RMIM.CA.R020401.Interactions.REPC_IN000041CA parsed = (MARC.Everest.RMIM.CA.R020401.Interactions.REPC_IN000041CA)parseResult.Structure;
 
             // Assert
             Assert.AreEqual(original.Id, parsed.Id);
