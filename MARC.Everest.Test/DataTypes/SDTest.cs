@@ -36,9 +36,11 @@ namespace MARC.Everest.Test.DataTypes
         public void SDBasicGraphTest()
         {
 
-            String expected = "<test xmlns=\"urn:hl7-org:v3\" mediaType=\"text/x-hl7-title+xml\"><table test=\"32\"><thead></thead></table></test>";
+            String expected = "<test xmlns=\"urn:hl7-org:v3\" mediaType=\"text/x-hl7-text+xml\"><table test=\"32\"><thead></thead></table></test>";
             SD instance = new SD();
-            var content = new StructDocElementNode("table").AddElement("thead").AddAttribute("test", "32");
+            var content = new StructDocElementNode("table");
+            var thead = content.AddElement("thead");
+            content.AddAttribute("test", "32");
             instance.Content.Add(content);
             String actual = R1SerializationHelper.SerializeAsString(instance);
             R2SerializationHelper.XmlIsEquivalent(expected, actual);
@@ -48,7 +50,9 @@ namespace MARC.Everest.Test.DataTypes
         public void SDBasicParseTest()
         {
             SD instance = new SD();
-            instance.Content.Add(new StructDocElementNode("table").AddElement("thead").AddAttribute("test", "32"));
+            var content = new StructDocElementNode("table");
+            content.AddElement("thead").AddAttribute("test", "32");
+            instance.Content.Add(content);
             String actual = R1SerializationHelper.SerializeAsString(instance);
             var parsed = R1SerializationHelper.ParseString<SD>(actual);
             Assert.AreEqual(instance, parsed);
@@ -58,9 +62,11 @@ namespace MARC.Everest.Test.DataTypes
         public void SDBasicNonEquals()
         {
             SD instance = new SD();
-            instance.Content.Add(new StructDocElementNode("table").AddElement("thead").AddAttribute("test", "32"));
+            var content = new StructDocElementNode("table");
+            content.AddElement("thead").AddAttribute("test", "32");
+            instance.Content.Add(content);
             String actual = R1SerializationHelper.SerializeAsString(instance);
-            var parsed = R1SerializationHelper.ParseString<SD>(actual.Replace("thead />","th />"));
+            var parsed = R1SerializationHelper.ParseString<SD>(actual.Replace("<thead ","<th "));
             Assert.AreNotEqual(instance, parsed);
         }
 
@@ -68,7 +74,9 @@ namespace MARC.Everest.Test.DataTypes
         public void SDValidationPassTest()
         {
             SD instance = new SD();
-            instance.Content.Add(new StructDocElementNode("table").AddElement("thead").AddAttribute("test", "32"));
+            var content = new StructDocElementNode("table");
+            content.AddElement("thead").AddAttribute("test", "32");
+            instance.Content.Add(content);
             Assert.IsTrue(instance.Validate(), "Instance should be valid");
         }
 
@@ -76,7 +84,9 @@ namespace MARC.Everest.Test.DataTypes
         public void SDValidationFailNFAndValueTest()
         {
             SD instance = new SD();
-            instance.Content.Add(new StructDocElementNode("table").AddElement("thead").AddAttribute("test", "32"));
+            var content = new StructDocElementNode("table");
+            content.AddElement("thead").AddAttribute("test", "32");
+            instance.Content.Add(content);
             instance.NullFlavor = NullFlavor.Derived;
             Assert.IsFalse(instance.Validate(), "Instance should be invalid");
         }
@@ -85,7 +95,9 @@ namespace MARC.Everest.Test.DataTypes
         public void SDValidationExPassTest()
         {
             SD instance = new SD();
-            instance.Content.Add(new StructDocElementNode("table").AddElement("thead").AddAttribute("test", "32"));
+            var content = new StructDocElementNode("table");
+            content.AddElement("thead").AddAttribute("test", "32");
+            instance.Content.Add(content);
             Assert.IsTrue(instance.ValidateEx().Count() == 0, "Instance should have no ValidateEx");
             Assert.IsTrue(instance.ValidateEx().Count(e => e.Message.Contains("NullFlavor")) == 0, "Instance should have no nullFlavor warnings");
             Assert.IsTrue(instance.ValidateEx().Count(e => e.Message.Contains("MediaType")) == 0, "Instance should have no mediaType warnings");
@@ -96,7 +108,9 @@ namespace MARC.Everest.Test.DataTypes
         public void SDValidationExFailNFAndValueTest()
         {
             SD instance = new SD();
-            instance.Content.Add(new StructDocElementNode("table").AddElement("thead").AddAttribute("test", "32"));
+            var content = new StructDocElementNode("table");
+            content.AddElement("thead").AddAttribute("test", "32");
+            instance.Content.Add(content);
             instance.NullFlavor = NullFlavor.Derived;
             Assert.IsTrue(instance.ValidateEx().Count() == 1, "Instance should have one ValidateEx");
             Assert.IsTrue(instance.ValidateEx().Count(e => e.Message.Contains("NullFlavor")) == 1, "Instance should have one nullFlavor warnings");
@@ -108,7 +122,9 @@ namespace MARC.Everest.Test.DataTypes
         public void SDValidationExFailMediaTypeTest()
         {
             SD instance = new SD();
-            instance.Content.Add(new StructDocElementNode("table").AddElement("thead").AddAttribute("test", "32"));
+            var content = new StructDocElementNode("table");
+            content.AddElement("thead").AddAttribute("test", "32");
+            instance.Content.Add(content);
             instance.MediaType = "text/xml";
             Assert.IsTrue(instance.ValidateEx().Count() == 1, "Instance should have one ValidateEx");
             Assert.IsTrue(instance.ValidateEx().Count(e => e.Message.Contains("NullFlavor")) == 0, "Instance should have one nullFlavor warnings");
