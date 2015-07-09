@@ -256,7 +256,7 @@ namespace MARC.Everest.Test
             if (errorList.Count > 0)
             {
                 errorList.ForEach(item => Trace.WriteLine(item));
-                Trace.WriteLine(System.Text.Encoding.UTF8.GetString(XmlInstance.GetBuffer(), 0, (int)XmlInstance.Length));
+                //Trace.WriteLine(System.Text.Encoding.UTF8.GetString(XmlInstance.GetBuffer(), 0, (int)XmlInstance.Length));
             }
             return errorList;
         }
