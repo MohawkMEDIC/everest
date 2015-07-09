@@ -813,6 +813,9 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             foreach (BuildProperty buildProperty in buildProperties)
             {
 
+                if (buildProperty.PropertyInfo.Name == "act")
+                    System.Diagnostics.Debugger.Break();
+
                 var propertyInfo = buildProperty.PropertyInfo;
                 Type piType = buildProperty.PropertyInfo.PropertyType;
                 List<Type> piTypeInterfaces = new List<Type>(piType.GetInterfaces());

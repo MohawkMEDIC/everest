@@ -925,43 +925,43 @@ namespace MARC.Everest.Test
             }
         }
 
-        [TestMethod]
-        public void Instance020402Test_XSD_FICR_IN400001CA()
-        {
-            MemoryStream stream = new MemoryStream();
+        //[TestMethod]
+        //public void Instance020402Test_XSD_FICR_IN400001CA()
+        //{
+        //    MemoryStream stream = new MemoryStream();
 
-            try
-            {
-                IResultDetail[] details = null;
-                XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.CA.R020402.Interactions.FICR_IN400001CA), stream, out details);
+        //    try
+        //    {
+        //        IResultDetail[] details = null;
+        //        XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.CA.R020402.Interactions.FICR_IN400001CA), stream, out details);
 
-                if (details.Length > 0)
-                    foreach (var item in details)
-                        if (item.Type == ResultDetailType.Error)
-                            Tracer.Trace(item.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString(), ex);
-            }
+        //        if (details.Length > 0)
+        //            foreach (var item in details)
+        //                if (item.Type == ResultDetailType.Error)
+        //                    Tracer.Trace(item.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.ToString(), ex);
+        //    }
 
-            stream.Flush();
-            stream.Seek(0, SeekOrigin.Begin);
-            stream.Flush();
+        //    stream.Flush();
+        //    stream.Seek(0, SeekOrigin.Begin);
+        //    stream.Flush();
 
-            string xml = new StreamReader(stream).ReadToEnd();
+        //    string xml = new StreamReader(stream).ReadToEnd();
 
-            stream.Seek(0, SeekOrigin.Begin);
-            stream.Flush();
+        //    stream.Seek(0, SeekOrigin.Begin);
+        //    stream.Flush();
 
-            var result = XMLValidator.Validate("FICR_IN400001CA", stream, typeof(MARC.Everest.RMIM.CA.R020402.Interactions.FICR_IN400001CA));
+        //    var result = XMLValidator.Validate("FICR_IN400001CA", stream, typeof(MARC.Everest.RMIM.CA.R020402.Interactions.FICR_IN400001CA));
 
-            if (result.Count > 0)
-            {
-                result.ForEach(item => Trace.WriteLine(item));
-                Assert.Fail("Validation failed");
-            }
-        }
+        //    if (result.Count > 0)
+        //    {
+        //        result.ForEach(item => Trace.WriteLine(item));
+        //        Assert.Fail("Validation failed");
+        //    }
+        //}
 
         [TestMethod]
         public void Instance020402Test_XSD_FICR_IN400002CA()
@@ -10775,43 +10775,43 @@ namespace MARC.Everest.Test
             }
         }
 
-        [TestMethod]
-        public void Instance020402Test_XSD_REPC_IN000079CA()
-        {
-            MemoryStream stream = new MemoryStream();
+        //[TestMethod]
+        //public void Instance020402Test_XSD_REPC_IN000079CA()
+        //{
+        //    MemoryStream stream = new MemoryStream();
 
-            try
-            {
-                IResultDetail[] details = null;
-                XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000079CA), stream, out details);
+        //    try
+        //    {
+        //        IResultDetail[] details = null;
+        //        XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000079CA), stream, out details);
 
-                if (details.Length > 0)
-                    foreach (var item in details)
-                        if (item.Type == ResultDetailType.Error)
-                            Tracer.Trace(item.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString(), ex);
-            }
+        //        if (details.Length > 0)
+        //            foreach (var item in details)
+        //                if (item.Type == ResultDetailType.Error)
+        //                    Tracer.Trace(item.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.ToString(), ex);
+        //    }
 
-            stream.Flush();
-            stream.Seek(0, SeekOrigin.Begin);
-            stream.Flush();
+        //    stream.Flush();
+        //    stream.Seek(0, SeekOrigin.Begin);
+        //    stream.Flush();
 
-            string xml = new StreamReader(stream).ReadToEnd();
+        //    string xml = new StreamReader(stream).ReadToEnd();
 
-            stream.Seek(0, SeekOrigin.Begin);
-            stream.Flush();
+        //    stream.Seek(0, SeekOrigin.Begin);
+        //    stream.Flush();
 
-            var result = XMLValidator.Validate("REPC_IN000079CA", stream, typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000079CA));
+        //    var result = XMLValidator.Validate("REPC_IN000079CA", stream, typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000079CA));
 
-            if (result.Count > 0)
-            {
-                result.ForEach(item => Trace.WriteLine(item));
-                Assert.Fail("Validation failed");
-            }
-        }
+        //    if (result.Count > 0)
+        //    {
+        //        result.ForEach(item => Trace.WriteLine(item));
+        //        Assert.Fail("Validation failed");
+        //    }
+        //}
 
         [TestMethod]
         public void Instance020402Test_XSD_REPC_IN000080CA()
@@ -11079,43 +11079,43 @@ namespace MARC.Everest.Test
             }
         }
 
-        [TestMethod]
-        public void Instance020402Test_XSD_REPC_IN000089CA()
-        {
-            MemoryStream stream = new MemoryStream();
+        //[TestMethod]
+        //public void Instance020402Test_XSD_REPC_IN000089CA()
+        //{
+        //    MemoryStream stream = new MemoryStream();
 
-            try
-            {
-                IResultDetail[] details = null;
-                XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000089CA), stream, out details);
+        //    try
+        //    {
+        //        IResultDetail[] details = null;
+        //        XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000089CA), stream, out details);
 
-                if (details.Length > 0)
-                    foreach (var item in details)
-                        if (item.Type == ResultDetailType.Error)
-                            Tracer.Trace(item.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString(), ex);
-            }
+        //        if (details.Length > 0)
+        //            foreach (var item in details)
+        //                if (item.Type == ResultDetailType.Error)
+        //                    Tracer.Trace(item.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.ToString(), ex);
+        //    }
 
-            stream.Flush();
-            stream.Seek(0, SeekOrigin.Begin);
-            stream.Flush();
+        //    stream.Flush();
+        //    stream.Seek(0, SeekOrigin.Begin);
+        //    stream.Flush();
 
-            string xml = new StreamReader(stream).ReadToEnd();
+        //    string xml = new StreamReader(stream).ReadToEnd();
 
-            stream.Seek(0, SeekOrigin.Begin);
-            stream.Flush();
+        //    stream.Seek(0, SeekOrigin.Begin);
+        //    stream.Flush();
 
-            var result = XMLValidator.Validate("REPC_IN000089CA", stream, typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000089CA));
+        //    var result = XMLValidator.Validate("REPC_IN000089CA", stream, typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000089CA));
 
-            if (result.Count > 0)
-            {
-                result.ForEach(item => Trace.WriteLine(item));
-                Assert.Fail("Validation failed");
-            }
-        }
+        //    if (result.Count > 0)
+        //    {
+        //        result.ForEach(item => Trace.WriteLine(item));
+        //        Assert.Fail("Validation failed");
+        //    }
+        //}
 
         [TestMethod]
         public void Instance020402Test_XSD_REPC_IN000090CA()
@@ -11307,43 +11307,43 @@ namespace MARC.Everest.Test
             }
         }
 
-        [TestMethod]
-        public void Instance020402Test_XSD_REPC_IN000095CA()
-        {
-            MemoryStream stream = new MemoryStream();
+        //[TestMethod]
+        //public void Instance020402Test_XSD_REPC_IN000095CA()
+        //{
+        //    MemoryStream stream = new MemoryStream();
 
-            try
-            {
-                IResultDetail[] details = null;
-                XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000095CA), stream, out details);
+        //    try
+        //    {
+        //        IResultDetail[] details = null;
+        //        XMLGenerator.GenerateInstance(typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000095CA), stream, out details);
 
-                if (details.Length > 0)
-                    foreach (var item in details)
-                        if (item.Type == ResultDetailType.Error)
-                            Tracer.Trace(item.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString(), ex);
-            }
+        //        if (details.Length > 0)
+        //            foreach (var item in details)
+        //                if (item.Type == ResultDetailType.Error)
+        //                    Tracer.Trace(item.Message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.ToString(), ex);
+        //    }
 
-            stream.Flush();
-            stream.Seek(0, SeekOrigin.Begin);
-            stream.Flush();
+        //    stream.Flush();
+        //    stream.Seek(0, SeekOrigin.Begin);
+        //    stream.Flush();
 
-            string xml = new StreamReader(stream).ReadToEnd();
+        //    string xml = new StreamReader(stream).ReadToEnd();
 
-            stream.Seek(0, SeekOrigin.Begin);
-            stream.Flush();
+        //    stream.Seek(0, SeekOrigin.Begin);
+        //    stream.Flush();
 
-            var result = XMLValidator.Validate("REPC_IN000095CA", stream, typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000095CA));
+        //    var result = XMLValidator.Validate("REPC_IN000095CA", stream, typeof(MARC.Everest.RMIM.CA.R020402.Interactions.REPC_IN000095CA));
 
-            if (result.Count > 0)
-            {
-                result.ForEach(item => Trace.WriteLine(item));
-                Assert.Fail("Validation failed");
-            }
-        }
+        //    if (result.Count > 0)
+        //    {
+        //        result.ForEach(item => Trace.WriteLine(item));
+        //        Assert.Fail("Validation failed");
+        //    }
+        //}
 
         [TestMethod]
         public void Instance020402Test_XSD_REPC_IN000096CA()

@@ -95,6 +95,8 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
             // Attributes first
             foreach (var pi in buildProperties)
             {
+                if (pi.Name == "act")
+                    System.Diagnostics.Debugger.Break();
 
                 object[] propertyAttributes = pi.GetCustomAttributes(typeof(PropertyAttribute), pi.GetCustomAttributes(typeof(InheritPropertyAttributesAttribute), false).Length > 0);
                 object rawInstance = pi.GetValue(o, null);
@@ -612,7 +614,6 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                         resultContext.AddResultDetail(new NotImplementedElementResultDetail(ResultDetailType.Warning, pi.Name, "urn:hl7-org:v3", s.ToString(), null));
                     // Simple deserialization if PA type has IGraphable or PI type has IGraphable and PA type not specified
                     else if (pi.GetSetMethod() != null &&
-                        pi.PropertyType.GetInterface(typeof(IGraphable).FullName, false) != null && 
                         (pa.Type != null && pa.Type.GetInterface(typeof(IGraphable).FullName, false) != null) ||
                         (pa.Type == null && pi.PropertyType.GetInterface(typeof(IGraphable).FullName, false) != null))
                     {
@@ -636,7 +637,7 @@ namespace MARC.Everest.Formatters.XML.ITS1.Reflector
                     else
                     {
                         object tempFormat = Host.ParseObject(s, pa.Type ?? pi.PropertyType, currentInteractionType, resultContext);
-                        if (tempFormat.ToString() != pi.GetValue(instance, null).ToString() && pa.PropertyType != PropertyAttribute.AttributeAttributeType.Traversable)
+                        if (String.Format("{0}",tempFormat) != String.Format("{0}", pi.GetValue(instance, null)) && pa.PropertyType != PropertyAttribute.AttributeAttributeType.Traversable)
                             resultContext.AddResultDetail(new MARC.Everest.Connectors.FixedValueMisMatchedResultDetail(tempFormat.ToString(), pi.GetValue(instance, null).ToString(), s.ToString()));
                     }
 
