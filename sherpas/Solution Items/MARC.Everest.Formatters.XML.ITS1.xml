@@ -14,6 +14,21 @@
             Represents a utility class that can create a code dom formatter
             </summary>
         </member>
+        <member name="T:MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreatorEx.BuildProperty">
+            <summary>
+            Build property context info
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreatorEx.ResetEvent">
+            <summary>
+            Gets or sets the reset event which signals the end of creation
+            </summary>
+        </member>
+        <member name="E:MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreatorEx.CodeTypeDeclarationCompleted">
+            <summary>
+            Code type declaration has been completed
+            </summary>
+        </member>
         <member name="M:MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreatorEx.IsTraversable(System.Reflection.PropertyInfo)">
             <summary>
             Returns true if the property is traversable
@@ -92,21 +107,6 @@
         <member name="M:MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreatorEx.CreateHostProperty">
             <summary>
             Create the host property for the specified type
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreatorEx.ResetEvent">
-            <summary>
-            Gets or sets the reset event which signals the end of creation
-            </summary>
-        </member>
-        <member name="E:MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreatorEx.CodeTypeDeclarationCompleted">
-            <summary>
-            Code type declaration has been completed
-            </summary>
-        </member>
-        <member name="T:MARC.Everest.Formatters.XML.ITS1.CodeGen.TypeFormatterCreatorEx.BuildProperty">
-            <summary>
-            Build property context info
             </summary>
         </member>
         <member name="T:MARC.Everest.Formatters.XML.ITS1.CodeGen.CodeGenFormatter">
@@ -323,6 +323,122 @@
             The root of synchronization
             </summary>
         </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.CreateRequiredElements">
+             <summary>
+             Gets or sets a value that indicates whether the formatter should
+             format all required elements with nullFlavor of NI
+             </summary>
+             <example>
+             <code lang="cs" title="Generating Required Elements Setting">
+             <![CDATA[
+            XmlWriter xw = null;
+            
+            try
+            {
+            
+                // Setup the formatter
+                var its1Formatter = new XmlIts1Formatter()
+                {
+                    CreateRequiredElements = true
+                };
+                its1Formatter.GraphAides.Add(new DatatypeFormatter());
+            
+                // Initialize the XmlWriter & State writer
+                xw = XmlWriter.Create("mydata.xml", new XmlWriterSettings() 
+            { Indent = true });
+             
+                // State writer should always be used
+                XmlStateWriter xsw = new XmlStateWriter(xw);
+            
+                // Create an instance
+                REPC_IN000076CA instance = new REPC_IN000076CA(
+                    Guid.NewGuid(),
+                    DateTime.Now,
+                    ResponseMode.Immediate,
+                    REPC_IN000076CA.GetInteractionId(),
+                    REPC_IN000076CA.GetProfileId(),
+                    ProcessingID.Production,
+                    AcknowledgementCondition.Always,
+                    null,
+                    null);
+                instance.controlActEvent = new MARC.Everest.RMIM.CA.R020402.MCAI_MT700210CA.ControlActEvent<MARC.Everest.RMIM.CA.R020402.REPC_MT220001CA.Document>();
+            
+                // Format
+                var result = its1Formatter.Graph(xsw, instance);
+            
+                // Flush the xml state writer
+                xsw.Flush();
+            
+            }
+            finally
+            {
+                if (xw != null)
+                    xw.Close();
+            }
+             ]]>
+             </code>
+             <code lang="xml" title="Sample with CreateRequiredElements = false">
+             <![CDATA[
+            <REPC_IN000076CA ITSVersion="XML_1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
+              <id root="54CC5226-2875-4573-BCFC-114737D89438" />
+              <creationTime value="20111220222435.974-0500" />
+              <responseModeCode code="I" />
+              <versionCode code="V3-2008N" />
+              <interactionId root="2.16.840.1.113883.1.18" extension="REPC_IN000076CA" />
+              <profileId root="2.16.840.1.113883.2.20.2" extension="R02.04.02" />
+              <processingCode code="P" />
+              <processingModeCode code="T" />
+              <acceptAckCode code="AL" />
+              <controlActEvent classCode="CACT" moodCode="EVN">
+                <statusCode code="completed" />
+              </controlActEvent>
+            </REPC_IN000076CA>
+             ]]>
+             </code>
+             <code lang="xml" title="Sample with CreateRequiredElements = true">
+             <![CDATA[
+            <REPC_IN000076CA ITSVersion="XML_1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
+              <id root="504F61EC-A66E-43E0-ADB4-63D7B27AAE4E" />
+              <creationTime value="20111220222511.788-0500" />
+              <responseModeCode code="I" />
+              <versionCode code="V3-2008N" />
+              <interactionId root="2.16.840.1.113883.1.18" extension="REPC_IN000076CA" />
+              <profileId root="2.16.840.1.113883.2.20.2" extension="R02.04.02" />
+              <processingCode code="P" />
+              <processingModeCode code="T" />
+              <acceptAckCode code="AL" />
+              <controlActEvent classCode="CACT" moodCode="EVN">
+                <statusCode code="completed" />
+                <effectiveTime nullFlavor="NI" />
+                <reasonCode nullFlavor="NI" />
+                <languageCode nullFlavor="NI" />
+                <subjectOf1 xsi:nil="true" nullFlavor="NI" />
+              </controlActEvent>
+            </REPC_IN000076CA>
+             ]]>
+             </code>
+             </example>
+        </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.Settings">
+             <summary>
+             Gets or sets the formatting setting for this formatter instance.
+             </summary>
+             <example>
+             <code lang="cs" title="Setting XML ITS 1.0 Formatter Settings">
+             <![CDATA[
+             // Create the formatter and setup the graph aides
+            var formatter = new XmlIts1Formatter();
+            formatter.GraphAides.Add(new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.ClinicalDocumentArchitecture });
+            
+             // Disable validation
+            formatter.ValidateConformance = false;
+            
+             // Create settings
+            formatter.Settings = SettingsType.UseReflectionFormat | SettingsType.AllowFlavorImposing;
+             ]]>
+             </code>
+             </example>
+        </member>
         <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.#ctor">
             <summary>
             Creates a new instance of the Formatter class
@@ -457,6 +573,22 @@
             </para>
             </remarks>
         </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.GraphAides">
+            <summary>
+            Gets or sets a list of aide formatters that can be instantiated 
+            to assist in the formatting of this instance.
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.Host">
+            <summary>
+            Gets or sets the host formatter of this structure formatter
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.HandleStructure">
+            <summary>
+            Returns a list of structures that this formatter can "handle"
+            </summary>
+        </member>
         <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.Graph(System.IO.Stream,MARC.Everest.Interfaces.IGraphable)">
             <summary>
             Graphs object <paramref name="o"/> onto stream <paramref name="s"/>
@@ -502,6 +634,17 @@
             Clones this formatter 
             </summary>
         </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.GenerateInMemory">
+            <summary>
+            Sets a value that indicates whether this formatter should generate
+            assemblies in memory or on disk
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.GeneratedAssemblies">
+            <summary>
+            Gets a list of assemblies that have been generated by this formatter
+            </summary>
+        </member>
         <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.Parse(System.IO.Stream,System.Reflection.Assembly)">
             <summary>
             Parses an object from <paramref name="s"/> using <paramref name="a"/> to locate
@@ -540,6 +683,13 @@
             <summary>
             Builds a type cache for the specified list of types
             </summary>
+        </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.ValidateConformance">
+            <summary>
+            Gets or sets a value that indicates whether this formatter will validate conformance
+            </summary>
+            <remarks>When set to true, the formatter will not produce output when
+            an invalid message is encountered</remarks>
         </member>
         <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.GetAdjustedFormatter(System.String)">
             <summary>
@@ -638,156 +788,6 @@
             Gives the formatter a chance to correct the instance based on new knowledge gained by the formatter, should return an instance of the same type
             </summary>
         </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.CreateRequiredElements">
-             <summary>
-             Gets or sets a value that indicates whether the formatter should
-             format all required elements with nullFlavor of NI
-             </summary>
-             <example>
-             <code lang="cs" title="Generating Required Elements Setting">
-             <![CDATA[
-            XmlWriter xw = null;
-            
-            try
-            {
-            
-                // Setup the formatter
-                var its1Formatter = new XmlIts1Formatter()
-                {
-                    CreateRequiredElements = true
-                };
-                its1Formatter.GraphAides.Add(new DatatypeFormatter());
-            
-                // Initialize the XmlWriter & State writer
-                xw = XmlWriter.Create("mydata.xml", new XmlWriterSettings() 
-            { Indent = true });
-             
-                // State writer should always be used
-                XmlStateWriter xsw = new XmlStateWriter(xw);
-            
-                // Create an instance
-                REPC_IN000076CA instance = new REPC_IN000076CA(
-                    Guid.NewGuid(),
-                    DateTime.Now,
-                    ResponseMode.Immediate,
-                    REPC_IN000076CA.GetInteractionId(),
-                    REPC_IN000076CA.GetProfileId(),
-                    ProcessingID.Production,
-                    AcknowledgementCondition.Always,
-                    null,
-                    null);
-                instance.controlActEvent = new MARC.Everest.RMIM.CA.R020402.MCAI_MT700210CA.ControlActEvent<MARC.Everest.RMIM.CA.R020402.REPC_MT220001CA.Document>();
-            
-                // Format
-                var result = its1Formatter.Graph(xsw, instance);
-            
-                // Flush the xml state writer
-                xsw.Flush();
-            
-            }
-            finally
-            {
-                if (xw != null)
-                    xw.Close();
-            }
-             ]]>
-             </code>
-             <code lang="xml" title="Sample with CreateRequiredElements = false">
-             <![CDATA[
-            <REPC_IN000076CA ITSVersion="XML_1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
-              <id root="54CC5226-2875-4573-BCFC-114737D89438" />
-              <creationTime value="20111220222435.974-0500" />
-              <responseModeCode code="I" />
-              <versionCode code="V3-2008N" />
-              <interactionId root="2.16.840.1.113883.1.18" extension="REPC_IN000076CA" />
-              <profileId root="2.16.840.1.113883.2.20.2" extension="R02.04.02" />
-              <processingCode code="P" />
-              <processingModeCode code="T" />
-              <acceptAckCode code="AL" />
-              <controlActEvent classCode="CACT" moodCode="EVN">
-                <statusCode code="completed" />
-              </controlActEvent>
-            </REPC_IN000076CA>
-             ]]>
-             </code>
-             <code lang="xml" title="Sample with CreateRequiredElements = true">
-             <![CDATA[
-            <REPC_IN000076CA ITSVersion="XML_1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:hl7-org:v3">
-              <id root="504F61EC-A66E-43E0-ADB4-63D7B27AAE4E" />
-              <creationTime value="20111220222511.788-0500" />
-              <responseModeCode code="I" />
-              <versionCode code="V3-2008N" />
-              <interactionId root="2.16.840.1.113883.1.18" extension="REPC_IN000076CA" />
-              <profileId root="2.16.840.1.113883.2.20.2" extension="R02.04.02" />
-              <processingCode code="P" />
-              <processingModeCode code="T" />
-              <acceptAckCode code="AL" />
-              <controlActEvent classCode="CACT" moodCode="EVN">
-                <statusCode code="completed" />
-                <effectiveTime nullFlavor="NI" />
-                <reasonCode nullFlavor="NI" />
-                <languageCode nullFlavor="NI" />
-                <subjectOf1 xsi:nil="true" nullFlavor="NI" />
-              </controlActEvent>
-            </REPC_IN000076CA>
-             ]]>
-             </code>
-             </example>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.Settings">
-             <summary>
-             Gets or sets the formatting setting for this formatter instance.
-             </summary>
-             <example>
-             <code lang="cs" title="Setting XML ITS 1.0 Formatter Settings">
-             <![CDATA[
-             // Create the formatter and setup the graph aides
-            var formatter = new XmlIts1Formatter();
-            formatter.GraphAides.Add(new DatatypeFormatter() { CompatibilityMode = DatatypeFormatterCompatibilityMode.ClinicalDocumentArchitecture });
-            
-             // Disable validation
-            formatter.ValidateConformance = false;
-            
-             // Create settings
-            formatter.Settings = SettingsType.UseReflectionFormat | SettingsType.AllowFlavorImposing;
-             ]]>
-             </code>
-             </example>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.GraphAides">
-            <summary>
-            Gets or sets a list of aide formatters that can be instantiated 
-            to assist in the formatting of this instance.
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.Host">
-            <summary>
-            Gets or sets the host formatter of this structure formatter
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.HandleStructure">
-            <summary>
-            Returns a list of structures that this formatter can "handle"
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.GenerateInMemory">
-            <summary>
-            Sets a value that indicates whether this formatter should generate
-            assemblies in memory or on disk
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.GeneratedAssemblies">
-            <summary>
-            Gets a list of assemblies that have been generated by this formatter
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1Formatter.ValidateConformance">
-            <summary>
-            Gets or sets a value that indicates whether this formatter will validate conformance
-            </summary>
-            <remarks>When set to true, the formatter will not produce output when
-            an invalid message is encountered</remarks>
-        </member>
         <member name="T:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterGraphResult">
             <summary>
             Represents a formatting result from an ITS 1 formatter
@@ -803,16 +803,6 @@
             Add result details from an array
             </summary>
         </member>
-        <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterGraphResult.#ctor">
-            <summary>
-            Datatype formatter graph result
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterGraphResult.#ctor(MARC.Everest.Connectors.ResultCode,MARC.Everest.Connectors.IResultDetail[])">
-            <summary>
-            Datatype formatter graph result
-            </summary>
-        </member>
         <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterGraphResult.Details">
             <summary>
             Gets the details of the parse
@@ -821,6 +811,16 @@
         <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterGraphResult.Code">
             <summary>
             Gets the result code of the formatting result
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterGraphResult.#ctor">
+            <summary>
+            Datatype formatter graph result
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterGraphResult.#ctor(MARC.Everest.Connectors.ResultCode,MARC.Everest.Connectors.IResultDetail[])">
+            <summary>
+            Datatype formatter graph result
             </summary>
         </member>
         <member name="T:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterParseResult">
@@ -838,16 +838,6 @@
             Add result details from an array
             </summary>
         </member>
-        <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterParseResult.#ctor">
-            <summary>
-            Datatype formatter parse result
-            </summary>
-        </member>
-        <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterParseResult.#ctor(MARC.Everest.Connectors.ResultCode,MARC.Everest.Connectors.IResultDetail[])">
-            <summary>
-            Datatype formatter parse result
-            </summary>
-        </member>
         <member name="P:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterParseResult.Details">
             <summary>
             Gets the details of the parse
@@ -858,9 +848,24 @@
             Gets the result code of the formatting result
             </summary>
         </member>
+        <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterParseResult.#ctor">
+            <summary>
+            Datatype formatter parse result
+            </summary>
+        </member>
+        <member name="M:MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterParseResult.#ctor(MARC.Everest.Connectors.ResultCode,MARC.Everest.Connectors.IResultDetail[])">
+            <summary>
+            Datatype formatter parse result
+            </summary>
+        </member>
         <member name="T:MARC.Everest.Formatters.XML.ITS1.ITypeFormatter">
             <summary>
             Summary of DatatypeFormatter
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.ITypeFormatter.Host">
+            <summary>
+            The host of the formatter
             </summary>
         </member>
         <member name="M:MARC.Everest.Formatters.XML.ITS1.ITypeFormatter.Graph(System.Xml.XmlWriter,System.Object,MARC.Everest.Interfaces.IGraphable,MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterGraphResult)">
@@ -878,6 +883,11 @@
             <returns>The parsed object</returns>
             <param name="currentInteractionType">The current interaction that is being rendered. This is used for interaction cases of traversal names</param>
         </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.ITypeFormatter.HandlesType">
+            <summary>
+            The type this formatter handles
+            </summary>
+        </member>
         <member name="M:MARC.Everest.Formatters.XML.ITS1.ITypeFormatter.Validate(MARC.Everest.Interfaces.IGraphable,System.String)">
             <summary>
             Validate all mandatory elements are populated
@@ -891,19 +901,14 @@
             </summary>
             <remarks>This method is used to process the elements from the current position into the specified instance</remarks>
         </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.ITypeFormatter.Host">
-            <summary>
-            The host of the formatter
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.ITypeFormatter.HandlesType">
-            <summary>
-            The type this formatter handles
-            </summary>
-        </member>
         <member name="T:MARC.Everest.Formatters.XML.ITS1.Reflector.ReflectFormatter">
             <summary>
             Handles reflection method of formatting
+            </summary>
+        </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.Reflector.ReflectFormatter.Host">
+            <summary>
+            Gets or sets the host of the formatter
             </summary>
         </member>
         <member name="M:MARC.Everest.Formatters.XML.ITS1.Reflector.ReflectFormatter.Graph(System.Xml.XmlWriter,System.Object,MARC.Everest.Interfaces.IGraphable,MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterGraphResult)">
@@ -934,6 +939,11 @@
             Parses an instance of the specified type from the specified stream
             </summary>
         </member>
+        <member name="P:MARC.Everest.Formatters.XML.ITS1.Reflector.ReflectFormatter.HandlesType">
+            <summary>
+            Gets the type that this formatter handles
+            </summary>
+        </member>
         <member name="M:MARC.Everest.Formatters.XML.ITS1.Reflector.ReflectFormatter.Validate(MARC.Everest.Interfaces.IGraphable,System.String)">
             <summary>
             Validates the specified object
@@ -942,16 +952,6 @@
         <member name="M:MARC.Everest.Formatters.XML.ITS1.Reflector.ReflectFormatter.ParseElementContent(System.Xml.XmlReader,System.Object,System.String,System.Int32,System.Type,MARC.Everest.Formatters.XML.ITS1.XmlIts1FormatterParseResult)">
             <summary>
             Parse element contents
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.Reflector.ReflectFormatter.Host">
-            <summary>
-            Gets or sets the host of the formatter
-            </summary>
-        </member>
-        <member name="P:MARC.Everest.Formatters.XML.ITS1.Reflector.ReflectFormatter.HandlesType">
-            <summary>
-            Gets the type that this formatter handles
             </summary>
         </member>
         <member name="T:MARC.Everest.Formatters.XML.ITS1.SettingsType">
