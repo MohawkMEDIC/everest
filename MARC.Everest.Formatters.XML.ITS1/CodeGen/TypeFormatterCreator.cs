@@ -611,10 +611,10 @@ namespace MARC.Everest.Formatters.XML.ITS1.CodeGen
             // Finish method elements
             methodElements.Add(new CodeSnippetStatement("}")); // if s.NodeType ==
             methodElements.Add(new CodeSnippetStatement("}")); // Try
-            methodElements.Add(new CodeSnippetStatement("catch (System.Exception e) { resultContext.AddResultDetail(new MARC.Everest.Connectors.ResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, e.Message, s.ToString(), e)); }"));
+            methodElements.Add(new CodeSnippetStatement("catch (System.Exception e) { if(e is System.Xml.XmlException) throw; resultContext.AddResultDetail(new MARC.Everest.Connectors.ResultDetail(MARC.Everest.Connectors.ResultDetailType.Error, e.Message, s.ToString(), e)); }"));
             methodElements.Add(new CodeSnippetStatement("finally { if(oldName.Equals(s.LocalName)) s.Read(); } }")); // while
             //methodElements.Add(new CodeSnippetExpression("Details = resultDetail.ToArray()"));
-
+            
             method.Statements.AddRange(methodBuilder);
             method.Statements.AddRange(methodAttributes);
             method.Statements.AddRange(methodElements);
