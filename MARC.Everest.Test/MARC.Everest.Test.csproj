@@ -91,7 +91,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Solution Items\MARC.Everest.RMIM.UV.NE2010.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -304,6 +306,8 @@
     <Compile Include="Regressions\EV-1110.cs" />
     <Compile Include="Regressions\EV-1111.cs" />
     <Compile Include="Regressions\EV-1112.cs" />
+    <Compile Include="Regressions\WI005.cs" />
+    <Compile Include="Regressions\WI006.cs" />
     <Compile Include="Regressions\WI1086.cs" />
     <Compile Include="Regressions\WI2102.cs" />
     <Compile Include="SimpleTypeCreator.cs" />
@@ -319,6 +323,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
+    <EmbeddedResource Include="Resources\WI006Sample.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\WI005Sample.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\example85Data.xml" />
     <EmbeddedResource Include="Resources\MCCI_IN000000UV01.xml">
       <SubType>Designer</SubType>
