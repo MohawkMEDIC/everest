@@ -72,7 +72,7 @@ namespace MARC.Everest.Connectors.WCF.Serialization
         /// <returns>The deserialized object or null if deserialization failed.</returns>
         public override object ReadObject(System.Xml.XmlDictionaryReader reader, bool verifyObjectName)
         {
-            var result = Formatter.Parse(new XmlStateReader(reader as XmlReader));
+            var result = Formatter.Parse(new XmlStateReader(reader));
             this.Details = result.Details;
             this.ResultCode = result.Code;
             return result.Structure;

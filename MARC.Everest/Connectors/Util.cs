@@ -28,6 +28,7 @@ using MARC.Everest.Exceptions;
 using MARC.Everest.DataTypes.Interfaces;
 using System.ComponentModel;
 using System.Globalization;
+using System.Xml;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -309,6 +310,26 @@ namespace MARC.Everest.Connectors
         /// <returns></returns>
         public static Type ParseXSITypeName(string xsiType)
         {
+            return ParseXSITypeName(xsiType, null);
+        }
+
+        /// <summary>
+        /// Parse XSI type with namespace resolver
+        /// </summary>
+        public static Type ParseXSITypeName(String xsiType, IXmlNamespaceResolver nsResolver)
+        {
+            // NS Prefix?
+            String[] nsTokens = xsiType.Split(':');
+            string namespaceUri = "urn:hl7-org:v3";
+            if (nsTokens.Length == 2)
+            {
+                xsiType = nsTokens[1];
+                if(nsResolver != null)
+                    namespaceUri = nsResolver.LookupNamespace(nsTokens[0]);
+            }
+            if (namespaceUri != "urn:hl7-org:v3")
+                throw new InvalidOperationException("Cannot parse datatypes outside of urn:hl7-org:v3 namespace");
+
             // Type tokens for the 
             Queue<String> typeNames = new Queue<string>(xsiType.Split('_'));
             var t = ParseXSITypeNameInternal(typeNames);

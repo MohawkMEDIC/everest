@@ -970,18 +970,31 @@ namespace MARC.Everest.Formatters.XML.ITS1
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        internal IXmlStructureFormatter GetAdjustedFormatter(string xsiType)
+        internal IXmlStructureFormatter GetAdjustedFormatter(string xsiTypeName, IXmlNamespaceResolver namespaceResolver)
         {
 
+
+
+            // NS Prefix?
+            String[] nsTokens = xsiTypeName.Split(':');
+            string namespaceUri = "urn:hl7-org:v3";
+            if (nsTokens.Length == 2)
+            {
+                xsiTypeName = nsTokens[1];
+                namespaceUri = namespaceResolver.LookupNamespace(nsTokens[0]);
+            }
+            if (namespaceUri != "urn:hl7-org:v3")
+                throw new InvalidOperationException("Cannot parse datatypes outside of urn:hl7-org:v3 namespace");
+
             // Formatter type
-            string xsiTypeRoot = xsiType;
+            string xsiTypeRoot = xsiTypeName;
 
             // Generic 
             if (!String.IsNullOrEmpty(xsiTypeRoot) && xsiTypeRoot.Contains("_"))
                 xsiTypeRoot = xsiTypeRoot.Substring(0, xsiTypeRoot.IndexOf("_"));
 
             // Get the type
-            if (String.IsNullOrEmpty(xsiType))
+            if (String.IsNullOrEmpty(xsiTypeName))
                 return null;
 
             var retVal = this.GraphAides.Find(t => t.HandleStructure.Contains(xsiTypeRoot)); 
@@ -1154,7 +1167,7 @@ namespace MARC.Everest.Formatters.XML.ITS1
                 if (xsiType != null)
                 {
                     if (useType.IsInterface || typeof(ANY).IsAssignableFrom(useType)) // HACK: We don't override the use type for ANY derivatives as some types are special and require special typing
-                        ixsf = this.GetAdjustedFormatter(xsiType); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                        ixsf = this.GetAdjustedFormatter(xsiType, r as IXmlNamespaceResolver); //Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
                     else
                         useType = this.ParseXSITypeName(xsiType, r as IXmlNamespaceResolver);
                 }

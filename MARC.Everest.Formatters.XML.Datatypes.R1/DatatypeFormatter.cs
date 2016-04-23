@@ -355,7 +355,7 @@ namespace MARC.Everest.Formatters.XML.Datatypes.R1
             {
                 // Force processing as an XSI:Type
                 if (r.GetAttribute("type", NS_XSI) != null)
-                    cType = Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI));
+                    cType = Util.ParseXSITypeName(r.GetAttribute("type", NS_XSI), r as IXmlNamespaceResolver);
 
                 formatter = GetFormatter(cType);
             }
