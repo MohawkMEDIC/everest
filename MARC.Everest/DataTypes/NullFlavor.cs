@@ -118,8 +118,8 @@ namespace MARC.Everest.DataTypes
         /// <summary>
         /// There is information on this item available but it has not been provided by the sender due to security, privacy or other reasons. There may be an alternate mechanism for gaining access to this information. Note: using this null flavor does provide information that may be a breach of confidentiality, even though no detail data is provided. Its primary purpose is for those circumstances where it is necessary to inform the receiver that the information does exist without providing any detail. .
         /// </summary>
-        [Enumeration(Value = "MASK")]
-        [XmlEnum("MASK")]
+        [Enumeration(Value = "MSK")]
+        [XmlEnum("MSK")]
         Masked,
         /// <summary>
         /// Known to have no proper value (e.g., last menstrual period for a male)..
