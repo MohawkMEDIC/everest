@@ -30,6 +30,7 @@ using System.Security.Cryptography;
 using MARC.Everest.Exceptions;
 using System.Xml.Serialization;
 using MARC.Everest.Connectors;
+using MARC.Everest.Xml;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -39,6 +40,7 @@ using System.Drawing.Design;
 using System.IO.Compression;
 #endif
 
+#pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
 namespace MARC.Everest.DataTypes
 {
     /// <summary>
@@ -138,6 +140,11 @@ namespace MARC.Everest.DataTypes
         /// </summary>
         /// <param name="reference">The reference to the real data</param>
         public ED(TEL reference) : this() { this.Reference = reference; }
+
+        /// <summary>
+        /// String for wrapping noncompliant text sections to form valid XmlData.
+        /// </summary>
+        public const string NonCompliantRoot = "NonCompliantRoot";
 
         /// <summary>
         /// Get or set the data that is encapsulated by this object. 
@@ -672,6 +679,24 @@ namespace MARC.Everest.DataTypes
                     else
                         return null;
                 }
+                // XML data isn't valid XML element.
+                // wrap in root component before returning.
+                catch (XmlException)
+                {
+                    using (var jointStream = new MultiStream())
+                    using (var openTagStream = new MemoryStream(Encoding.ASCII.GetBytes("<" + NonCompliantRoot + ">"), false))
+                    using (var contentStream = new MemoryStream(Data))
+                    using (var closeTagStream = new MemoryStream(Encoding.ASCII.GetBytes("</" + NonCompliantRoot + ">"), false))
+                    {
+                        jointStream.AddStream(openTagStream);
+                        jointStream.AddStream(contentStream);
+                        jointStream.AddStream(closeTagStream);
+                        var xd = new XmlDocument();
+                        xd.Load(jointStream);
+
+                        return xd.DocumentElement;
+                    }
+                }
                 catch (Exception)
                 {
                     return null;
@@ -923,7 +948,8 @@ namespace MARC.Everest.DataTypes
             else
                 return false;
         }
-        #endregion
+    #endregion
 
-    }
+}
+#pragma warning restore CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
 }
