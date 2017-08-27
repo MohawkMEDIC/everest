@@ -5,7 +5,7 @@ using System.Linq;
 namespace MARC.Everest.Xml
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public class MultiStream : Stream
+    internal class MultiStream : Stream
     {
         private List<Stream> streams = new List<Stream>();
 
