@@ -24,13 +24,13 @@ using MARC.Everest.DataTypes.Interfaces;
 using MARC.Everest.Attributes;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
 using System.ComponentModel;
 using System.Globalization;
 using System.Security.Cryptography;
 using MARC.Everest.Exceptions;
 using System.Xml.Serialization;
 using MARC.Everest.Connectors;
-using MARC.Everest.Xml;
 
 #if WINDOWS_PHONE
 using MARC.Everest.Phone;
@@ -683,16 +683,14 @@ namespace MARC.Everest.DataTypes
                 // wrap in root component before returning.
                 catch (XmlException)
                 {
-                    using (var jointStream = new MultiStream())
-                    using (var openTagStream = new MemoryStream(Encoding.ASCII.GetBytes("<" + NonCompliantRoot + ">"), false))
                     using (var contentStream = new MemoryStream(Data))
-                    using (var closeTagStream = new MemoryStream(Encoding.ASCII.GetBytes("</" + NonCompliantRoot + ">"), false))
                     {
-                        jointStream.AddStream(openTagStream);
-                        jointStream.AddStream(contentStream);
-                        jointStream.AddStream(closeTagStream);
+                        var sr = new StreamReader(contentStream);
+                        var dirty = sr.ReadToEnd();
+                        var xel = new XElement(NonCompliantRoot, dirty);
+
                         var xd = new XmlDocument();
-                        xd.Load(jointStream);
+                        xd.Load(xel.CreateReader());
 
                         return xd.DocumentElement;
                     }
