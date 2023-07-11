@@ -171,7 +171,7 @@ namespace MARC.Everest.DataTypes
             retVal.ControlActRoot = name.ControlActRoot;
             retVal.Flavor = name.Flavor;
             retVal.NullFlavor = name.NullFlavor != null ? name.NullFlavor.Clone() as CS<NullFlavor> : null;
-            retVal.UpdateMode = name.NullFlavor != null ? name.UpdateMode.Clone() as CS<UpdateMode> : null;
+            retVal.UpdateMode = name.UpdateMode != null ? name.UpdateMode.Clone() as CS<UpdateMode> : null;
             retVal.Use = name.Use != null ? new SET<CS<EntityNameUse>>(name.Use) : null;
             retVal.ValidTimeHigh = name.ValidTimeHigh;
             retVal.ValidTimeLow = name.ValidTimeLow;
