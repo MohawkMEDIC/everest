@@ -1,4 +1,15 @@
-# Everest
+# ⚠️ Everest [ARCHIVED]
+
+> **Warning**  
+> This repository has been archived by the owner. It is now in a read-only state.
+
+### ❓ Why was it archived?
+This project was built using outdated dependencies and is no longer being actively developed or maintained. 
+
+### 🛠️ What should you do?
+The code remains available for historical reference or cloning. If you need to make changes, feel free to fork the repository.
+
+---
 <div class="wikidoc">
 <p>In short, the Everest Framework is designed to ease the creation, formatting, and transmission of HL7v3 structures with remote systems.&nbsp;</p>
 <p>The &quot;framework&quot; provides a series of consistent, well documented components that, when used together, provide a flexible mechanism for supporting HL7v3 standards within application. Through a combination of automatically generated code and carefully constructed
